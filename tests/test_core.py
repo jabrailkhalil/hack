@@ -122,6 +122,35 @@ class ObserverTests(unittest.TestCase):
         self.assertGreater(e.v, 8)
         self.assertNotEqual(e.mode, 'STOPPED')
 
+    def test_persistent_zero_pair_cannot_stop_slow_moving_model(self):
+        o=Observer();o.reset(velocity=1.0)
+        for i in range(21):
+            t=i*.05;e=o.step(t,Sample(t,0),Sample(t,0),Sample(t,0))
+            self.assertNotEqual(e.mode,'STOPPED');self.assertEqual(e.front_status,'ZERO_LOCK_SUSPECT');self.assertEqual(e.rear_status,'ZERO_LOCK_SUSPECT')
+        self.assertGreater(e.v,.9)
+
+    def test_true_stop_still_acquired_after_model_braking(self):
+        o=Observer();o.reset(velocity=1.0)
+        for i in range(81):
+            t=i*.05;e=o.step(t,Sample(t,-1),Sample(t,0),Sample(t,0))
+        self.assertEqual(e.mode,'STOPPED');self.assertEqual(e.v,0)
+
+    def test_alternating_zero_wheels_cannot_stop_moving_model(self):
+        o=Observer();f=r=Sample(0,1.3)
+        for i in range(61):
+            t=i*.05;s=Sample(t,1.3 if t<1 else 0)
+            if i%2:f=s
+            else:r=s
+            e=o.step(t,Sample(t,0),f,r);self.assertNotEqual(e.mode,'STOPPED')
+        self.assertGreater(e.v,1.)
+
+    def test_single_zero_wheel_does_not_veto_other_wheel(self):
+        o=Observer();o.reset(velocity=1.0)
+        for i in range(21):
+            t=i*.05;e=o.step(t,Sample(t,0),Sample(t,0),Sample(t,1))
+            self.assertNotEqual(e.rear_status,'ZERO_LOCK_SUSPECT')
+        self.assertGreater(e.v,.9)
+
     def test_dropouts_remain_finite_with_uncertainty_growth(self):
         o = Observer(); o.reset(velocity=5)
         for i in range(501):

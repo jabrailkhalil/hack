@@ -10,5 +10,8 @@ setup(
     install_requires=['setuptools'], zip_safe=True,
     maintainer='Hackathon team', maintainer_email='78273416+jabrailkhalil@users.noreply.github.com',
     description='Adaptive model-based reserve tram odometry', license='LicenseRef-Proprietary',
-    entry_points={'console_scripts': ['odometry_node = reserve_odometry.node:main']},
+    entry_points={'console_scripts': [
+        'odometry_node = reserve_odometry.node:main',
+        'guarded_odometry_node = reserve_odometry.guarded_node:main',
+    ]},
 )
