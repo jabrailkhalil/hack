@@ -1,0 +1,108 @@
+--- a/src/reserve_odometry/reserve_odometry/guarded_readout.py
++++ b/src/reserve_odometry/reserve_odometry/guarded_readout.py
+@@ -5,6 +5,7 @@
+ There is no second filter, external reference, sensor replay or future input.
+ """
+ from dataclasses import dataclass, replace
++from collections import deque
+ import math
+ from typing import Optional
+ from .core import Config, Estimate, Observer, Sample, clip
+@@ -14,8 +15,11 @@
+ class ReadoutConfig:
+     gain: float = 1.0
+     holdoff_s: float = 0.5
++    integral_age: bool = False
+ 
+     def __post_init__(self):
++        if not isinstance(self.integral_age, bool):
++            raise ValueError('integral_age must be a bool')
+         if not math.isfinite(self.gain) or not 0.0 <= self.gain <= 1.0:
+             raise ValueError('readout gain must be finite and within [0, 1]')
+         if not math.isfinite(self.holdoff_s) or not 0.0 <= self.holdoff_s <= 10.0:
+@@ -43,11 +47,50 @@
+         self._distance_correction = 0.0
+         self._correction_sigma_s = 0.0
+         self._blocked_until = -math.inf
++        self._model_segments = deque(maxlen=16)
++
++    def _integral_between(self, begin, end):
++        """Exact integral of the discrete predictor history, or None for a gap.
++
++        Each segment (left, right] contains the acceleration the core used for
++        that completed predictor step. It is NOT a measured historical path.
++        """
++        if begin >= end:
++            return 0.0
++        cursor, integral = begin, 0.0
++        for left, right, acceleration in self._model_segments:
++            if right <= cursor:
++                continue
++            if left > cursor:
++                return None
++            edge = min(end, right)
++            integral += acceleration * (edge - cursor)
++            cursor = edge
++            if cursor >= end:
++                return integral
++        return None
++
++    def _age_increment(self, t, accepted, acceleration, age):
++        """Average each accepted sample's integral, never integrate mean stamp."""
++        original = acceleration * age
++        if not self.readout.integral_age:
++            return original
++        increments = [self._integral_between(min(t, sample.t), t)
++                      for sample in accepted]
++        if any(value is None for value in increments):
++            return original  # Missing coverage must never wait or fabricate history.
++        # Preserve the exact old arithmetic for its constant-acceleration case.
++        oldest = min(sample.t for sample in accepted)
++        if all(a == acceleration for left, right, a in self._model_segments
++               if right > oldest):
++            return original
++        return sum(increments) / len(increments)
+ 
+     def step(self, t: float, command: Optional[Sample] = None,
+              front: Optional[Sample] = None, rear: Optional[Sample] = None) -> Estimate:
+         old_t, old_v = self.t, self.v
+         old_pv, old_disturbance = self.pv, self.disturbance
++        old_drive = self.drive_a
+         old_correction = self._velocity_correction
+         estimate = super().step(t, command, front, rear)
+         if self.readout.gain == 0.0:
+@@ -56,6 +99,18 @@
+             self._velocity_correction = 0.0
+             return estimate
+         dt = t - old_t  # super().step enforces strictly positive, bounded dt.
++        if self.readout.integral_age:
++            # Reconstruct the IDENTICAL pre-correction arithmetic; core may have
++            # reset drive_a at STOPPED or adapted disturbance after prediction.
++            u = 0.0 if estimate.command_stale else clip(command.value, -1, 1)
++            target = self.drive_target(u, old_v)
++            drive = old_drive + (1.0 - math.exp(-dt / self.c.actuator_tau_s)) * (target - old_drive)
++            model_a = clip(drive - self.resistance(old_v) + old_disturbance,
++                           -self.c.max_accel_mps2, self.c.max_accel_mps2)
++            self._model_segments.append((old_t, t, model_a))
++            cutoff = t - self.c.max_age_s
++            while self._model_segments and self._model_segments[0][1] <= cutoff:
++                self._model_segments.popleft()
+         statuses = (estimate.front_status, estimate.rear_status)
+         pair_ok = (self._valid(front, t, self.c.max_age_s)
+                    and self._valid(rear, t, self.c.max_age_s)
+@@ -80,9 +135,14 @@
+                 # Scalar Joseph update: P_post=(1-K)*P_prior. The clamp handles
+                 # the baseline variance floor; it never increases trust above 1.
+                 kalman_gain = clip(1.0 - estimate.variance_v / p_prior, 0.0, 1.0)
++                contribution = kalman_gain * self.readout.gain * acceleration * age
++                if self.readout.integral_age:
++                    increment = self._age_increment(t, accepted, acceleration, age)
++                    if increment != acceleration * age:
++                        contribution = kalman_gain * self.readout.gain * increment
+                 self._velocity_correction = (
+                     (1.0 - kalman_gain) * old_correction
+-                    + kalman_gain * self.readout.gain * acceleration * age)
++                    + contribution)
+             limit = self.c.max_accel_mps2 * self.c.max_age_s
+             self._velocity_correction = clip(self._velocity_correction, -limit, limit)
+         velocity = clip(estimate.v + self._velocity_correction,
