@@ -1,0 +1,3629 @@
+{
+  "hypothesis": "H07",
+  "baseline_commit": "984fdf2fc4faf05325249215d6b8541c0e68209a",
+  "baseline_profile": "src/reserve_odometry/config/adaptive_v5.json",
+  "source_commit": "ca96f620274ba24c82e1258e953bfb7bd1b40fe4",
+  "source_sha256": {
+    "tools/finalization/evaluate.py": "f6a19a1727274ca88e1fe1a9fb76d31dbc8ce4e9bbabf669c488f053d76caec7",
+    "tools/research_v3/experiment.py": "95a398003530454457bacb2096fb6bc9d0d5ee32520420c43a9ebeb406376aa0",
+    "tools/research_v3/manifest.py": "51f24a2b9486938ac935d0b648f0612c76df075f7372caf6cc5bd457a8e53abb",
+    "tools/research_v6/compare.py": "70276a0a633cd443d44af870fde73649519be2aaf55944c2a4473c82d7b241b5",
+    "tools/export_bags.py": "696f6bdbf853dac4d4fe6286f6a7f4742f4aea5b1bc508efda52f5bc179c3b66",
+    "tools/get_dataset.py": "a9604c96b437cf07271597f6c68fd166ea1d5cee5bacba200f39057e79d22c59",
+    "requirements-research.txt": "d73bd55eb03f248de3404b41d67976a04cdd6326fe00316389d91fb1f4725c8b",
+    "research/plan_v3.json": "ddbc1130e214c3d338b3d292232391d3a329a0fd5f13a090027452ae070271b3",
+    "research/split_v3.json": "20928a29daad2b4178ddb92e2a4d9ddb347952f6c03845802a8d82fff7da5ae0",
+    "src/reserve_odometry/config/adaptive_v5.json": "3b84e6eb09262ba7a24771e5a56e0aa3ecb89c67f18e501cd0d0366514e99da1",
+    "src/reserve_odometry/config/adaptive_v5.yaml": "dae5f5c80cd87e968b1e838c5b0d25cc531f816949b1fd2a59dd65e8e93efaec",
+    "src/reserve_odometry/config/default.yaml": "dae5f5c80cd87e968b1e838c5b0d25cc531f816949b1fd2a59dd65e8e93efaec",
+    "src/reserve_odometry/config/candidates_v3/balanced_physics.json": "68b81682f9ac48d11bf7d8e67418a45de546ab35526954c5f6fc3eda2d7ec425",
+    "src/reserve_odometry/reserve_odometry/node.py": "a63b6cf915d0621eda4a99f4a9a91c8b21a3d2209420e2fc9f4f21084a6dbdd4",
+    "src/reserve_odometry/reserve_odometry/timeline.py": "ed63b44dede078cb3cde501bd1e5559260763c56ac9b832f39924c1d97b0bdbf",
+    "src/reserve_odometry/reserve_odometry/route.py": "631c9be75cc8bcf9770deb3e79aa3fad7c40d01bfaf446015a3566325df47739",
+    "src/reserve_odometry/reserve_odometry/core.py": "f627cb5d0c589a19127bdce02a40ad87f9e6354d8b9e18dfb647e5fcd103e48a",
+    "research/H07/PROTOCOL.md": "16b91a9717cb850627ce98d2d0b73fd65e842e4e2e9a660e7ad280c546ee5e67",
+    "tools/research_h07/run.py": "cc1a2f4668d28578daece27930c55eb97797886ee1483ad286095a1defa6e745",
+    "research/H07/test_actuator.py": "001d833f7ffe8c572a28f2b0cf54de4bafb98b27c227202dd2150501ec1f2565",
+    ".github/workflows/research-h07.yml": "1aad1ba4d4062d37635d5c3e951766b541d6d1798b93865d128cfa7a8e98f3eb"
+  },
+  "created_utc": "2026-09-25T18:43:17.943931+00:00",
+  "python": "3.13.5",
+  "numpy": "2.3.5",
+  "run_id": "36175112902",
+  "run_attempt": "1",
+  "test_evaluated": false,
+  "variants": {
+    "baseline": {
+      "config": {
+        "mass_kg": 40000.0,
+        "wheel_radius_m": 0.33,
+        "gear_ratio": 6.0,
+        "efficiency": 0.9,
+        "total_motor_torque_nm": 2905.0616664738573,
+        "max_power_w": 280873.5334860941,
+        "max_brake_force_n": 45568.80940352644,
+        "rolling_force_n": 2089.7308146696687,
+        "quadratic_drag_n_s2_m2": 5.021948020794408e-17,
+        "actuator_tau_s": 0.3927619145850434,
+        "traction_tau_s": 0.0,
+        "braking_tau_s": 0.0,
+        "command_deadband": 0.04,
+        "command_exponent": 0.5207432400037213,
+        "travel_direction": 1.0,
+        "max_speed_mps": 40.0,
+        "max_accel_mps2": 3.0,
+        "wheel_sigma_mps": 0.1,
+        "process_noise_v": 0.1,
+        "max_age_s": 0.25,
+        "command_timeout_s": 0.5,
+        "pair_skew_s": 0.1,
+        "disagreement_mps": 0.7,
+        "wheel_rate_limit_mps2": 4.0,
+        "rate_noise_margin_mps": 0.25,
+        "innovation_floor_mps": 0.8,
+        "innovation_cap_mps": 3.0,
+        "stop_speed_mps": 0.07,
+        "stop_model_speed_mps": 0.25,
+        "stop_dwell_s": 0.5,
+        "adaptation_tau_s": 0.5,
+        "disturbance_limit_mps2": 0.6,
+        "max_step_s": 0.2,
+        "reacquire_dwell_s": 0.8,
+        "reacquire_max_residual_mps": 8.0,
+        "reacquire_step_mps": 0.15,
+        "reacquire_min_speed_mps": 0.4,
+        "reacquire_accel_margin_mps2": 0.8
+      },
+      "soft_l1_cost": 731.49147648657,
+      "weighted_acceleration_rmse": 0.30197874556309345,
+      "per_bag": [
+        {
+          "bag": "30618_0259fe53",
+          "group": "95a748306e6cbf16",
+          "n": 1500,
+          "acceleration_rmse": 0.2323035328755717,
+          "soft_l1_cost": 8.068518681513295
+        },
+        {
+          "bag": "30618_095a115b",
+          "group": "e894436afa9dd9f1",
+          "n": 1500,
+          "acceleration_rmse": 0.13687888420314048,
+          "soft_l1_cost": 9.10863714584577
+        },
+        {
+          "bag": "30618_0a83c933",
+          "group": "86c32e441a296aaa",
+          "n": 1500,
+          "acceleration_rmse": 0.2289357707986442,
+          "soft_l1_cost": 8.000340719107541
+        },
+        {
+          "bag": "30618_0d865417",
+          "group": "96d0ec5b7ee50e7e",
+          "n": 11,
+          "acceleration_rmse": 0.5111740143588389,
+          "soft_l1_cost": 5.991624498017243
+        },
+        {
+          "bag": "30618_1cc230fa",
+          "group": "0f36b619fba02a9b",
+          "n": 1500,
+          "acceleration_rmse": 0.20505195476712373,
+          "soft_l1_cost": 6.876568044827627
+        },
+        {
+          "bag": "30618_20096314",
+          "group": "c8a1e61d1b0710e9",
+          "n": 1500,
+          "acceleration_rmse": 0.23707466370238242,
+          "soft_l1_cost": 7.903876313338404
+        },
+        {
+          "bag": "30618_2050d396",
+          "group": "4a5f0d46327316bb",
+          "n": 1500,
+          "acceleration_rmse": 0.26676077655928865,
+          "soft_l1_cost": 15.200476326923678
+        },
+        {
+          "bag": "30618_2161b58b",
+          "group": "8ff91290187a9769",
+          "n": 1500,
+          "acceleration_rmse": 0.14941639880192165,
+          "soft_l1_cost": 6.251056546301477
+        },
+        {
+          "bag": "30618_21dd3af3",
+          "group": "bc403256f12f9710",
+          "n": 1500,
+          "acceleration_rmse": 0.37404309358240195,
+          "soft_l1_cost": 14.500873071848737
+        },
+        {
+          "bag": "30618_22c1c589",
+          "group": "dc785decbed3d7ce",
+          "n": 1500,
+          "acceleration_rmse": 0.14094727832979745,
+          "soft_l1_cost": 8.644611291409763
+        },
+        {
+          "bag": "30618_2366c74a",
+          "group": "58dd5f96d4201195",
+          "n": 1500,
+          "acceleration_rmse": 0.19680731461071027,
+          "soft_l1_cost": 7.417906871427606
+        },
+        {
+          "bag": "30618_2d2fa7be",
+          "group": "bf69dbfe85be52b0",
+          "n": 1500,
+          "acceleration_rmse": 0.19086268179721436,
+          "soft_l1_cost": 6.121643435792487
+        },
+        {
+          "bag": "30618_2f2f1175",
+          "group": "bf69dbfe85be52b0",
+          "n": 1500,
+          "acceleration_rmse": 0.23467370399114323,
+          "soft_l1_cost": 7.99343335334459
+        },
+        {
+          "bag": "30618_3e9f4952",
+          "group": "b8fda5f0647666fb",
+          "n": 1500,
+          "acceleration_rmse": 0.14717643873586028,
+          "soft_l1_cost": 9.564793452410331
+        },
+        {
+          "bag": "30618_40ffd323",
+          "group": "58dd5f96d4201195",
+          "n": 1500,
+          "acceleration_rmse": 0.19648028044636426,
+          "soft_l1_cost": 7.201172222601057
+        },
+        {
+          "bag": "30618_4d487b0d",
+          "group": "bc403256f12f9710",
+          "n": 1500,
+          "acceleration_rmse": 0.4654742701301074,
+          "soft_l1_cost": 17.247299310661752
+        },
+        {
+          "bag": "30618_616ec56b",
+          "group": "6090ff2c1bc8dee6",
+          "n": 1500,
+          "acceleration_rmse": 0.24670190664636538,
+          "soft_l1_cost": 13.752327526736357
+        },
+        {
+          "bag": "30618_67b89902",
+          "group": "b8fda5f0647666fb",
+          "n": 1500,
+          "acceleration_rmse": 0.13415605480579293,
+          "soft_l1_cost": 8.52958566802143
+        },
+        {
+          "bag": "30618_748832b9",
+          "group": "0f36b619fba02a9b",
+          "n": 1500,
+          "acceleration_rmse": 0.21017757330279757,
+          "soft_l1_cost": 6.400736804168773
+        },
+        {
+          "bag": "30618_7849303f",
+          "group": "0f36b619fba02a9b",
+          "n": 1500,
+          "acceleration_rmse": 0.2137164692456396,
+          "soft_l1_cost": 6.371498276322091
+        },
+        {
+          "bag": "30618_79b204dc",
+          "group": "8ff91290187a9769",
+          "n": 1500,
+          "acceleration_rmse": 0.15299085256001546,
+          "soft_l1_cost": 6.4171686069072535
+        },
+        {
+          "bag": "30618_7a152380",
+          "group": "c8a1e61d1b0710e9",
+          "n": 1500,
+          "acceleration_rmse": 0.24275185193065035,
+          "soft_l1_cost": 8.22196952356693
+        },
+        {
+          "bag": "30618_7b4d83f4",
+          "group": "2b1581126a480c0f",
+          "n": 1500,
+          "acceleration_rmse": 0.1364196596137604,
+          "soft_l1_cost": 8.420470694670051
+        },
+        {
+          "bag": "30618_8158f0b0",
+          "group": "6090ff2c1bc8dee6",
+          "n": 1500,
+          "acceleration_rmse": 0.15867600828985337,
+          "soft_l1_cost": 10.911817627401804
+        },
+        {
+          "bag": "30618_81c22fee",
+          "group": "86c32e441a296aaa",
+          "n": 1500,
+          "acceleration_rmse": 0.14949629186942123,
+          "soft_l1_cost": 5.642446079067755
+        },
+        {
+          "bag": "30618_87afe526",
+          "group": "2b1581126a480c0f",
+          "n": 1500,
+          "acceleration_rmse": 0.28494739066579344,
+          "soft_l1_cost": 14.178771569351875
+        },
+        {
+          "bag": "30618_887a2b9a",
+          "group": "8ff91290187a9769",
+          "n": 1500,
+          "acceleration_rmse": 0.15464045546106608,
+          "soft_l1_cost": 6.493201546206022
+        },
+        {
+          "bag": "30618_8eb8615c",
+          "group": "bf69dbfe85be52b0",
+          "n": 1500,
+          "acceleration_rmse": 0.1954974636816062,
+          "soft_l1_cost": 6.163862046075316
+        },
+        {
+          "bag": "30618_8f08df08",
+          "group": "c8a1e61d1b0710e9",
+          "n": 1500,
+          "acceleration_rmse": 0.26781363028206684,
+          "soft_l1_cost": 9.216575152542474
+        },
+        {
+          "bag": "30618_92b1b453",
+          "group": "86c32e441a296aaa",
+          "n": 1500,
+          "acceleration_rmse": 0.14997950338574528,
+          "soft_l1_cost": 5.617108299711673
+        },
+        {
+          "bag": "30618_93dc866e",
+          "group": "58dd5f96d4201195",
+          "n": 1500,
+          "acceleration_rmse": 0.1945424216084843,
+          "soft_l1_cost": 7.517085238195746
+        },
+        {
+          "bag": "30618_9bbe6faa",
+          "group": "95a748306e6cbf16",
+          "n": 1500,
+          "acceleration_rmse": 0.1777555750301443,
+          "soft_l1_cost": 6.337143270466193
+        },
+        {
+          "bag": "30618_9c09b081",
+          "group": "dc785decbed3d7ce",
+          "n": 1500,
+          "acceleration_rmse": 0.14223059850297862,
+          "soft_l1_cost": 9.287246851752194
+        },
+        {
+          "bag": "30618_9c10cd0d",
+          "group": "95a748306e6cbf16",
+          "n": 1500,
+          "acceleration_rmse": 0.2005676630144198,
+          "soft_l1_cost": 7.480051524368947
+        },
+        {
+          "bag": "30618_a395846d",
+          "group": "0f36b619fba02a9b",
+          "n": 1500,
+          "acceleration_rmse": 0.22235229812037635,
+          "soft_l1_cost": 7.398175788850937
+        },
+        {
+          "bag": "30618_a53d5f6f",
+          "group": "4a5f0d46327316bb",
+          "n": 1500,
+          "acceleration_rmse": 0.1493147809639356,
+          "soft_l1_cost": 10.075536406783774
+        },
+        {
+          "bag": "30618_ab5921a4",
+          "group": "1cff0aebccb39ff5",
+          "n": 1500,
+          "acceleration_rmse": 0.1387315496600313,
+          "soft_l1_cost": 9.136959888396103
+        },
+        {
+          "bag": "30618_b3042f78",
+          "group": "bc403256f12f9710",
+          "n": 1500,
+          "acceleration_rmse": 0.4122617748214564,
+          "soft_l1_cost": 14.297009760860123
+        },
+        {
+          "bag": "30618_b83d854d",
+          "group": "eeabf7d118bbcdac",
+          "n": 1500,
+          "acceleration_rmse": 0.16735318845786734,
+          "soft_l1_cost": 12.082660469040452
+        },
+        {
+          "bag": "30618_b95ca60a",
+          "group": "e894436afa9dd9f1",
+          "n": 1500,
+          "acceleration_rmse": 0.14319667420899818,
+          "soft_l1_cost": 8.816178399457943
+        },
+        {
+          "bag": "30618_bab2fe58",
+          "group": "5c1be3e9a2189121",
+          "n": 442,
+          "acceleration_rmse": 1.1275721819932596,
+          "soft_l1_cost": 114.5359147027309
+        },
+        {
+          "bag": "30618_cfd9fd5a",
+          "group": "95a748306e6cbf16",
+          "n": 1500,
+          "acceleration_rmse": 0.23204047510964615,
+          "soft_l1_cost": 8.0877133852763
+        },
+        {
+          "bag": "30618_d4ba7005",
+          "group": "0448e10aab8a0e05",
+          "n": 1500,
+          "acceleration_rmse": 0.22287829987927454,
+          "soft_l1_cost": 12.546468645422058
+        },
+        {
+          "bag": "30618_dd8e6395",
+          "group": "0448e10aab8a0e05",
+          "n": 1500,
+          "acceleration_rmse": 0.15154768829384113,
+          "soft_l1_cost": 10.434641122557782
+        },
+        {
+          "bag": "30618_ddad08d6",
+          "group": "bf69dbfe85be52b0",
+          "n": 1500,
+          "acceleration_rmse": 0.22754152168749628,
+          "soft_l1_cost": 8.17231396517105
+        },
+        {
+          "bag": "30618_e2dcf65f",
+          "group": "de891506667c23f9",
+          "n": 1500,
+          "acceleration_rmse": 0.18447005927264523,
+          "soft_l1_cost": 18.812330804055016
+        },
+        {
+          "bag": "30618_e392e5bd",
+          "group": "86c32e441a296aaa",
+          "n": 1500,
+          "acceleration_rmse": 0.21809270686349988,
+          "soft_l1_cost": 7.523544216121691
+        },
+        {
+          "bag": "30618_e3d94878",
+          "group": "eeabf7d118bbcdac",
+          "n": 1500,
+          "acceleration_rmse": 0.38441963551622627,
+          "soft_l1_cost": 27.54401937720351
+        },
+        {
+          "bag": "30618_e7dcdab1",
+          "group": "c8a1e61d1b0710e9",
+          "n": 1500,
+          "acceleration_rmse": 0.2612102240937867,
+          "soft_l1_cost": 9.297940744044409
+        },
+        {
+          "bag": "30618_efb92709",
+          "group": "58dd5f96d4201195",
+          "n": 1500,
+          "acceleration_rmse": 0.20070953305062222,
+          "soft_l1_cost": 7.452521110146691
+        },
+        {
+          "bag": "30618_f19a4ac3",
+          "group": "1cff0aebccb39ff5",
+          "n": 1500,
+          "acceleration_rmse": 0.15144605219070048,
+          "soft_l1_cost": 10.452585975035024
+        },
+        {
+          "bag": "30618_f28179bb",
+          "group": "8ff91290187a9769",
+          "n": 1500,
+          "acceleration_rmse": 0.15319096212825362,
+          "soft_l1_cost": 6.419822332108119
+        },
+        {
+          "bag": "30618_f3b8c99b",
+          "group": "bc403256f12f9710",
+          "n": 1500,
+          "acceleration_rmse": 0.35830671580723933,
+          "soft_l1_cost": 13.834949199864036
+        },
+        {
+          "bag": "30639_0be558e2",
+          "group": "0d4506540f0e7621",
+          "n": 1500,
+          "acceleration_rmse": 0.24433223259069742,
+          "soft_l1_cost": 21.193716700489503
+        },
+        {
+          "bag": "30639_2b4a6347",
+          "group": "bc1e4cbe924a90ce",
+          "n": 1500,
+          "acceleration_rmse": 0.22588543771976852,
+          "soft_l1_cost": 11.808662587068842
+        },
+        {
+          "bag": "30639_4285f2bc",
+          "group": "bc1e4cbe924a90ce",
+          "n": 1500,
+          "acceleration_rmse": 0.3797548811897281,
+          "soft_l1_cost": 20.721917633274174
+        },
+        {
+          "bag": "30639_44226bde",
+          "group": "f28fe86416cc8dc2",
+          "n": 1500,
+          "acceleration_rmse": 0.14733150778321713,
+          "soft_l1_cost": 10.210949887344615
+        },
+        {
+          "bag": "30639_92226df0",
+          "group": "4ca08ed0da0cb611",
+          "n": 1500,
+          "acceleration_rmse": 0.2185005324584616,
+          "soft_l1_cost": 27.043517642032445
+        },
+        {
+          "bag": "30639_927002c2",
+          "group": "8232b134be2a5002",
+          "n": 1500,
+          "acceleration_rmse": 0.16722451276308029,
+          "soft_l1_cost": 19.508352068184735
+        },
+        {
+          "bag": "30639_d3c43d69",
+          "group": "f28fe86416cc8dc2",
+          "n": 1500,
+          "acceleration_rmse": 0.15834212367491524,
+          "soft_l1_cost": 11.03117608414555
+        }
+      ]
+    },
+    "T05_B10": {
+      "config": {
+        "mass_kg": 40000.0,
+        "wheel_radius_m": 0.33,
+        "gear_ratio": 6.0,
+        "efficiency": 0.9,
+        "total_motor_torque_nm": 2905.0616664738573,
+        "max_power_w": 280873.5334860941,
+        "max_brake_force_n": 45568.80940352644,
+        "rolling_force_n": 2089.7308146696687,
+        "quadratic_drag_n_s2_m2": 5.021948020794408e-17,
+        "actuator_tau_s": 0.3927619145850434,
+        "traction_tau_s": 0.1963809572925217,
+        "braking_tau_s": 0.3927619145850434,
+        "command_deadband": 0.04,
+        "command_exponent": 0.5207432400037213,
+        "travel_direction": 1.0,
+        "max_speed_mps": 40.0,
+        "max_accel_mps2": 3.0,
+        "wheel_sigma_mps": 0.1,
+        "process_noise_v": 0.1,
+        "max_age_s": 0.25,
+        "command_timeout_s": 0.5,
+        "pair_skew_s": 0.1,
+        "disagreement_mps": 0.7,
+        "wheel_rate_limit_mps2": 4.0,
+        "rate_noise_margin_mps": 0.25,
+        "innovation_floor_mps": 0.8,
+        "innovation_cap_mps": 3.0,
+        "stop_speed_mps": 0.07,
+        "stop_model_speed_mps": 0.25,
+        "stop_dwell_s": 0.5,
+        "adaptation_tau_s": 0.5,
+        "disturbance_limit_mps2": 0.6,
+        "max_step_s": 0.2,
+        "reacquire_dwell_s": 0.8,
+        "reacquire_max_residual_mps": 8.0,
+        "reacquire_step_mps": 0.15,
+        "reacquire_min_speed_mps": 0.4,
+        "reacquire_accel_margin_mps2": 0.8
+      },
+      "soft_l1_cost": 748.5363888739427,
+      "weighted_acceleration_rmse": 0.3029494068921326,
+      "per_bag": [
+        {
+          "bag": "30618_0259fe53",
+          "group": "95a748306e6cbf16",
+          "n": 1500,
+          "acceleration_rmse": 0.23395717536621183,
+          "soft_l1_cost": 8.193865505591178
+        },
+        {
+          "bag": "30618_095a115b",
+          "group": "e894436afa9dd9f1",
+          "n": 1500,
+          "acceleration_rmse": 0.13960223780467815,
+          "soft_l1_cost": 9.329676950398353
+        },
+        {
+          "bag": "30618_0a83c933",
+          "group": "86c32e441a296aaa",
+          "n": 1500,
+          "acceleration_rmse": 0.23107350127013646,
+          "soft_l1_cost": 8.159651865423555
+        },
+        {
+          "bag": "30618_0d865417",
+          "group": "96d0ec5b7ee50e7e",
+          "n": 11,
+          "acceleration_rmse": 0.501379879805825,
+          "soft_l1_cost": 6.253618626212816
+        },
+        {
+          "bag": "30618_1cc230fa",
+          "group": "0f36b619fba02a9b",
+          "n": 1500,
+          "acceleration_rmse": 0.20676328384812787,
+          "soft_l1_cost": 6.930118914670224
+        },
+        {
+          "bag": "30618_20096314",
+          "group": "c8a1e61d1b0710e9",
+          "n": 1500,
+          "acceleration_rmse": 0.23876679363168973,
+          "soft_l1_cost": 8.041723873312753
+        },
+        {
+          "bag": "30618_2050d396",
+          "group": "4a5f0d46327316bb",
+          "n": 1500,
+          "acceleration_rmse": 0.27048368417085633,
+          "soft_l1_cost": 15.746942231633355
+        },
+        {
+          "bag": "30618_2161b58b",
+          "group": "8ff91290187a9769",
+          "n": 1500,
+          "acceleration_rmse": 0.1506242613067836,
+          "soft_l1_cost": 6.307672566422252
+        },
+        {
+          "bag": "30618_21dd3af3",
+          "group": "bc403256f12f9710",
+          "n": 1500,
+          "acceleration_rmse": 0.3755195163361672,
+          "soft_l1_cost": 14.704549470422856
+        },
+        {
+          "bag": "30618_22c1c589",
+          "group": "dc785decbed3d7ce",
+          "n": 1500,
+          "acceleration_rmse": 0.14892748591635838,
+          "soft_l1_cost": 9.196374183272505
+        },
+        {
+          "bag": "30618_2366c74a",
+          "group": "58dd5f96d4201195",
+          "n": 1500,
+          "acceleration_rmse": 0.20022201509133955,
+          "soft_l1_cost": 7.685311175211682
+        },
+        {
+          "bag": "30618_2d2fa7be",
+          "group": "bf69dbfe85be52b0",
+          "n": 1500,
+          "acceleration_rmse": 0.19361075461617383,
+          "soft_l1_cost": 6.328046892023085
+        },
+        {
+          "bag": "30618_2f2f1175",
+          "group": "bf69dbfe85be52b0",
+          "n": 1500,
+          "acceleration_rmse": 0.23656364699227747,
+          "soft_l1_cost": 8.111691421714989
+        },
+        {
+          "bag": "30618_3e9f4952",
+          "group": "b8fda5f0647666fb",
+          "n": 1500,
+          "acceleration_rmse": 0.1511220052738181,
+          "soft_l1_cost": 9.856353368940479
+        },
+        {
+          "bag": "30618_40ffd323",
+          "group": "58dd5f96d4201195",
+          "n": 1500,
+          "acceleration_rmse": 0.1982995209110892,
+          "soft_l1_cost": 7.303452843893274
+        },
+        {
+          "bag": "30618_4d487b0d",
+          "group": "bc403256f12f9710",
+          "n": 1500,
+          "acceleration_rmse": 0.46596905225632856,
+          "soft_l1_cost": 17.2889586550068
+        },
+        {
+          "bag": "30618_616ec56b",
+          "group": "6090ff2c1bc8dee6",
+          "n": 1500,
+          "acceleration_rmse": 0.24937391229923908,
+          "soft_l1_cost": 14.192644749129027
+        },
+        {
+          "bag": "30618_67b89902",
+          "group": "b8fda5f0647666fb",
+          "n": 1500,
+          "acceleration_rmse": 0.1412309380839504,
+          "soft_l1_cost": 9.195104965489392
+        },
+        {
+          "bag": "30618_748832b9",
+          "group": "0f36b619fba02a9b",
+          "n": 1500,
+          "acceleration_rmse": 0.21277990553501644,
+          "soft_l1_cost": 6.568490307800062
+        },
+        {
+          "bag": "30618_7849303f",
+          "group": "0f36b619fba02a9b",
+          "n": 1500,
+          "acceleration_rmse": 0.2164709827379511,
+          "soft_l1_cost": 6.549954934585153
+        },
+        {
+          "bag": "30618_79b204dc",
+          "group": "8ff91290187a9769",
+          "n": 1500,
+          "acceleration_rmse": 0.15771222114474662,
+          "soft_l1_cost": 6.6837397720864775
+        },
+        {
+          "bag": "30618_7a152380",
+          "group": "c8a1e61d1b0710e9",
+          "n": 1500,
+          "acceleration_rmse": 0.24377318999026457,
+          "soft_l1_cost": 8.295452767173659
+        },
+        {
+          "bag": "30618_7b4d83f4",
+          "group": "2b1581126a480c0f",
+          "n": 1500,
+          "acceleration_rmse": 0.14302639684620425,
+          "soft_l1_cost": 8.966500644587127
+        },
+        {
+          "bag": "30618_8158f0b0",
+          "group": "6090ff2c1bc8dee6",
+          "n": 1500,
+          "acceleration_rmse": 0.16251260809766352,
+          "soft_l1_cost": 11.088398150110514
+        },
+        {
+          "bag": "30618_81c22fee",
+          "group": "86c32e441a296aaa",
+          "n": 1500,
+          "acceleration_rmse": 0.15276688656375983,
+          "soft_l1_cost": 5.800432563373695
+        },
+        {
+          "bag": "30618_87afe526",
+          "group": "2b1581126a480c0f",
+          "n": 1500,
+          "acceleration_rmse": 0.2878040843694284,
+          "soft_l1_cost": 14.679766610197607
+        },
+        {
+          "bag": "30618_887a2b9a",
+          "group": "8ff91290187a9769",
+          "n": 1500,
+          "acceleration_rmse": 0.15958127582888781,
+          "soft_l1_cost": 6.754193594584559
+        },
+        {
+          "bag": "30618_8eb8615c",
+          "group": "bf69dbfe85be52b0",
+          "n": 1500,
+          "acceleration_rmse": 0.19815453148771944,
+          "soft_l1_cost": 6.331055470000885
+        },
+        {
+          "bag": "30618_8f08df08",
+          "group": "c8a1e61d1b0710e9",
+          "n": 1500,
+          "acceleration_rmse": 0.26901547728760794,
+          "soft_l1_cost": 9.297035879333926
+        },
+        {
+          "bag": "30618_92b1b453",
+          "group": "86c32e441a296aaa",
+          "n": 1500,
+          "acceleration_rmse": 0.15361042626691354,
+          "soft_l1_cost": 5.77474359199857
+        },
+        {
+          "bag": "30618_93dc866e",
+          "group": "58dd5f96d4201195",
+          "n": 1500,
+          "acceleration_rmse": 0.19678788927832547,
+          "soft_l1_cost": 7.68686017341162
+        },
+        {
+          "bag": "30618_9bbe6faa",
+          "group": "95a748306e6cbf16",
+          "n": 1500,
+          "acceleration_rmse": 0.1806218882676304,
+          "soft_l1_cost": 6.497378891546782
+        },
+        {
+          "bag": "30618_9c09b081",
+          "group": "dc785decbed3d7ce",
+          "n": 1500,
+          "acceleration_rmse": 0.14553084652614198,
+          "soft_l1_cost": 9.545091252902687
+        },
+        {
+          "bag": "30618_9c10cd0d",
+          "group": "95a748306e6cbf16",
+          "n": 1500,
+          "acceleration_rmse": 0.20258879755797693,
+          "soft_l1_cost": 7.609439154041917
+        },
+        {
+          "bag": "30618_a395846d",
+          "group": "0f36b619fba02a9b",
+          "n": 1500,
+          "acceleration_rmse": 0.22415765544716315,
+          "soft_l1_cost": 7.497495941192179
+        },
+        {
+          "bag": "30618_a53d5f6f",
+          "group": "4a5f0d46327316bb",
+          "n": 1500,
+          "acceleration_rmse": 0.15345522297659395,
+          "soft_l1_cost": 10.46364008185997
+        },
+        {
+          "bag": "30618_ab5921a4",
+          "group": "1cff0aebccb39ff5",
+          "n": 1500,
+          "acceleration_rmse": 0.1440924957511943,
+          "soft_l1_cost": 9.576054359188777
+        },
+        {
+          "bag": "30618_b3042f78",
+          "group": "bc403256f12f9710",
+          "n": 1500,
+          "acceleration_rmse": 0.4132245655358024,
+          "soft_l1_cost": 14.392899197203976
+        },
+        {
+          "bag": "30618_b83d854d",
+          "group": "eeabf7d118bbcdac",
+          "n": 1500,
+          "acceleration_rmse": 0.172302301786616,
+          "soft_l1_cost": 12.52073459527444
+        },
+        {
+          "bag": "30618_b95ca60a",
+          "group": "e894436afa9dd9f1",
+          "n": 1500,
+          "acceleration_rmse": 0.1488229593844903,
+          "soft_l1_cost": 9.303494250586525
+        },
+        {
+          "bag": "30618_bab2fe58",
+          "group": "5c1be3e9a2189121",
+          "n": 442,
+          "acceleration_rmse": 1.1275721819932596,
+          "soft_l1_cost": 114.5359147027309
+        },
+        {
+          "bag": "30618_cfd9fd5a",
+          "group": "95a748306e6cbf16",
+          "n": 1500,
+          "acceleration_rmse": 0.23537480761924137,
+          "soft_l1_cost": 8.32525514487588
+        },
+        {
+          "bag": "30618_d4ba7005",
+          "group": "0448e10aab8a0e05",
+          "n": 1500,
+          "acceleration_rmse": 0.22707252705178746,
+          "soft_l1_cost": 13.059021679633856
+        },
+        {
+          "bag": "30618_dd8e6395",
+          "group": "0448e10aab8a0e05",
+          "n": 1500,
+          "acceleration_rmse": 0.1549791449819335,
+          "soft_l1_cost": 10.728979448511943
+        },
+        {
+          "bag": "30618_ddad08d6",
+          "group": "bf69dbfe85be52b0",
+          "n": 1500,
+          "acceleration_rmse": 0.2292283073584312,
+          "soft_l1_cost": 8.289606371579719
+        },
+        {
+          "bag": "30618_e2dcf65f",
+          "group": "de891506667c23f9",
+          "n": 1500,
+          "acceleration_rmse": 0.19119626420880265,
+          "soft_l1_cost": 19.87360646588448
+        },
+        {
+          "bag": "30618_e392e5bd",
+          "group": "86c32e441a296aaa",
+          "n": 1500,
+          "acceleration_rmse": 0.21975505984928595,
+          "soft_l1_cost": 7.6301237309624295
+        },
+        {
+          "bag": "30618_e3d94878",
+          "group": "eeabf7d118bbcdac",
+          "n": 1500,
+          "acceleration_rmse": 0.38588972388193865,
+          "soft_l1_cost": 27.878317415197085
+        },
+        {
+          "bag": "30618_e7dcdab1",
+          "group": "c8a1e61d1b0710e9",
+          "n": 1500,
+          "acceleration_rmse": 0.2636739871708511,
+          "soft_l1_cost": 9.521267183092613
+        },
+        {
+          "bag": "30618_efb92709",
+          "group": "58dd5f96d4201195",
+          "n": 1500,
+          "acceleration_rmse": 0.2017801568247502,
+          "soft_l1_cost": 7.473778180972291
+        },
+        {
+          "bag": "30618_f19a4ac3",
+          "group": "1cff0aebccb39ff5",
+          "n": 1500,
+          "acceleration_rmse": 0.1583209972693503,
+          "soft_l1_cost": 10.986456993772904
+        },
+        {
+          "bag": "30618_f28179bb",
+          "group": "8ff91290187a9769",
+          "n": 1500,
+          "acceleration_rmse": 0.15526063207295235,
+          "soft_l1_cost": 6.503410127115581
+        },
+        {
+          "bag": "30618_f3b8c99b",
+          "group": "bc403256f12f9710",
+          "n": 1500,
+          "acceleration_rmse": 0.360005778184353,
+          "soft_l1_cost": 14.045128047156604
+        },
+        {
+          "bag": "30639_0be558e2",
+          "group": "0d4506540f0e7621",
+          "n": 1500,
+          "acceleration_rmse": 0.24723622845220022,
+          "soft_l1_cost": 21.78774375117447
+        },
+        {
+          "bag": "30639_2b4a6347",
+          "group": "bc1e4cbe924a90ce",
+          "n": 1500,
+          "acceleration_rmse": 0.23097619207219797,
+          "soft_l1_cost": 12.448193136546418
+        },
+        {
+          "bag": "30639_4285f2bc",
+          "group": "bc1e4cbe924a90ce",
+          "n": 1500,
+          "acceleration_rmse": 0.3812094912926628,
+          "soft_l1_cost": 21.07701701090901
+        },
+        {
+          "bag": "30639_44226bde",
+          "group": "f28fe86416cc8dc2",
+          "n": 1500,
+          "acceleration_rmse": 0.15367439849456252,
+          "soft_l1_cost": 10.774823875054647
+        },
+        {
+          "bag": "30639_92226df0",
+          "group": "4ca08ed0da0cb611",
+          "n": 1500,
+          "acceleration_rmse": 0.22143726647218773,
+          "soft_l1_cost": 27.611391660604657
+        },
+        {
+          "bag": "30639_927002c2",
+          "group": "8232b134be2a5002",
+          "n": 1500,
+          "acceleration_rmse": 0.16984099259513813,
+          "soft_l1_cost": 19.931429974830372
+        },
+        {
+          "bag": "30639_d3c43d69",
+          "group": "f28fe86416cc8dc2",
+          "n": 1500,
+          "acceleration_rmse": 0.16181578961319,
+          "soft_l1_cost": 11.34631353152713
+        }
+      ]
+    },
+    "T10_B05": {
+      "config": {
+        "mass_kg": 40000.0,
+        "wheel_radius_m": 0.33,
+        "gear_ratio": 6.0,
+        "efficiency": 0.9,
+        "total_motor_torque_nm": 2905.0616664738573,
+        "max_power_w": 280873.5334860941,
+        "max_brake_force_n": 45568.80940352644,
+        "rolling_force_n": 2089.7308146696687,
+        "quadratic_drag_n_s2_m2": 5.021948020794408e-17,
+        "actuator_tau_s": 0.3927619145850434,
+        "traction_tau_s": 0.3927619145850434,
+        "braking_tau_s": 0.1963809572925217,
+        "command_deadband": 0.04,
+        "command_exponent": 0.5207432400037213,
+        "travel_direction": 1.0,
+        "max_speed_mps": 40.0,
+        "max_accel_mps2": 3.0,
+        "wheel_sigma_mps": 0.1,
+        "process_noise_v": 0.1,
+        "max_age_s": 0.25,
+        "command_timeout_s": 0.5,
+        "pair_skew_s": 0.1,
+        "disagreement_mps": 0.7,
+        "wheel_rate_limit_mps2": 4.0,
+        "rate_noise_margin_mps": 0.25,
+        "innovation_floor_mps": 0.8,
+        "innovation_cap_mps": 3.0,
+        "stop_speed_mps": 0.07,
+        "stop_model_speed_mps": 0.25,
+        "stop_dwell_s": 0.5,
+        "adaptation_tau_s": 0.5,
+        "disturbance_limit_mps2": 0.6,
+        "max_step_s": 0.2,
+        "reacquire_dwell_s": 0.8,
+        "reacquire_max_residual_mps": 8.0,
+        "reacquire_step_mps": 0.15,
+        "reacquire_min_speed_mps": 0.4,
+        "reacquire_accel_margin_mps2": 0.8
+      },
+      "soft_l1_cost": 741.5550423808048,
+      "weighted_acceleration_rmse": 0.3030513957032847,
+      "per_bag": [
+        {
+          "bag": "30618_0259fe53",
+          "group": "95a748306e6cbf16",
+          "n": 1500,
+          "acceleration_rmse": 0.233490507107419,
+          "soft_l1_cost": 8.097601425350916
+        },
+        {
+          "bag": "30618_095a115b",
+          "group": "e894436afa9dd9f1",
+          "n": 1500,
+          "acceleration_rmse": 0.14029613908773725,
+          "soft_l1_cost": 9.423056126065543
+        },
+        {
+          "bag": "30618_0a83c933",
+          "group": "86c32e441a296aaa",
+          "n": 1500,
+          "acceleration_rmse": 0.22941624466605784,
+          "soft_l1_cost": 8.061152729334282
+        },
+        {
+          "bag": "30618_0d865417",
+          "group": "96d0ec5b7ee50e7e",
+          "n": 11,
+          "acceleration_rmse": 0.5111740143588389,
+          "soft_l1_cost": 5.991624498017243
+        },
+        {
+          "bag": "30618_1cc230fa",
+          "group": "0f36b619fba02a9b",
+          "n": 1500,
+          "acceleration_rmse": 0.20646253263093306,
+          "soft_l1_cost": 6.863627213589024
+        },
+        {
+          "bag": "30618_20096314",
+          "group": "c8a1e61d1b0710e9",
+          "n": 1500,
+          "acceleration_rmse": 0.2380815689450013,
+          "soft_l1_cost": 7.9937391628730925
+        },
+        {
+          "bag": "30618_2050d396",
+          "group": "4a5f0d46327316bb",
+          "n": 1500,
+          "acceleration_rmse": 0.2684996933349735,
+          "soft_l1_cost": 15.553380027834647
+        },
+        {
+          "bag": "30618_2161b58b",
+          "group": "8ff91290187a9769",
+          "n": 1500,
+          "acceleration_rmse": 0.15049335025222765,
+          "soft_l1_cost": 6.314337173637741
+        },
+        {
+          "bag": "30618_21dd3af3",
+          "group": "bc403256f12f9710",
+          "n": 1500,
+          "acceleration_rmse": 0.37655311905991995,
+          "soft_l1_cost": 14.725988344656507
+        },
+        {
+          "bag": "30618_22c1c589",
+          "group": "dc785decbed3d7ce",
+          "n": 1500,
+          "acceleration_rmse": 0.14397017709604454,
+          "soft_l1_cost": 8.96248821708753
+        },
+        {
+          "bag": "30618_2366c74a",
+          "group": "58dd5f96d4201195",
+          "n": 1500,
+          "acceleration_rmse": 0.1999981948655173,
+          "soft_l1_cost": 7.576252695184724
+        },
+        {
+          "bag": "30618_2d2fa7be",
+          "group": "bf69dbfe85be52b0",
+          "n": 1500,
+          "acceleration_rmse": 0.1966294960180587,
+          "soft_l1_cost": 6.359143834916603
+        },
+        {
+          "bag": "30618_2f2f1175",
+          "group": "bf69dbfe85be52b0",
+          "n": 1500,
+          "acceleration_rmse": 0.2362162045554637,
+          "soft_l1_cost": 8.08821591722721
+        },
+        {
+          "bag": "30618_3e9f4952",
+          "group": "b8fda5f0647666fb",
+          "n": 1500,
+          "acceleration_rmse": 0.14838311996164377,
+          "soft_l1_cost": 9.73608526375843
+        },
+        {
+          "bag": "30618_40ffd323",
+          "group": "58dd5f96d4201195",
+          "n": 1500,
+          "acceleration_rmse": 0.19849076999475723,
+          "soft_l1_cost": 7.258239750249902
+        },
+        {
+          "bag": "30618_4d487b0d",
+          "group": "bc403256f12f9710",
+          "n": 1500,
+          "acceleration_rmse": 0.46792522653286645,
+          "soft_l1_cost": 17.287990476909535
+        },
+        {
+          "bag": "30618_616ec56b",
+          "group": "6090ff2c1bc8dee6",
+          "n": 1500,
+          "acceleration_rmse": 0.24661429701837606,
+          "soft_l1_cost": 13.894286920300269
+        },
+        {
+          "bag": "30618_67b89902",
+          "group": "b8fda5f0647666fb",
+          "n": 1500,
+          "acceleration_rmse": 0.13952956767342747,
+          "soft_l1_cost": 8.984312029155891
+        },
+        {
+          "bag": "30618_748832b9",
+          "group": "0f36b619fba02a9b",
+          "n": 1500,
+          "acceleration_rmse": 0.21192842199293252,
+          "soft_l1_cost": 6.563414849532764
+        },
+        {
+          "bag": "30618_7849303f",
+          "group": "0f36b619fba02a9b",
+          "n": 1500,
+          "acceleration_rmse": 0.21442396378217146,
+          "soft_l1_cost": 6.487721246171958
+        },
+        {
+          "bag": "30618_79b204dc",
+          "group": "8ff91290187a9769",
+          "n": 1500,
+          "acceleration_rmse": 0.1564203877635587,
+          "soft_l1_cost": 6.614405610614117
+        },
+        {
+          "bag": "30618_7a152380",
+          "group": "c8a1e61d1b0710e9",
+          "n": 1500,
+          "acceleration_rmse": 0.2428045496129455,
+          "soft_l1_cost": 8.233628822187033
+        },
+        {
+          "bag": "30618_7b4d83f4",
+          "group": "2b1581126a480c0f",
+          "n": 1500,
+          "acceleration_rmse": 0.14041205247203545,
+          "soft_l1_cost": 8.801559304597262
+        },
+        {
+          "bag": "30618_8158f0b0",
+          "group": "6090ff2c1bc8dee6",
+          "n": 1500,
+          "acceleration_rmse": 0.16024087968399162,
+          "soft_l1_cost": 11.04863154537613
+        },
+        {
+          "bag": "30618_81c22fee",
+          "group": "86c32e441a296aaa",
+          "n": 1500,
+          "acceleration_rmse": 0.15210606239861038,
+          "soft_l1_cost": 5.75754178164109
+        },
+        {
+          "bag": "30618_87afe526",
+          "group": "2b1581126a480c0f",
+          "n": 1500,
+          "acceleration_rmse": 0.287500458807609,
+          "soft_l1_cost": 14.41622912786084
+        },
+        {
+          "bag": "30618_887a2b9a",
+          "group": "8ff91290187a9769",
+          "n": 1500,
+          "acceleration_rmse": 0.15645502756453558,
+          "soft_l1_cost": 6.585837247609375
+        },
+        {
+          "bag": "30618_8eb8615c",
+          "group": "bf69dbfe85be52b0",
+          "n": 1500,
+          "acceleration_rmse": 0.1981432564192675,
+          "soft_l1_cost": 6.316134971066616
+        },
+        {
+          "bag": "30618_8f08df08",
+          "group": "c8a1e61d1b0710e9",
+          "n": 1500,
+          "acceleration_rmse": 0.2691729538597844,
+          "soft_l1_cost": 9.178200755628758
+        },
+        {
+          "bag": "30618_92b1b453",
+          "group": "86c32e441a296aaa",
+          "n": 1500,
+          "acceleration_rmse": 0.15312868631666054,
+          "soft_l1_cost": 5.758869873393913
+        },
+        {
+          "bag": "30618_93dc866e",
+          "group": "58dd5f96d4201195",
+          "n": 1500,
+          "acceleration_rmse": 0.19750111330159206,
+          "soft_l1_cost": 7.664317092600694
+        },
+        {
+          "bag": "30618_9bbe6faa",
+          "group": "95a748306e6cbf16",
+          "n": 1500,
+          "acceleration_rmse": 0.1824051815069452,
+          "soft_l1_cost": 6.592894035210028
+        },
+        {
+          "bag": "30618_9c09b081",
+          "group": "dc785decbed3d7ce",
+          "n": 1500,
+          "acceleration_rmse": 0.14428587100428508,
+          "soft_l1_cost": 9.3885164124648
+        },
+        {
+          "bag": "30618_9c10cd0d",
+          "group": "95a748306e6cbf16",
+          "n": 1500,
+          "acceleration_rmse": 0.20407968631676174,
+          "soft_l1_cost": 7.736117532052692
+        },
+        {
+          "bag": "30618_a395846d",
+          "group": "0f36b619fba02a9b",
+          "n": 1500,
+          "acceleration_rmse": 0.2234632229788976,
+          "soft_l1_cost": 7.4513929125586005
+        },
+        {
+          "bag": "30618_a53d5f6f",
+          "group": "4a5f0d46327316bb",
+          "n": 1500,
+          "acceleration_rmse": 0.15259838651864324,
+          "soft_l1_cost": 10.387699364431608
+        },
+        {
+          "bag": "30618_ab5921a4",
+          "group": "1cff0aebccb39ff5",
+          "n": 1500,
+          "acceleration_rmse": 0.1407464964271922,
+          "soft_l1_cost": 9.326385575134768
+        },
+        {
+          "bag": "30618_b3042f78",
+          "group": "bc403256f12f9710",
+          "n": 1500,
+          "acceleration_rmse": 0.41386731757883854,
+          "soft_l1_cost": 14.26446972563933
+        },
+        {
+          "bag": "30618_b83d854d",
+          "group": "eeabf7d118bbcdac",
+          "n": 1500,
+          "acceleration_rmse": 0.17052346704235882,
+          "soft_l1_cost": 12.384248212245122
+        },
+        {
+          "bag": "30618_b95ca60a",
+          "group": "e894436afa9dd9f1",
+          "n": 1500,
+          "acceleration_rmse": 0.1452212495429818,
+          "soft_l1_cost": 9.024233739770352
+        },
+        {
+          "bag": "30618_bab2fe58",
+          "group": "5c1be3e9a2189121",
+          "n": 442,
+          "acceleration_rmse": 1.1268860776785001,
+          "soft_l1_cost": 114.50471428447841
+        },
+        {
+          "bag": "30618_cfd9fd5a",
+          "group": "95a748306e6cbf16",
+          "n": 1500,
+          "acceleration_rmse": 0.23412644035348965,
+          "soft_l1_cost": 8.198512292260741
+        },
+        {
+          "bag": "30618_d4ba7005",
+          "group": "0448e10aab8a0e05",
+          "n": 1500,
+          "acceleration_rmse": 0.22594965016430235,
+          "soft_l1_cost": 12.856008355259249
+        },
+        {
+          "bag": "30618_dd8e6395",
+          "group": "0448e10aab8a0e05",
+          "n": 1500,
+          "acceleration_rmse": 0.15299037819889477,
+          "soft_l1_cost": 10.567204892058212
+        },
+        {
+          "bag": "30618_ddad08d6",
+          "group": "bf69dbfe85be52b0",
+          "n": 1500,
+          "acceleration_rmse": 0.22926062079692544,
+          "soft_l1_cost": 8.27098991115152
+        },
+        {
+          "bag": "30618_e2dcf65f",
+          "group": "de891506667c23f9",
+          "n": 1500,
+          "acceleration_rmse": 0.18590461136754632,
+          "soft_l1_cost": 19.224196603177447
+        },
+        {
+          "bag": "30618_e392e5bd",
+          "group": "86c32e441a296aaa",
+          "n": 1500,
+          "acceleration_rmse": 0.22108296860466473,
+          "soft_l1_cost": 7.627936607347463
+        },
+        {
+          "bag": "30618_e3d94878",
+          "group": "eeabf7d118bbcdac",
+          "n": 1500,
+          "acceleration_rmse": 0.38553289885937836,
+          "soft_l1_cost": 27.727021300505683
+        },
+        {
+          "bag": "30618_e7dcdab1",
+          "group": "c8a1e61d1b0710e9",
+          "n": 1500,
+          "acceleration_rmse": 0.26418656023568793,
+          "soft_l1_cost": 9.42650066755748
+        },
+        {
+          "bag": "30618_efb92709",
+          "group": "58dd5f96d4201195",
+          "n": 1500,
+          "acceleration_rmse": 0.20141343050008206,
+          "soft_l1_cost": 7.4467591765088015
+        },
+        {
+          "bag": "30618_f19a4ac3",
+          "group": "1cff0aebccb39ff5",
+          "n": 1500,
+          "acceleration_rmse": 0.15602925084202895,
+          "soft_l1_cost": 10.897092817694016
+        },
+        {
+          "bag": "30618_f28179bb",
+          "group": "8ff91290187a9769",
+          "n": 1500,
+          "acceleration_rmse": 0.15339567587831957,
+          "soft_l1_cost": 6.424729081785308
+        },
+        {
+          "bag": "30618_f3b8c99b",
+          "group": "bc403256f12f9710",
+          "n": 1500,
+          "acceleration_rmse": 0.36062696231425223,
+          "soft_l1_cost": 13.973391362102221
+        },
+        {
+          "bag": "30639_0be558e2",
+          "group": "0d4506540f0e7621",
+          "n": 1500,
+          "acceleration_rmse": 0.2447922081513657,
+          "soft_l1_cost": 21.268293290809552
+        },
+        {
+          "bag": "30639_2b4a6347",
+          "group": "bc1e4cbe924a90ce",
+          "n": 1500,
+          "acceleration_rmse": 0.2296194758529656,
+          "soft_l1_cost": 12.126021787451677
+        },
+        {
+          "bag": "30639_4285f2bc",
+          "group": "bc1e4cbe924a90ce",
+          "n": 1500,
+          "acceleration_rmse": 0.3819348259736903,
+          "soft_l1_cost": 20.832580302273424
+        },
+        {
+          "bag": "30639_44226bde",
+          "group": "f28fe86416cc8dc2",
+          "n": 1500,
+          "acceleration_rmse": 0.15134697865175709,
+          "soft_l1_cost": 10.563035418813682
+        },
+        {
+          "bag": "30639_92226df0",
+          "group": "4ca08ed0da0cb611",
+          "n": 1500,
+          "acceleration_rmse": 0.22140551762028632,
+          "soft_l1_cost": 27.604661217027495
+        },
+        {
+          "bag": "30639_927002c2",
+          "group": "8232b134be2a5002",
+          "n": 1500,
+          "acceleration_rmse": 0.16857209717680882,
+          "soft_l1_cost": 19.701264624652477
+        },
+        {
+          "bag": "30639_d3c43d69",
+          "group": "f28fe86416cc8dc2",
+          "n": 1500,
+          "acceleration_rmse": 0.16050498198053173,
+          "soft_l1_cost": 11.160156843953011
+        }
+      ]
+    },
+    "T20_B10": {
+      "config": {
+        "mass_kg": 40000.0,
+        "wheel_radius_m": 0.33,
+        "gear_ratio": 6.0,
+        "efficiency": 0.9,
+        "total_motor_torque_nm": 2905.0616664738573,
+        "max_power_w": 280873.5334860941,
+        "max_brake_force_n": 45568.80940352644,
+        "rolling_force_n": 2089.7308146696687,
+        "quadratic_drag_n_s2_m2": 5.021948020794408e-17,
+        "actuator_tau_s": 0.3927619145850434,
+        "traction_tau_s": 0.7855238291700868,
+        "braking_tau_s": 0.3927619145850434,
+        "command_deadband": 0.04,
+        "command_exponent": 0.5207432400037213,
+        "travel_direction": 1.0,
+        "max_speed_mps": 40.0,
+        "max_accel_mps2": 3.0,
+        "wheel_sigma_mps": 0.1,
+        "process_noise_v": 0.1,
+        "max_age_s": 0.25,
+        "command_timeout_s": 0.5,
+        "pair_skew_s": 0.1,
+        "disagreement_mps": 0.7,
+        "wheel_rate_limit_mps2": 4.0,
+        "rate_noise_margin_mps": 0.25,
+        "innovation_floor_mps": 0.8,
+        "innovation_cap_mps": 3.0,
+        "stop_speed_mps": 0.07,
+        "stop_model_speed_mps": 0.25,
+        "stop_dwell_s": 0.5,
+        "adaptation_tau_s": 0.5,
+        "disturbance_limit_mps2": 0.6,
+        "max_step_s": 0.2,
+        "reacquire_dwell_s": 0.8,
+        "reacquire_max_residual_mps": 8.0,
+        "reacquire_step_mps": 0.15,
+        "reacquire_min_speed_mps": 0.4,
+        "reacquire_accel_margin_mps2": 0.8
+      },
+      "soft_l1_cost": 748.459107388024,
+      "weighted_acceleration_rmse": 0.30266339025772904,
+      "per_bag": [
+        {
+          "bag": "30618_0259fe53",
+          "group": "95a748306e6cbf16",
+          "n": 1500,
+          "acceleration_rmse": 0.23664083997930702,
+          "soft_l1_cost": 8.494361498803709
+        },
+        {
+          "bag": "30618_095a115b",
+          "group": "e894436afa9dd9f1",
+          "n": 1500,
+          "acceleration_rmse": 0.14324364962080838,
+          "soft_l1_cost": 9.546992659557208
+        },
+        {
+          "bag": "30618_0a83c933",
+          "group": "86c32e441a296aaa",
+          "n": 1500,
+          "acceleration_rmse": 0.23207909907621457,
+          "soft_l1_cost": 8.30124058488292
+        },
+        {
+          "bag": "30618_0d865417",
+          "group": "96d0ec5b7ee50e7e",
+          "n": 11,
+          "acceleration_rmse": 0.4926282997462012,
+          "soft_l1_cost": 5.720507428543675
+        },
+        {
+          "bag": "30618_1cc230fa",
+          "group": "0f36b619fba02a9b",
+          "n": 1500,
+          "acceleration_rmse": 0.2086831930549209,
+          "soft_l1_cost": 7.229573076746742
+        },
+        {
+          "bag": "30618_20096314",
+          "group": "c8a1e61d1b0710e9",
+          "n": 1500,
+          "acceleration_rmse": 0.23971735829380686,
+          "soft_l1_cost": 8.165989918038662
+        },
+        {
+          "bag": "30618_2050d396",
+          "group": "4a5f0d46327316bb",
+          "n": 1500,
+          "acceleration_rmse": 0.26643078699199785,
+          "soft_l1_cost": 15.175983559881878
+        },
+        {
+          "bag": "30618_2161b58b",
+          "group": "8ff91290187a9769",
+          "n": 1500,
+          "acceleration_rmse": 0.1601257227635149,
+          "soft_l1_cost": 6.872018862655429
+        },
+        {
+          "bag": "30618_21dd3af3",
+          "group": "bc403256f12f9710",
+          "n": 1500,
+          "acceleration_rmse": 0.37539325775729626,
+          "soft_l1_cost": 14.695998473196845
+        },
+        {
+          "bag": "30618_22c1c589",
+          "group": "dc785decbed3d7ce",
+          "n": 1500,
+          "acceleration_rmse": 0.1391461336256685,
+          "soft_l1_cost": 8.533611985273586
+        },
+        {
+          "bag": "30618_2366c74a",
+          "group": "58dd5f96d4201195",
+          "n": 1500,
+          "acceleration_rmse": 0.19881193803618807,
+          "soft_l1_cost": 7.557567532722769
+        },
+        {
+          "bag": "30618_2d2fa7be",
+          "group": "bf69dbfe85be52b0",
+          "n": 1500,
+          "acceleration_rmse": 0.19274088455796107,
+          "soft_l1_cost": 6.253762915425973
+        },
+        {
+          "bag": "30618_2f2f1175",
+          "group": "bf69dbfe85be52b0",
+          "n": 1500,
+          "acceleration_rmse": 0.23697464404839705,
+          "soft_l1_cost": 8.222860528965297
+        },
+        {
+          "bag": "30618_3e9f4952",
+          "group": "b8fda5f0647666fb",
+          "n": 1500,
+          "acceleration_rmse": 0.1542098167647443,
+          "soft_l1_cost": 10.249689098543136
+        },
+        {
+          "bag": "30618_40ffd323",
+          "group": "58dd5f96d4201195",
+          "n": 1500,
+          "acceleration_rmse": 0.20058994631411922,
+          "soft_l1_cost": 7.524452750910552
+        },
+        {
+          "bag": "30618_4d487b0d",
+          "group": "bc403256f12f9710",
+          "n": 1500,
+          "acceleration_rmse": 0.4676935708016018,
+          "soft_l1_cost": 17.699169394782235
+        },
+        {
+          "bag": "30618_616ec56b",
+          "group": "6090ff2c1bc8dee6",
+          "n": 1500,
+          "acceleration_rmse": 0.24758859390985818,
+          "soft_l1_cost": 13.793352103554415
+        },
+        {
+          "bag": "30618_67b89902",
+          "group": "b8fda5f0647666fb",
+          "n": 1500,
+          "acceleration_rmse": 0.1349942800658691,
+          "soft_l1_cost": 8.538322905983694
+        },
+        {
+          "bag": "30618_748832b9",
+          "group": "0f36b619fba02a9b",
+          "n": 1500,
+          "acceleration_rmse": 0.21225347084618706,
+          "soft_l1_cost": 6.581378230943074
+        },
+        {
+          "bag": "30618_7849303f",
+          "group": "0f36b619fba02a9b",
+          "n": 1500,
+          "acceleration_rmse": 0.2159966512319857,
+          "soft_l1_cost": 6.585297519426777
+        },
+        {
+          "bag": "30618_79b204dc",
+          "group": "8ff91290187a9769",
+          "n": 1500,
+          "acceleration_rmse": 0.1583291847797227,
+          "soft_l1_cost": 6.680925591233568
+        },
+        {
+          "bag": "30618_7a152380",
+          "group": "c8a1e61d1b0710e9",
+          "n": 1500,
+          "acceleration_rmse": 0.24699146224203655,
+          "soft_l1_cost": 8.593129949133388
+        },
+        {
+          "bag": "30618_7b4d83f4",
+          "group": "2b1581126a480c0f",
+          "n": 1500,
+          "acceleration_rmse": 0.136707311671071,
+          "soft_l1_cost": 8.381357529500137
+        },
+        {
+          "bag": "30618_8158f0b0",
+          "group": "6090ff2c1bc8dee6",
+          "n": 1500,
+          "acceleration_rmse": 0.16193683863912278,
+          "soft_l1_cost": 11.268625837197684
+        },
+        {
+          "bag": "30618_81c22fee",
+          "group": "86c32e441a296aaa",
+          "n": 1500,
+          "acceleration_rmse": 0.15477980080718354,
+          "soft_l1_cost": 6.025871763026206
+        },
+        {
+          "bag": "30618_87afe526",
+          "group": "2b1581126a480c0f",
+          "n": 1500,
+          "acceleration_rmse": 0.28584246077175535,
+          "soft_l1_cost": 14.290914520557514
+        },
+        {
+          "bag": "30618_887a2b9a",
+          "group": "8ff91290187a9769",
+          "n": 1500,
+          "acceleration_rmse": 0.16003353434095932,
+          "soft_l1_cost": 6.747082532048056
+        },
+        {
+          "bag": "30618_8eb8615c",
+          "group": "bf69dbfe85be52b0",
+          "n": 1500,
+          "acceleration_rmse": 0.19783668677027544,
+          "soft_l1_cost": 6.344735465951688
+        },
+        {
+          "bag": "30618_8f08df08",
+          "group": "c8a1e61d1b0710e9",
+          "n": 1500,
+          "acceleration_rmse": 0.27056634613147423,
+          "soft_l1_cost": 9.509916683310124
+        },
+        {
+          "bag": "30618_92b1b453",
+          "group": "86c32e441a296aaa",
+          "n": 1500,
+          "acceleration_rmse": 0.15429458457289263,
+          "soft_l1_cost": 5.914287206054809
+        },
+        {
+          "bag": "30618_93dc866e",
+          "group": "58dd5f96d4201195",
+          "n": 1500,
+          "acceleration_rmse": 0.19714595299556958,
+          "soft_l1_cost": 7.719034621873886
+        },
+        {
+          "bag": "30618_9bbe6faa",
+          "group": "95a748306e6cbf16",
+          "n": 1500,
+          "acceleration_rmse": 0.18045658826248515,
+          "soft_l1_cost": 6.578772846691641
+        },
+        {
+          "bag": "30618_9c09b081",
+          "group": "dc785decbed3d7ce",
+          "n": 1500,
+          "acceleration_rmse": 0.1475182335866008,
+          "soft_l1_cost": 9.757026275015726
+        },
+        {
+          "bag": "30618_9c10cd0d",
+          "group": "95a748306e6cbf16",
+          "n": 1500,
+          "acceleration_rmse": 0.20256400954576148,
+          "soft_l1_cost": 7.68085685633199
+        },
+        {
+          "bag": "30618_a395846d",
+          "group": "0f36b619fba02a9b",
+          "n": 1500,
+          "acceleration_rmse": 0.22678365570718,
+          "soft_l1_cost": 7.813650908373342
+        },
+        {
+          "bag": "30618_a53d5f6f",
+          "group": "4a5f0d46327316bb",
+          "n": 1500,
+          "acceleration_rmse": 0.15465558633639964,
+          "soft_l1_cost": 10.529075256772057
+        },
+        {
+          "bag": "30618_ab5921a4",
+          "group": "1cff0aebccb39ff5",
+          "n": 1500,
+          "acceleration_rmse": 0.1450606648289208,
+          "soft_l1_cost": 9.740443529562953
+        },
+        {
+          "bag": "30618_b3042f78",
+          "group": "bc403256f12f9710",
+          "n": 1500,
+          "acceleration_rmse": 0.4138121217571411,
+          "soft_l1_cost": 14.598073513719914
+        },
+        {
+          "bag": "30618_b83d854d",
+          "group": "eeabf7d118bbcdac",
+          "n": 1500,
+          "acceleration_rmse": 0.17337565847551642,
+          "soft_l1_cost": 12.586010686737465
+        },
+        {
+          "bag": "30618_b95ca60a",
+          "group": "e894436afa9dd9f1",
+          "n": 1500,
+          "acceleration_rmse": 0.14596558676380203,
+          "soft_l1_cost": 9.009871709541631
+        },
+        {
+          "bag": "30618_bab2fe58",
+          "group": "5c1be3e9a2189121",
+          "n": 442,
+          "acceleration_rmse": 1.1275721819932596,
+          "soft_l1_cost": 114.5359147027309
+        },
+        {
+          "bag": "30618_cfd9fd5a",
+          "group": "95a748306e6cbf16",
+          "n": 1500,
+          "acceleration_rmse": 0.23449627668580303,
+          "soft_l1_cost": 8.35110374748021
+        },
+        {
+          "bag": "30618_d4ba7005",
+          "group": "0448e10aab8a0e05",
+          "n": 1500,
+          "acceleration_rmse": 0.2224250646826262,
+          "soft_l1_cost": 12.467286539217607
+        },
+        {
+          "bag": "30618_dd8e6395",
+          "group": "0448e10aab8a0e05",
+          "n": 1500,
+          "acceleration_rmse": 0.15946771718170188,
+          "soft_l1_cost": 11.21326623631385
+        },
+        {
+          "bag": "30618_ddad08d6",
+          "group": "bf69dbfe85be52b0",
+          "n": 1500,
+          "acceleration_rmse": 0.23022270157310176,
+          "soft_l1_cost": 8.406751546916562
+        },
+        {
+          "bag": "30618_e2dcf65f",
+          "group": "de891506667c23f9",
+          "n": 1500,
+          "acceleration_rmse": 0.18330866227362463,
+          "soft_l1_cost": 18.434182029624456
+        },
+        {
+          "bag": "30618_e392e5bd",
+          "group": "86c32e441a296aaa",
+          "n": 1500,
+          "acceleration_rmse": 0.22168883798042363,
+          "soft_l1_cost": 7.849299754759599
+        },
+        {
+          "bag": "30618_e3d94878",
+          "group": "eeabf7d118bbcdac",
+          "n": 1500,
+          "acceleration_rmse": 0.38683637264470766,
+          "soft_l1_cost": 27.998951929361667
+        },
+        {
+          "bag": "30618_e7dcdab1",
+          "group": "c8a1e61d1b0710e9",
+          "n": 1500,
+          "acceleration_rmse": 0.2618276103088407,
+          "soft_l1_cost": 9.367587966890127
+        },
+        {
+          "bag": "30618_efb92709",
+          "group": "58dd5f96d4201195",
+          "n": 1500,
+          "acceleration_rmse": 0.20456780075632144,
+          "soft_l1_cost": 7.809968952230543
+        },
+        {
+          "bag": "30618_f19a4ac3",
+          "group": "1cff0aebccb39ff5",
+          "n": 1500,
+          "acceleration_rmse": 0.15466204597191482,
+          "soft_l1_cost": 10.69447725846861
+        },
+        {
+          "bag": "30618_f28179bb",
+          "group": "8ff91290187a9769",
+          "n": 1500,
+          "acceleration_rmse": 0.1607330277825065,
+          "soft_l1_cost": 6.899383849191807
+        },
+        {
+          "bag": "30618_f3b8c99b",
+          "group": "bc403256f12f9710",
+          "n": 1500,
+          "acceleration_rmse": 0.35997783363997216,
+          "soft_l1_cost": 14.117185849050685
+        },
+        {
+          "bag": "30639_0be558e2",
+          "group": "0d4506540f0e7621",
+          "n": 1500,
+          "acceleration_rmse": 0.24822509459893,
+          "soft_l1_cost": 22.207423208694546
+        },
+        {
+          "bag": "30639_2b4a6347",
+          "group": "bc1e4cbe924a90ce",
+          "n": 1500,
+          "acceleration_rmse": 0.22884890816616418,
+          "soft_l1_cost": 12.162998572915056
+        },
+        {
+          "bag": "30639_4285f2bc",
+          "group": "bc1e4cbe924a90ce",
+          "n": 1500,
+          "acceleration_rmse": 0.3817163580367358,
+          "soft_l1_cost": 21.18090194544024
+        },
+        {
+          "bag": "30639_44226bde",
+          "group": "f28fe86416cc8dc2",
+          "n": 1500,
+          "acceleration_rmse": 0.1516823973836779,
+          "soft_l1_cost": 10.452431682717421
+        },
+        {
+          "bag": "30639_92226df0",
+          "group": "4ca08ed0da0cb611",
+          "n": 1500,
+          "acceleration_rmse": 0.21995691979986876,
+          "soft_l1_cost": 27.024443213353976
+        },
+        {
+          "bag": "30639_927002c2",
+          "group": "8232b134be2a5002",
+          "n": 1500,
+          "acceleration_rmse": 0.1740497984284696,
+          "soft_l1_cost": 20.222581745578253
+        },
+        {
+          "bag": "30639_d3c43d69",
+          "group": "f28fe86416cc8dc2",
+          "n": 1500,
+          "acceleration_rmse": 0.16390314293582076,
+          "soft_l1_cost": 11.551172345615573
+        }
+      ]
+    },
+    "T10_B20": {
+      "config": {
+        "mass_kg": 40000.0,
+        "wheel_radius_m": 0.33,
+        "gear_ratio": 6.0,
+        "efficiency": 0.9,
+        "total_motor_torque_nm": 2905.0616664738573,
+        "max_power_w": 280873.5334860941,
+        "max_brake_force_n": 45568.80940352644,
+        "rolling_force_n": 2089.7308146696687,
+        "quadratic_drag_n_s2_m2": 5.021948020794408e-17,
+        "actuator_tau_s": 0.3927619145850434,
+        "traction_tau_s": 0.3927619145850434,
+        "braking_tau_s": 0.7855238291700868,
+        "command_deadband": 0.04,
+        "command_exponent": 0.5207432400037213,
+        "travel_direction": 1.0,
+        "max_speed_mps": 40.0,
+        "max_accel_mps2": 3.0,
+        "wheel_sigma_mps": 0.1,
+        "process_noise_v": 0.1,
+        "max_age_s": 0.25,
+        "command_timeout_s": 0.5,
+        "pair_skew_s": 0.1,
+        "disagreement_mps": 0.7,
+        "wheel_rate_limit_mps2": 4.0,
+        "rate_noise_margin_mps": 0.25,
+        "innovation_floor_mps": 0.8,
+        "innovation_cap_mps": 3.0,
+        "stop_speed_mps": 0.07,
+        "stop_model_speed_mps": 0.25,
+        "stop_dwell_s": 0.5,
+        "adaptation_tau_s": 0.5,
+        "disturbance_limit_mps2": 0.6,
+        "max_step_s": 0.2,
+        "reacquire_dwell_s": 0.8,
+        "reacquire_max_residual_mps": 8.0,
+        "reacquire_step_mps": 0.15,
+        "reacquire_min_speed_mps": 0.4,
+        "reacquire_accel_margin_mps2": 0.8
+      },
+      "soft_l1_cost": 754.5001095870086,
+      "weighted_acceleration_rmse": 0.3029699872676011,
+      "per_bag": [
+        {
+          "bag": "30618_0259fe53",
+          "group": "95a748306e6cbf16",
+          "n": 1500,
+          "acceleration_rmse": 0.23398425669557957,
+          "soft_l1_cost": 8.413123419062234
+        },
+        {
+          "bag": "30618_095a115b",
+          "group": "e894436afa9dd9f1",
+          "n": 1500,
+          "acceleration_rmse": 0.13980049065200462,
+          "soft_l1_cost": 9.362171178900992
+        },
+        {
+          "bag": "30618_0a83c933",
+          "group": "86c32e441a296aaa",
+          "n": 1500,
+          "acceleration_rmse": 0.2311183406465751,
+          "soft_l1_cost": 8.259944996624906
+        },
+        {
+          "bag": "30618_0d865417",
+          "group": "96d0ec5b7ee50e7e",
+          "n": 11,
+          "acceleration_rmse": 0.5111740143588389,
+          "soft_l1_cost": 5.991624498017243
+        },
+        {
+          "bag": "30618_1cc230fa",
+          "group": "0f36b619fba02a9b",
+          "n": 1500,
+          "acceleration_rmse": 0.21021771058317618,
+          "soft_l1_cost": 7.339479437871313
+        },
+        {
+          "bag": "30618_20096314",
+          "group": "c8a1e61d1b0710e9",
+          "n": 1500,
+          "acceleration_rmse": 0.23779303736744178,
+          "soft_l1_cost": 8.135613973943457
+        },
+        {
+          "bag": "30618_2050d396",
+          "group": "4a5f0d46327316bb",
+          "n": 1500,
+          "acceleration_rmse": 0.26897758947466804,
+          "soft_l1_cost": 15.49019210837578
+        },
+        {
+          "bag": "30618_2161b58b",
+          "group": "8ff91290187a9769",
+          "n": 1500,
+          "acceleration_rmse": 0.1552616084719655,
+          "soft_l1_cost": 6.598603098586671
+        },
+        {
+          "bag": "30618_21dd3af3",
+          "group": "bc403256f12f9710",
+          "n": 1500,
+          "acceleration_rmse": 0.370732923559606,
+          "soft_l1_cost": 14.662415723991673
+        },
+        {
+          "bag": "30618_22c1c589",
+          "group": "dc785decbed3d7ce",
+          "n": 1500,
+          "acceleration_rmse": 0.14649287033231564,
+          "soft_l1_cost": 9.072633381667433
+        },
+        {
+          "bag": "30618_2366c74a",
+          "group": "58dd5f96d4201195",
+          "n": 1500,
+          "acceleration_rmse": 0.19918444554683834,
+          "soft_l1_cost": 7.7533168241819395
+        },
+        {
+          "bag": "30618_2d2fa7be",
+          "group": "bf69dbfe85be52b0",
+          "n": 1500,
+          "acceleration_rmse": 0.18802747490345229,
+          "soft_l1_cost": 6.287915891121608
+        },
+        {
+          "bag": "30618_2f2f1175",
+          "group": "bf69dbfe85be52b0",
+          "n": 1500,
+          "acceleration_rmse": 0.23725232204821012,
+          "soft_l1_cost": 8.286297875272945
+        },
+        {
+          "bag": "30618_3e9f4952",
+          "group": "b8fda5f0647666fb",
+          "n": 1500,
+          "acceleration_rmse": 0.15697386869544405,
+          "soft_l1_cost": 10.37888756977231
+        },
+        {
+          "bag": "30618_40ffd323",
+          "group": "58dd5f96d4201195",
+          "n": 1500,
+          "acceleration_rmse": 0.2020262051652639,
+          "soft_l1_cost": 7.6988209473207405
+        },
+        {
+          "bag": "30618_4d487b0d",
+          "group": "bc403256f12f9710",
+          "n": 1500,
+          "acceleration_rmse": 0.46089436097489295,
+          "soft_l1_cost": 17.57175594783223
+        },
+        {
+          "bag": "30618_616ec56b",
+          "group": "6090ff2c1bc8dee6",
+          "n": 1500,
+          "acceleration_rmse": 0.2533205394827188,
+          "soft_l1_cost": 14.306227966176994
+        },
+        {
+          "bag": "30618_67b89902",
+          "group": "b8fda5f0647666fb",
+          "n": 1500,
+          "acceleration_rmse": 0.13423673185439558,
+          "soft_l1_cost": 8.609299263237435
+        },
+        {
+          "bag": "30618_748832b9",
+          "group": "0f36b619fba02a9b",
+          "n": 1500,
+          "acceleration_rmse": 0.21385927933240664,
+          "soft_l1_cost": 6.704602112711232
+        },
+        {
+          "bag": "30618_7849303f",
+          "group": "0f36b619fba02a9b",
+          "n": 1500,
+          "acceleration_rmse": 0.21870041414522923,
+          "soft_l1_cost": 6.738183133977481
+        },
+        {
+          "bag": "30618_79b204dc",
+          "group": "8ff91290187a9769",
+          "n": 1500,
+          "acceleration_rmse": 0.15953015598366668,
+          "soft_l1_cost": 6.755340999496063
+        },
+        {
+          "bag": "30618_7a152380",
+          "group": "c8a1e61d1b0710e9",
+          "n": 1500,
+          "acceleration_rmse": 0.24478701977867845,
+          "soft_l1_cost": 8.573984872362741
+        },
+        {
+          "bag": "30618_7b4d83f4",
+          "group": "2b1581126a480c0f",
+          "n": 1500,
+          "acceleration_rmse": 0.14104974455353977,
+          "soft_l1_cost": 8.833836775264533
+        },
+        {
+          "bag": "30618_8158f0b0",
+          "group": "6090ff2c1bc8dee6",
+          "n": 1500,
+          "acceleration_rmse": 0.16452284369342499,
+          "soft_l1_cost": 11.379138943339912
+        },
+        {
+          "bag": "30618_81c22fee",
+          "group": "86c32e441a296aaa",
+          "n": 1500,
+          "acceleration_rmse": 0.15359071238365687,
+          "soft_l1_cost": 5.977665687695705
+        },
+        {
+          "bag": "30618_87afe526",
+          "group": "2b1581126a480c0f",
+          "n": 1500,
+          "acceleration_rmse": 0.2817570496215932,
+          "soft_l1_cost": 14.314785591551047
+        },
+        {
+          "bag": "30618_887a2b9a",
+          "group": "8ff91290187a9769",
+          "n": 1500,
+          "acceleration_rmse": 0.16181174593294256,
+          "soft_l1_cost": 6.886517892514165
+        },
+        {
+          "bag": "30618_8eb8615c",
+          "group": "bf69dbfe85be52b0",
+          "n": 1500,
+          "acceleration_rmse": 0.19547706315594351,
+          "soft_l1_cost": 6.423819943376143
+        },
+        {
+          "bag": "30618_8f08df08",
+          "group": "c8a1e61d1b0710e9",
+          "n": 1500,
+          "acceleration_rmse": 0.26738958827150633,
+          "soft_l1_cost": 9.597981945969265
+        },
+        {
+          "bag": "30618_92b1b453",
+          "group": "86c32e441a296aaa",
+          "n": 1500,
+          "acceleration_rmse": 0.154003084035231,
+          "soft_l1_cost": 5.9333411418561095
+        },
+        {
+          "bag": "30618_93dc866e",
+          "group": "58dd5f96d4201195",
+          "n": 1500,
+          "acceleration_rmse": 0.20007900233025835,
+          "soft_l1_cost": 7.905660170597096
+        },
+        {
+          "bag": "30618_9bbe6faa",
+          "group": "95a748306e6cbf16",
+          "n": 1500,
+          "acceleration_rmse": 0.17545185037460984,
+          "soft_l1_cost": 6.431363904163719
+        },
+        {
+          "bag": "30618_9c09b081",
+          "group": "dc785decbed3d7ce",
+          "n": 1500,
+          "acceleration_rmse": 0.146222377875899,
+          "soft_l1_cost": 9.722223961007547
+        },
+        {
+          "bag": "30618_9c10cd0d",
+          "group": "95a748306e6cbf16",
+          "n": 1500,
+          "acceleration_rmse": 0.19860208932504297,
+          "soft_l1_cost": 7.554254825736639
+        },
+        {
+          "bag": "30618_a395846d",
+          "group": "0f36b619fba02a9b",
+          "n": 1500,
+          "acceleration_rmse": 0.22410340373719534,
+          "soft_l1_cost": 7.753600945606044
+        },
+        {
+          "bag": "30618_a53d5f6f",
+          "group": "4a5f0d46327316bb",
+          "n": 1500,
+          "acceleration_rmse": 0.15506198808710206,
+          "soft_l1_cost": 10.632003929096989
+        },
+        {
+          "bag": "30618_ab5921a4",
+          "group": "1cff0aebccb39ff5",
+          "n": 1500,
+          "acceleration_rmse": 0.14551690172786605,
+          "soft_l1_cost": 9.684627891114562
+        },
+        {
+          "bag": "30618_b3042f78",
+          "group": "bc403256f12f9710",
+          "n": 1500,
+          "acceleration_rmse": 0.41160312493746204,
+          "soft_l1_cost": 14.854816436973037
+        },
+        {
+          "bag": "30618_b83d854d",
+          "group": "eeabf7d118bbcdac",
+          "n": 1500,
+          "acceleration_rmse": 0.1711224635311462,
+          "soft_l1_cost": 12.397962464053517
+        },
+        {
+          "bag": "30618_b95ca60a",
+          "group": "e894436afa9dd9f1",
+          "n": 1500,
+          "acceleration_rmse": 0.1490449234490349,
+          "soft_l1_cost": 9.323427452115872
+        },
+        {
+          "bag": "30618_bab2fe58",
+          "group": "5c1be3e9a2189121",
+          "n": 442,
+          "acceleration_rmse": 1.1231557601943705,
+          "soft_l1_cost": 114.27304376337571
+        },
+        {
+          "bag": "30618_cfd9fd5a",
+          "group": "95a748306e6cbf16",
+          "n": 1500,
+          "acceleration_rmse": 0.2327305172973501,
+          "soft_l1_cost": 8.334230096242287
+        },
+        {
+          "bag": "30618_d4ba7005",
+          "group": "0448e10aab8a0e05",
+          "n": 1500,
+          "acceleration_rmse": 0.22274974092466962,
+          "soft_l1_cost": 12.946610983329673
+        },
+        {
+          "bag": "30618_dd8e6395",
+          "group": "0448e10aab8a0e05",
+          "n": 1500,
+          "acceleration_rmse": 0.15881323587957982,
+          "soft_l1_cost": 11.132126959060859
+        },
+        {
+          "bag": "30618_ddad08d6",
+          "group": "bf69dbfe85be52b0",
+          "n": 1500,
+          "acceleration_rmse": 0.2294351888952989,
+          "soft_l1_cost": 8.41402555960697
+        },
+        {
+          "bag": "30618_e2dcf65f",
+          "group": "de891506667c23f9",
+          "n": 1500,
+          "acceleration_rmse": 0.19112880745088104,
+          "soft_l1_cost": 19.543002693200698
+        },
+        {
+          "bag": "30618_e392e5bd",
+          "group": "86c32e441a296aaa",
+          "n": 1500,
+          "acceleration_rmse": 0.2182009843877789,
+          "soft_l1_cost": 7.717874317924672
+        },
+        {
+          "bag": "30618_e3d94878",
+          "group": "eeabf7d118bbcdac",
+          "n": 1500,
+          "acceleration_rmse": 0.38585429435066676,
+          "soft_l1_cost": 27.901849340320805
+        },
+        {
+          "bag": "30618_e7dcdab1",
+          "group": "c8a1e61d1b0710e9",
+          "n": 1500,
+          "acceleration_rmse": 0.2598456852850316,
+          "soft_l1_cost": 9.516314142405731
+        },
+        {
+          "bag": "30618_efb92709",
+          "group": "58dd5f96d4201195",
+          "n": 1500,
+          "acceleration_rmse": 0.20644019976885203,
+          "soft_l1_cost": 7.970805292696243
+        },
+        {
+          "bag": "30618_f19a4ac3",
+          "group": "1cff0aebccb39ff5",
+          "n": 1500,
+          "acceleration_rmse": 0.15756429323298582,
+          "soft_l1_cost": 10.902450966677943
+        },
+        {
+          "bag": "30618_f28179bb",
+          "group": "8ff91290187a9769",
+          "n": 1500,
+          "acceleration_rmse": 0.16101204042107672,
+          "soft_l1_cost": 6.882781498949728
+        },
+        {
+          "bag": "30618_f3b8c99b",
+          "group": "bc403256f12f9710",
+          "n": 1500,
+          "acceleration_rmse": 0.3569880678708812,
+          "soft_l1_cost": 14.105059647163156
+        },
+        {
+          "bag": "30639_0be558e2",
+          "group": "0d4506540f0e7621",
+          "n": 1500,
+          "acceleration_rmse": 0.2496125236227813,
+          "soft_l1_cost": 22.320377112751743
+        },
+        {
+          "bag": "30639_2b4a6347",
+          "group": "bc1e4cbe924a90ce",
+          "n": 1500,
+          "acceleration_rmse": 0.2293295513869878,
+          "soft_l1_cost": 12.539098484796437
+        },
+        {
+          "bag": "30639_4285f2bc",
+          "group": "bc1e4cbe924a90ce",
+          "n": 1500,
+          "acceleration_rmse": 0.37807204694256863,
+          "soft_l1_cost": 21.50289891061699
+        },
+        {
+          "bag": "30639_44226bde",
+          "group": "f28fe86416cc8dc2",
+          "n": 1500,
+          "acceleration_rmse": 0.15084773110271235,
+          "soft_l1_cost": 10.52471983600958
+        },
+        {
+          "bag": "30639_92226df0",
+          "group": "4ca08ed0da0cb611",
+          "n": 1500,
+          "acceleration_rmse": 0.21857729202695328,
+          "soft_l1_cost": 27.04575634302002
+        },
+        {
+          "bag": "30639_927002c2",
+          "group": "8232b134be2a5002",
+          "n": 1500,
+          "acceleration_rmse": 0.17660416424144137,
+          "soft_l1_cost": 20.851721153089898
+        },
+        {
+          "bag": "30639_d3c43d69",
+          "group": "f28fe86416cc8dc2",
+          "n": 1500,
+          "acceleration_rmse": 0.16373602667486428,
+          "soft_l1_cost": 11.477897363232211
+        }
+      ]
+    },
+    "T05_B20": {
+      "config": {
+        "mass_kg": 40000.0,
+        "wheel_radius_m": 0.33,
+        "gear_ratio": 6.0,
+        "efficiency": 0.9,
+        "total_motor_torque_nm": 2905.0616664738573,
+        "max_power_w": 280873.5334860941,
+        "max_brake_force_n": 45568.80940352644,
+        "rolling_force_n": 2089.7308146696687,
+        "quadratic_drag_n_s2_m2": 5.021948020794408e-17,
+        "actuator_tau_s": 0.3927619145850434,
+        "traction_tau_s": 0.1963809572925217,
+        "braking_tau_s": 0.7855238291700868,
+        "command_deadband": 0.04,
+        "command_exponent": 0.5207432400037213,
+        "travel_direction": 1.0,
+        "max_speed_mps": 40.0,
+        "max_accel_mps2": 3.0,
+        "wheel_sigma_mps": 0.1,
+        "process_noise_v": 0.1,
+        "max_age_s": 0.25,
+        "command_timeout_s": 0.5,
+        "pair_skew_s": 0.1,
+        "disagreement_mps": 0.7,
+        "wheel_rate_limit_mps2": 4.0,
+        "rate_noise_margin_mps": 0.25,
+        "innovation_floor_mps": 0.8,
+        "innovation_cap_mps": 3.0,
+        "stop_speed_mps": 0.07,
+        "stop_model_speed_mps": 0.25,
+        "stop_dwell_s": 0.5,
+        "adaptation_tau_s": 0.5,
+        "disturbance_limit_mps2": 0.6,
+        "max_step_s": 0.2,
+        "reacquire_dwell_s": 0.8,
+        "reacquire_max_residual_mps": 8.0,
+        "reacquire_step_mps": 0.15,
+        "reacquire_min_speed_mps": 0.4,
+        "reacquire_accel_margin_mps2": 0.8
+      },
+      "soft_l1_cost": 769.0667453386258,
+      "weighted_acceleration_rmse": 0.3036900939100863,
+      "per_bag": [
+        {
+          "bag": "30618_0259fe53",
+          "group": "95a748306e6cbf16",
+          "n": 1500,
+          "acceleration_rmse": 0.23518632758475533,
+          "soft_l1_cost": 8.495814419205052
+        },
+        {
+          "bag": "30618_095a115b",
+          "group": "e894436afa9dd9f1",
+          "n": 1500,
+          "acceleration_rmse": 0.1420960030745605,
+          "soft_l1_cost": 9.552506545449592
+        },
+        {
+          "bag": "30618_0a83c933",
+          "group": "86c32e441a296aaa",
+          "n": 1500,
+          "acceleration_rmse": 0.2329115212976583,
+          "soft_l1_cost": 8.39223377221244
+        },
+        {
+          "bag": "30618_0d865417",
+          "group": "96d0ec5b7ee50e7e",
+          "n": 11,
+          "acceleration_rmse": 0.501379879805825,
+          "soft_l1_cost": 6.253618626212816
+        },
+        {
+          "bag": "30618_1cc230fa",
+          "group": "0f36b619fba02a9b",
+          "n": 1500,
+          "acceleration_rmse": 0.2113663129244711,
+          "soft_l1_cost": 7.357169287759913
+        },
+        {
+          "bag": "30618_20096314",
+          "group": "c8a1e61d1b0710e9",
+          "n": 1500,
+          "acceleration_rmse": 0.2391903951621419,
+          "soft_l1_cost": 8.246482097622735
+        },
+        {
+          "bag": "30618_2050d396",
+          "group": "4a5f0d46327316bb",
+          "n": 1500,
+          "acceleration_rmse": 0.2723112409205452,
+          "soft_l1_cost": 15.973261684473355
+        },
+        {
+          "bag": "30618_2161b58b",
+          "group": "8ff91290187a9769",
+          "n": 1500,
+          "acceleration_rmse": 0.1559802147387837,
+          "soft_l1_cost": 6.627720555157934
+        },
+        {
+          "bag": "30618_21dd3af3",
+          "group": "bc403256f12f9710",
+          "n": 1500,
+          "acceleration_rmse": 0.37201695387510875,
+          "soft_l1_cost": 14.834594328845666
+        },
+        {
+          "bag": "30618_22c1c589",
+          "group": "dc785decbed3d7ce",
+          "n": 1500,
+          "acceleration_rmse": 0.15357486121299693,
+          "soft_l1_cost": 9.56957722047505
+        },
+        {
+          "bag": "30618_2366c74a",
+          "group": "58dd5f96d4201195",
+          "n": 1500,
+          "acceleration_rmse": 0.20179571691964804,
+          "soft_l1_cost": 7.972015553906987
+        },
+        {
+          "bag": "30618_2d2fa7be",
+          "group": "bf69dbfe85be52b0",
+          "n": 1500,
+          "acceleration_rmse": 0.19051196614019694,
+          "soft_l1_cost": 6.4662580340448335
+        },
+        {
+          "bag": "30618_2f2f1175",
+          "group": "bf69dbfe85be52b0",
+          "n": 1500,
+          "acceleration_rmse": 0.23879196364179336,
+          "soft_l1_cost": 8.378878427225883
+        },
+        {
+          "bag": "30618_3e9f4952",
+          "group": "b8fda5f0647666fb",
+          "n": 1500,
+          "acceleration_rmse": 0.16011142213146953,
+          "soft_l1_cost": 10.616499731366886
+        },
+        {
+          "bag": "30618_40ffd323",
+          "group": "58dd5f96d4201195",
+          "n": 1500,
+          "acceleration_rmse": 0.20303598155035968,
+          "soft_l1_cost": 7.756388451459132
+        },
+        {
+          "bag": "30618_4d487b0d",
+          "group": "bc403256f12f9710",
+          "n": 1500,
+          "acceleration_rmse": 0.46121451710693967,
+          "soft_l1_cost": 17.587525293232083
+        },
+        {
+          "bag": "30618_616ec56b",
+          "group": "6090ff2c1bc8dee6",
+          "n": 1500,
+          "acceleration_rmse": 0.2549573589989333,
+          "soft_l1_cost": 14.676343681045001
+        },
+        {
+          "bag": "30618_67b89902",
+          "group": "b8fda5f0647666fb",
+          "n": 1500,
+          "acceleration_rmse": 0.14094362545515893,
+          "soft_l1_cost": 9.243576674586995
+        },
+        {
+          "bag": "30618_748832b9",
+          "group": "0f36b619fba02a9b",
+          "n": 1500,
+          "acceleration_rmse": 0.21610468896784268,
+          "soft_l1_cost": 6.84382383063147
+        },
+        {
+          "bag": "30618_7849303f",
+          "group": "0f36b619fba02a9b",
+          "n": 1500,
+          "acceleration_rmse": 0.2210696006113943,
+          "soft_l1_cost": 6.8875031017210535
+        },
+        {
+          "bag": "30618_79b204dc",
+          "group": "8ff91290187a9769",
+          "n": 1500,
+          "acceleration_rmse": 0.1633467048635749,
+          "soft_l1_cost": 6.980300418829012
+        },
+        {
+          "bag": "30618_7a152380",
+          "group": "c8a1e61d1b0710e9",
+          "n": 1500,
+          "acceleration_rmse": 0.24547951129216222,
+          "soft_l1_cost": 8.615555078084295
+        },
+        {
+          "bag": "30618_7b4d83f4",
+          "group": "2b1581126a480c0f",
+          "n": 1500,
+          "acceleration_rmse": 0.14679763730226256,
+          "soft_l1_cost": 9.317366448728784
+        },
+        {
+          "bag": "30618_8158f0b0",
+          "group": "6090ff2c1bc8dee6",
+          "n": 1500,
+          "acceleration_rmse": 0.16764300169229465,
+          "soft_l1_cost": 11.52488830315695
+        },
+        {
+          "bag": "30618_81c22fee",
+          "group": "86c32e441a296aaa",
+          "n": 1500,
+          "acceleration_rmse": 0.15630727927154545,
+          "soft_l1_cost": 6.10647807557265
+        },
+        {
+          "bag": "30618_87afe526",
+          "group": "2b1581126a480c0f",
+          "n": 1500,
+          "acceleration_rmse": 0.28450141479334534,
+          "soft_l1_cost": 14.789560035138537
+        },
+        {
+          "bag": "30618_887a2b9a",
+          "group": "8ff91290187a9769",
+          "n": 1500,
+          "acceleration_rmse": 0.16567319600479083,
+          "soft_l1_cost": 7.100463736500552
+        },
+        {
+          "bag": "30618_8eb8615c",
+          "group": "bf69dbfe85be52b0",
+          "n": 1500,
+          "acceleration_rmse": 0.19785012683715947,
+          "soft_l1_cost": 6.5644376208595565
+        },
+        {
+          "bag": "30618_8f08df08",
+          "group": "c8a1e61d1b0710e9",
+          "n": 1500,
+          "acceleration_rmse": 0.26828779988100565,
+          "soft_l1_cost": 9.649481912595286
+        },
+        {
+          "bag": "30618_92b1b453",
+          "group": "86c32e441a296aaa",
+          "n": 1500,
+          "acceleration_rmse": 0.1571513573169039,
+          "soft_l1_cost": 6.0671077325618725
+        },
+        {
+          "bag": "30618_93dc866e",
+          "group": "58dd5f96d4201195",
+          "n": 1500,
+          "acceleration_rmse": 0.2013095764821053,
+          "soft_l1_cost": 8.026465072005125
+        },
+        {
+          "bag": "30618_9bbe6faa",
+          "group": "95a748306e6cbf16",
+          "n": 1500,
+          "acceleration_rmse": 0.17804194115479066,
+          "soft_l1_cost": 6.566863793290252
+        },
+        {
+          "bag": "30618_9c09b081",
+          "group": "dc785decbed3d7ce",
+          "n": 1500,
+          "acceleration_rmse": 0.14912887806109404,
+          "soft_l1_cost": 9.949119299196639
+        },
+        {
+          "bag": "30618_9c10cd0d",
+          "group": "95a748306e6cbf16",
+          "n": 1500,
+          "acceleration_rmse": 0.20035135038467383,
+          "soft_l1_cost": 7.6581967376614335
+        },
+        {
+          "bag": "30618_a395846d",
+          "group": "0f36b619fba02a9b",
+          "n": 1500,
+          "acceleration_rmse": 0.22546622069057443,
+          "soft_l1_cost": 7.821789255753016
+        },
+        {
+          "bag": "30618_a53d5f6f",
+          "group": "4a5f0d46327316bb",
+          "n": 1500,
+          "acceleration_rmse": 0.15847104790729793,
+          "soft_l1_cost": 10.9559650908188
+        },
+        {
+          "bag": "30618_ab5921a4",
+          "group": "1cff0aebccb39ff5",
+          "n": 1500,
+          "acceleration_rmse": 0.1502228497640279,
+          "soft_l1_cost": 10.088627631297165
+        },
+        {
+          "bag": "30618_b3042f78",
+          "group": "bc403256f12f9710",
+          "n": 1500,
+          "acceleration_rmse": 0.41231765858953023,
+          "soft_l1_cost": 14.913960766687115
+        },
+        {
+          "bag": "30618_b83d854d",
+          "group": "eeabf7d118bbcdac",
+          "n": 1500,
+          "acceleration_rmse": 0.17550596865253174,
+          "soft_l1_cost": 12.796146963200151
+        },
+        {
+          "bag": "30618_b95ca60a",
+          "group": "e894436afa9dd9f1",
+          "n": 1500,
+          "acceleration_rmse": 0.15404063505169405,
+          "soft_l1_cost": 9.761690355974551
+        },
+        {
+          "bag": "30618_bab2fe58",
+          "group": "5c1be3e9a2189121",
+          "n": 442,
+          "acceleration_rmse": 1.1231557601943705,
+          "soft_l1_cost": 114.27304376337571
+        },
+        {
+          "bag": "30618_cfd9fd5a",
+          "group": "95a748306e6cbf16",
+          "n": 1500,
+          "acceleration_rmse": 0.2357608110716105,
+          "soft_l1_cost": 8.545450166920682
+        },
+        {
+          "bag": "30618_d4ba7005",
+          "group": "0448e10aab8a0e05",
+          "n": 1500,
+          "acceleration_rmse": 0.22665275194284698,
+          "soft_l1_cost": 13.415109987800086
+        },
+        {
+          "bag": "30618_dd8e6395",
+          "group": "0448e10aab8a0e05",
+          "n": 1500,
+          "acceleration_rmse": 0.1614627866368298,
+          "soft_l1_cost": 11.372629722219006
+        },
+        {
+          "bag": "30618_ddad08d6",
+          "group": "bf69dbfe85be52b0",
+          "n": 1500,
+          "acceleration_rmse": 0.23076365882577116,
+          "soft_l1_cost": 8.506012782907046
+        },
+        {
+          "bag": "30618_e2dcf65f",
+          "group": "de891506667c23f9",
+          "n": 1500,
+          "acceleration_rmse": 0.1968189813628957,
+          "soft_l1_cost": 20.506873156746522
+        },
+        {
+          "bag": "30618_e392e5bd",
+          "group": "86c32e441a296aaa",
+          "n": 1500,
+          "acceleration_rmse": 0.21950346924567185,
+          "soft_l1_cost": 7.796050048908251
+        },
+        {
+          "bag": "30618_e3d94878",
+          "group": "eeabf7d118bbcdac",
+          "n": 1500,
+          "acceleration_rmse": 0.38716766773980077,
+          "soft_l1_cost": 28.19731877526923
+        },
+        {
+          "bag": "30618_e7dcdab1",
+          "group": "c8a1e61d1b0710e9",
+          "n": 1500,
+          "acceleration_rmse": 0.2621086652195063,
+          "soft_l1_cost": 9.715626174274778
+        },
+        {
+          "bag": "30618_efb92709",
+          "group": "58dd5f96d4201195",
+          "n": 1500,
+          "acceleration_rmse": 0.20670291875852675,
+          "soft_l1_cost": 7.942352324310124
+        },
+        {
+          "bag": "30618_f19a4ac3",
+          "group": "1cff0aebccb39ff5",
+          "n": 1500,
+          "acceleration_rmse": 0.16358771395148944,
+          "soft_l1_cost": 11.38595930534951
+        },
+        {
+          "bag": "30618_f28179bb",
+          "group": "8ff91290187a9769",
+          "n": 1500,
+          "acceleration_rmse": 0.16256297613206566,
+          "soft_l1_cost": 6.941225858958311
+        },
+        {
+          "bag": "30618_f3b8c99b",
+          "group": "bc403256f12f9710",
+          "n": 1500,
+          "acceleration_rmse": 0.35841158005176516,
+          "soft_l1_cost": 14.28339426451982
+        },
+        {
+          "bag": "30639_0be558e2",
+          "group": "0d4506540f0e7621",
+          "n": 1500,
+          "acceleration_rmse": 0.2519865752996089,
+          "soft_l1_cost": 22.811353654373313
+        },
+        {
+          "bag": "30639_2b4a6347",
+          "group": "bc1e4cbe924a90ce",
+          "n": 1500,
+          "acceleration_rmse": 0.23355446055511442,
+          "soft_l1_cost": 13.098659860321089
+        },
+        {
+          "bag": "30639_4285f2bc",
+          "group": "bc1e4cbe924a90ce",
+          "n": 1500,
+          "acceleration_rmse": 0.3790831211274068,
+          "soft_l1_cost": 21.772796800010816
+        },
+        {
+          "bag": "30639_44226bde",
+          "group": "f28fe86416cc8dc2",
+          "n": 1500,
+          "acceleration_rmse": 0.1565766156846738,
+          "soft_l1_cost": 11.042060909981762
+        },
+        {
+          "bag": "30639_92226df0",
+          "group": "4ca08ed0da0cb611",
+          "n": 1500,
+          "acceleration_rmse": 0.22133263368137643,
+          "soft_l1_cost": 27.580443417397056
+        },
+        {
+          "bag": "30639_927002c2",
+          "group": "8232b134be2a5002",
+          "n": 1500,
+          "acceleration_rmse": 0.17824733246793772,
+          "soft_l1_cost": 21.133518781030045
+        },
+        {
+          "bag": "30639_d3c43d69",
+          "group": "f28fe86416cc8dc2",
+          "n": 1500,
+          "acceleration_rmse": 0.16666917272554263,
+          "soft_l1_cost": 11.760609939405986
+        }
+      ]
+    },
+    "T20_B05": {
+      "config": {
+        "mass_kg": 40000.0,
+        "wheel_radius_m": 0.33,
+        "gear_ratio": 6.0,
+        "efficiency": 0.9,
+        "total_motor_torque_nm": 2905.0616664738573,
+        "max_power_w": 280873.5334860941,
+        "max_brake_force_n": 45568.80940352644,
+        "rolling_force_n": 2089.7308146696687,
+        "quadratic_drag_n_s2_m2": 5.021948020794408e-17,
+        "actuator_tau_s": 0.3927619145850434,
+        "traction_tau_s": 0.7855238291700868,
+        "braking_tau_s": 0.1963809572925217,
+        "command_deadband": 0.04,
+        "command_exponent": 0.5207432400037213,
+        "travel_direction": 1.0,
+        "max_speed_mps": 40.0,
+        "max_accel_mps2": 3.0,
+        "wheel_sigma_mps": 0.1,
+        "process_noise_v": 0.1,
+        "max_age_s": 0.25,
+        "command_timeout_s": 0.5,
+        "pair_skew_s": 0.1,
+        "disagreement_mps": 0.7,
+        "wheel_rate_limit_mps2": 4.0,
+        "rate_noise_margin_mps": 0.25,
+        "innovation_floor_mps": 0.8,
+        "innovation_cap_mps": 3.0,
+        "stop_speed_mps": 0.07,
+        "stop_model_speed_mps": 0.25,
+        "stop_dwell_s": 0.5,
+        "adaptation_tau_s": 0.5,
+        "disturbance_limit_mps2": 0.6,
+        "max_step_s": 0.2,
+        "reacquire_dwell_s": 0.8,
+        "reacquire_max_residual_mps": 8.0,
+        "reacquire_step_mps": 0.15,
+        "reacquire_min_speed_mps": 0.4,
+        "reacquire_accel_margin_mps2": 0.8
+      },
+      "soft_l1_cost": 757.0423761149804,
+      "weighted_acceleration_rmse": 0.30360159043923723,
+      "per_bag": [
+        {
+          "bag": "30618_0259fe53",
+          "group": "95a748306e6cbf16",
+          "n": 1500,
+          "acceleration_rmse": 0.23745435308091223,
+          "soft_l1_cost": 8.482991558499842
+        },
+        {
+          "bag": "30618_095a115b",
+          "group": "e894436afa9dd9f1",
+          "n": 1500,
+          "acceleration_rmse": 0.1462685385613939,
+          "soft_l1_cost": 9.844360053180706
+        },
+        {
+          "bag": "30618_0a83c933",
+          "group": "86c32e441a296aaa",
+          "n": 1500,
+          "acceleration_rmse": 0.2323466274875085,
+          "soft_l1_cost": 8.342356056260094
+        },
+        {
+          "bag": "30618_0d865417",
+          "group": "96d0ec5b7ee50e7e",
+          "n": 11,
+          "acceleration_rmse": 0.4926282997462012,
+          "soft_l1_cost": 5.720507428543675
+        },
+        {
+          "bag": "30618_1cc230fa",
+          "group": "0f36b619fba02a9b",
+          "n": 1500,
+          "acceleration_rmse": 0.20974726751254913,
+          "soft_l1_cost": 7.192828911164464
+        },
+        {
+          "bag": "30618_20096314",
+          "group": "c8a1e61d1b0710e9",
+          "n": 1500,
+          "acceleration_rmse": 0.2405906172733707,
+          "soft_l1_cost": 8.244748371885443
+        },
+        {
+          "bag": "30618_2050d396",
+          "group": "4a5f0d46327316bb",
+          "n": 1500,
+          "acceleration_rmse": 0.26807763047732774,
+          "soft_l1_cost": 15.518766306925711
+        },
+        {
+          "bag": "30618_2161b58b",
+          "group": "8ff91290187a9769",
+          "n": 1500,
+          "acceleration_rmse": 0.16080270426915189,
+          "soft_l1_cost": 6.913639223495263
+        },
+        {
+          "bag": "30618_21dd3af3",
+          "group": "bc403256f12f9710",
+          "n": 1500,
+          "acceleration_rmse": 0.37780228838920427,
+          "soft_l1_cost": 14.904690763604439
+        },
+        {
+          "bag": "30618_22c1c589",
+          "group": "dc785decbed3d7ce",
+          "n": 1500,
+          "acceleration_rmse": 0.14172416868252777,
+          "soft_l1_cost": 8.812403570123191
+        },
+        {
+          "bag": "30618_2366c74a",
+          "group": "58dd5f96d4201195",
+          "n": 1500,
+          "acceleration_rmse": 0.20150250938736777,
+          "soft_l1_cost": 7.682934447121785
+        },
+        {
+          "bag": "30618_2d2fa7be",
+          "group": "bf69dbfe85be52b0",
+          "n": 1500,
+          "acceleration_rmse": 0.19822956402171488,
+          "soft_l1_cost": 6.476364040460491
+        },
+        {
+          "bag": "30618_2f2f1175",
+          "group": "bf69dbfe85be52b0",
+          "n": 1500,
+          "acceleration_rmse": 0.23835623124784489,
+          "soft_l1_cost": 8.303328891621383
+        },
+        {
+          "bag": "30618_3e9f4952",
+          "group": "b8fda5f0647666fb",
+          "n": 1500,
+          "acceleration_rmse": 0.15477120493926438,
+          "soft_l1_cost": 10.362401468868065
+        },
+        {
+          "bag": "30618_40ffd323",
+          "group": "58dd5f96d4201195",
+          "n": 1500,
+          "acceleration_rmse": 0.2022986921749178,
+          "soft_l1_cost": 7.560827181796366
+        },
+        {
+          "bag": "30618_4d487b0d",
+          "group": "bc403256f12f9710",
+          "n": 1500,
+          "acceleration_rmse": 0.470029735602569,
+          "soft_l1_cost": 17.718708236332716
+        },
+        {
+          "bag": "30618_616ec56b",
+          "group": "6090ff2c1bc8dee6",
+          "n": 1500,
+          "acceleration_rmse": 0.24722605008848283,
+          "soft_l1_cost": 13.899117474645735
+        },
+        {
+          "bag": "30618_67b89902",
+          "group": "b8fda5f0647666fb",
+          "n": 1500,
+          "acceleration_rmse": 0.14005205814601027,
+          "soft_l1_cost": 8.965877909142687
+        },
+        {
+          "bag": "30618_748832b9",
+          "group": "0f36b619fba02a9b",
+          "n": 1500,
+          "acceleration_rmse": 0.21375711679792125,
+          "soft_l1_cost": 6.727803332123406
+        },
+        {
+          "bag": "30618_7849303f",
+          "group": "0f36b619fba02a9b",
+          "n": 1500,
+          "acceleration_rmse": 0.21648105498932585,
+          "soft_l1_cost": 6.680661156185135
+        },
+        {
+          "bag": "30618_79b204dc",
+          "group": "8ff91290187a9769",
+          "n": 1500,
+          "acceleration_rmse": 0.16120820235840727,
+          "soft_l1_cost": 6.857665469236969
+        },
+        {
+          "bag": "30618_7a152380",
+          "group": "c8a1e61d1b0710e9",
+          "n": 1500,
+          "acceleration_rmse": 0.24678760820670118,
+          "soft_l1_cost": 8.582207729241837
+        },
+        {
+          "bag": "30618_7b4d83f4",
+          "group": "2b1581126a480c0f",
+          "n": 1500,
+          "acceleration_rmse": 0.1404528341816064,
+          "soft_l1_cost": 8.747328357131444
+        },
+        {
+          "bag": "30618_8158f0b0",
+          "group": "6090ff2c1bc8dee6",
+          "n": 1500,
+          "acceleration_rmse": 0.16301104029961436,
+          "soft_l1_cost": 11.37337511195879
+        },
+        {
+          "bag": "30618_81c22fee",
+          "group": "86c32e441a296aaa",
+          "n": 1500,
+          "acceleration_rmse": 0.15695364211001714,
+          "soft_l1_cost": 6.115939357791851
+        },
+        {
+          "bag": "30618_87afe526",
+          "group": "2b1581126a480c0f",
+          "n": 1500,
+          "acceleration_rmse": 0.28825626865997533,
+          "soft_l1_cost": 14.508809485171524
+        },
+        {
+          "bag": "30618_887a2b9a",
+          "group": "8ff91290187a9769",
+          "n": 1500,
+          "acceleration_rmse": 0.16138321007999493,
+          "soft_l1_cost": 6.820059609226185
+        },
+        {
+          "bag": "30618_8eb8615c",
+          "group": "bf69dbfe85be52b0",
+          "n": 1500,
+          "acceleration_rmse": 0.20025748280302846,
+          "soft_l1_cost": 6.483244638247699
+        },
+        {
+          "bag": "30618_8f08df08",
+          "group": "c8a1e61d1b0710e9",
+          "n": 1500,
+          "acceleration_rmse": 0.27176657530640436,
+          "soft_l1_cost": 9.455770260518332
+        },
+        {
+          "bag": "30618_92b1b453",
+          "group": "86c32e441a296aaa",
+          "n": 1500,
+          "acceleration_rmse": 0.15702735232717158,
+          "soft_l1_cost": 6.03511217557703
+        },
+        {
+          "bag": "30618_93dc866e",
+          "group": "58dd5f96d4201195",
+          "n": 1500,
+          "acceleration_rmse": 0.1996651738096983,
+          "soft_l1_cost": 7.837251772843322
+        },
+        {
+          "bag": "30618_9bbe6faa",
+          "group": "95a748306e6cbf16",
+          "n": 1500,
+          "acceleration_rmse": 0.1848811245464029,
+          "soft_l1_cost": 6.82090889695041
+        },
+        {
+          "bag": "30618_9c09b081",
+          "group": "dc785decbed3d7ce",
+          "n": 1500,
+          "acceleration_rmse": 0.14929211088323213,
+          "soft_l1_cost": 9.84066914841163
+        },
+        {
+          "bag": "30618_9c10cd0d",
+          "group": "95a748306e6cbf16",
+          "n": 1500,
+          "acceleration_rmse": 0.20591380135560183,
+          "soft_l1_cost": 7.9251300333204195
+        },
+        {
+          "bag": "30618_a395846d",
+          "group": "0f36b619fba02a9b",
+          "n": 1500,
+          "acceleration_rmse": 0.22755566404972724,
+          "soft_l1_cost": 7.840787912026538
+        },
+        {
+          "bag": "30618_a53d5f6f",
+          "group": "4a5f0d46327316bb",
+          "n": 1500,
+          "acceleration_rmse": 0.1574383916366674,
+          "soft_l1_cost": 10.805698512124982
+        },
+        {
+          "bag": "30618_ab5921a4",
+          "group": "1cff0aebccb39ff5",
+          "n": 1500,
+          "acceleration_rmse": 0.14659626170420748,
+          "soft_l1_cost": 9.893154238240884
+        },
+        {
+          "bag": "30618_b3042f78",
+          "group": "bc403256f12f9710",
+          "n": 1500,
+          "acceleration_rmse": 0.41535230324635136,
+          "soft_l1_cost": 14.553933464006677
+        },
+        {
+          "bag": "30618_b83d854d",
+          "group": "eeabf7d118bbcdac",
+          "n": 1500,
+          "acceleration_rmse": 0.17620176336752483,
+          "soft_l1_cost": 12.86504095684423
+        },
+        {
+          "bag": "30618_b95ca60a",
+          "group": "e894436afa9dd9f1",
+          "n": 1500,
+          "acceleration_rmse": 0.14749899392124222,
+          "soft_l1_cost": 9.176774832231047
+        },
+        {
+          "bag": "30618_bab2fe58",
+          "group": "5c1be3e9a2189121",
+          "n": 442,
+          "acceleration_rmse": 1.1268860776785001,
+          "soft_l1_cost": 114.50471428447841
+        },
+        {
+          "bag": "30618_cfd9fd5a",
+          "group": "95a748306e6cbf16",
+          "n": 1500,
+          "acceleration_rmse": 0.2363549210625204,
+          "soft_l1_cost": 8.438281986572383
+        },
+        {
+          "bag": "30618_d4ba7005",
+          "group": "0448e10aab8a0e05",
+          "n": 1500,
+          "acceleration_rmse": 0.2253190014407489,
+          "soft_l1_cost": 12.747034087519989
+        },
+        {
+          "bag": "30618_dd8e6395",
+          "group": "0448e10aab8a0e05",
+          "n": 1500,
+          "acceleration_rmse": 0.160468095474826,
+          "soft_l1_cost": 11.302736847351202
+        },
+        {
+          "bag": "30618_ddad08d6",
+          "group": "bf69dbfe85be52b0",
+          "n": 1500,
+          "acceleration_rmse": 0.23173926130639796,
+          "soft_l1_cost": 8.492227744389952
+        },
+        {
+          "bag": "30618_e2dcf65f",
+          "group": "de891506667c23f9",
+          "n": 1500,
+          "acceleration_rmse": 0.18441960306607857,
+          "soft_l1_cost": 18.80930409299951
+        },
+        {
+          "bag": "30618_e392e5bd",
+          "group": "86c32e441a296aaa",
+          "n": 1500,
+          "acceleration_rmse": 0.22437613986064378,
+          "soft_l1_cost": 7.9313288945084635
+        },
+        {
+          "bag": "30618_e3d94878",
+          "group": "eeabf7d118bbcdac",
+          "n": 1500,
+          "acceleration_rmse": 0.38787116616504297,
+          "soft_l1_cost": 28.160307745606517
+        },
+        {
+          "bag": "30618_e7dcdab1",
+          "group": "c8a1e61d1b0710e9",
+          "n": 1500,
+          "acceleration_rmse": 0.26470437173197636,
+          "soft_l1_cost": 9.483815828771187
+        },
+        {
+          "bag": "30618_efb92709",
+          "group": "58dd5f96d4201195",
+          "n": 1500,
+          "acceleration_rmse": 0.20499484375812776,
+          "soft_l1_cost": 7.779444980921896
+        },
+        {
+          "bag": "30618_f19a4ac3",
+          "group": "1cff0aebccb39ff5",
+          "n": 1500,
+          "acceleration_rmse": 0.158612865933327,
+          "soft_l1_cost": 11.104684899318702
+        },
+        {
+          "bag": "30618_f28179bb",
+          "group": "8ff91290187a9769",
+          "n": 1500,
+          "acceleration_rmse": 0.1606015428367505,
+          "soft_l1_cost": 6.882462656633654
+        },
+        {
+          "bag": "30618_f3b8c99b",
+          "group": "bc403256f12f9710",
+          "n": 1500,
+          "acceleration_rmse": 0.3621849447814241,
+          "soft_l1_cost": 14.239545597376436
+        },
+        {
+          "bag": "30639_0be558e2",
+          "group": "0d4506540f0e7621",
+          "n": 1500,
+          "acceleration_rmse": 0.2484312895205805,
+          "soft_l1_cost": 22.215348203633226
+        },
+        {
+          "bag": "30639_2b4a6347",
+          "group": "bc1e4cbe924a90ce",
+          "n": 1500,
+          "acceleration_rmse": 0.2321301966965218,
+          "soft_l1_cost": 12.442268942974525
+        },
+        {
+          "bag": "30639_4285f2bc",
+          "group": "bc1e4cbe924a90ce",
+          "n": 1500,
+          "acceleration_rmse": 0.3837422291438564,
+          "soft_l1_cost": 21.24990985014685
+        },
+        {
+          "bag": "30639_44226bde",
+          "group": "f28fe86416cc8dc2",
+          "n": 1500,
+          "acceleration_rmse": 0.15515394134866947,
+          "soft_l1_cost": 10.770285905909823
+        },
+        {
+          "bag": "30639_92226df0",
+          "group": "4ca08ed0da0cb611",
+          "n": 1500,
+          "acceleration_rmse": 0.22278502632497849,
+          "soft_l1_cost": 27.578119588497664
+        },
+        {
+          "bag": "30639_927002c2",
+          "group": "8232b134be2a5002",
+          "n": 1500,
+          "acceleration_rmse": 0.1746399520580453,
+          "soft_l1_cost": 20.34694567967816
+        },
+        {
+          "bag": "30639_d3c43d69",
+          "group": "f28fe86416cc8dc2",
+          "n": 1500,
+          "acceleration_rmse": 0.1659028489991025,
+          "soft_l1_cost": 11.669429954609484
+        }
+      ]
+    }
+  },
+  "selected": "T10_B05",
+  "stats": [
+    {
+      "bag": "30618_0259fe53",
+      "eligible": 8034,
+      "selected": 1500
+    },
+    {
+      "bag": "30618_082f1d65",
+      "eligible": 0,
+      "selected": 0
+    },
+    {
+      "bag": "30618_095a115b",
+      "eligible": 8424,
+      "selected": 1500
+    },
+    {
+      "bag": "30618_0a83c933",
+      "eligible": 7833,
+      "selected": 1500
+    },
+    {
+      "bag": "30618_0d865417",
+      "eligible": 11,
+      "selected": 11
+    },
+    {
+      "bag": "30618_1cc230fa",
+      "eligible": 8550,
+      "selected": 1500
+    },
+    {
+      "bag": "30618_20096314",
+      "eligible": 7849,
+      "selected": 1500
+    },
+    {
+      "bag": "30618_2050d396",
+      "eligible": 8336,
+      "selected": 1500
+    },
+    {
+      "bag": "30618_2161b58b",
+      "eligible": 7998,
+      "selected": 1500
+    },
+    {
+      "bag": "30618_21dd3af3",
+      "eligible": 7995,
+      "selected": 1500
+    },
+    {
+      "bag": "30618_22c1c589",
+      "eligible": 7791,
+      "selected": 1500
+    },
+    {
+      "bag": "30618_2366c74a",
+      "eligible": 6589,
+      "selected": 1500
+    },
+    {
+      "bag": "30618_2d2fa7be",
+      "eligible": 8034,
+      "selected": 1500
+    },
+    {
+      "bag": "30618_2f2f1175",
+      "eligible": 7784,
+      "selected": 1500
+    },
+    {
+      "bag": "30618_3e9f4952",
+      "eligible": 8528,
+      "selected": 1500
+    },
+    {
+      "bag": "30618_40ffd323",
+      "eligible": 9004,
+      "selected": 1500
+    },
+    {
+      "bag": "30618_45ff6f99",
+      "eligible": 0,
+      "selected": 0
+    },
+    {
+      "bag": "30618_4d487b0d",
+      "eligible": 8536,
+      "selected": 1500
+    },
+    {
+      "bag": "30618_616ec56b",
+      "eligible": 7894,
+      "selected": 1500
+    },
+    {
+      "bag": "30618_67b89902",
+      "eligible": 7270,
+      "selected": 1500
+    },
+    {
+      "bag": "30618_748832b9",
+      "eligible": 7856,
+      "selected": 1500
+    },
+    {
+      "bag": "30618_7849303f",
+      "eligible": 7856,
+      "selected": 1500
+    },
+    {
+      "bag": "30618_79b204dc",
+      "eligible": 7798,
+      "selected": 1500
+    },
+    {
+      "bag": "30618_7a152380",
+      "eligible": 8382,
+      "selected": 1500
+    },
+    {
+      "bag": "30618_7b4d83f4",
+      "eligible": 7894,
+      "selected": 1500
+    },
+    {
+      "bag": "30618_8158f0b0",
+      "eligible": 8414,
+      "selected": 1500
+    },
+    {
+      "bag": "30618_81c22fee",
+      "eligible": 7950,
+      "selected": 1500
+    },
+    {
+      "bag": "30618_87afe526",
+      "eligible": 8535,
+      "selected": 1500
+    },
+    {
+      "bag": "30618_887a2b9a",
+      "eligible": 7798,
+      "selected": 1500
+    },
+    {
+      "bag": "30618_8eb8615c",
+      "eligible": 8034,
+      "selected": 1500
+    },
+    {
+      "bag": "30618_8f08df08",
+      "eligible": 8382,
+      "selected": 1500
+    },
+    {
+      "bag": "30618_92b1b453",
+      "eligible": 7950,
+      "selected": 1500
+    },
+    {
+      "bag": "30618_93dc866e",
+      "eligible": 6589,
+      "selected": 1500
+    },
+    {
+      "bag": "30618_98161270",
+      "eligible": 0,
+      "selected": 0
+    },
+    {
+      "bag": "30618_9bbe6faa",
+      "eligible": 7574,
+      "selected": 1500
+    },
+    {
+      "bag": "30618_9c09b081",
+      "eligible": 8952,
+      "selected": 1500
+    },
+    {
+      "bag": "30618_9c10cd0d",
+      "eligible": 7574,
+      "selected": 1500
+    },
+    {
+      "bag": "30618_a395846d",
+      "eligible": 8550,
+      "selected": 1500
+    },
+    {
+      "bag": "30618_a53d5f6f",
+      "eligible": 8620,
+      "selected": 1500
+    },
+    {
+      "bag": "30618_ab5921a4",
+      "eligible": 9038,
+      "selected": 1500
+    },
+    {
+      "bag": "30618_b3042f78",
+      "eligible": 8536,
+      "selected": 1500
+    },
+    {
+      "bag": "30618_b83d854d",
+      "eligible": 8719,
+      "selected": 1500
+    },
+    {
+      "bag": "30618_b95ca60a",
+      "eligible": 7759,
+      "selected": 1500
+    },
+    {
+      "bag": "30618_bab2fe58",
+      "eligible": 442,
+      "selected": 442
+    },
+    {
+      "bag": "30618_bc5e53c2",
+      "eligible": 0,
+      "selected": 0
+    },
+    {
+      "bag": "30618_cfd9fd5a",
+      "eligible": 8034,
+      "selected": 1500
+    },
+    {
+      "bag": "30618_d4ba7005",
+      "eligible": 7505,
+      "selected": 1500
+    },
+    {
+      "bag": "30618_dd8e6395",
+      "eligible": 8223,
+      "selected": 1500
+    },
+    {
+      "bag": "30618_ddad08d6",
+      "eligible": 7784,
+      "selected": 1500
+    },
+    {
+      "bag": "30618_e2dcf65f",
+      "eligible": 7395,
+      "selected": 1500
+    },
+    {
+      "bag": "30618_e392e5bd",
+      "eligible": 7833,
+      "selected": 1500
+    },
+    {
+      "bag": "30618_e3d94878",
+      "eligible": 7848,
+      "selected": 1500
+    },
+    {
+      "bag": "30618_e7dcdab1",
+      "eligible": 7849,
+      "selected": 1500
+    },
+    {
+      "bag": "30618_efb92709",
+      "eligible": 9004,
+      "selected": 1500
+    },
+    {
+      "bag": "30618_f19a4ac3",
+      "eligible": 8386,
+      "selected": 1500
+    },
+    {
+      "bag": "30618_f28179bb",
+      "eligible": 7998,
+      "selected": 1500
+    },
+    {
+      "bag": "30618_f3b8c99b",
+      "eligible": 7995,
+      "selected": 1500
+    },
+    {
+      "bag": "30639_0be558e2",
+      "eligible": 8675,
+      "selected": 1500
+    },
+    {
+      "bag": "30639_2b4a6347",
+      "eligible": 8026,
+      "selected": 1500
+    },
+    {
+      "bag": "30639_4285f2bc",
+      "eligible": 8695,
+      "selected": 1500
+    },
+    {
+      "bag": "30639_44226bde",
+      "eligible": 8427,
+      "selected": 1500
+    },
+    {
+      "bag": "30639_92226df0",
+      "eligible": 9200,
+      "selected": 1500
+    },
+    {
+      "bag": "30639_927002c2",
+      "eligible": 8045,
+      "selected": 1500
+    },
+    {
+      "bag": "30639_d3c43d69",
+      "eligible": 8406,
+      "selected": 1500
+    }
+  ],
+  "selected_samples": 87453,
+  "mode_counts": {
+    "1.0": 40094,
+    "0.0": 11898,
+    "-1.0": 35461
+  },
+  "elapsed_s": 15.744082480000003
+}
