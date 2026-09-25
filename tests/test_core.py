@@ -90,6 +90,48 @@ class ObserverTests(unittest.TestCase):
         self.assertLess(abs(e.v - 5), .2)
         self.assertNotEqual(e.mode, 'REACQUIRING')
 
+    def test_common_mode_jump_quarantine_blocks_short_false_pair(self):
+        o=Observer(Config(common_mode_quarantine_s=1.5))
+        modes=[]; errors=[]
+        for i in range(251):
+            t=i*.02
+            z=10 if 2.0 <= t < 3.2 else 5
+            e=o.step(t,Sample(t,0),Sample(t,z),Sample(t,z))
+            modes.append(e.mode);errors.append(abs(e.v-5))
+        self.assertNotIn('REACQUIRING',modes)
+        self.assertLess(max(errors),.25)
+        self.assertGreaterEqual(o.reacquire_blocked_until,3.5)
+
+    def test_quarantine_does_not_delay_return_after_long_dropout(self):
+        base=Observer(Config(common_mode_quarantine_s=0))
+        guarded=Observer(Config(common_mode_quarantine_s=1.5))
+        first={}
+        for i in range(301):
+            t=i*.02
+            if t < 1:
+                z=5; front=rear=Sample(t,z)
+            elif t < 2:
+                front=rear=None
+            else:
+                # Returning pair is far from the model but prior raw samples are
+                # older than max_age_s, therefore no RATE_ANOMALY quarantine.
+                z=8; front=rear=Sample(t,z)
+            for name,o in (('base',base),('guarded',guarded)):
+                e=o.step(t,Sample(t,0),front,rear)
+                if e.mode=='REACQUIRING' and name not in first:first[name]=t
+        self.assertIn('base',first);self.assertIn('guarded',first)
+        self.assertAlmostEqual(first['guarded'],first['base'],places=8)
+
+    def test_quarantine_disabled_preserves_state_shape_and_behavior(self):
+        c=Config(common_mode_quarantine_s=0)
+        o=Observer(c)
+        self.assertEqual(o.reacquire_blocked_until,-math.inf)
+        for i in range(51):
+            t=i*.02
+            e=o.step(t,Sample(t,0),Sample(t,5),Sample(t,5))
+        self.assertAlmostEqual(e.v,5,places=6)
+        self.assertEqual(o.rate_anomaly_times,[None,None])
+
     def test_persistent_agreeing_pair_reacquires_after_model_divergence(self):
         o = Observer()
         modes = []
