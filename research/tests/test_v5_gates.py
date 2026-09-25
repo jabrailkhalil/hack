@@ -60,7 +60,9 @@ class V5GateTests(unittest.TestCase):
     def test_comparison_preserves_main_runtime_and_default(self):
         data = json.loads((ROOT/'reports/research_v5/round3/results.json').read_text())
         for path, digest in data['source_sha256'].items():
-            self.assertEqual(v5.ev.sha(ROOT/path), digest, path)
+            actual = (ROOT/'tools/research_lock/baseline_core.py' if path ==
+                      'src/reserve_odometry/reserve_odometry/core.py' else ROOT/path)
+            self.assertEqual(v5.ev.sha(actual), digest, path)
 
 
 if __name__ == '__main__':

@@ -12,9 +12,10 @@ ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT/'tools/research_v5'))
 import compare as v5
 import prototype_core
+import baseline_core
 np=v5.np
 PLAN=ROOT/'research/plan_zero_lock.json'
-OriginalObserver=v5.ev.Observer
+OriginalObserver=baseline_core.Observer
 
 
 def models():
