@@ -1,0 +1,85 @@
+Starting >>> tram_vehicle_msgs
+Finished <<< tram_vehicle_msgs [7.90s]
+Starting >>> reserve_odometry
+Finished <<< reserve_odometry [0.74s]
+
+Summary: 2 packages finished [8.85s]
+test_calibrated_configs_constant_speed (test_candidate_configs.CandidateConfigs) ... ok
+test_default_matches_eligible_selection (test_candidate_configs.CandidateConfigs) ... ok
+test_exported_configs_are_valid (test_candidate_configs.CandidateConfigs) ... ok
+test_config_validation (test_core.ObserverTests) ... ok
+test_constant_speed (test_core.ObserverTests) ... ok
+test_disturbance_frozen_during_bad_data (test_core.ObserverTests) ... ok
+test_drive_nonlinearity_and_braking (test_core.ObserverTests) ... ok
+test_dropout_duration_matrix_recovers (test_core.ObserverTests) ... ok
+test_dropouts_remain_finite_with_uncertainty_growth (test_core.ObserverTests) ... ok
+test_future_sample_not_consumed (test_core.ObserverTests) ... ok
+test_locked_common_zero_pair_never_reacquires_moving_state (test_core.ObserverTests) ... ok
+test_locked_wheels_not_zero_velocity_update (test_core.ObserverTests) ... ok
+test_nan_and_range_are_ignored (test_core.ObserverTests) ... ok
+test_no_repeated_measurement_update (test_core.ObserverTests) ... ok
+test_per_sensor_monotonicity (test_core.ObserverTests) ... ok
+test_persistent_agreeing_pair_reacquires_after_model_divergence (test_core.ObserverTests) ... ok
+test_short_common_mode_offset_does_not_reacquire (test_core.ObserverTests) ... ok
+test_signed_velocity (test_core.ObserverTests) ... ok
+test_simultaneous_spike (test_core.ObserverTests) ... ok
+test_single_wheel_slip_and_recovery (test_core.ObserverTests) ... ok
+test_stationary_and_no_creep (test_core.ObserverTests) ... ok
+test_time_errors_require_reset (test_core.ObserverTests) ... ok
+test_waits_for_two_wheels (test_core.ObserverTests) ... ok
+test_arc_interpolation (test_core.RouteTests) ... ok
+test_degenerate_and_boundary (test_core.RouteTests) ... ok
+test_asynchronous_wheels_can_initialize (test_final_runtime.FinalRuntimeTests) ... ok
+test_grid_has_no_cumulative_float_drift (test_final_runtime.FinalRuntimeTests) ... ok
+test_invalid_range_cannot_advance_clock (test_final_runtime.FinalRuntimeTests) ... ok
+test_no_reacquisition_from_repeated_same_pair (test_final_runtime.FinalRuntimeTests) ... ok
+test_rate_cannot_exceed_observer_step_limit (test_final_runtime.FinalRuntimeTests) ... ok
+test_reacquisition_survives_prediction_ticks (test_final_runtime.FinalRuntimeTests) ... ok
+test_reacquisition_with_alternating_wheel_updates (test_final_runtime.FinalRuntimeTests) ... ok
+test_all_22_test_bags_were_logged_once (test_submission_integrity.SubmissionIntegrityTests) ... ok
+test_frozen_source_and_report_are_identical (test_submission_integrity.SubmissionIntegrityTests) ... ok
+test_backward_clock_jump_opens_new_segment (test_timeline.TimelineTests) ... ok
+test_bounded_queue (test_timeline.TimelineTests) ... ok
+test_clock_paused_does_not_integrate (test_timeline.TimelineTests) ... ok
+test_duplicate_does_not_replace_value (test_timeline.TimelineTests) ... ok
+test_forward_gap_preserves_relative_position_and_catches_up (test_timeline.TimelineTests) ... ok
+test_future_inputs_are_not_used_at_earlier_tick (test_timeline.TimelineTests) ... ok
+test_old_sample_cannot_rewrite_estimated_past (test_timeline.TimelineTests) ... ok
+test_out_of_order_inputs_sorted_before_use (test_timeline.TimelineTests) ... ok
+test_rejects_unknown_channel (test_timeline.TimelineTests) ... ok
+test_reset_clears_all_input_state (test_timeline.TimelineTests) ... ok
+
+----------------------------------------------------------------------
+Ran 44 tests in 0.538s
+
+OK
+[WARN] [1790354002.661080079] [reserve_odometry]: RELATIVE 1D POSITION: no map/heading. This is NOT an ENU trajectory.
+[WARN] [1790354002.661844700] [reserve_odometry]: Wheel scale defaults to 1/3.6 from measured dataset audit; verify organizer units.
+ROS_SMOKE_PASS outputs=98 rate=20.000Hz v=4.999585
+CALIBRATED_LAUNCH_PASS selected=balanced_physics verified_parameters=36 outputs=120 rate=20.000Hz v=4.998732
+[INFO] [launch]: All log files can be found below /root/.ros/log/2026-09-25-16-33-28-243677-19398e5172dd-500
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [odometry_node-1]: process started with pid [512]
+[odometry_node-1] [WARN] [1790354008.509201558] [reserve_odometry]: RELATIVE 1D POSITION: no map/heading. This is NOT an ENU trajectory.
+[odometry_node-1] [WARN] [1790354008.509916607] [reserve_odometry]: Wheel scale defaults to 1/3.6 from measured dataset audit; verify organizer units.
+[WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+[INFO] [odometry_node-1]: sending signal 'SIGINT' to process[odometry_node-1]
+[odometry_node-1] Traceback (most recent call last):
+[odometry_node-1]   File "/work/install/reserve_odometry/lib/reserve_odometry/odometry_node", line 33, in <module>
+[odometry_node-1]     sys.exit(load_entry_point('reserve-odometry==0.1.0', 'console_scripts', 'odometry_node')())
+[odometry_node-1]   File "/work/install/reserve_odometry/lib/python3.10/site-packages/reserve_odometry/node.py", line 240, in main
+[odometry_node-1]     node.destroy_node()
+[odometry_node-1]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/node.py", line 1691, in destroy_node
+[odometry_node-1]     self.destroy_service(self._services[0])
+[odometry_node-1]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/node.py", line 1615, in destroy_service
+[odometry_node-1]     service.destroy()
+[odometry_node-1]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/service.py", line 93, in destroy
+[odometry_node-1]     self.__service.destroy_when_not_in_use()
+[odometry_node-1] KeyboardInterrupt
+[ERROR] [odometry_node-1]: process has died [pid 512, exit code -2, cmd '/work/install/reserve_odometry/lib/reserve_odometry/odometry_node --ros-args --params-file /work/install/reserve_odometry/share/reserve_odometry/config/default.yaml --params-file /tmp/launch_params__3gft1r7'].
+
+ROS_FAULT_PASS outputs=340 dropout_outputs=60 pause_no_motion=true short_backward_seek_reset=true
+[WARN] [1790354015.275424741] [reserve_odometry]: RELATIVE 1D POSITION: no map/heading. This is NOT an ENU trajectory.
+[WARN] [1790354015.276001190] [reserve_odometry]: Wheel scale defaults to 1/3.6 from measured dataset audit; verify organizer units.
+
+CDR_ROUNDTRIP_PASS 4 types x 3 header lengths
