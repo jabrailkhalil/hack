@@ -7,17 +7,26 @@
   },
   "candidates": {
     "main": {},
-    "adaptation_05s": {
-      "adaptation_tau_s": 0.5
+    "adaptation_2s": {
+      "adaptation_tau_s": 2.0
     },
-    "adaptation_025s": {
-      "adaptation_tau_s": 0.25
+    "adaptation_1s": {
+      "adaptation_tau_s": 1.0
+    },
+    "adaptation_2s_noise_x2": {
+      "adaptation_tau_s": 2.0,
+      "process_noise_v": 0.2
+    },
+    "adaptation_1s_noise_x2": {
+      "adaptation_tau_s": 1.0,
+      "process_noise_v": 0.2
     }
   },
   "hypotheses": {
-    "adaptation": "Round2 tau=1s improved fault RMSE 4.19% without gate violations. Final two faster settings 0.5s and 0.25s; no noise change, no further adaptation sweep below 0.25s."
+    "adaptation": "Round1 faster adaptation reduced fault RMSE with no gate regression; test 1s and 2s.",
+    "combination": "Test faster adaptation with the individually non-regressing x2 process noise. Do not test x4 again: false stops and fault regression."
   },
   "acceptance": "At least 2% clean group-macro RMSE gain OR 5% fault-event group-macro RMSE gain. Neither aggregate may regress >1%. No bag/receiver clean RMSE regression >max(0.01m/s,10%). No coverage/sample count loss, false-stop increase, schedule changes, or causal violations. ROS CI required.",
   "data_policy": "Existing validation is reused for selection; not independent test evidence. No final-test payload access or fitting on GNSS. All candidates and rejections retained.",
-  "previous_round": "reports/research_v5/round2/decision.json"
+  "previous_round": "reports/research_v5/round1/decision.json"
 }

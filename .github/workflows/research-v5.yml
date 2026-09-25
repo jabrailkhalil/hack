@@ -29,7 +29,7 @@ jobs:
           retention-days: 1
           compression-level: 0
           path: dataset/dataset.zip
-      - run: python tools/research_v5/compare.py --output reports/research_v5/round2 --workers 2
+      - run: python tools/research_v5/compare.py --output reports/research_v5/round3 --workers 2
       - uses: actions/upload-artifact@v4
         if: always()
         with:
