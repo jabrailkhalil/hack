@@ -11,7 +11,19 @@ jobs:
       - name: Unit tests without ROS or external Python packages
         run: PYTHONPATH=src/reserve_odometry python3 -m unittest discover -s tests -v
       - name: Compile Python sources
-        run: python3 -m compileall -q src tools tests
+        run: python3 -m compileall -q src tools tests research/tests
+  research-integrity:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - name: Install research test dependencies only (no dataset download)
+        run: python -m pip install -r requirements-research.txt
+      - name: Check role isolation and causality against committed evidence
+        run: python -m unittest discover -s research/tests -v
   ros-humble:
     runs-on: ubuntu-22.04
     container: ros:humble-ros-base
@@ -28,12 +40,13 @@ jobs:
         run: |
           source /opt/ros/humble/setup.bash
           colcon build --executor sequential --event-handlers console_direct+
-      - name: Check installed node with actual ROS messages
+      - name: Check core adapter and separately launched calibrated default
         shell: bash
         run: |
           source /opt/ros/humble/setup.bash
           source install/setup.bash
           python3 tests/ros_smoke.py
+          python3 tests/ros_calibrated_smoke.py
   offline-limited:
     runs-on: ubuntu-22.04
     timeout-minutes: 15
@@ -41,7 +54,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Provision dependencies before disconnecting network
         run: docker build -t tram-odometry-env -f Dockerfile.environment .
-      - name: Offline build and ROS smoke under 2 CPU / 512 MiB limit
+      - name: Offline build and both ROS launch checks under 2 CPU / 512 MiB limit
         run: |
           docker run --rm --network none --cpus 2 --memory 512m \
             -e CMAKE_BUILD_PARALLEL_LEVEL=2 -e MAKEFLAGS=-j2 \
@@ -51,5 +64,6 @@ jobs:
               colcon --log-base log_offline build --build-base build_offline --install-base install_offline --executor sequential
               source install_offline/setup.bash
               python3 tests/ros_smoke.py
+              python3 tests/ros_calibrated_smoke.py
               python3 tests/cdr_roundtrip.py
             '
