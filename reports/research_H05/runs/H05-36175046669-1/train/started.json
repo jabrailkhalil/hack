@@ -1,0 +1,78 @@
+{
+  "baseline": "984fdf2fc4faf05325249215d6b8541c0e68209a",
+  "hypothesis": "H05",
+  "candidate": "H05_ttl2s",
+  "freeze_sha256": "fb9262d300e11d71b4563a496f7e74394ee1e9e442f3dc2bc0d3bece021a90f7",
+  "frozen": {
+    "schema_version": 1,
+    "baseline": "984fdf2fc4faf05325249215d6b8541c0e68209a",
+    "protocol_commit": "886fcf547ba1d39440a33590029513e8774adbef",
+    "candidate": "H05_ttl2s",
+    "candidate_delta": {
+      "h05_history_s": 2.0,
+      "h05_min_reliability": 0.25
+    },
+    "anomaly_capacity_per_channel": 4,
+    "candidate_selection": "single preregistered candidate, fixed before new measurement access",
+    "train_bags": [
+      "30618_0259fe53",
+      "30618_082f1d65",
+      "30618_095a115b"
+    ],
+    "baseline_core_sha256": "780ca4796d86b4fa4e8c8679abfb73f58f23e003d4ee644ba964ffdeac9f0bfc",
+    "patched_core_sha256": "3847b9ffad0fd7fe1d4cf4958b11af5ae0627f62bf74e9d3f94c377328afa9ea",
+    "file_sha256": {
+      "research/patches/H05-reliability.patch": "572df469986e85efd97a922cdaceb9c25f1117fd52705dd93de2c36a5bad06f4",
+      "research/H05/tests/test_reliability.py": "c4bae966ddfc7228a3a4b8adb08b75ce168267c1615c66b554e7bed7e86eb421",
+      "research/H05/profile.yaml": "21cf4ab19d7213318fdcbe8dbabb915fe40f59e9d59a3955dbc7b0617b10ac74",
+      "tools/research_h05/run.py": "a701c3e8c3f52642a2c5a9d802c24673cd8ecc8d2b01b37c269ae91a5ff51dc9"
+    },
+    "test_evaluated": false,
+    "validation_use": "one run after successful train smoke; repeated validation, not independent final test"
+  },
+  "source_sha256": {
+    "Dockerfile.environment": "89a20ba9783557cba82623f7b81fda48bbdc963f30df3f15c726b9bbeba88b94",
+    "research/plan_v3.json": "ddbc1130e214c3d338b3d292232391d3a329a0fd5f13a090027452ae070271b3",
+    "research/split_v3.json": "20928a29daad2b4178ddb92e2a4d9ddb347952f6c03845802a8d82fff7da5ae0",
+    "src/reserve_odometry/config/adaptive_v5.yaml": "dae5f5c80cd87e968b1e838c5b0d25cc531f816949b1fd2a59dd65e8e93efaec",
+    "src/reserve_odometry/config/calibrated_v3.yaml": "a34faa159b8e9436c58e957376f4dd4207395ad63f5b8391ed2a3737c339dbf5",
+    "src/reserve_odometry/config/candidates_v3/balanced_physics.json": "68b81682f9ac48d11bf7d8e67418a45de546ab35526954c5f6fc3eda2d7ec425",
+    "src/reserve_odometry/config/candidates_v3/balanced_physics.yaml": "d1f8fd9d96911ba0f1381a6d1b6837f50fa9f6a2c518cb38421e9c229d3f0a14",
+    "src/reserve_odometry/config/candidates_v3/baseline_v2.yaml": "3aa6c2105bdaf437956bd7e8479d9e97d888dcd7d81d7e39b0ca6278add1075a",
+    "src/reserve_odometry/config/candidates_v3/gain_only.yaml": "e4aa198fb8835335327180e91f42ab3c45efb537cc2bcbb9b7661f5fef761f2b",
+    "src/reserve_odometry/config/candidates_v3/nonlinear_physics.yaml": "68100c74c31ddeac2a634d66b521156991d526dceca38bed37c47ddab7ed7115",
+    "src/reserve_odometry/config/default.yaml": "dae5f5c80cd87e968b1e838c5b0d25cc531f816949b1fd2a59dd65e8e93efaec",
+    "src/reserve_odometry/config/frozen_v4.yaml": "a29d075cbcca235a1cf5ab1f79a0a992f70ba788e729b452f732c273932eeb0e",
+    "src/reserve_odometry/launch/odometry.launch.py": "bafb889e78964fdba892960a47e31d449fb89bc91195d8a573f33e2ed229e42f",
+    "src/reserve_odometry/package.xml": "a0a24f3f7ba564188ee0f223e2afe5378019a58fba1d296f62726263822ec883",
+    "src/reserve_odometry/reserve_odometry/__init__.py": "e1f572a23a3af0453ee58954e1ac155057c09f538f30cf660aa84e9dadba6b74",
+    "src/reserve_odometry/reserve_odometry/core.py": "3847b9ffad0fd7fe1d4cf4958b11af5ae0627f62bf74e9d3f94c377328afa9ea",
+    "src/reserve_odometry/reserve_odometry/node.py": "a63b6cf915d0621eda4a99f4a9a91c8b21a3d2209420e2fc9f4f21084a6dbdd4",
+    "src/reserve_odometry/reserve_odometry/route.py": "631c9be75cc8bcf9770deb3e79aa3fad7c40d01bfaf446015a3566325df47739",
+    "src/reserve_odometry/reserve_odometry/timeline.py": "ed63b44dede078cb3cde501bd1e5559260763c56ac9b832f39924c1d97b0bdbf",
+    "src/reserve_odometry/setup.cfg": "504ebb3ed9db6bc2727b1b3396daf6f5334ea6b7f6eda26672ba2c415f400b71",
+    "src/reserve_odometry/setup.py": "591329e89a9e6cfa324585cc3ec2f2a96129689afc8f6fa51b1d85f96d94a962",
+    "src/tram_vehicle_msgs/CMakeLists.txt": "f220119ed18c68585208da7689733bf38a1a6a5a76973371b6ba18a1086636a6",
+    "src/tram_vehicle_msgs/msg/DriverControllerCommand.msg": "fe294e3cd4132ed8dd732d677e78196ae882d2be5468e76d029ea785615517fb",
+    "src/tram_vehicle_msgs/msg/VelocitySensor.msg": "4fae2e24132e779ae396773fe3df0f54584c8e54323f6f36d249e45449d7e8fd",
+    "src/tram_vehicle_msgs/package.xml": "0fff58dd63afcc03627c11b9968e817043499f438467d90520f59fc5af54127d",
+    "tools/export_bags.py": "696f6bdbf853dac4d4fe6286f6a7f4742f4aea5b1bc508efda52f5bc179c3b66",
+    "tools/finalization/evaluate.py": "f6a19a1727274ca88e1fe1a9fb76d31dbc8ce4e9bbabf669c488f053d76caec7",
+    "tools/research_v3/experiment.py": "95a398003530454457bacb2096fb6bc9d0d5ee32520420c43a9ebeb406376aa0",
+    "tools/research_v3/manifest.py": "51f24a2b9486938ac935d0b648f0612c76df075f7372caf6cc5bd457a8e53abb"
+  },
+  "evaluator_sha256": {
+    "tools/finalization/evaluate.py": "f6a19a1727274ca88e1fe1a9fb76d31dbc8ce4e9bbabf669c488f053d76caec7",
+    "tools/research_v3/experiment.py": "95a398003530454457bacb2096fb6bc9d0d5ee32520420c43a9ebeb406376aa0",
+    "tools/research_v6/compare.py": "70276a0a633cd443d44af870fde73649519be2aaf55944c2a4473c82d7b241b5",
+    "tools/export_bags.py": "696f6bdbf853dac4d4fe6286f6a7f4742f4aea5b1bc508efda52f5bc179c3b66",
+    "research/split_v3.json": "20928a29daad2b4178ddb92e2a4d9ddb347952f6c03845802a8d82fff7da5ae0",
+    "research/plan_v3.json": "ddbc1130e214c3d338b3d292232391d3a329a0fd5f13a090027452ae070271b3"
+  },
+  "runner_sha256": "a701c3e8c3f52642a2c5a9d802c24673cd8ecc8d2b01b37c269ae91a5ff51dc9",
+  "source_ref": "613907b067513c65a36dc8a2cc79ce19858b01b9",
+  "python": "3.13.5",
+  "numpy": "2.3.5",
+  "test_evaluated": false,
+  "stage": "train"
+}
