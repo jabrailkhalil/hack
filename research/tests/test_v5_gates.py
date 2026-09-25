@@ -1,5 +1,6 @@
 """Acceptance checks: missing data and faults must not manufacture a winner."""
 import copy
+import json
 from pathlib import Path
 import sys
 import unittest
@@ -44,6 +45,22 @@ class V5GateTests(unittest.TestCase):
             row['receivers']['master']['candidate'] = dict(row['receivers']['master']['main'])
         result = v5.decision(clean, stress, ['candidate'])['candidate']
         self.assertIn('insufficient_gain', result['rejection_reasons'])
+
+    def test_selected_profile_matches_evaluated_eligible_candidate(self):
+        data = json.loads((ROOT/'reports/research_v5/round3/results.json').read_text())
+        expected = json.loads((ROOT/'reports/research_v5/round3/decision.json').read_text())
+        self.assertEqual(v5.decision(data['clean'], data['stress'], data['plan']['candidates']), expected)
+        profile = json.loads((ROOT/'src/reserve_odometry/config/adaptive_v5.json').read_text())
+        self.assertTrue(expected[profile['name']]['eligible'])
+        self.assertEqual(profile['config'], data['models'][profile['name']])
+        self.assertFalse(data['test_evaluated'])
+        self.assertEqual({a['purpose'] for a in data['access']}, {'validation'})
+        self.assertEqual(len(data['access']), 19)
+
+    def test_comparison_preserves_main_runtime_and_default(self):
+        data = json.loads((ROOT/'reports/research_v5/round3/results.json').read_text())
+        for path, digest in data['source_sha256'].items():
+            self.assertEqual(v5.ev.sha(ROOT/path), digest, path)
 
 
 if __name__ == '__main__':

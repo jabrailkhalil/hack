@@ -23,15 +23,9 @@ jobs:
           python-version: '3.13.5'
       - run: python -m pip install -r requirements-research.txt
       - run: python tools/get_dataset.py
-      - uses: actions/upload-artifact@v4
-        with:
-          name: pinned-dataset
-          retention-days: 1
-          compression-level: 0
-          path: dataset/dataset.zip
-      - run: python tools/research_v5/compare.py --output reports/research_v5/round3 --workers 2
+      - run: python tools/research_v5/compare.py --output "$RUNNER_TEMP/paired-validation" --workers 2
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: paired-validation
-          path: reports/research_v5/
+          path: ${{ runner.temp }}/paired-validation/
