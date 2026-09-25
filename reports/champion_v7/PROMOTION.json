@@ -30,5 +30,26 @@
     "guarded_ci": "https://github.com/jabrailkhalil/hack/actions/runs/36174105585",
     "zero_lock_ci": "https://github.com/jabrailkhalil/hack/actions/runs/36173217491"
   },
-  "qualification": "Reused validation plus a separately defined injected low-speed lock suite. Not an independent final test and not a claim of official score. Combined integration still requires its own CI."
+  "qualification": "Combined v7 + zero-lock core passed the original fixed validation/fault gates on reused validation. Low-speed extension remains a separately injected suite. Not an independent final test or official score.",
+  "combined_validation": {
+    "run_id": 36176052867,
+    "checkpoint_branch": "checkpoint/champion-v7-36176052867",
+    "decision": "eligible",
+    "matched_speed_samples": 698891,
+    "paired_clean": {
+      "improved": 25,
+      "worse": 5,
+      "tied": 0
+    },
+    "main_v5": {
+      "clean_macro_rmse_mps": 0.11713827416709652,
+      "fault_macro_rmse_mps": 0.5384344108523412,
+      "distance_macro_rm": 4.63097780847452
+    },
+    "champion_v7": {
+      "clean_macro_rmse_mps": 0.1145498613174081,
+      "fault_macro_rmse_mps": 0.5382867826008657,
+      "distance_macro_rm": 4.595480653017927
+    }
+  }
 }
