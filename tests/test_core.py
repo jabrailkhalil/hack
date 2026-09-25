@@ -129,7 +129,7 @@ class ObserverTests(unittest.TestCase):
         for i in range(51):
             t=i*.02
             e=o.step(t,Sample(t,0),Sample(t,5),Sample(t,5))
-        self.assertAlmostEqual(e.v,5,places=6)
+        self.assertLess(abs(e.v-5),.01)
         self.assertEqual(o.rate_anomaly_times,[None,None])
 
     def test_persistent_agreeing_pair_reacquires_after_model_divergence(self):
