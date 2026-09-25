@@ -1,0 +1,129 @@
+name: H07 preregistered asymmetric actuator research
+on:
+  push:
+    branches: [research/parallel-H07]
+    paths: [research/H07/RUN]
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: research-H07-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  compare:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+      H07_RUN: reports/research_H07/runs/${{ github.run_id }}/${{ github.run_attempt }}
+    outputs:
+      checkpoint: ${{ steps.freeze.outputs.branch }}
+      freeze_commit: ${{ steps.freeze.outputs.commit }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - name: Prepare pinned research dependencies
+        run: |
+          python -m pip install -r requirements-research.txt
+          mkdir -p "$H07_RUN/checks"
+          python -m pip freeze > "$H07_RUN/checks/pip-freeze.txt"
+      - name: Required core and H07 mechanism checks
+        run: |
+          set -o pipefail
+          PYTHONPATH=src/reserve_odometry python -m unittest discover -s tests -p test_core.py -v 2>&1 | tee "$H07_RUN/checks/core.log"
+          PYTHONPATH=src/reserve_odometry python -m unittest discover -s research/H07 -p test_actuator.py -v 2>&1 | tee "$H07_RUN/checks/h07.log"
+          python -m compileall -q src tools/research_h07 research/H07
+      - name: Record full original unit suite without rewriting historical freeze guards
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          PYTHONPATH=src/reserve_odometry python -m unittest discover -s tests -v 2>&1 | tee "$H07_RUN/checks/full-unit.log"
+      - name: Record unchanged research-integrity suite
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          python -m unittest discover -s research/tests -v 2>&1 | tee "$H07_RUN/checks/integrity.log"
+      - name: Download exact pinned organizer archive
+        run: |
+          set -o pipefail
+          python tools/get_dataset.py 2>&1 | tee "$H07_RUN/checks/dataset.log"
+      - name: Identify only on train; six preregistered pairs
+        run: |
+          set -o pipefail
+          python tools/research_h07/run.py --stage train --output "$H07_RUN/train" 2>&1 | tee "$H07_RUN/checks/train.log"
+      - name: Commit and push frozen candidate BEFORE any validation measurement is opened
+        id: freeze
+        run: |
+          set -eu
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          branch="checkpoint/H07-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          git switch -c "$branch"
+          git add "$H07_RUN/train" "$H07_RUN/checks"
+          git commit -m "research(H07): freeze train-only candidate before validation $GITHUB_RUN_ID [skip ci]"
+          git push origin "HEAD:refs/heads/$branch"
+          echo "branch=$branch" >> "$GITHUB_OUTPUT"
+          echo "commit=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+      - name: One frozen candidate; unchanged paired evaluator and fault scenarios
+        run: |
+          set -o pipefail
+          python tools/research_h07/run.py --stage validate \
+            --frozen "$H07_RUN/train/selected.json" \
+            --freeze-commit '${{ steps.freeze.outputs.commit }}' \
+            --output "$H07_RUN/validation" --workers 2 2>&1 | tee "$H07_RUN/checks/validation.log"
+      - name: Preserve complete or partial H07 evidence on its own checkpoint branch
+        if: always()
+        run: |
+          set -eu
+          if ! test -d "$H07_RUN"; then exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          branch="checkpoint/H07-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          if test "$(git branch --show-current)" != "$branch"; then git switch -c "$branch"; fi
+          git add "$H07_RUN"
+          git diff --cached --quiet || git commit -m "research(H07): preserve evidence $GITHUB_RUN_ID attempt $GITHUB_RUN_ATTEMPT [skip ci]"
+          git push origin "HEAD:refs/heads/$branch"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: H07-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.H07_RUN }}/
+          retention-days: 30
+  candidate-ros-offline:
+    needs: compare
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: H07-${{ github.run_id }}-${{ github.run_attempt }}
+          path: h07-evidence
+      - name: Provision ROS environment before network disconnection
+        run: docker build -t h07-ros-env -f Dockerfile.environment .
+      - name: Actual selected H07 profile under 2 CPU and 500 MB, no network
+        run: |
+          set -o pipefail
+          docker run --rm --network none --cpus 2 --memory 500000000 \
+            -e CMAKE_BUILD_PARALLEL_LEVEL=2 -e MAKEFLAGS=-j2 \
+            -v "$PWD:/work" -w /work h07-ros-env bash -lc '
+              set -e
+              source /opt/ros/humble/setup.bash
+              colcon --log-base log_h07 build --build-base build_h07 --install-base install_h07 --executor sequential
+              source install_h07/setup.bash
+              python3 tests/ros_calibrated_smoke.py --params-file h07-evidence/train/selected.yaml --expected-json h07-evidence/train/selected.json
+              python3 tests/ros_smoke.py
+              python3 tests/ros_fault_smoke.py
+              python3 tests/cdr_roundtrip.py
+            ' 2>&1 | tee h07-ros-offline.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: H07-ROS-${{ github.run_id }}-${{ github.run_attempt }}
+          path: h07-ros-offline.log
+          retention-days: 30

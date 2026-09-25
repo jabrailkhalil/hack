@@ -30,6 +30,9 @@ class Config:
     rolling_force_n: float = 1200.0
     quadratic_drag_n_s2_m2: float = 4.0
     actuator_tau_s: float = 0.35
+    # Zero inherits actuator_tau_s; existing profiles keep identical dynamics.
+    traction_tau_s: float = 0.0
+    braking_tau_s: float = 0.0
     command_deadband: float = 0.04
     command_exponent: float = 1.25
     travel_direction: float = 1.0
@@ -86,7 +89,8 @@ class Config:
             raise ValueError('Innovation cap must be >= floor')
         for key in ('rolling_force_n', 'quadratic_drag_n_s2_m2', 'disagreement_mps',
                     'rate_noise_margin_mps', 'stop_speed_mps', 'stop_model_speed_mps',
-                    'disturbance_limit_mps2', 'reacquire_min_speed_mps'):
+                    'disturbance_limit_mps2', 'reacquire_min_speed_mps',
+                    'traction_tau_s', 'braking_tau_s'):
             if getattr(self, key) < 0:
                 raise ValueError(f'{key} must be nonnegative')
 
@@ -142,6 +146,19 @@ class Observer:
                         c.wheel_radius_m, c.max_power_w / max(abs(v), 1.0))
             return c.travel_direction * q * force / c.mass_kg
         return -math.tanh(v / 0.20) * q * c.max_brake_force_n / c.mass_kg
+
+    def actuator_tau(self, u):
+        """Select lag from the validated command, never from wheel/reference data.
+
+        Neutral, stale and invalid commands use the original coasting dynamics.
+        There is no extra state: switching tau does not reset drive_a.
+        """
+        c = self.c
+        if u > c.command_deadband and c.traction_tau_s > 0.0:
+            return c.traction_tau_s
+        if u < -c.command_deadband and c.braking_tau_s > 0.0:
+            return c.braking_tau_s
+        return c.actuator_tau_s
 
     def resistance(self, v):
         c = self.c
@@ -255,7 +272,7 @@ class Observer:
         u = 0.0 if command_stale else clip(command.value, -1, 1)
         previous_v = self.v
         target = self.drive_target(u, self.v)
-        alpha = 1.0 - math.exp(-dt / c.actuator_tau_s)
+        alpha = 1.0 - math.exp(-dt / self.actuator_tau(u))
         self.drive_a += alpha * (target - self.drive_a)
         a_model = clip(self.drive_a - self.resistance(self.v) + self.disturbance,
                        -c.max_accel_mps2, c.max_accel_mps2)

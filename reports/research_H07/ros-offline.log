@@ -1,0 +1,32 @@
+Starting >>> tram_vehicle_msgs
+Finished <<< tram_vehicle_msgs [8.02s]
+Starting >>> reserve_odometry
+Finished <<< reserve_odometry [0.74s]
+
+Summary: 2 packages finished [9.01s]
+CALIBRATED_LAUNCH_PASS selected=selected verified_parameters=38 outputs=120 rate=20.000Hz v=5.000000
+[INFO] [launch]: All log files can be found below /root/.ros/log/2026-09-25-18-45-27-655181-ce180b2aba1a-485
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [odometry_node-1]: process started with pid [497]
+[odometry_node-1] [WARN] [1790361927.931818362] [reserve_odometry]: RELATIVE 1D POSITION: no map/heading. This is NOT an ENU trajectory.
+[odometry_node-1] [WARN] [1790361927.932607964] [reserve_odometry]: Wheel scale defaults to 1/3.6 from measured dataset audit; verify organizer units.
+[WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+[INFO] [odometry_node-1]: sending signal 'SIGINT' to process[odometry_node-1]
+[odometry_node-1] Traceback (most recent call last):
+[odometry_node-1]   File "/work/install_h07/reserve_odometry/lib/reserve_odometry/odometry_node", line 33, in <module>
+[odometry_node-1]     sys.exit(load_entry_point('reserve-odometry==0.1.0', 'console_scripts', 'odometry_node')())
+[odometry_node-1]   File "/work/install_h07/reserve_odometry/lib/python3.10/site-packages/reserve_odometry/node.py", line 240, in main
+[odometry_node-1]     node.destroy_node()
+[odometry_node-1]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/node.py", line 1696, in destroy_node
+[odometry_node-1]     self.__node.destroy_when_not_in_use()
+[odometry_node-1] KeyboardInterrupt
+[ERROR] [odometry_node-1]: process has died [pid 497, exit code -2, cmd '/work/install_h07/reserve_odometry/lib/reserve_odometry/odometry_node --ros-args --params-file /work/h07-evidence/train/selected.yaml --params-file /tmp/launch_params_a5e57eg5'].
+
+[WARN] [1790361934.436947151] [reserve_odometry]: RELATIVE 1D POSITION: no map/heading. This is NOT an ENU trajectory.
+[WARN] [1790361934.438047395] [reserve_odometry]: Wheel scale defaults to 1/3.6 from measured dataset audit; verify organizer units.
+ROS_SMOKE_PASS outputs=98 rate=20.000Hz v=4.999585
+ROS_FAULT_PASS outputs=340 dropout_outputs=60 pause_no_motion=true short_backward_seek_reset=true
+[WARN] [1790361940.089549025] [reserve_odometry]: RELATIVE 1D POSITION: no map/heading. This is NOT an ENU trajectory.
+[WARN] [1790361940.090184227] [reserve_odometry]: Wheel scale defaults to 1/3.6 from measured dataset audit; verify organizer units.
+
+CDR_ROUNDTRIP_PASS 4 types x 3 header lengths
