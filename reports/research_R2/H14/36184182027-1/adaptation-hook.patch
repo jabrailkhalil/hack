@@ -1,0 +1,54 @@
+--- a/src/reserve_odometry/reserve_odometry/core.py
++++ b/src/reserve_odometry/reserve_odometry/core.py
+@@ -233,6 +233,26 @@
+         if t_pair - self.reacquire_since + 1e-9 < c.reacquire_dwell_s:
+             return None
+         return z
++
++    def _adapt_disturbance(self, t, command_stale, samples, statuses, mode, predicted, gate):
++        c = self.c
++        # Adapt disturbance only from two new, agreeing and model-consistent wheels.
++        if mode == 'FUSED' and not command_stale:
++            z = (samples[0].value + samples[1].value) * 0.5
++            tz = (samples[0].t + samples[1].t) * 0.5
++            old = self.adapt_previous
++            if old is not None and 0.05 <= tz - old.t <= c.max_age_s:
++                measured_a = (z - old.value) / (tz - old.t)
++                if abs(measured_a) <= c.max_accel_mps2 and abs(z) > 0.5:
++                    desired = measured_a - self.drive_a + self.resistance(self.v)
++                    weight = 1 - math.exp(-(tz - old.t) / c.adaptation_tau_s)
++                    self.disturbance = clip(self.disturbance + weight * (desired - self.disturbance),
++                                            -c.disturbance_limit_mps2, c.disturbance_limit_mps2)
++                self.adapt_previous = Sample(tz, z)
++            elif old is None or tz - old.t > c.max_age_s:
++                self.adapt_previous = Sample(tz, z)
++        elif any(status not in ('DUPLICATE_OR_OLD', 'ACCEPTED') for status in statuses):
++            self.adapt_previous = None
+ 
+     def step(self, t, command=None, front=None, rear=None):
+         """Estimate at time t. A Sample can be assimilated at most once.
+@@ -364,23 +384,7 @@
+                     self.pv = max(self.pv, 4 * c.wheel_sigma_mps ** 2)
+                     mode = 'REACQUIRING'
+                     statuses = ['REACQUIRE_ACCEPTED', 'REACQUIRE_ACCEPTED']
+-        # Adapt disturbance only from two new, agreeing and model-consistent wheels.
+-        if mode == 'FUSED' and not command_stale:
+-            z = (samples[0].value + samples[1].value) * 0.5
+-            tz = (samples[0].t + samples[1].t) * 0.5
+-            old = self.adapt_previous
+-            if old is not None and 0.05 <= tz - old.t <= c.max_age_s:
+-                measured_a = (z - old.value) / (tz - old.t)
+-                if abs(measured_a) <= c.max_accel_mps2 and abs(z) > 0.5:
+-                    desired = measured_a - self.drive_a + self.resistance(self.v)
+-                    weight = 1 - math.exp(-(tz - old.t) / c.adaptation_tau_s)
+-                    self.disturbance = clip(self.disturbance + weight * (desired - self.disturbance),
+-                                            -c.disturbance_limit_mps2, c.disturbance_limit_mps2)
+-                self.adapt_previous = Sample(tz, z)
+-            elif old is None or tz - old.t > c.max_age_s:
+-                self.adapt_previous = Sample(tz, z)
+-        elif any(status not in ('DUPLICATE_OR_OLD', 'ACCEPTED') for status in statuses):
+-            self.adapt_previous = None
++        self._adapt_disturbance(t, command_stale, samples, statuses, mode, predicted, gate)
+         # Fresh held zeros may sustain stop evidence, but may NOT be re-assimilated.
+         # A zero reading from locked wheels at substantial model speed is not a stop.
+         stop_candidate = (not command_stale and u <= c.command_deadband and
