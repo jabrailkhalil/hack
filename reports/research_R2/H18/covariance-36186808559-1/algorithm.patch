@@ -1,0 +1,111 @@
+diff --git a/src/reserve_odometry/reserve_odometry/outage_covariance.py b/src/reserve_odometry/reserve_odometry/outage_covariance.py
+new file mode 100644
+index 0000000..67bb6f2
+--- /dev/null
++++ b/src/reserve_odometry/reserve_odometry/outage_covariance.py
+@@ -0,0 +1,105 @@
++"""H18: episode-local held-disturbance uncertainty, not a joint mean observer.
++
++Research only. The default launch remains canonical v7. Covariance is exact only
++for the stated local constant-bias model, NOT calibrated confidence intervals.
++"""
++import math
++from .core import clip
++from .guarded_readout import GuardedReadoutObserver
++
++
++def trusted_residual(observer, old, old_d, estimate, front, rear):
++    """Return the causal legacy adaptation residual, or None (no new label)."""
++    if estimate.mode != 'FUSED' or estimate.command_stale or old is None:
++        return None
++    z = 0.5 * (front.value + rear.value)
++    dt = 0.5 * (front.t + rear.t) - old.t
++    if not 0.05 <= dt <= observer.c.max_age_s:
++        return None
++    a = (z - old.value) / dt
++    if abs(a) > observer.c.max_accel_mps2 or abs(z) <= 0.5:
++        return None
++    return a - observer.drive_a + observer.resistance(observer.v) - old_d
++
++
++class OutageCovarianceObserver(GuardedReadoutObserver):
++    """Add O(1) covariance only while a previously observed d is held.
++
++    Unknown onset correlation is bounded by diag(2 Pvv, 2 Vd). This dominates
++    every PSD matrix with marginal variances Pvv,Vd. During the episode use
++    F=[[1,dt],[0,1]] and Schmidt gain [K,0]. On a legacy d reanchor marginalize
++    the nuisance state WITHOUT lowering accumulated Pvv. Existing d is never
++    assigned here. Gate cap, wheel guards and bounded recovery stay inherited.
++    """
++    def __init__(self, config=None, *, readout=None, enabled=False,
++                 disturbance_variance=0.0025):
++        if not isinstance(enabled, bool):
++            raise ValueError('enabled must be bool')
++        if (not math.isfinite(disturbance_variance)
++                or not 0.0025 <= disturbance_variance <= 0.36):
++            raise ValueError('disturbance_variance must be in [0.0025, 0.36]')
++        self.h18_enabled = enabled
++        self.h18_variance = float(disturbance_variance)
++        super().__init__(config, readout=readout)
++
++    def reset(self, *, velocity=None, position=0.0):
++        super().reset(velocity=velocity, position=position)
++        self.h18_last_accepted = None
++        self.h18_active = False
++        self.h18_pvd = 0.0
++        self.h18_pdd = 0.0
++        self.h18_episodes = 0
++        self.h18_active_ticks = 0
++        self.h18_reanchors = 0
++        self.h18_last_gain = 0.0
++        self.h18_prior = self.pv
++        self.h18_added_variance = 0.0
++
++    def step(self, t, command=None, front=None, rear=None):
++        if not self.h18_enabled:
++            return super().step(t, command, front, rear)
++        # Let the canonical implementation reject invalid time without mutation.
++        if (not math.isfinite(t) or (self.t is not None and
++                (t <= self.t or t - self.t > self.c.max_step_s + 1e-9))):
++            return super().step(t, command, front, rear)
++        dt = 0.0 if self.t is None else t - self.t
++        old_adapt, old_d = self.adapt_previous, self.disturbance
++        self.h18_added_variance = 0.0
++        if (not self.h18_active and self.initialized
++                and self.h18_last_accepted is not None
++                and t - self.h18_last_accepted > self.c.max_age_s + 1e-9):
++            self.h18_active = True
++            self.h18_pvd = 0.0
++            self.h18_pdd = 2.0 * self.h18_variance
++            self.h18_added_variance = self.pv
++            self.pv *= 2.0
++            self.h18_episodes += 1
++        if self.h18_active:
++            increment = 2.0 * dt * self.h18_pvd + dt * dt * self.h18_pdd
++            self.pv += increment
++            self.h18_added_variance += increment
++            self.h18_pvd += dt * self.h18_pdd
++            self.h18_active_ticks += 1
++        # Inject BEFORE guarded readout takes old_pv: its unmodified scalar gain
++        # reconstruction then uses exactly the same prior as the inherited core.
++        stale = (not self._valid(command, t, self.c.command_timeout_s)
++                 or abs(command.value) > 1.000001)
++        prior = self.pv + self.c.process_noise_v * dt * (4.0 if stale else 1.0)
++        self.h18_prior = prior
++        estimate = super().step(t, command, front, rear)
++        self.h18_last_gain = 0.0
++        accepted = 'ACCEPTED' in (estimate.front_status, estimate.rear_status)
++        if accepted:
++            self.h18_last_accepted = t
++            if estimate.mode not in ('INITIALIZED', 'WAITING_FOR_INITIALIZATION'):
++                k = clip(1.0 - self.pv / prior, 0.0, 1.0)
++                self.h18_last_gain = k
++                if self.h18_active:
++                    self.h18_pvd *= 1.0 - k  # Joseph with Kd=0; Pdd unchanged.
++        if self.h18_active and (estimate.mode == 'STOPPED' or
++                trusted_residual(self, old_adapt, old_d, estimate, front, rear) is not None):
++            self.h18_active = False
++            self.h18_reanchors += 1
++            # Marginalization keeps Pvv. Retain the last nuisance entries for
++            # diagnostics; do not pretend adaptation is an independent d sensor.
++        return estimate
