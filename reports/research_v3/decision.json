@@ -1,0 +1,39 @@
+{
+  "selected": "balanced_physics",
+  "validation_receiver_pairs": 30,
+  "stress_receiver_cases": 120,
+  "candidates": {
+    "baseline_v2": {
+      "macro_group_rmse": 0.11797349213916172,
+      "macro_fault_event_rmse": 0.7439417191011267,
+      "relative_clean_gain": 0.0,
+      "rejection_reasons": [],
+      "eligible": true
+    },
+    "gain_only": {
+      "macro_group_rmse": 0.11766383077771533,
+      "macro_fault_event_rmse": 0.7277963555297127,
+      "relative_clean_gain": 0.0026248384771140995,
+      "rejection_reasons": [
+        "less_than_2_percent_clean_gain"
+      ],
+      "eligible": false
+    },
+    "nonlinear_physics": {
+      "macro_group_rmse": 0.11536232197342579,
+      "macro_fault_event_rmse": 0.5743075419732825,
+      "relative_clean_gain": 0.02213353286733086,
+      "rejection_reasons": [],
+      "eligible": true
+    },
+    "balanced_physics": {
+      "macro_group_rmse": 0.11533852573001975,
+      "macro_fault_event_rmse": 0.5737439733005572,
+      "relative_clean_gain": 0.022335241259398866,
+      "rejection_reasons": [],
+      "eligible": true
+    }
+  },
+  "test_evaluated": false,
+  "requires_ros_validation_before_default_change": true
+}
