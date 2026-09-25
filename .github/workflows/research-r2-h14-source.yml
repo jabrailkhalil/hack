@@ -1,0 +1,25 @@
+name: R2 H14 pinned source snapshot
+on:
+  push:
+    branches: [research/round2-H14]
+    paths: [.github/workflows/research-r2-h14-source.yml]
+permissions:
+  contents: read
+jobs:
+  source:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Bundle only the fixed baseline ancestry; no dataset or experiments
+        run: |
+          git branch h14-pinned-baseline 65bba39ed05c781f3f69a65c02f69931152cbfd9
+          git bundle create "$RUNNER_TEMP/h14-baseline.bundle" h14-pinned-baseline
+          git bundle verify "$RUNNER_TEMP/h14-baseline.bundle"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: R2-H14-source-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/h14-baseline.bundle
+          retention-days: 7
