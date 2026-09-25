@@ -1,0 +1,26 @@
+name: R2 H12 pinned source export
+on:
+  push:
+    branches: [research/round2-H12]
+    paths: [.github/workflows/r2-h12-source.yml]
+permissions:
+  contents: read
+jobs:
+  source:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Export exact baseline source, no measurement payloads
+        run: |
+          mkdir -p "$RUNNER_TEMP/h12-source"
+          git archive 65bba39ed05c781f3f69a65c02f69931152cbfd9 src tools tests research docs requirements-research.txt Dockerfile.environment .gitignore README.md submission > "$RUNNER_TEMP/h12-source/baseline.tar"
+          git rev-parse HEAD > "$RUNNER_TEMP/h12-source/export_commit.txt"
+          sha256sum "$RUNNER_TEMP/h12-source/baseline.tar" > "$RUNNER_TEMP/h12-source/SHA256.txt"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: R2-H12-pinned-source
+          path: ${{ runner.temp }}/h12-source/
+          retention-days: 7
