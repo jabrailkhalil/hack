@@ -6,7 +6,7 @@ from pathlib import Path
 import sys
 import subprocess
 ROOT=Path(__file__).resolve().parents[2]
-import experiment as lock
+import runner as lock
 v5=lock.v5
 np=v5.np
 
