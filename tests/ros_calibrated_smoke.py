@@ -3,6 +3,7 @@
 This supplements ros_smoke.py, whose in-process node tests Config defaults.
 No numpy/scipy or dataset required. This is not an end-to-end latency benchmark.
 """
+import argparse
 import json
 import math
 import os
@@ -19,13 +20,24 @@ from tram_vehicle_msgs.msg import VelocitySensor, DriverControllerCommand
 
 
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--params-file', type=Path)
+    parser.add_argument('--expected-json', type=Path)
+    args = parser.parse_args()
+    if (args.params_file is None) != (args.expected_json is None):
+        parser.error('--params-file and --expected-json must be supplied together')
     root = Path(__file__).resolve().parents[1]
     decision = json.loads((root / 'reports/research_v3/decision.json').read_text())
     selected = decision['selected']
-    expected = json.loads((root / 'src/reserve_odometry/config/candidates_v3' /
-                           (selected + '.json')).read_text())['config']
+    expected_path = args.expected_json or (root / 'src/reserve_odometry/config/candidates_v3' /
+                                           (selected + '.json'))
+    expected = json.loads(expected_path.read_text())['config']
+    launch = ['ros2', 'launch', 'reserve_odometry', 'odometry.launch.py']
+    if args.params_file:
+        launch.append('params_file:=' + str(args.params_file.resolve()))
+        selected = expected_path.stem
     log = tempfile.TemporaryFile(mode='w+')
-    process = subprocess.Popen(['ros2', 'launch', 'reserve_odometry', 'odometry.launch.py'],
+    process = subprocess.Popen(launch,
                                stdout=log, stderr=subprocess.STDOUT, start_new_session=True)
     rclpy.init()
     probe = Node('calibrated_launch_probe')

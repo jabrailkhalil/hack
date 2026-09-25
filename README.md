@@ -2,6 +2,24 @@
 
 ROS 2 Humble: нелинейная продольная модель, раздельная проверка тележек, адаптивная поправка, скорость и относительная дистанция. Runtime получает **только три vehicle-топика**, без GNSS, IMU, LLM, numpy или SciPy. Коэффициенты обучены на train в v3; в v4 до final test исправлены асинхронная инициализация/повторный захват, точность временных меток и задержка публикации.
 
+## Дополнительный профиль v5: merge-кандидат
+
+Профиль `config/adaptive_v5.yaml` сокращает постоянную времени адаптации с 8 до
+0.5 с. В paired validation относительно main v4: **−0.79% RMSE скорости** и
+**−5.53% RMSE внутри fault-окон**, без потери покрытия и роста ложных остановок.
+Скалярная ошибка дистанции выросла на 0.23%. Это результат отбора на повторно
+используемом validation, не нового независимого test. [Полный отчёт и отклонённые варианты](reports/research_v5/REPORT.md).
+
+После сборки и `source install/setup.bash`:
+
+```bash
+ros2 launch reserve_odometry odometry.launch.py \
+  params_file:="$PWD/src/reserve_odometry/config/adaptive_v5.yaml"
+```
+
+Стандартный запуск и архив сдачи используют v4. Все приведённые ниже final-test
+и длительные runtime-результаты относятся к опубликованной v4.
+
 ## Материалы для сдачи
 
 **[Инструкция жюри](submission/JUDGE_GUIDE.md)** · **[Модель](submission/MODEL.md)** · **[Результаты](submission/RESULTS.md)** · **[Допущения и ограничения](submission/LIMITATIONS.md)** · **[Шесть полей формы](submission/PLATFORM_FIELDS.md)** · **[Демонстрация](submission/DEMO.md)**.

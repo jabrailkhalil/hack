@@ -1,0 +1,103 @@
+{
+  "selected": "adaptation_05s",
+  "base_commit": "bfdcace8da9d8db16c43e803c513f4aeb2531f63",
+  "dataset_sha256": "d0b2483e13990edb8219b0d7bbcafc7ed001cce549a4d3af467069b2472e7d52",
+  "validation_run": "https://github.com/jabrailkhalil/hack/actions/runs/36163407638",
+  "main_reproduced_exactly": true,
+  "test_evaluated": false,
+  "default_changed": false,
+  "acceptance": {
+    "group_macro_rmse": 0.11713827416709652,
+    "group_macro_fault_event_rmse": 0.5384344108523412,
+    "clean_gain": 0.00787233195971071,
+    "fault_gain": 0.055333329950910004,
+    "rejection_reasons": [],
+    "eligible": true
+  },
+  "evaluated_config": {
+    "mass_kg": 40000.0,
+    "wheel_radius_m": 0.33,
+    "gear_ratio": 6.0,
+    "efficiency": 0.9,
+    "total_motor_torque_nm": 2905.0616664738573,
+    "max_power_w": 280873.5334860941,
+    "max_brake_force_n": 45568.80940352644,
+    "rolling_force_n": 2089.7308146696687,
+    "quadratic_drag_n_s2_m2": 5.021948020794408e-17,
+    "actuator_tau_s": 0.3927619145850434,
+    "command_deadband": 0.04,
+    "command_exponent": 0.5207432400037213,
+    "travel_direction": 1.0,
+    "max_speed_mps": 40.0,
+    "max_accel_mps2": 3.0,
+    "wheel_sigma_mps": 0.1,
+    "process_noise_v": 0.1,
+    "max_age_s": 0.25,
+    "command_timeout_s": 0.5,
+    "pair_skew_s": 0.1,
+    "disagreement_mps": 0.7,
+    "wheel_rate_limit_mps2": 4.0,
+    "rate_noise_margin_mps": 0.25,
+    "innovation_floor_mps": 0.8,
+    "innovation_cap_mps": 3.0,
+    "stop_speed_mps": 0.07,
+    "stop_model_speed_mps": 0.25,
+    "stop_dwell_s": 0.5,
+    "adaptation_tau_s": 0.5,
+    "disturbance_limit_mps2": 0.6,
+    "max_step_s": 0.2,
+    "reacquire_dwell_s": 0.8,
+    "reacquire_max_residual_mps": 8.0,
+    "reacquire_step_mps": 0.15,
+    "reacquire_min_speed_mps": 0.4,
+    "reacquire_accel_margin_mps2": 0.8
+  },
+  "selection_rounds": 3,
+  "nonbaseline_candidates_evaluated": 10,
+  "limitations": [
+    "Reused validation selected the model; not independent test evidence",
+    "Scalar distance is not xyz accuracy",
+    "Small scalar-distance regression is retained",
+    "No new long-duration ROS latency benchmark"
+  ],
+  "metrics": {
+    "main": {
+      "clean_group_macro_rmse": 0.11806774263082002,
+      "fault_group_macro_event_rmse": 0.5699729099411979,
+      "pooled_rmse": 0.21687243076900956,
+      "matched_samples": 698891,
+      "clean_false_stop_samples": 18,
+      "fault_false_stop_samples": 0,
+      "fault_recovery_missing": 0,
+      "scalar_span_group_macro_rmse": 4.62025210189424
+    },
+    "adaptation_05s": {
+      "clean_group_macro_rmse": 0.11713827416709652,
+      "fault_group_macro_event_rmse": 0.5384344108523412,
+      "pooled_rmse": 0.2167236028496654,
+      "matched_samples": 698891,
+      "clean_false_stop_samples": 18,
+      "fault_false_stop_samples": 0,
+      "fault_recovery_missing": 0,
+      "scalar_span_group_macro_rmse": 4.63097780847452
+    }
+  },
+  "descriptive_post_selection_bootstrap": {
+    "clean": {
+      "groups": 9,
+      "gain_interval_95": [
+        0.0038031997642084567,
+        0.0158667767701739
+      ],
+      "independent_significance_test": false
+    },
+    "fault": {
+      "groups": 9,
+      "gain_interval_95": [
+        -0.025547703380953368,
+        0.2872049155458639
+      ],
+      "independent_significance_test": false
+    }
+  }
+}
