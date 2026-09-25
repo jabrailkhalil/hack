@@ -1,0 +1,88 @@
+name: Grouped calibration v3
+on:
+  push:
+    branches: [feat/train-validation-v3]
+    paths:
+      - 'tools/research_v3/**'
+      - 'research/plan_v3.json'
+      - 'research/tests/**'
+      - '.github/workflows/calibration-v3.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: calibration-v3-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  experiment:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - name: Install offline research dependencies
+        run: python -m pip install -r requirements-research.txt
+      - name: Verify dataset and frozen metadata-only split
+        run: |
+          python tools/get_dataset.py
+          python tools/research_v3/manifest.py dataset/data research/split_v3.json
+      - name: Fit only train vehicle topics
+        run: python -u tools/research_v3/experiment.py --stage fit
+      - name: Fixed validation and fault-injection comparison (no final test)
+        run: python -u tools/research_v3/experiment.py --stage validate
+      - name: Leakage and experimental-integrity tests
+        run: python -m unittest discover -s research/tests -v
+      - name: Export full evidence and eligible launch configuration
+        run: python -u tools/research_v3/report.py
+      - name: Dependency-free estimator regression tests
+        run: PYTHONPATH=src/reserve_odometry python -m unittest discover -s tests -v
+      - uses: actions/upload-artifact@v4
+        with:
+          name: calibration-v3-results
+          retention-days: 14
+          path: |
+            research/split_v3.json
+            reports/research_v3/
+            src/reserve_odometry/config/candidates_v3/
+            src/reserve_odometry/config/calibrated_v3.yaml
+            src/reserve_odometry/config/default.yaml
+  publish:
+    needs: experiment
+    if: github.event_name == 'push' && github.ref == 'refs/heads/feat/train-validation-v3'
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/train-validation-v3
+      - name: Refuse stale publication if another author moved the branch
+        run: test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+      - uses: actions/download-artifact@v4
+        with:
+          name: calibration-v3-results
+          path: generated
+      - name: Commit only generated evidence and model configuration to feature branch
+        run: |
+          cp generated/research/split_v3.json research/split_v3.json
+          mkdir -p reports/research_v3 src/reserve_odometry/config/candidates_v3
+          cp generated/reports/research_v3/* reports/research_v3/
+          cp generated/src/reserve_odometry/config/candidates_v3/* src/reserve_odometry/config/candidates_v3/
+          cp generated/src/reserve_odometry/config/calibrated_v3.yaml src/reserve_odometry/config/
+          cp generated/src/reserve_odometry/config/default.yaml src/reserve_odometry/config/
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add research/split_v3.json reports/research_v3 src/reserve_odometry/config
+          if ! git diff --cached --quiet; then
+            git commit -m 'research: record grouped calibration v3 evidence and selected parameters'
+            git push origin HEAD:feat/train-validation-v3
+          fi
