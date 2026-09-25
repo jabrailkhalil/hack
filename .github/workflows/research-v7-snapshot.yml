@@ -1,0 +1,24 @@
+name: V7 source checkpoint
+on:
+  push:
+    branches: [research/robust-alignment-v7]
+    paths: ['.github/workflows/research-v7-snapshot.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  snapshot:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          git archive --format=zip --output=current-source-v7.zip HEAD
+          git rev-parse HEAD > current-source-v7.commit.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: current-source-v7
+          path: |
+            current-source-v7.zip
+            current-source-v7.commit.txt
+          retention-days: 7
