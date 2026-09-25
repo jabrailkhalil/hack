@@ -9,6 +9,7 @@ import math
 import os
 from pathlib import Path
 import signal
+import sys
 import subprocess
 import tempfile
 import time
@@ -19,11 +20,11 @@ from nav_msgs.msg import Odometry
 from tram_vehicle_msgs.msg import VelocitySensor, DriverControllerCommand
 
 
-def main():
+def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--params-file', type=Path)
     parser.add_argument('--expected-json', type=Path)
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
     if (args.params_file is None) != (args.expected_json is None):
         parser.error('--params-file and --expected-json must be supplied together')
     root = Path(__file__).resolve().parents[1]
@@ -111,3 +112,11 @@ def main():
 
 if __name__ == '__main__':
     main()
+    if len(sys.argv) == 1:
+        # Exercise the new installed profile in the existing ROS/offline CI jobs.
+        # Explicit v5 invocations retain their original single-profile behavior.
+        from ament_index_python.packages import get_package_share_directory
+        share = Path(get_package_share_directory('reserve_odometry'))
+        expected = Path(__file__).resolve().parents[1] / 'src/reserve_odometry/config/time_aligned_v6.json'
+        main(['--params-file', str(share / 'config/time_aligned_v6.yaml'),
+              '--expected-json', str(expected)])
