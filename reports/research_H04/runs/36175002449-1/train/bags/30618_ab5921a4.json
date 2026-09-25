@@ -1,0 +1,68 @@
+{
+  "bag": "30618_ab5921a4",
+  "group": "1cff0aebccb39ff5",
+  "input_events": 6454,
+  "outputs": 3521,
+  "clean_rmse": null,
+  "fault_rmse": null,
+  "reference_available": false,
+  "baseline_runtime": {
+    "resets": 0,
+    "dropped": 0,
+    "catchups": 1,
+    "causal_errors": 0,
+    "mode_counts": {
+      "INITIALIZED": 1,
+      "MODEL_ONLY": 1722,
+      "FUSED": 1148,
+      "STOPPED": 650
+    }
+  },
+  "candidate_runtime": {
+    "resets": 0,
+    "dropped": 0,
+    "catchups": 1,
+    "causal_errors": 0,
+    "mode_counts": {
+      "INITIALIZED": 1,
+      "MODEL_ONLY": 1722,
+      "FUSED": 1148,
+      "STOPPED": 650
+    }
+  },
+  "diagnostics": {
+    "outputs": 3521,
+    "tau_output_ticks": {
+      "0.5": 1193,
+      "2.0": 2134,
+      "0.25": 194
+    },
+    "regime_transitions": {
+      "0->1": 14,
+      "1->0": 14,
+      "0->-1": 4,
+      "-1->0": 4
+    },
+    "phase_tau_output_ticks": {},
+    "disturbance_changes": {
+      "FUSED/0.5": 871,
+      "FUSED/2.0": 13,
+      "FUSED/0.25": 152,
+      "STOPPED/2.0": 2,
+      "STOPPED/0.5": 1
+    },
+    "note": "Tau on non-FUSED ticks is diagnostic only; no learning on those ticks except stop resets."
+  },
+  "access": [
+    {
+      "bag": "30618_ab5921a4",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "ace1bb695ba9d6708c5ed499bdff7baa22a12a3f601e71d00401f5bda7c5c3c7"
+    }
+  ]
+}
