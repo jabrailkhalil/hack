@@ -27,4 +27,5 @@ class AdaptiveProfileTests(test_core.ObserverTests):
             key, sep, value = line.strip().partition(':')
             if sep and key.startswith('model.'):
                 actual[key[6:]] = float(value)
-        self.assertEqual(actual, asdict(Config(**self.config)))
+        self.assertEqual(dict(actual, wheel_time_compensation=0.0),
+                         asdict(Config(**self.config)))

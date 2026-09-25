@@ -1,0 +1,45 @@
+--- a/tools/research_v6/compare.py
++++ b/tools/research_v6/compare.py
+@@ -23,13 +23,21 @@
+ ALIASES = {'baseline_v2': 'v4_default', 'balanced_physics': 'v5_adaptive_05s'}
+ 
+ 
++def set_plan(path):
++    global PLAN
++    PLAN = Path(path)
++
++
+ def configurations():
+     plan = json.loads(PLAN.read_text())
+     base = json.loads((ROOT / 'src/reserve_odometry/config/candidates_v3/balanced_physics.json').read_text())['config']
+     adaptive = base | {'adaptation_tau_s': .5}
+     models = {'baseline_v2': ex.Config(**base), 'balanced_physics': ex.Config(**adaptive)}
+     for hypothesis in plan['hypotheses']:
+-        models[hypothesis['id']] = ex.Config(**(adaptive | {'wheel_projection_gain': hypothesis['wheel_projection_gain']}))
++        changes = hypothesis.get('changes')
++        if changes is None:
++            changes = {'wheel_projection_gain': hypothesis['wheel_projection_gain']}
++        models[hypothesis['id']] = ex.Config(**(adaptive | changes))
+     return models
+ 
+ 
+@@ -168,8 +176,10 @@
+ def main():
+     parser = argparse.ArgumentParser(description=__doc__)
+     parser.add_argument('--output', type=Path, required=True)
++    parser.add_argument('--plan', type=Path, default=PLAN)
+     parser.add_argument('--workers', type=int, default=2)
+     args = parser.parse_args()
++    set_plan(args.plan)
+     if not 1 <= args.workers <= 8:
+         raise ValueError('workers must be between 1 and 8')
+     args.output.mkdir(parents=True, exist_ok=False)
+@@ -179,7 +189,7 @@
+         python=platform.python_version(), numpy=np.__version__, test_evaluated=False)
+     ev.save(args.output/'started.json', provenance)
+     clean, stress, access = [], [], []
+-    with ProcessPoolExecutor(max_workers=args.workers) as pool:
++    with ProcessPoolExecutor(max_workers=args.workers, initializer=set_plan, initargs=(str(PLAN),)) as pool:
+         for c, faults, journal in pool.map(validate_bag, store.plan['splits']['validation']):
+             clean.append(c); stress.extend(faults); access.extend(journal)
+             ev.save(args.output/'bags'/(c['bag']+'.json'), dict(clean=c, stress=faults))

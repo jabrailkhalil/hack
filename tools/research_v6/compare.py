@@ -1,276 +1,199 @@
-"""Paired validation against both profiles in main 2f785136; never opens test bags.
+"""Paired, bounded v6 search. Reused validation only; never loads final-test data.
 
-The immutable v4 ZIP supplies the baseline core, whose Git blob is identical to
-core.py in that main commit. All candidates use the unchanged main evaluator,
-reference matching, fault injection, arrival order and output time grid.
+Metric functions and fault locations are the published v4 definitions. An old
+parameter alias inside score() is renamed only after scoring. All baselines and
+rejected candidates are preserved; this script never changes the ROS default.
 """
 import argparse
-from collections import defaultdict
 from concurrent.futures import ProcessPoolExecutor
 from dataclasses import asdict
-import datetime
-import hashlib
 import json
 import math
+import os
 from pathlib import Path
 import platform
 import sys
 import time
-import types
-import zipfile
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / 'tools/finalization'))
 import evaluate as ev
-import numpy as np
-from reserve_odometry.core import Config, Observer
-
-BASE_COMMIT = '2f7851364c6afe9786fad040e0938454d8b0d210'
-BASE_CORE_BLOB = 'f6fc8ecd0b4e16018d814407b1944ce26ea550b0'
-PINNED_FILES = {'src/reserve_odometry/reserve_odometry/timeline.py': 'ed63b44dede078cb3cde501bd1e5559260763c56ac9b832f39924c1d97b0bdbf', 'src/reserve_odometry/config/default.yaml': 'a29d075cbcca235a1cf5ab1f79a0a992f70ba788e729b452f732c273932eeb0e', 'src/reserve_odometry/config/adaptive_v5.json': '3b84e6eb09262ba7a24771e5a56e0aa3ecb89c67f18e501cd0d0366514e99da1', 'src/reserve_odometry/config/candidates_v3/balanced_physics.json': '68b81682f9ac48d11bf7d8e67418a45de546ab35526954c5f6fc3eda2d7ec425', 'tools/finalization/evaluate.py': 'f6a19a1727274ca88e1fe1a9fb76d31dbc8ce4e9bbabf669c488f053d76caec7', 'tools/research_v3/experiment.py': '95a398003530454457bacb2096fb6bc9d0d5ee32520420c43a9ebeb406376aa0', 'tools/export_bags.py': '696f6bdbf853dac4d4fe6286f6a7f4742f4aea5b1bc508efda52f5bc179c3b66', 'research/split_v3.json': '20928a29daad2b4178ddb92e2a4d9ddb347952f6c03845802a8d82fff7da5ae0', 'research/plan_v3.json': 'ddbc1130e214c3d338b3d292232391d3a329a0fd5f13a090027452ae070271b3'}
-NAMES = ('main', 'main_v5', 'candidate')
-OPS = {'rate_hz': 20., 'alignment_delay_s': 0.}
+ex, np = ev.ex, ev.np
+PLAN = ROOT / 'research/plan_v6.json'
+ALIASES = {'baseline_v2': 'v4_default', 'balanced_physics': 'v5_adaptive_05s'}
 
 
-def save(path, data):
-    path.write_text(json.dumps(data, indent=2, ensure_ascii=False, allow_nan=False) + '\n', encoding='utf-8')
+def configurations():
+    plan = json.loads(PLAN.read_text())
+    base = json.loads((ROOT / 'src/reserve_odometry/config/candidates_v3/balanced_physics.json').read_text())['config']
+    adaptive = base | {'adaptation_tau_s': .5}
+    models = {'baseline_v2': ex.Config(**base), 'balanced_physics': ex.Config(**adaptive)}
+    for hypothesis in plan['hypotheses']:
+        models[hypothesis['id']] = ex.Config(**(adaptive | {'wheel_projection_gain': hypothesis['wheel_projection_gain']}))
+    return models
 
 
-def pinned_core():
-    with zipfile.ZipFile(ROOT / 'submission/dist/reserve-odometry-v4.zip') as archive:
-        raw = archive.read('reserve-odometry-v4/src/reserve_odometry/reserve_odometry/core.py')
-    blob = hashlib.sha1(b'blob ' + str(len(raw)).encode() + b'\0' + raw).hexdigest()
-    if blob != BASE_CORE_BLOB:
-        raise ValueError('Archived core is not the pinned current-main estimator')
-    mod = types.ModuleType('paired_v6_main_core')
-    sys.modules[mod.__name__] = mod
-    exec(compile(raw, '<verified-main-core>', 'exec'), mod.__dict__)
-    return mod
+def validate_bag(bag):
+    store = ex.Store()
+    events, refs = store.load(bag, 'validation')  # gate BEFORE SQLite IO
+    models = configurations()
+    operational = dict(rate_hz=20., alignment_delay_s=0.)
+    clean = dict(bag=bag, group=store.records[bag]['group'], **ev.score(events, refs, models, operational))
+    stress = []
+    grid = ex.grid_channels(events)
+    if grid is not None:
+        t, u, f, r, valid = grid
+        indices = np.flatnonzero(valid & ((f+r)/2 > 2.) & (t > max(25., .1*t[-1])) & (t < t[-1]-25.))
+        if len(indices):
+            anchor = float(t[indices[0]])
+            for kind, duration in [('bias', 5.), ('dropout', 5.), ('dropout', 10.), ('lock', 3.)]:
+                fault = dict(kind=kind, start=anchor, end=anchor+duration)
+                window = events[(events[:, 0] >= anchor-20) & (events[:, 0] <= anchor+duration+10.1)]
+                stress.append(dict(bag=bag, group=store.records[bag]['group'], fault=fault,
+                                   **ev.score(window, refs, models, operational, fault)))
+    for row in [clean] + stress:
+        for internal, public in ALIASES.items():
+            row['runtime'][public] = row['runtime'].pop(internal)
+            for scores in row['receivers'].values():
+                scores[public] = scores.pop(internal)
+    return clean, stress, store.access
 
 
-def models():
-    for path, expected in PINNED_FILES.items():
-        if ev.sha(ROOT / path) != expected:
-            raise ValueError('Pinned baseline/evaluator changed: ' + path)
-    old = pinned_core()
-    # configuration() also verifies default.yaml against the fitted physics JSON.
-    _, operations = ev.configuration()
-    if operations != OPS:
-        raise ValueError('The comparison requires unchanged 20 Hz / zero-delay operation')
-    cfg = ROOT / 'src/reserve_odometry/config'
-    base = json.loads((cfg / 'candidates_v3/balanced_physics.json').read_text())['config']
-    v5 = json.loads((cfg / 'adaptive_v5.json').read_text())['config']
-    if v5 != dict(base, adaptation_tau_s=.5):
-        raise ValueError('Baseline v5 differs from pinned main profile')
-    candidate = json.loads((cfg / 'time_aligned_v6.json').read_text())['config']
-    if candidate != dict(v5, wheel_time_compensation=1.):
-        raise ValueError('Selected candidate changed: run a new experiment, not this confirmation')
-    return {'main': (old.Observer, old.Config(**base)),
-            'main_v5': (old.Observer, old.Config(**v5)),
-            'candidate': (Observer, Config(**candidate))}
+def metric_value(metrics, key):
+    if key == 'distance':
+        return metrics.get('distance_surrogate', {}).get('reanchored_span_rmse_m')
+    return metrics.get(key)
 
 
-def predict(events, model, fault=None):
-    observer, config = model
-    previous = ev.Observer
-    try:
-        ev.Observer = observer
-        return ev.replay(events, config, OPS, fault)
-    finally:
-        ev.Observer = previous
+def macro(rows, name, key):
+    groups = {}
+    for row in rows:
+        for scores in row['receivers'].values():
+            value = metric_value(scores[name], key)
+            if value is not None:
+                groups.setdefault(row['group'], []).append(value)
+    return float(np.mean([np.mean(v) for v in groups.values()])) if groups else None
 
 
-def compare(events, refs, model_set, fault=None, check_disabled=False):
-    arrays, runtime = {}, {}
-    for name, model in model_set.items():
-        arrays[name], runtime[name] = predict(events, model, fault)
-    base = arrays['main']
-    t = base[:, 0]
-    for name, a in arrays.items():
-        if a.shape != base.shape or not np.array_equal(a[:, 0], t):
-            raise AssertionError('Output schedule changed: ' + name)
-        if runtime[name]['causal_errors']:
-            raise AssertionError('Future input used: ' + name)
-    if check_disabled:
-        for name in ('main', 'main_v5'):
-            model = (Observer, Config(**asdict(model_set[name][1]), wheel_time_compensation=0.))
-            disabled, info = predict(events, model, fault)
-            if not np.array_equal(disabled, arrays[name], equal_nan=True) or info != runtime[name]:
-                raise AssertionError('Disabled compensation differs from pinned main: ' + name)
-    receivers = {}
-    for receiver, values in refs.items():
-        target = ev.ex.match(values, t)
-        mask = np.isfinite(target)
-        if fault:
-            mask &= (t >= fault['start']) & (t < fault['end'] + 10.)
-        scores = {}
-        for name, a in arrays.items():
-            m = ev.ex.metrics(t, a[:, 1], target, mask)
-            m['false_stop_samples'] = int(np.sum(mask & (target > 1.) & (a[:, 5] > 0)))
-            if fault:
-                m['event_rmse'] = ev.ex.metrics(t, a[:, 1], target, mask & (t < fault['end']))['rmse']
-                good = mask & (t >= fault['end']) & (np.abs(a[:, 1] - target) < .25)
-                runs = np.convolve(good.astype(int), np.ones(20, int), mode='valid') if len(t) >= 20 else np.array([])
-                hits = np.flatnonzero(runs == 20)
-                m['recovery_s'] = float(t[hits[0]] - fault['end']) if len(hits) else None
-            else:
-                m['distance_surrogate'] = ev.distance_surrogate(a, target)
-            scores[name] = m
-        receivers[receiver] = scores
-    return dict(receivers=receivers, runtime=runtime, outputs=len(t), disabled_compatibility_checked=check_disabled)
+def total(rows, name, key):
+    return sum(scores[name].get(key, 0) for row in rows for scores in row['receivers'].values())
 
 
-def fault_windows(events):
-    """Exactly the fault placement and warm-up window of the main v4 evaluator."""
-    grid = ev.ex.grid_channels(events)
-    if grid is None:
-        return
-    t, u, f, r, valid = grid
-    indices = np.flatnonzero(valid & ((f + r) / 2 > 2) & (t > max(25., .1 * t[-1])) & (t < t[-1] - 25.))
-    if len(indices):
-        anchor = float(t[indices[0]])
-        for kind, duration in [('bias', 5.), ('dropout', 5.), ('dropout', 10.), ('lock', 3.)]:
-            fault = dict(kind=kind, start=anchor, end=anchor + duration)
-            window = events[(events[:, 0] >= anchor - 20.) & (events[:, 0] <= anchor + duration + 10.1)]
-            yield fault, window
+def unrecovered(rows, name):
+    return sum(m.get('event_rmse') is not None and m.get('recovery_s') is None
+               for row in rows for scores in row['receivers'].values() for m in [scores[name]])
 
 
-def worker(args):
-    bag, data_root, output, check_disabled = args
-    store = ev.ex.Store(data_root)
-    if bag not in store.plan['splits']['validation']:
-        raise PermissionError('Only validation measurements are permitted')
-    # Store enforces role before opening the DB and verifies its frozen checksum.
-    events, refs = store.load(bag, 'validation')
-    model_set = models()
-    metadata = dict(bag=bag, group=store.records[bag]['group'], role='validation')
-    clean = dict(**metadata, **compare(events, refs, model_set, check_disabled=check_disabled))
-    stress = [dict(**metadata, fault=fault, **compare(window, refs, model_set, fault))
-              for fault, window in fault_windows(events)]
-    result = dict(clean=clean, stress=stress, access=store.access)
-    save(output / 'bags' / (bag + '.json'), result)
-    print(bag, 'outputs', clean['outputs'], 'faults', len(stress), flush=True)
-    return result
+def summary(clean, stress, name):
+    n = total(clean, name, 'n')
+    squares = sum(s[name]['rmse']**2*s[name]['n'] for r in clean for s in r['receivers'].values() if s[name]['rmse'] is not None)
+    return dict(clean_rmse=macro(clean, name, 'rmse'), fault_rmse=macro(stress, name, 'event_rmse'),
+                distance_rmse=macro(clean, name, 'distance'), samples=n, pooled_rmse=math.sqrt(squares/n) if n else None,
+                false_stops_clean=total(clean, name, 'false_stop_samples'),
+                false_stops_fault=total(stress, name, 'false_stop_samples'), unrecovered=unrecovered(stress, name))
 
 
-def mean(values):
-    return float(np.mean(values)) if len(values) else None
-
-
-def aggregate(clean, stress):
-    result = {}
-    for name in NAMES:
-        groups, distances, faults = defaultdict(list), defaultdict(list), defaultdict(list)
-        n, squares, stops, fault_stops, missing = 0, 0., 0, 0, 0
-        recoveries, no_reference = [], []
-        for row in clean:
-            for receiver, models_ in row['receivers'].items():
-                m = models_[name]
-                stops += m['false_stop_samples']
-                if m['rmse'] is not None:
-                    groups[row['group']].append(m['rmse'])
-                    n += m['n']
-                    squares += m['rmse'] ** 2 * m['n']
-                else:
-                    no_reference.append(row['bag'] + '/' + receiver)
-                d = m['distance_surrogate']['reanchored_span_rmse_m']
-                if d is not None:
-                    distances[row['group']].append(d)
-        for row in stress:
-            for models_ in row['receivers'].values():
-                m = models_[name]
-                fault_stops += m['false_stop_samples']
-                if m['event_rmse'] is not None:
-                    faults[row['group']].append(m['event_rmse'])
-                    if m['recovery_s'] is None:
-                        missing += 1
+def reproduce_published_v5(clean):
+    """Check BOTH baselines against measured main, not against a refitted baseline."""
+    old = json.loads((ROOT/'reports/research_v5/round3/results.json').read_text())
+    by_bag = {r['bag']: r for r in old['clean']}
+    maximum, comparisons = 0., 0
+    for row in clean:
+        for receiver, metrics in row['receivers'].items():
+            for new, previous in [('v4_default', 'main'), ('v5_adaptive_05s', 'adaptation_05s')]:
+                m, p = metrics[new], by_bag[row['bag']]['receivers'][receiver][previous]
+                for key in ['rmse', 'mae', 'bias', 'p95', 'n', 'coverage', 'false_stop_samples']:
+                    a, b = m.get(key), p.get(key)
+                    if a is None or b is None:
+                        if a != b:
+                            raise AssertionError(('baseline_missingness', row['bag'], receiver, key))
                     else:
-                        recoveries.append(m['recovery_s'])
-        result[name] = dict(macro_rmse=mean([mean(v) for v in groups.values()]),
-                            pooled_rmse=math.sqrt(squares / n) if n else None, n=n,
-                            distance_macro=mean([mean(v) for v in distances.values()]),
-                            false_stops=stops, fault_macro=mean([mean(v) for v in faults.values()]),
-                            fault_false_stops=fault_stops, fault_missing_recovery=missing,
-                            mean_recovery_s=mean(recoveries),
-                            groups={k: mean(v) for k, v in groups.items()}, missing_bag_receivers=no_reference)
-    return result
+                        error = abs(a-b); maximum = max(maximum, error); comparisons += 1
+                        if error > 1e-10:
+                            raise AssertionError(('baseline_mismatch', row['bag'], receiver, new, key, a, b))
+    return dict(compared_numeric_fields=comparisons, max_absolute_delta=maximum, passed=True)
 
 
-def decision(clean, summary):
-    reasons, paired = [], {}
-    candidate = summary['candidate']
-    for name in ('main', 'main_v5'):
-        base = summary[name]
-        if candidate['macro_rmse'] is None or base['macro_rmse'] is None or candidate['macro_rmse'] >= base['macro_rmse']:
-            reasons.append(name + ': no clean gain')
-        for metric, limit in [('fault_macro', 1.05), ('distance_macro', 1.01)]:
-            if candidate[metric] is None or base[metric] is None or candidate[metric] > base[metric] * limit:
-                reasons.append(name + ': ' + metric)
-        for metric in ('false_stops', 'fault_false_stops', 'fault_missing_recovery'):
-            if candidate[metric] > base[metric]:
-                reasons.append(name + ': ' + metric)
-        wins, regressions, ties = 0, 0, 0
-        for row in clean:
-            for receiver, scores in row['receivers'].items():
-                b, c = scores[name], scores['candidate']
-                if b['n'] != c['n']:
-                    reasons.append(name + ': coverage differs')
-                if b['rmse'] is None or c['rmse'] is None:
-                    if b['rmse'] != c['rmse']:
-                        reasons.append(name + ': reference availability differs')
-                    continue
-                wins += c['rmse'] < b['rmse']
-                regressions += c['rmse'] > b['rmse']
-                ties += c['rmse'] == b['rmse']
-                if c['rmse'] > b['rmse'] + max(.01, .1 * b['rmse']):
-                    reasons.append(name + ': clean regression ' + row['bag'] + '/' + receiver)
-        paired[name] = dict(improved=int(wins), worse=int(regressions), tied=int(ties))
-    return dict(eligible=not reasons, rejection_reasons=reasons, paired=paired,
-                qualification='Previously reused validation; not an independent held-out test')
+def decide(clean, stress, names):
+    entries = {name: summary(clean, stress, name) for name in names}
+    champion = 'v5_adaptive_05s'
+    base = entries[champion]
+    for name, s in entries.items():
+        reasons = []
+        s['clean_gain_vs_v5'] = 1-s['clean_rmse']/base['clean_rmse']
+        s['fault_gain_vs_v5'] = 1-s['fault_rmse']/base['fault_rmse']
+        s['distance_change_vs_v5'] = s['distance_rmse']/base['distance_rmse']-1
+        if name not in ('v4_default', champion):
+            if s['clean_gain_vs_v5'] < .02 and s['fault_gain_vs_v5'] < .05:
+                reasons.append('insufficient_gain')
+            if s['clean_gain_vs_v5'] < -.005 or s['fault_gain_vs_v5'] < -.005:
+                reasons.append('aggregate_regression')
+            if s['distance_change_vs_v5'] > .01:
+                reasons.append('distance_regression')
+            if s['unrecovered'] > base['unrecovered']:
+                reasons.append('unrecovered_increase')
+            for row in clean:
+                for receiver, scores in row['receivers'].items():
+                    a, b = scores[name], scores[champion]
+                    if b['rmse'] is not None and (a['rmse'] is None or a['rmse'] > b['rmse']+max(.005, .05*b['rmse'])):
+                        reasons.append('bag_regression:'+row['bag']+'/'+receiver)
+            for row in clean + stress:
+                if row['runtime'][name]['causal_errors'] or row['runtime'][name]['resets']:
+                    reasons.append('causality_or_reset')
+                for receiver, scores in row['receivers'].items():
+                    a, b = scores[name], scores[champion]
+                    if a['n'] != b['n'] or a['coverage'] != b['coverage']:
+                        reasons.append('coverage')
+                    if a.get('false_stop_samples', 0) > b.get('false_stop_samples', 0):
+                        reasons.append('false_stops:'+row['bag']+'/'+receiver)
+            s['eligible'] = not reasons
+        else:
+            s['eligible'] = False  # baselines are not proposed innovations
+        s['rejection_reasons'] = sorted(set(reasons))
+    eligible = [name for name, s in entries.items() if s['eligible']]
+    selected = min(eligible, key=lambda n: entries[n]['clean_rmse']) if eligible else champion
+    # Fallback is only the already accepted v5 profile, with its published gate.
+    v4 = entries['v4_default']
+    if not eligible and not (base['fault_rmse'] <= v4['fault_rmse']*.95 and
+                            base['clean_rmse'] <= v4['clean_rmse']*1.01 and
+                            base['distance_rmse'] <= v4['distance_rmse']*1.01 and
+                            base['false_stops_clean'] <= v4['false_stops_clean'] and
+                            base['false_stops_fault'] <= v4['false_stops_fault']):
+        selected = 'v4_default'
+    return dict(selected=selected, candidates=entries, test_evaluated=False,
+                scope='adaptive selection on reused validation; NOT independent generalization evidence',
+                promotion_requires='passing ROS/default/offline integrity checks; runner never changes default')
 
 
-def run(output, data_root, workers, check_disabled):
-    if workers < 1:
-        raise ValueError('workers must be positive')
-    store = ev.ex.Store(data_root)
-    model_set = models()
-    output.mkdir(parents=True, exist_ok=False)
-    (output / 'bags').mkdir()
-    paths = [Path(__file__), ROOT / 'src/reserve_odometry/reserve_odometry/core.py',
-             ROOT / 'src/reserve_odometry/reserve_odometry/timeline.py',
-             ROOT / 'tools/finalization/evaluate.py', ROOT / 'tools/research_v3/experiment.py',
-             ROOT / 'tools/export_bags.py', ROOT / 'research/split_v3.json', ROOT / 'research/plan_v3.json']
-    paths += list((ROOT / 'src/reserve_odometry/config').glob('*v[56].json'))
-    plan = dict(base_commit=BASE_COMMIT, baseline_core_git_blob=BASE_CORE_BLOB,
-                created_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),
-                models={name: asdict(m[1]) for name, m in model_set.items()}, operational=OPS,
-                source_sha256={str(p.relative_to(ROOT)): ev.sha(p) for p in paths},
-                split_sha256=store.plan['manifest_sha256'],
-                python=platform.python_version(), numpy=np.__version__, workers=workers,
-                role='validation', test_evaluated=False, check_disabled=check_disabled,
-                selection='Selected on development, fixed before the original validation; this runner does not select or fit parameters')
-    save(output / 'started.json', plan)
-    started = time.perf_counter()
-    with ProcessPoolExecutor(max_workers=workers) as pool:
-        rows = list(pool.map(worker, [(bag, data_root, output, check_disabled) for bag in store.plan['splits']['validation']]))
-    clean = [r['clean'] for r in rows]
-    stress = [s for r in rows for s in r['stress']]
-    summary = aggregate(clean, stress)
-    report = dict(plan=plan, summary=summary, clean=clean, stress=stress,
-                  decision=decision(clean, summary), elapsed_s=time.perf_counter() - started)
-    save(output / 'access.json', [a for r in rows for a in r['access']])
-    save(output / 'results.json', report)
-    print(json.dumps(dict(summary=summary, decision=report['decision']), indent=2))
-    return report
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--workers', type=int, default=2)
+    args = parser.parse_args()
+    if not 1 <= args.workers <= 8:
+        raise ValueError('workers must be between 1 and 8')
+    args.output.mkdir(parents=True, exist_ok=False)
+    plan = json.loads(PLAN.read_text()); store = ex.Store(); started = time.perf_counter()
+    provenance = dict(plan=plan, plan_sha256=ev.sha(PLAN), source_sha256=ev.protected_files(),
+        runner_sha256=ev.sha(__file__), source_ref=os.environ.get('GITHUB_SHA', 'local-working-copy'),
+        python=platform.python_version(), numpy=np.__version__, test_evaluated=False)
+    ev.save(args.output/'started.json', provenance)
+    clean, stress, access = [], [], []
+    with ProcessPoolExecutor(max_workers=args.workers) as pool:
+        for c, faults, journal in pool.map(validate_bag, store.plan['splits']['validation']):
+            clean.append(c); stress.extend(faults); access.extend(journal)
+            ev.save(args.output/'bags'/(c['bag']+'.json'), dict(clean=c, stress=faults))
+            ev.save(args.output/'access.json', dict(test_evaluated=False, access=access))
+            print('CHECKPOINT', c['bag'], flush=True)
+    reproduction = reproduce_published_v5(clean)
+    names = [ALIASES.get(n,n) for n in configurations()]
+    result = dict(**provenance, clean=clean, stress=stress, baseline_reproduction=reproduction,
+                  elapsed_s=time.perf_counter()-started,
+                  models={ALIASES.get(n,n):asdict(c) for n,c in configurations().items()})
+    ev.save(args.output/'results.json', result)
+    decision = decide(clean, stress, names); ev.save(args.output/'decision.json', decision)
+    print(json.dumps(decision, indent=2), flush=True)
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--output', type=Path, required=True)
-    parser.add_argument('--data-root', type=Path, default=ROOT / 'dataset/data')
-    parser.add_argument('--workers', type=int, default=2)
-    parser.add_argument('--check-disabled', action='store_true', help='Additionally replay both main profiles with the new feature disabled')
-    args = parser.parse_args()
-    report = run(args.output, args.data_root, args.workers, args.check_disabled)
-    if not report['decision']['eligible']:
-        raise SystemExit('Candidate did not pass the documented comparison gates')
+    main()

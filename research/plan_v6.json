@@ -1,0 +1,26 @@
+{
+  "version": 6,
+  "base_main": "2f7851364c6afe9786fad040e0938454d8b0d210",
+  "previous_pr": 10,
+  "purpose": "Improve measured results and make only the winning verified profile the operational default. Preserve the frozen v4 submission and all intermediate evidence.",
+  "data_policy": "Use train/development for diagnostic reasoning and the existing 19-bag grouped validation for paired selection. Final test v4 is already exposed; do not read or rerun its measurements for this search. Reused validation is not independent test evidence.",
+  "baselines": ["v4_default", "v5_adaptive_05s"],
+  "hypotheses": [
+    {"id": "v5_project_half", "base": "v5_adaptive_05s", "wheel_projection_gain": 0.5},
+    {"id": "v5_project_full", "base": "v5_adaptive_05s", "wheel_projection_gain": 1.0}
+  ],
+  "hypothesis_rationale": "Existing correction compares past-stamped wheel samples against a current-time prediction. Causally projecting an already received, valid wheel sample using bounded model acceleration may reduce timing lag without waiting for future inputs. Raw samples must remain untouched for rate checks, disturbance training and fault evidence.",
+  "invariants": ["same candidate source-time schedule", "no future inputs", "one assimilation per wheel sample", "same reference matching", "unchanged SI scale and fitted physics", "no new GNSS runtime subscription", "bounded memory"],
+  "acceptance": {
+    "gain_relative_to_v5": "at least 2% clean group-macro RMSE OR at least 5% fault-event group-macro RMSE",
+    "max_clean_and_fault_aggregate_regression_fraction": 0.005,
+    "max_scalar_span_distance_regression_fraction": 0.01,
+    "max_per_bag_receiver_clean_regression": "max(0.005 m/s, 5% of v5)",
+    "coverage_loss": 0,
+    "false_stop_increase": 0,
+    "unrecovered_fault_increase": 0,
+    "core_ros_offline_tests": "all pass before main promotion"
+  },
+  "fallback": "If projection candidates fail, reject them in the report. Promote v5 over v4 only with its existing documented 5% fault-gain gate and a fresh paired reproduction plus actual default-launch verification; otherwise keep v4. No claim of a universally best estimator.",
+  "intermediate_pushes": "Commit plan, implementation, all candidate metrics including failed candidates, and promotion decision. Never force-push main. Check main SHA again before merging."
+}

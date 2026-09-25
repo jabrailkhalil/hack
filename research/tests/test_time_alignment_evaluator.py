@@ -8,7 +8,7 @@ import unittest
 from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[2]
-spec = importlib.util.spec_from_file_location('paired_v6', ROOT / 'tools/research_v6/compare.py')
+spec = importlib.util.spec_from_file_location('paired_v6', ROOT / 'tools/research_time_alignment/compare.py')
 v6 = importlib.util.module_from_spec(spec)
 sys.modules[spec.name] = v6
 spec.loader.exec_module(v6)

@@ -1,0 +1,90 @@
+{
+  "selected": "v5_adaptive_05s",
+  "candidates": {
+    "v4_default": {
+      "clean_rmse": 0.11806774263082002,
+      "fault_rmse": 0.5699729099411979,
+      "distance_rmse": 4.62025210189424,
+      "samples": 698891,
+      "pooled_rmse": 0.21687243076900956,
+      "false_stops_clean": 18,
+      "false_stops_fault": 0,
+      "unrecovered": 0,
+      "clean_gain_vs_v5": -0.007934797318232878,
+      "fault_gain_vs_v5": -0.058574449279590546,
+      "distance_change_vs_v5": -0.0023160781640222394,
+      "eligible": false,
+      "rejection_reasons": []
+    },
+    "v5_adaptive_05s": {
+      "clean_rmse": 0.11713827416709652,
+      "fault_rmse": 0.5384344108523412,
+      "distance_rmse": 4.63097780847452,
+      "samples": 698891,
+      "pooled_rmse": 0.2167236028496654,
+      "false_stops_clean": 18,
+      "false_stops_fault": 0,
+      "unrecovered": 0,
+      "clean_gain_vs_v5": 0.0,
+      "fault_gain_vs_v5": 0.0,
+      "distance_change_vs_v5": 0.0,
+      "eligible": false,
+      "rejection_reasons": []
+    },
+    "v5_decay_2s": {
+      "clean_rmse": 0.11712955489883302,
+      "fault_rmse": 0.5498249809416411,
+      "distance_rmse": 4.61856825144608,
+      "samples": 698891,
+      "pooled_rmse": 0.21671257315570672,
+      "false_stops_clean": 18,
+      "false_stops_fault": 0,
+      "unrecovered": 0,
+      "clean_gain_vs_v5": 7.44356900039822e-05,
+      "fault_gain_vs_v5": -0.021154981664839312,
+      "distance_change_vs_v5": -0.0026796839764015035,
+      "eligible": false,
+      "rejection_reasons": [
+        "aggregate_regression",
+        "insufficient_gain"
+      ]
+    },
+    "v5_project_half_decay_2s": {
+      "clean_rmse": 0.11468772795045298,
+      "fault_rmse": 0.5532443581298463,
+      "distance_rmse": 4.584530220939317,
+      "samples": 698891,
+      "pooled_rmse": 0.21624471790630234,
+      "false_stops_clean": 18,
+      "false_stops_fault": 0,
+      "unrecovered": 0,
+      "clean_gain_vs_v5": 0.020920115428265995,
+      "fault_gain_vs_v5": -0.027505573527629723,
+      "distance_change_vs_v5": -0.010029758175520875,
+      "eligible": false,
+      "rejection_reasons": [
+        "aggregate_regression"
+      ]
+    },
+    "v5_project_full_decay_2s": {
+      "clean_rmse": 0.11429427199168803,
+      "fault_rmse": 0.5593609815249143,
+      "distance_rmse": 4.564474065997556,
+      "samples": 698891,
+      "pooled_rmse": 0.2163332658865075,
+      "false_stops_clean": 18,
+      "false_stops_fault": 0,
+      "unrecovered": 0,
+      "clean_gain_vs_v5": 0.02427901721816006,
+      "fault_gain_vs_v5": -0.038865589291454006,
+      "distance_change_vs_v5": -0.0143606264653795,
+      "eligible": false,
+      "rejection_reasons": [
+        "aggregate_regression"
+      ]
+    }
+  },
+  "test_evaluated": false,
+  "scope": "adaptive selection on reused validation; NOT independent generalization evidence",
+  "promotion_requires": "passing ROS/default/offline integrity checks; runner never changes default"
+}
