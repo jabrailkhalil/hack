@@ -14,7 +14,7 @@ import compare as v5
 import prototype_core
 import baseline_core
 np=v5.np
-PLAN=ROOT/'research/plan_zero_lock.json'
+PLAN=ROOT/'research/plan_zero_lock_deployment.json'
 OriginalObserver=baseline_core.Observer
 
 
@@ -25,7 +25,7 @@ def models():
     plan=json.loads(PLAN.read_text())
     for name,changes in plan['candidates'].items():
         if changes is not None:
-            c=v5.ex.Config(**(selected | changes));c.zero_lock=True;result[name]=c
+            c=v5.ex.Config(**((base if name.startswith('v4_') else selected) | changes));c.zero_lock=True;result[name]=c
     return plan,result
 
 

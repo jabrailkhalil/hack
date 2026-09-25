@@ -1,0 +1,18 @@
+{
+  "base_commit": "2f7851364c6afe9786fad040e0938454d8b0d210",
+  "hypothesis": "After the first rate-anomalous jump, persistent zero wheels can pass the ordinary innovation gate even while the model still moves. Reject a fresh agreeing zero pair while predicted speed exceeds stop_model_speed_mps; preserve raw adaptation and normal actual-stop logic.",
+  "candidates": {
+    "main_v4": null,
+    "main_v5": null,
+    "v4_zero_lock": {},
+    "v5_zero_lock": {}
+  },
+  "selection": "Same gates as decay: >=2% clean OR >=5% fault gain relative to v5, <=1% aggregate regression, per-bag max(0.01m/s,10%), no coverage/false-stop/recovery loss, scalar group macro regression <=0.5%.",
+  "runtime": {
+    "rate_hz": 20.0,
+    "alignment_delay_s": 0.0
+  },
+  "risk": "Real stopping may be delayed when model speed remains biased above 0.25m/s. Full clean validation and distance metrics must assess that risk; do not tune the stop threshold after evaluation.",
+  "data_policy": "Fixed validation selection only; both receivers retained; no final test IO. Two predefined candidates, including one combination with previously non-regressing process noise x2.",
+  "purpose": "Deployment verification of the single already selected guard under BOTH unchanged main parameter profiles; no parameter search."
+}

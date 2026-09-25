@@ -12,7 +12,7 @@ np=v5.np
 
 
 def run_bag(bag):
-    _,models=lock.models();models.pop('v5_zero_lock_noise2')
+    _,models=lock.models();models.pop('v5_zero_lock_noise2',None)
     v5.ev.Observer=lock.observer;v5.ex.replay=lock.replay
     store=v5.ex.Store();events,refs=store.load(bag,'validation');grid=v5.ex.grid_channels(events);stress=[];anchor=None
     if grid is not None:
@@ -38,7 +38,7 @@ def main():
     plan=ROOT/'research/plan_low_speed_lock.json'
     with ProcessPoolExecutor(max_workers=3) as pool:rows=list(pool.map(run_bag,v5.ex.Store().plan['splits']['validation']))
     stress=[s for r in rows for s in r[1]];summary={}
-    for name in ('main_v4','main_v5','v5_zero_lock'):
+    for name in ('main_v4','main_v5','v4_zero_lock','v5_zero_lock'):
         usable=[scores[name] for row in stress for scores in row['receivers'].values() if scores[name]['rmse'] is not None]
         summary[name]=dict(event_group_macro_rmse=v5.macro(stress,name,'event_rmse'),
             event_and_recovery_group_macro_rmse=v5.macro(stress,name,'rmse'),false_stop_samples=sum(s['false_stop_samples'] for s in usable),
