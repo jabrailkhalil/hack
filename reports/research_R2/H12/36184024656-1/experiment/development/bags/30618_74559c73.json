@@ -1,0 +1,746 @@
+{
+  "clean": {
+    "bag": "30618_74559c73",
+    "group": "664cca45aeb0db23",
+    "role": "development",
+    "outputs": 1907,
+    "expected_ticks": 1985,
+    "output_span_s": 95.3,
+    "first_output_s": 3.9000000000000004,
+    "last_output_s": 99.2,
+    "sensor_duration_s": 99.220146238,
+    "runtime": {
+      "main": {
+        "resets": 0,
+        "dropped": 0,
+        "catchups": 1,
+        "causal_errors": 0,
+        "mode_counts": {
+          "INITIALIZED": 1,
+          "MODEL_ONLY": 433,
+          "FUSED": 431,
+          "STOPPED": 1042
+        }
+      },
+      "candidate": {
+        "resets": 0,
+        "dropped": 0,
+        "catchups": 1,
+        "causal_errors": 0,
+        "mode_counts": {
+          "INITIALIZED": 1,
+          "MODEL_ONLY": 433,
+          "FUSED": 431,
+          "STOPPED": 1042
+        }
+      }
+    },
+    "receivers": {
+      "master": {
+        "main": {
+          "n": 0,
+          "coverage": 0.0,
+          "rmse": null,
+          "false_stop_samples": 0,
+          "distance_surrogate": {
+            "definition": "s versus integral matched horizontal GNSS speed; NOT xyz",
+            "full_span_terminal_error_m": null,
+            "full_span_reference_distance_m": null,
+            "full_span_terminal_drift_percent": null,
+            "continuous_spans": 0,
+            "reanchored_span_rmse_m": null,
+            "longest_reference_span": null
+          }
+        },
+        "candidate": {
+          "n": 0,
+          "coverage": 0.0,
+          "rmse": null,
+          "false_stop_samples": 0,
+          "distance_surrogate": {
+            "definition": "s versus integral matched horizontal GNSS speed; NOT xyz",
+            "full_span_terminal_error_m": null,
+            "full_span_reference_distance_m": null,
+            "full_span_terminal_drift_percent": null,
+            "continuous_spans": 0,
+            "reanchored_span_rmse_m": null,
+            "longest_reference_span": null
+          },
+          "common_front_scaled_rmse": null,
+          "common_mean_scaled_rmse": null
+        }
+      },
+      "rover": {
+        "main": {
+          "n": 0,
+          "coverage": 0.0,
+          "rmse": null,
+          "false_stop_samples": 0,
+          "distance_surrogate": {
+            "definition": "s versus integral matched horizontal GNSS speed; NOT xyz",
+            "full_span_terminal_error_m": null,
+            "full_span_reference_distance_m": null,
+            "full_span_terminal_drift_percent": null,
+            "continuous_spans": 0,
+            "reanchored_span_rmse_m": null,
+            "longest_reference_span": null
+          }
+        },
+        "candidate": {
+          "n": 0,
+          "coverage": 0.0,
+          "rmse": null,
+          "false_stop_samples": 0,
+          "distance_surrogate": {
+            "definition": "s versus integral matched horizontal GNSS speed; NOT xyz",
+            "full_span_terminal_error_m": null,
+            "full_span_reference_distance_m": null,
+            "full_span_terminal_drift_percent": null,
+            "continuous_spans": 0,
+            "reanchored_span_rmse_m": null,
+            "longest_reference_span": null
+          },
+          "common_front_scaled_rmse": null,
+          "common_mean_scaled_rmse": null
+        }
+      }
+    },
+    "audit": {
+      "checked_ticks": 1985,
+      "readout_updates": 417,
+      "materially_changed_updates": 180,
+      "multisegment_updates": 416,
+      "fallback_updates": 0,
+      "max_increment_delta_mps": 0.00608719046162684,
+      "max_history_length": 6,
+      "bitwise_inner": true,
+      "disabled_exact": true,
+      "timing_bins": {
+        "updates": 417,
+        "age_gt_10": 134,
+        "skew_le_025": 417,
+        "phase_ticks": 160,
+        "age_05_10": 282,
+        "changed": 180,
+        "changed_age_05_10": 131,
+        "changed_skew_le_025": 180,
+        "changed_phase": 56,
+        "changed_age_gt_10": 49,
+        "age_le_05": 1
+      },
+      "maxima": {
+        "max_age_s": 0.10812022900000073,
+        "max_skew_s": 0.0
+      }
+    },
+    "output_hashes": {
+      "main": "ca98d332c5d1a841772347e84450c44c512423bfc0491e9687fad1e3f0d0b379",
+      "candidate": "d748d970feb67b1c90e5702577260c0c3dd4104b9d5971554c913593df584cdc"
+    },
+    "schedule_sha256": "af731e6407cec45e18b5757295c2608c92fa41347cee99036892be9005cfcdfd",
+    "baseline_reproduction": {
+      "passed": true,
+      "compared_fields": 10,
+      "driver": "unchanged research_guarded.compare + canonical v7 factory"
+    },
+    "phase_metrics": {
+      "master": {
+        "main": {
+          "n": 0,
+          "coverage": 0.0,
+          "rmse": null
+        },
+        "candidate": {
+          "n": 0,
+          "coverage": 0.0,
+          "rmse": null
+        }
+      },
+      "rover": {
+        "main": {
+          "n": 0,
+          "coverage": 0.0,
+          "rmse": null
+        },
+        "candidate": {
+          "n": 0,
+          "coverage": 0.0,
+          "rmse": null
+        }
+      }
+    }
+  },
+  "stress": [
+    {
+      "bag": "30618_74559c73",
+      "group": "664cca45aeb0db23",
+      "role": "development",
+      "fault": {
+        "kind": "bias",
+        "start": 62.800000000000004,
+        "end": 67.80000000000001
+      },
+      "outputs": 700,
+      "expected_ticks": 702,
+      "output_span_s": 34.95,
+      "first_output_s": 42.920133437000004,
+      "last_output_s": 77.870133437,
+      "sensor_duration_s": 35.090226167000004,
+      "runtime": {
+        "main": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 0,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 170,
+            "FUSED": 120,
+            "STOPPED": 359,
+            "SINGLE_WHEEL": 50
+          }
+        },
+        "candidate": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 0,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 170,
+            "FUSED": 120,
+            "STOPPED": 359,
+            "SINGLE_WHEEL": 50
+          }
+        }
+      },
+      "receivers": {
+        "master": {
+          "main": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null,
+            "false_stop_samples": 0,
+            "event_rmse": null,
+            "recovery_s": null
+          },
+          "candidate": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null,
+            "false_stop_samples": 0,
+            "event_rmse": null,
+            "recovery_s": null
+          }
+        },
+        "rover": {
+          "main": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null,
+            "false_stop_samples": 0,
+            "event_rmse": null,
+            "recovery_s": null
+          },
+          "candidate": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null,
+            "false_stop_samples": 0,
+            "event_rmse": null,
+            "recovery_s": null
+          }
+        }
+      },
+      "audit": {
+        "checked_ticks": 702,
+        "readout_updates": 111,
+        "materially_changed_updates": 16,
+        "multisegment_updates": 111,
+        "fallback_updates": 1,
+        "max_increment_delta_mps": 0.004175694545273775,
+        "max_history_length": 6,
+        "bitwise_inner": true,
+        "disabled_exact": true,
+        "timing_bins": {
+          "updates": 111,
+          "age_gt_10": 105,
+          "skew_le_025": 111,
+          "age_05_10": 6,
+          "phase_ticks": 40,
+          "changed": 16,
+          "changed_age_gt_10": 15,
+          "changed_skew_le_025": 16,
+          "changed_phase": 11,
+          "changed_age_05_10": 1
+        },
+        "maxima": {
+          "max_age_s": 0.127486255000008,
+          "max_skew_s": 0.0
+        }
+      },
+      "output_hashes": {
+        "main": "7f42bbacf8517f79fe3e018181f238433c550a1f384d89fa93ef8dc324cd63ff",
+        "candidate": "fc4288bd47e2ad64044e08fc4e043428eb860cf8084fab88f23ec6aacef35446"
+      },
+      "schedule_sha256": "c83d7ba1795b021b4381f8ce0f2e94daa568bdda0b548360bbd842b68495efc4",
+      "phase_metrics": {
+        "master": {
+          "main": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null
+          },
+          "candidate": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null
+          }
+        },
+        "rover": {
+          "main": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null
+          },
+          "candidate": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null
+          }
+        }
+      }
+    },
+    {
+      "bag": "30618_74559c73",
+      "group": "664cca45aeb0db23",
+      "role": "development",
+      "fault": {
+        "kind": "dropout",
+        "start": 62.800000000000004,
+        "end": 67.80000000000001
+      },
+      "outputs": 700,
+      "expected_ticks": 702,
+      "output_span_s": 34.95,
+      "first_output_s": 42.920133437000004,
+      "last_output_s": 77.870133437,
+      "sensor_duration_s": 35.090226167000004,
+      "runtime": {
+        "main": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 0,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 227,
+            "FUSED": 96,
+            "STOPPED": 359,
+            "REACQUIRING": 16,
+            "SINGLE_WHEEL": 1
+          }
+        },
+        "candidate": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 0,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 227,
+            "FUSED": 96,
+            "STOPPED": 359,
+            "REACQUIRING": 16,
+            "SINGLE_WHEEL": 1
+          }
+        }
+      },
+      "receivers": {
+        "master": {
+          "main": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null,
+            "false_stop_samples": 0,
+            "event_rmse": null,
+            "recovery_s": null
+          },
+          "candidate": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null,
+            "false_stop_samples": 0,
+            "event_rmse": null,
+            "recovery_s": null
+          }
+        },
+        "rover": {
+          "main": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null,
+            "false_stop_samples": 0,
+            "event_rmse": null,
+            "recovery_s": null
+          },
+          "candidate": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null,
+            "false_stop_samples": 0,
+            "event_rmse": null,
+            "recovery_s": null
+          }
+        }
+      },
+      "audit": {
+        "checked_ticks": 702,
+        "readout_updates": 87,
+        "materially_changed_updates": 53,
+        "multisegment_updates": 87,
+        "fallback_updates": 1,
+        "max_increment_delta_mps": 0.004175694545273775,
+        "max_history_length": 6,
+        "bitwise_inner": true,
+        "disabled_exact": true,
+        "timing_bins": {
+          "updates": 87,
+          "age_gt_10": 81,
+          "skew_le_025": 87,
+          "age_05_10": 6,
+          "phase_ticks": 40,
+          "changed": 53,
+          "changed_age_gt_10": 49,
+          "changed_skew_le_025": 53,
+          "changed_phase": 11,
+          "changed_age_05_10": 4
+        },
+        "maxima": {
+          "max_age_s": 0.127486255000008,
+          "max_skew_s": 0.0
+        }
+      },
+      "output_hashes": {
+        "main": "520265769ba391aa20b602ed1d95da660199b15f3b1efebd9d22cb990ad363ac",
+        "candidate": "a61e6c9e77263b1f8fcae735fb77acab0710fa96a164421ede1d22b49fd446f4"
+      },
+      "schedule_sha256": "c83d7ba1795b021b4381f8ce0f2e94daa568bdda0b548360bbd842b68495efc4",
+      "phase_metrics": {
+        "master": {
+          "main": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null
+          },
+          "candidate": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null
+          }
+        },
+        "rover": {
+          "main": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null
+          },
+          "candidate": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null
+          }
+        }
+      }
+    },
+    {
+      "bag": "30618_74559c73",
+      "group": "664cca45aeb0db23",
+      "role": "development",
+      "fault": {
+        "kind": "dropout",
+        "start": 62.800000000000004,
+        "end": 72.80000000000001
+      },
+      "outputs": 800,
+      "expected_ticks": 802,
+      "output_span_s": 39.95,
+      "first_output_s": 42.920133437000004,
+      "last_output_s": 82.870133437,
+      "sensor_duration_s": 40.062071315000004,
+      "runtime": {
+        "main": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 0,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 329,
+            "FUSED": 99,
+            "STOPPED": 359,
+            "REACQUIRING": 11,
+            "SINGLE_WHEEL": 1
+          }
+        },
+        "candidate": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 0,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 329,
+            "FUSED": 99,
+            "STOPPED": 359,
+            "REACQUIRING": 11,
+            "SINGLE_WHEEL": 1
+          }
+        }
+      },
+      "receivers": {
+        "master": {
+          "main": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null,
+            "false_stop_samples": 0,
+            "event_rmse": null,
+            "recovery_s": null
+          },
+          "candidate": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null,
+            "false_stop_samples": 0,
+            "event_rmse": null,
+            "recovery_s": null
+          }
+        },
+        "rover": {
+          "main": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null,
+            "false_stop_samples": 0,
+            "event_rmse": null,
+            "recovery_s": null
+          },
+          "candidate": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null,
+            "false_stop_samples": 0,
+            "event_rmse": null,
+            "recovery_s": null
+          }
+        }
+      },
+      "audit": {
+        "checked_ticks": 802,
+        "readout_updates": 90,
+        "materially_changed_updates": 60,
+        "multisegment_updates": 90,
+        "fallback_updates": 1,
+        "max_increment_delta_mps": 0.004175694545273775,
+        "max_history_length": 6,
+        "bitwise_inner": true,
+        "disabled_exact": true,
+        "timing_bins": {
+          "updates": 90,
+          "age_gt_10": 84,
+          "skew_le_025": 90,
+          "age_05_10": 6,
+          "phase_ticks": 40,
+          "changed": 60,
+          "changed_age_gt_10": 57,
+          "changed_skew_le_025": 60,
+          "changed_phase": 11,
+          "changed_age_05_10": 3
+        },
+        "maxima": {
+          "max_age_s": 0.12779634900000758,
+          "max_skew_s": 0.0
+        }
+      },
+      "output_hashes": {
+        "main": "26457631785aa47aaad20c61eec5f6dadf968b8d26f53e03f691d1654b65a337",
+        "candidate": "cdd7d608838f882546cf9673a02cf1e33d005c24a5ef4300c45ad05b8c410b8d"
+      },
+      "schedule_sha256": "8427d7eb3d97935290c87e69ebf862da3a1174ffdeff9340e1f71adc0a24c24b",
+      "phase_metrics": {
+        "master": {
+          "main": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null
+          },
+          "candidate": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null
+          }
+        },
+        "rover": {
+          "main": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null
+          },
+          "candidate": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null
+          }
+        }
+      }
+    },
+    {
+      "bag": "30618_74559c73",
+      "group": "664cca45aeb0db23",
+      "role": "development",
+      "fault": {
+        "kind": "lock",
+        "start": 62.800000000000004,
+        "end": 65.80000000000001
+      },
+      "outputs": 660,
+      "expected_ticks": 662,
+      "output_span_s": 32.95,
+      "first_output_s": 42.920133437000004,
+      "last_output_s": 75.870133437,
+      "sensor_duration_s": 33.062101703,
+      "runtime": {
+        "main": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 0,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 188,
+            "FUSED": 97,
+            "STOPPED": 359,
+            "REACQUIRING": 15
+          }
+        },
+        "candidate": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 0,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 188,
+            "FUSED": 97,
+            "STOPPED": 359,
+            "REACQUIRING": 15
+          }
+        }
+      },
+      "receivers": {
+        "master": {
+          "main": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null,
+            "false_stop_samples": 0,
+            "event_rmse": null,
+            "recovery_s": null
+          },
+          "candidate": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null,
+            "false_stop_samples": 0,
+            "event_rmse": null,
+            "recovery_s": null
+          }
+        },
+        "rover": {
+          "main": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null,
+            "false_stop_samples": 0,
+            "event_rmse": null,
+            "recovery_s": null
+          },
+          "candidate": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null,
+            "false_stop_samples": 0,
+            "event_rmse": null,
+            "recovery_s": null
+          }
+        }
+      },
+      "audit": {
+        "checked_ticks": 662,
+        "readout_updates": 88,
+        "materially_changed_updates": 55,
+        "multisegment_updates": 88,
+        "fallback_updates": 1,
+        "max_increment_delta_mps": 0.004175694545273775,
+        "max_history_length": 6,
+        "bitwise_inner": true,
+        "disabled_exact": true,
+        "timing_bins": {
+          "updates": 88,
+          "age_gt_10": 82,
+          "skew_le_025": 88,
+          "age_05_10": 6,
+          "phase_ticks": 40,
+          "changed": 55,
+          "changed_age_gt_10": 52,
+          "changed_skew_le_025": 55,
+          "changed_phase": 11,
+          "changed_age_05_10": 3
+        },
+        "maxima": {
+          "max_age_s": 0.12537311900000248,
+          "max_skew_s": 0.0
+        }
+      },
+      "output_hashes": {
+        "main": "da21070d2d5c78c5e04d457a0dc9b678d2ce6ab1d796c9d71680e9e254dca366",
+        "candidate": "0a48214531d11e53aa048d8aefa064a50a63771761ecd809de8f874ea10e460c"
+      },
+      "schedule_sha256": "1545b58245e580fbac31505fc3ec3f8ecf1a6cd30e0df4891a6e90f0cec1abd6",
+      "phase_metrics": {
+        "master": {
+          "main": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null
+          },
+          "candidate": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null
+          }
+        },
+        "rover": {
+          "main": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null
+          },
+          "candidate": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null
+          }
+        }
+      }
+    }
+  ],
+  "diagnostic": [],
+  "controller_anchors": [
+    6.070181,
+    12.270177974,
+    61.620154429,
+    94.220177164
+  ]
+}

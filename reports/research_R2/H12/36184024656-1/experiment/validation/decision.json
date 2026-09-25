@@ -1,0 +1,60 @@
+{
+  "verdict": "REJECTED",
+  "activation": {
+    "changed": 55858,
+    "readout_updates": 153594,
+    "changed_fraction": 0.3636730601455786,
+    "changed_phase": 11196,
+    "changed_groups": [
+      "34ae07f7ed1bd75f",
+      "40b8a1546c9f9e1e",
+      "48efdde376d950e5",
+      "58e34644448d6bb0",
+      "5a956d7a8a9351ca",
+      "79bdd79f6b346e24",
+      "d5d5fc429697e8bf",
+      "d80cd9b6a7637318",
+      "df3d0a78924ca32f",
+      "f745e5b1c4188e82"
+    ],
+    "passed": true,
+    "required": {
+      "changed": 1000,
+      "groups": 3,
+      "changed_phase": 100,
+      "delta_threshold_mps": 1e-09
+    }
+  },
+  "accuracy_guards": {
+    "passed": false,
+    "reasons": [
+      "insufficient_gain"
+    ],
+    "missing": false,
+    "deltas": {
+      "macro_rmse": {
+        "absolute": 5.8997616276257325e-06,
+        "relative": 5.1503874031633146e-05
+      },
+      "fault_macro": {
+        "absolute": 1.709298828034278e-07,
+        "relative": 3.175442688796437e-07
+      },
+      "pooled_rmse": {
+        "absolute": 2.1144561854480326e-06,
+        "relative": 9.770747696258297e-06
+      },
+      "distance_macro": {
+        "absolute": 0.0005281916403818698,
+        "relative": 0.0001149371916155939
+      }
+    },
+    "clean_gain": -5.1503874031633146e-05,
+    "fault_gain": -3.175442688796437e-07
+  },
+  "validation_allowed": false,
+  "merge_ready": false,
+  "mechanism": "sufficient_activation",
+  "test_evaluated": false,
+  "ros_enabled_measured": false
+}
