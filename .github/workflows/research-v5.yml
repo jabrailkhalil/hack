@@ -1,6 +1,12 @@
 name: Paired observer v5 validation
 on:
   workflow_dispatch:
+  push:
+    branches: [research/observer-v5]
+    paths:
+      - 'tools/research_v5/**'
+      - 'research/plan_v5.json'
+      - '.github/workflows/research-v5.yml'
 permissions:
   contents: read
 jobs:
