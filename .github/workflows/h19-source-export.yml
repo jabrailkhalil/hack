@@ -1,0 +1,29 @@
+name: H19 pinned source export
+on:
+  push:
+    branches: [research/round2-H19]
+    paths: [.github/workflows/h19-source-export.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  export:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Export exact baseline source and Git object history only
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/h19-source"
+          git archive 65bba39ed05c781f3f69a65c02f69931152cbfd9 | gzip > "$RUNNER_TEMP/h19-source/source.tar.gz"
+          git bundle create "$RUNNER_TEMP/h19-source/history.bundle" HEAD
+          sha256sum "$RUNNER_TEMP/h19-source/"* > "$RUNNER_TEMP/h19-source/SHA256SUMS"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: h19-source-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/h19-source/
+          retention-days: 7
