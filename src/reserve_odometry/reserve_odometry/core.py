@@ -35,6 +35,9 @@ class Config:
     travel_direction: float = 1.0
     max_speed_mps: float = 40.0
     max_accel_mps2: float = 3.0
+    # Opt-in: transport accepted wheel values to the output timestamp.
+    # Zero retains the historical v4/v5 estimator, including its arithmetic.
+    wheel_time_compensation: float = 0.0
     wheel_sigma_mps: float = 0.10
     process_noise_v: float = 0.10
     max_age_s: float = 0.25
@@ -75,6 +78,8 @@ class Config:
                 raise ValueError(f'{key} must be positive')
         if not 0 <= self.command_deadband < 1 or self.efficiency > 1:
             raise ValueError('Invalid deadband or efficiency')
+        if not 0.0 <= self.wheel_time_compensation <= 1.0:
+            raise ValueError('wheel_time_compensation must be between 0 and 1')
         if self.travel_direction not in (-1.0, 1.0):
             raise ValueError('travel_direction must be -1 or 1')
         if self.innovation_cap_mps < self.innovation_floor_mps:
@@ -306,10 +311,23 @@ class Observer:
         if accepted:
             self._clear_reacquire()
             z = sum(samples[i].value for i in accepted) / len(accepted)
+            age = 0.0
+            if c.wheel_time_compensation:
+                # Correct only samples that already passed the raw rate/model
+                # gates. Keep original stamps/values for adaptation, recovery,
+                # stop detection and duplicate rejection; no future data.
+                age = sum(max(0.0, t - samples[i].t) for i in accepted) / len(accepted)
+                z = clip(z + c.wheel_time_compensation * age * a_model,
+                         -c.max_speed_mps, c.max_speed_mps)
             # No 1/N reduction: wheel errors can be correlated.
             r = c.wheel_sigma_mps ** 2 * (1.0 if len(accepted) == 2 and agree else 4.0)
             residual = z - predicted
             r *= max(1.0, abs(residual) / max(3 * c.wheel_sigma_mps, 1e-9))
+            # Transport adds model uncertainty; older readings are not extra
+            # independent observations. This is a conservative noise allowance,
+            # not an exact out-of-sequence Kalman covariance or calibrated CI.
+            r += (c.wheel_time_compensation ** 2 * c.process_noise_v * age
+                  * (4.0 if command_stale else 1.0))
             gain = p_prior / (p_prior + r)
             self.v += gain * residual
             self.pv = max(1e-8, (1 - gain) ** 2 * p_prior + gain * gain * r)
