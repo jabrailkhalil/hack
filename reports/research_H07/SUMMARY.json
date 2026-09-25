@@ -1,0 +1,106 @@
+{
+  "hypothesis": "H07",
+  "conclusion": "rejected",
+  "ready_to_merge": false,
+  "independent_final_test_evaluated": false,
+  "baseline_commit": "984fdf2fc4faf05325249215d6b8541c0e68209a",
+  "baseline_profile": "adaptive_v5",
+  "protocol_commit": "7cc779db16be262aed5788067a2bca3b9e6614bb",
+  "algorithm_commit": "ca96f620274ba24c82e1258e953bfb7bd1b40fe4",
+  "prevalidation_freeze_commit": "1e00925e75a7e5aa488578cfa853f336a2a5dde3",
+  "raw_evidence_commit": "55132ffc416485194be53c4d0b906d9dbc540d55",
+  "research_run_id": 36175112902,
+  "run_attempt": 1,
+  "ordinary_ci_run_id": 36175112880,
+  "raw_evidence_path": "reports/research_H07/runs/36175112902/1",
+  "candidate": {
+    "name": "T10_B05",
+    "traction_tau_s": 0.3927619145850434,
+    "braking_tau_s": 0.1963809572925217,
+    "neutral_actuator_tau_s": 0.3927619145850434,
+    "adaptation_tau_s": 0.5
+  },
+  "selection": {
+    "purpose": "train_only",
+    "registered_variant_count": 6,
+    "train_bags_loaded": 64,
+    "train_bags_with_selected_samples": 60,
+    "selected_samples": 87453,
+    "baseline_soft_l1_cost": 731.49147648657,
+    "candidate_soft_l1_cost": 741.5550423808048,
+    "all_six_train_variants_worse_than_baseline": true
+  },
+  "baseline_reproduction": {
+    "compared_numeric_fields": 468,
+    "max_absolute_delta": 0.0,
+    "passed": true
+  },
+  "validation": {
+    "unique_bags": 19,
+    "groups": 10,
+    "groups_with_reference": 9,
+    "clean_bag_receiver_pairs_with_reference": 30,
+    "fault_scenarios": 76,
+    "fault_bag_receiver_comparisons_with_reference": 120,
+    "load_calls_including_transition_diagnostics": 38,
+    "baseline": {
+      "clean_rmse": 0.11713827416709652,
+      "fault_rmse": 0.5384344108523412,
+      "pooled_rmse": 0.2167236028496654,
+      "distance_rmse": 4.63097780847452,
+      "transition_rmse": 0.0962623432048417,
+      "samples": 698891,
+      "false_stops_clean": 18,
+      "false_stops_fault": 0,
+      "unrecovered": 0
+    },
+    "candidate": {
+      "clean_rmse": 0.11707567637254893,
+      "fault_rmse": 0.5420461890657785,
+      "pooled_rmse": 0.21668885685165057,
+      "distance_rmse": 4.623604144853576,
+      "transition_rmse": 0.09642585577544684,
+      "samples": 698891,
+      "false_stops_clean": 18,
+      "false_stops_fault": 0,
+      "unrecovered": 0
+    },
+    "rejection_reasons": ["aggregate_regression", "insufficient_gain"],
+    "additional_contract_rejections": [],
+    "per_pair_coverage_equal": true,
+    "causal_errors_baseline_candidate": [0, 0],
+    "resets_baseline_candidate": [0, 0]
+  },
+  "checks": {
+    "required_core": {"passed": 22, "failed": 0},
+    "h07_mechanism": {"passed": 10, "failed": 0},
+    "unchanged_research_integrity": {"passed": 30, "failed": 0},
+    "unchanged_full_unit_suite": {"passed": 66, "failed": 4},
+    "ordinary_ci_conclusion": "failure",
+    "research_execution_conclusion": "success",
+    "selected_profile_ros_offline": {
+      "passed": true,
+      "network": "none",
+      "cpu_limit": 2,
+      "memory_limit_bytes": 500000000,
+      "verified_parameters": 38,
+      "outputs": 120,
+      "rate_hz": 20.0,
+      "shutdown_keyboard_interrupt_in_log": true
+    },
+    "long_duration_real_bag_ros_latency_benchmark_executed": false
+  },
+  "artifact_sha256": {
+    "H07-36175112902-1.zip": "70e250f8add6d790234adbf1f28262bdbe4d70f49eb578e1116b7cdb93ff3c31",
+    "H07-ROS-36175112902-1.zip": "977bd1ec61e82182b0a6ac59f22f5e9b1c4afa3a4f8d2a49f45f2a12bfb83161",
+    "ros-offline.log": "852416d547272cda9ca66636f69d55ba6b1a89bb9fa944de0654f746a2af1b86"
+  },
+  "limitations": [
+    "Reused validation is not independent final-test evidence.",
+    "Wheel-only pseudo-labels; common-mode slip remains a limitation.",
+    "Six coarse lag pairs; negative outcome does not reject every asymmetric model.",
+    "Scalar distance is not xyz/ENU accuracy.",
+    "Four historical identity/schema guards fail and have not been weakened.",
+    "Offline smoke is not a long-duration ROS latency/resource certificate."
+  ]
+}
