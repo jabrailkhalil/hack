@@ -1,0 +1,88 @@
+name: Frozen final test v4
+on:
+  push:
+    branches: [feat/final-submission-v4]
+    paths: ['.github/workflows/final-test-v4.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  final-test:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - name: Prepare environment and pinned data without evaluating test
+        run: |
+          python -m pip install -r requirements-research.txt
+          python tools/get_dataset.py
+          PYTHONPATH=src/reserve_odometry python -m unittest discover -s tests -v
+          python -m unittest discover -s research/tests -v
+          python - <<'PY'
+          import sys,pathlib
+          sys.path.insert(0,'tools/finalization')
+          import evaluate
+          evaluate.verify_freeze(pathlib.Path('submission/FREEZE.json'))
+          print('PUBLISHED_FREEZE_VERIFIED_BEFORE_TEST')
+          PY
+      - name: Reserve a unique evaluation branch before test measurement access
+        id: reserve
+        run: |
+          set -eu
+          FREEZE_HASH=$(sha256sum submission/FREEZE.json | cut -d' ' -f1)
+          EVAL_BRANCH="evaluation/final-${FREEZE_HASH:0:20}"
+          if git ls-remote --exit-code origin "refs/heads/$EVAL_BRANCH" >/dev/null 2>&1; then
+            echo 'This frozen test has already been reserved/executed; refusing an automatic repeat.' >&2
+            exit 1
+          fi
+          export FREEZE_HASH EVAL_BRANCH
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git switch -c "$EVAL_BRANCH"
+          python - <<'PY'
+          import json,os,pathlib,datetime
+          p=pathlib.Path('reports/final/final_test_execution.json');p.parent.mkdir(parents=True,exist_ok=True)
+          p.write_text(json.dumps(dict(status='reserved_before_measurement_access',source_ref=os.environ['GITHUB_SHA'],run_id=os.environ['GITHUB_RUN_ID'],freeze_sha256=os.environ['FREEZE_HASH'],evaluation_branch=os.environ['EVAL_BRANCH'],time_utc=datetime.datetime.now(datetime.timezone.utc).isoformat()),indent=2)+'\n')
+          PY
+          git add reports/final/final_test_execution.json
+          git commit -m "test: reserve frozen held-out evaluation run $GITHUB_RUN_ID"
+          git push origin "HEAD:refs/heads/$EVAL_BRANCH"
+          echo "branch=$EVAL_BRANCH" >> "$GITHUB_OUTPUT"
+      - name: Evaluate all 22 held-out bags without fitting or selecting a model
+        if: steps.reserve.outcome == 'success'
+        run: python tools/finalization/evaluate.py --stage test --authorize-final-test --output reports/final/test
+      - name: Preserve final and intermediate results in the reserved evaluation branch
+        if: always() && steps.reserve.outcome == 'success'
+        env:
+          EVAL_BRANCH: ${{ steps.reserve.outputs.branch }}
+          JOB_STATUS: ${{ job.status }}
+        run: |
+          set -eu
+          python - <<'PY'
+          import pathlib,json,os
+          p=pathlib.Path('reports/final/final_test_execution.json');x=json.loads(p.read_text())
+          x['job_status_after_evaluation']=os.environ['JOB_STATUS']
+          x['completed_results_present']=pathlib.Path('reports/final/test/results.json').exists()
+          p.write_text(json.dumps(x,indent=2)+'\n')
+          PY
+          git add reports/final/final_test_execution.json
+          if test -d reports/final/test; then git add reports/final/test; fi
+          git commit -m "test: preserve frozen held-out result run $GITHUB_RUN_ID"
+          git push origin "HEAD:refs/heads/$EVAL_BRANCH"
+          git archive --format=zip HEAD -o final-evaluation-workspace.zip
+      - uses: actions/upload-artifact@v4
+        if: always() && steps.reserve.outcome == 'success'
+        with:
+          name: final-test-v4
+          path: |
+            reports/final/test/
+            reports/final/final_test_execution.json
+            submission/FREEZE.json
+            final-evaluation-workspace.zip
+          retention-days: 30
