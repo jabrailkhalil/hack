@@ -1,125 +1,62 @@
-name: R2 H15 structured disturbance experiment
+name: R2 H15 immutable frozen replay
 on:
   workflow_dispatch:
-  push:
-    branches: [research/round2-H15]
-    paths: [.github/workflows/research-R2-H15.yml]
 permissions:
   contents: write
 jobs:
-  research:
+  replay:
     runs-on: ubuntu-22.04
-    timeout-minutes: 30
+    timeout-minutes: 20
     env:
       OPENBLAS_NUM_THREADS: '1'
       OMP_NUM_THREADS: '1'
       PYTHONPATH: src/reserve_odometry
-    defaults:
-      run:
-        shell: bash
+      H15_MEASURED_SHA: 5b9ab8429741c7ccdb5969ee68aeb9402f79150c
+      H15_FREEZE_COMMIT: dff80eecff17dd2ef100060f68649908513cf466
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: 5b9ab8429741c7ccdb5969ee68aeb9402f79150c
           fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: '3.13.5'
-      - name: Publish exact readable implementation before experiments
+      - name: Prepare isolated replay of the already published freeze
         run: |
           set -euo pipefail
-          python - <<'PY'
-          import base64,hashlib,json,lzma,pathlib,subprocess
-          root=pathlib.Path('.')
-          text=''.join((root/f'.github/H15-source-{i}.b64').read_text().strip() for i in range(3))
-          data=base64.b64decode(text,validate=True)
-          assert hashlib.sha256(data).hexdigest()=='a9842eb426d5adbe3dd808f480b1ae91d397a74644501c4c3e31d20af2503983'
-          files=json.loads(lzma.decompress(data))
-          for p,content in files.items():
-              assert '..' not in pathlib.PurePosixPath(p).parts and not p.startswith('/')
-              assert p.startswith('research/R2/H15/') or p=='src/reserve_odometry/reserve_odometry/drive_disturbance.py'
-              assert not p.endswith('PLAN.md')
-              path=root/p;path.parent.mkdir(parents=True,exist_ok=True);path.write_text(content)
-          subprocess.run(['git','add','--',*files],check=True)
-          PY
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          if ! git diff --cached --quiet; then
-            git commit -m 'research(H15): publish exact tested source bundle before real-data execution'
-            git push origin HEAD:refs/heads/research/round2-H15
-          fi
-          echo "H15_MEASURED_SHA=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
-          echo "OUT=$RUNNER_TEMP/H15-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT" >> "$GITHUB_ENV"
-          echo "DEST=reports/research_R2/H15/$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT" >> "$GITHUB_ENV"
-      - name: Apply experimental patch and preserve plan sources commands
+          echo "OUT=$RUNNER_TEMP/H15-repeat-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT" >> "$GITHUB_ENV"
+          echo "DEST=reports/research_R2/H15/repeat-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT" >> "$GITHUB_ENV"
+          python -m pip install -r requirements-research.txt
+          python research/R2/H15/apply.py
+      - name: Verify candidate and retrieve checksum-pinned data
         run: |
-          mkdir -p "$OUT/source"
-          cp research/R2/H15/{PLAN.md,SOURCES.md,worksheet.wl,wolfram-output.txt,algorithm.patch,baseline_manifest.json,apply.py,run.py} "$OUT/source/"
-          cp src/reserve_odometry/reserve_odometry/drive_disturbance.py "$OUT/source/"
-          cp src/reserve_odometry/config/guarded_readout_v7.json "$OUT/source/"
-          cp .github/workflows/research-R2-H15.yml "$OUT/source/executed-workflow.yml"
-          echo "$H15_MEASURED_SHA" > "$OUT/measured-source-sha.txt"
-          python research/R2/H15/apply.py | tee "$OUT/apply.log"
-          python -m pip install -r requirements-research.txt 2>&1 | tee "$OUT/dependencies.log"
-      - name: Enabled mechanism and original core timeline sanity
+          set -euo pipefail
+          mkdir -p "$OUT"
+          python -m unittest discover -s research/R2/H15/tests -v 2>&1 | tee "$OUT/tests.log"
+          python tools/get_dataset.py 2>&1 | tee "$OUT/dataset.log"
+          git show "$H15_FREEZE_COMMIT:reports/research_R2/H15/36184253853-1/FROZEN.json" > "$OUT/FROZEN.json"
+      - name: Repeat exactly the selected frozen candidate without tuning
         run: |
-          python -m unittest discover -s research/R2/H15/tests -v 2>&1 | tee "$OUT/h15-tests.log"
-          python -m unittest discover -s tests -p test_core.py -v 2>&1 | tee "$OUT/core-tests.log"
-          python -m unittest discover -s tests -p test_timeline.py -v 2>&1 | tee "$OUT/timeline-tests.log"
-          python -m compileall -q src research/R2/H15
-      - name: Preserve full historical suites without rewriting their pins
-        run: |
-          set +e
-          python -m unittest discover -s tests -v > "$OUT/all-unit-tests.log" 2>&1
-          echo $? > "$OUT/all-unit-tests.exit"
-          python -m unittest discover -s research/tests -v > "$OUT/research-integrity.log" 2>&1
-          echo $? > "$OUT/research-integrity.exit"
-          exit 0
-      - name: Retrieve exact audited dataset
-        run: python tools/get_dataset.py 2>&1 | tee "$OUT/dataset.log"
-      - name: All train prefixes vehicle only no tuning
-        run: python research/R2/H15/run.py train --output "$OUT/train" 2>&1 | tee "$OUT/train.log"
-      - name: Both preregistered variants on genuine development and diagnostics
-        run: python research/R2/H15/run.py development --output "$OUT/development" 2>&1 | tee "$OUT/development.log"
-      - name: Publish selected freeze before any validation access
-        id: freeze
-        run: |
-          selected=$(python -c "import json; print(json.load(open('$OUT/development/decision.json'))['selected'] or '')")
-          if test -z "$selected"; then
-            cp "$OUT/development/decision.json" "$OUT/VERDICT.json"
-            echo 'validation_allowed=false' >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-          python research/R2/H15/run.py freeze --development "$OUT/development" --output "$OUT/FROZEN.json"
-          branch="checkpoint/H15-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
-          git switch -c "$branch"
-          mkdir -p "$DEST"
-          cp "$OUT/FROZEN.json" "$DEST/"
-          git add "$DEST/FROZEN.json"
-          git commit -m "research(H15): freeze $selected before validation $GITHUB_RUN_ID"
-          git push origin "HEAD:refs/heads/$branch"
-          echo "H15_FREEZE_COMMIT=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
-          echo 'validation_allowed=true' >> "$GITHUB_OUTPUT"
-      - name: One immutable paired validation of selected candidate
-        if: steps.freeze.outputs.validation_allowed == 'true'
-        run: |
+          set -euo pipefail
           python research/R2/H15/run.py validation --frozen "$OUT/FROZEN.json" --output "$OUT/validation" 2>&1 | tee "$OUT/validation.log"
-          cp "$OUT/validation/decision.json" "$OUT/VERDICT.json"
       - uses: actions/upload-artifact@v4
-        if: always()
+        if: always() && env.OUT != ''
         with:
-          name: R2-H15-evidence-${{ github.run_id }}-${{ github.run_attempt }}
+          name: R2-H15-repeat-${{ github.run_id }}-${{ github.run_attempt }}
           path: ${{ env.OUT }}/
           retention-days: 30
-      - name: Preserve own run evidence without modifying main or old reports
-        if: always()
+      - name: Preserve only this repeat in a new own checkpoint
+        if: always() && env.OUT != ''
         run: |
           set -euo pipefail
-          if test -z "${OUT:-}" || ! test -d "$OUT"; then exit 0; fi
+          if ! test -d "$OUT"; then exit 0; fi
           git restore src/reserve_odometry/reserve_odometry/core.py
-          branch="checkpoint/H15-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
-          if test "$(git branch --show-current)" != "$branch"; then git switch -c "$branch"; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          branch="checkpoint/H15-repeat-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          git switch -c "$branch"
           mkdir -p "$DEST"
           cp -a "$OUT/." "$DEST/"
           git add "$DEST"
-          git diff --cached --quiet || git commit -m "research(H15): preserve run $GITHUB_RUN_ID attempt $GITHUB_RUN_ATTEMPT"
+          git diff --cached --quiet || git commit -m "research(H15): preserve immutable repeat $GITHUB_RUN_ID attempt $GITHUB_RUN_ATTEMPT"
           git push origin "HEAD:refs/heads/$branch"
