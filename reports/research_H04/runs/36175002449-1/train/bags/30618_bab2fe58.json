@@ -1,0 +1,61 @@
+{
+  "bag": "30618_bab2fe58",
+  "group": "5c1be3e9a2189121",
+  "input_events": 2247,
+  "outputs": 1070,
+  "clean_rmse": null,
+  "fault_rmse": null,
+  "reference_available": false,
+  "baseline_runtime": {
+    "resets": 0,
+    "dropped": 0,
+    "catchups": 1,
+    "causal_errors": 0,
+    "mode_counts": {
+      "INITIALIZED": 1,
+      "MODEL_ONLY": 479,
+      "FUSED": 452,
+      "STOPPED": 138
+    }
+  },
+  "candidate_runtime": {
+    "resets": 0,
+    "dropped": 0,
+    "catchups": 1,
+    "causal_errors": 0,
+    "mode_counts": {
+      "INITIALIZED": 1,
+      "MODEL_ONLY": 479,
+      "FUSED": 452,
+      "STOPPED": 138
+    }
+  },
+  "diagnostics": {
+    "outputs": 1070,
+    "tau_output_ticks": {
+      "0.5": 509,
+      "2.0": 555,
+      "0.25": 6
+    },
+    "regime_transitions": {
+      "0->-1": 1
+    },
+    "phase_tau_output_ticks": {},
+    "disturbance_changes": {
+      "FUSED/0.5": 102
+    },
+    "note": "Tau on non-FUSED ticks is diagnostic only; no learning on those ticks except stop resets."
+  },
+  "access": [
+    {
+      "bag": "30618_bab2fe58",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "8a02fa1fc2e34bd5609e084c5451a29f5b98ab0e3796fa11d582727cb6b58e0f"
+    }
+  ]
+}
