@@ -1,0 +1,4372 @@
+{
+  "baseline_commit": "984fdf2fc4faf05325249215d6b8541c0e68209a",
+  "source_commit": "dc7cc320057380cefb9c0035a7335ee793fada23",
+  "candidate": "h08_exact_midpoint",
+  "candidate_count": 1,
+  "tuning_performed": false,
+  "utc": "2026-09-25T18:49:44.142302+00:00",
+  "source_sha256": {
+    "Dockerfile.environment": "89a20ba9783557cba82623f7b81fda48bbdc963f30df3f15c726b9bbeba88b94",
+    "research/plan_v3.json": "ddbc1130e214c3d338b3d292232391d3a329a0fd5f13a090027452ae070271b3",
+    "research/split_v3.json": "20928a29daad2b4178ddb92e2a4d9ddb347952f6c03845802a8d82fff7da5ae0",
+    "src/reserve_odometry/config/adaptive_v5.yaml": "dae5f5c80cd87e968b1e838c5b0d25cc531f816949b1fd2a59dd65e8e93efaec",
+    "src/reserve_odometry/config/calibrated_v3.yaml": "a34faa159b8e9436c58e957376f4dd4207395ad63f5b8391ed2a3737c339dbf5",
+    "src/reserve_odometry/config/candidates_v3/balanced_physics.json": "68b81682f9ac48d11bf7d8e67418a45de546ab35526954c5f6fc3eda2d7ec425",
+    "src/reserve_odometry/config/candidates_v3/balanced_physics.yaml": "d1f8fd9d96911ba0f1381a6d1b6837f50fa9f6a2c518cb38421e9c229d3f0a14",
+    "src/reserve_odometry/config/candidates_v3/baseline_v2.yaml": "3aa6c2105bdaf437956bd7e8479d9e97d888dcd7d81d7e39b0ca6278add1075a",
+    "src/reserve_odometry/config/candidates_v3/gain_only.yaml": "e4aa198fb8835335327180e91f42ab3c45efb537cc2bcbb9b7661f5fef761f2b",
+    "src/reserve_odometry/config/candidates_v3/nonlinear_physics.yaml": "68100c74c31ddeac2a634d66b521156991d526dceca38bed37c47ddab7ed7115",
+    "src/reserve_odometry/config/default.yaml": "dae5f5c80cd87e968b1e838c5b0d25cc531f816949b1fd2a59dd65e8e93efaec",
+    "src/reserve_odometry/config/frozen_v4.yaml": "a29d075cbcca235a1cf5ab1f79a0a992f70ba788e729b452f732c273932eeb0e",
+    "src/reserve_odometry/config/h08_exact_midpoint.yaml": "53716119d59d0e3bf7011ecea8f5d5a00bd71d57427f66b59c406d48114682f8",
+    "src/reserve_odometry/launch/odometry.launch.py": "bafb889e78964fdba892960a47e31d449fb89bc91195d8a573f33e2ed229e42f",
+    "src/reserve_odometry/package.xml": "a0a24f3f7ba564188ee0f223e2afe5378019a58fba1d296f62726263822ec883",
+    "src/reserve_odometry/reserve_odometry/__init__.py": "e1f572a23a3af0453ee58954e1ac155057c09f538f30cf660aa84e9dadba6b74",
+    "src/reserve_odometry/reserve_odometry/core.py": "93eb27612544e2bffaf7d8a009a200f63db8e3993784b10f5cb17fd6cb373d98",
+    "src/reserve_odometry/reserve_odometry/node.py": "a63b6cf915d0621eda4a99f4a9a91c8b21a3d2209420e2fc9f4f21084a6dbdd4",
+    "src/reserve_odometry/reserve_odometry/numerics_h08.py": "d6c0d7eb1296f1843e5c5ba39450a651142533601c2012b17d6c8809fc341f4d",
+    "src/reserve_odometry/reserve_odometry/route.py": "631c9be75cc8bcf9770deb3e79aa3fad7c40d01bfaf446015a3566325df47739",
+    "src/reserve_odometry/reserve_odometry/timeline.py": "ed63b44dede078cb3cde501bd1e5559260763c56ac9b832f39924c1d97b0bdbf",
+    "src/reserve_odometry/setup.cfg": "504ebb3ed9db6bc2727b1b3396daf6f5334ea6b7f6eda26672ba2c415f400b71",
+    "src/reserve_odometry/setup.py": "591329e89a9e6cfa324585cc3ec2f2a96129689afc8f6fa51b1d85f96d94a962",
+    "src/tram_vehicle_msgs/CMakeLists.txt": "f220119ed18c68585208da7689733bf38a1a6a5a76973371b6ba18a1086636a6",
+    "src/tram_vehicle_msgs/msg/DriverControllerCommand.msg": "fe294e3cd4132ed8dd732d677e78196ae882d2be5468e76d029ea785615517fb",
+    "src/tram_vehicle_msgs/msg/VelocitySensor.msg": "4fae2e24132e779ae396773fe3df0f54584c8e54323f6f36d249e45449d7e8fd",
+    "src/tram_vehicle_msgs/package.xml": "0fff58dd63afcc03627c11b9968e817043499f438467d90520f59fc5af54127d",
+    "tools/export_bags.py": "696f6bdbf853dac4d4fe6286f6a7f4742f4aea5b1bc508efda52f5bc179c3b66",
+    "tools/finalization/evaluate.py": "f6a19a1727274ca88e1fe1a9fb76d31dbc8ce4e9bbabf669c488f053d76caec7",
+    "tools/research_v3/experiment.py": "95a398003530454457bacb2096fb6bc9d0d5ee32520420c43a9ebeb406376aa0",
+    "tools/research_v3/manifest.py": "51f24a2b9486938ac935d0b648f0612c76df075f7372caf6cc5bd457a8e53abb",
+    "research/H08/PROTOCOL.md": "b66fec871df629e6742db15fc1e8be094bac45ce0cc8813ae6b53c757546115c",
+    "research/H08/RUNTIME_PLAN.md": "21095dcce1db465daf7680da34922aa1b1ace2d5c9e4f00f3a6552b24a5c63cd",
+    "research/H08/run.py": "b52aae4409d403b9e80c3f80fabebd044b2266a3c5f344b090cb0084210b3740",
+    "research/H08/apply.py": "f399e3a7bf2c5fd1195723f1f659b00a9aa8c205188075fcc911e7e2b80cfe53",
+    "research/H08/tests/test_numerics.py": "6a6ad2affd8a751437f333fd45388ce7eb5e7e32d4d0ce37498c9b1f7a129d8b",
+    "src/reserve_odometry/config/h08_exact_midpoint.json": "8d40d247751390891c0a9352350b6b000e1925ac1a2aefc20477252ae6682d15"
+  },
+  "python": "3.13.5",
+  "numpy": "2.3.5",
+  "platform": "Linux-6.8.0-1064-azure-x86_64-with-glibc2.35",
+  "run_id": "36175598186",
+  "run_attempt": "1",
+  "test_evaluated": false,
+  "operational": {
+    "rate_hz": 20.0,
+    "alignment_delay_s": 0.0
+  },
+  "models": {
+    "v4_default": {
+      "mass_kg": 40000.0,
+      "wheel_radius_m": 0.33,
+      "gear_ratio": 6.0,
+      "efficiency": 0.9,
+      "total_motor_torque_nm": 2905.0616664738573,
+      "max_power_w": 280873.5334860941,
+      "max_brake_force_n": 45568.80940352644,
+      "rolling_force_n": 2089.7308146696687,
+      "quadratic_drag_n_s2_m2": 5.021948020794408e-17,
+      "actuator_tau_s": 0.3927619145850434,
+      "numerical_prediction": 0.0,
+      "command_deadband": 0.04,
+      "command_exponent": 0.5207432400037213,
+      "travel_direction": 1.0,
+      "max_speed_mps": 40.0,
+      "max_accel_mps2": 3.0,
+      "wheel_sigma_mps": 0.1,
+      "process_noise_v": 0.1,
+      "max_age_s": 0.25,
+      "command_timeout_s": 0.5,
+      "pair_skew_s": 0.1,
+      "disagreement_mps": 0.7,
+      "wheel_rate_limit_mps2": 4.0,
+      "rate_noise_margin_mps": 0.25,
+      "innovation_floor_mps": 0.8,
+      "innovation_cap_mps": 3.0,
+      "stop_speed_mps": 0.07,
+      "stop_model_speed_mps": 0.25,
+      "stop_dwell_s": 0.5,
+      "adaptation_tau_s": 8.0,
+      "disturbance_limit_mps2": 0.6,
+      "max_step_s": 0.2,
+      "reacquire_dwell_s": 0.8,
+      "reacquire_max_residual_mps": 8.0,
+      "reacquire_step_mps": 0.15,
+      "reacquire_min_speed_mps": 0.4,
+      "reacquire_accel_margin_mps2": 0.8
+    },
+    "v5_adaptive_05s": {
+      "mass_kg": 40000.0,
+      "wheel_radius_m": 0.33,
+      "gear_ratio": 6.0,
+      "efficiency": 0.9,
+      "total_motor_torque_nm": 2905.0616664738573,
+      "max_power_w": 280873.5334860941,
+      "max_brake_force_n": 45568.80940352644,
+      "rolling_force_n": 2089.7308146696687,
+      "quadratic_drag_n_s2_m2": 5.021948020794408e-17,
+      "actuator_tau_s": 0.3927619145850434,
+      "numerical_prediction": 0.0,
+      "command_deadband": 0.04,
+      "command_exponent": 0.5207432400037213,
+      "travel_direction": 1.0,
+      "max_speed_mps": 40.0,
+      "max_accel_mps2": 3.0,
+      "wheel_sigma_mps": 0.1,
+      "process_noise_v": 0.1,
+      "max_age_s": 0.25,
+      "command_timeout_s": 0.5,
+      "pair_skew_s": 0.1,
+      "disagreement_mps": 0.7,
+      "wheel_rate_limit_mps2": 4.0,
+      "rate_noise_margin_mps": 0.25,
+      "innovation_floor_mps": 0.8,
+      "innovation_cap_mps": 3.0,
+      "stop_speed_mps": 0.07,
+      "stop_model_speed_mps": 0.25,
+      "stop_dwell_s": 0.5,
+      "adaptation_tau_s": 0.5,
+      "disturbance_limit_mps2": 0.6,
+      "max_step_s": 0.2,
+      "reacquire_dwell_s": 0.8,
+      "reacquire_max_residual_mps": 8.0,
+      "reacquire_step_mps": 0.15,
+      "reacquire_min_speed_mps": 0.4,
+      "reacquire_accel_margin_mps2": 0.8
+    },
+    "h08_exact_midpoint": {
+      "mass_kg": 40000.0,
+      "wheel_radius_m": 0.33,
+      "gear_ratio": 6.0,
+      "efficiency": 0.9,
+      "total_motor_torque_nm": 2905.0616664738573,
+      "max_power_w": 280873.5334860941,
+      "max_brake_force_n": 45568.80940352644,
+      "rolling_force_n": 2089.7308146696687,
+      "quadratic_drag_n_s2_m2": 5.021948020794408e-17,
+      "actuator_tau_s": 0.3927619145850434,
+      "numerical_prediction": 1.0,
+      "command_deadband": 0.04,
+      "command_exponent": 0.5207432400037213,
+      "travel_direction": 1.0,
+      "max_speed_mps": 40.0,
+      "max_accel_mps2": 3.0,
+      "wheel_sigma_mps": 0.1,
+      "process_noise_v": 0.1,
+      "max_age_s": 0.25,
+      "command_timeout_s": 0.5,
+      "pair_skew_s": 0.1,
+      "disagreement_mps": 0.7,
+      "wheel_rate_limit_mps2": 4.0,
+      "rate_noise_margin_mps": 0.25,
+      "innovation_floor_mps": 0.8,
+      "innovation_cap_mps": 3.0,
+      "stop_speed_mps": 0.07,
+      "stop_model_speed_mps": 0.25,
+      "stop_dwell_s": 0.5,
+      "adaptation_tau_s": 0.5,
+      "disturbance_limit_mps2": 0.6,
+      "max_step_s": 0.2,
+      "reacquire_dwell_s": 0.8,
+      "reacquire_max_residual_mps": 8.0,
+      "reacquire_step_mps": 0.15,
+      "reacquire_min_speed_mps": 0.4,
+      "reacquire_accel_margin_mps2": 0.8
+    }
+  },
+  "rows": [
+    {
+      "bag": "30618_0259fe53",
+      "group": "95a748306e6cbf16",
+      "outputs": 24562,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 9154,
+            "FUSED": 8400,
+            "STOPPED": 7007
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 9154,
+            "FUSED": 8400,
+            "STOPPED": 7007
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.8232504749999805,
+          "cpu_s": 0.8229908910000001,
+          "outputs": 24562,
+          "wall_us_per_output": 33.51724106343052,
+          "cpu_us_per_output": 33.506672542952536
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.8694775119999747,
+          "cpu_s": 0.8693565920000004,
+          "outputs": 24562,
+          "wall_us_per_output": 35.399296148521074,
+          "cpu_us_per_output": 35.39437309665338
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 5430.350136455797,
+        "h08_exact_midpoint": 5430.36459091985
+      },
+      "max_abs_speed_delta_between_models": 0.008137321870491598,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30618_082f1d65",
+      "group": "1e811c142a49aa16",
+      "outputs": 404,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 12,
+            "FUSED": 7,
+            "STOPPED": 384
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 12,
+            "FUSED": 7,
+            "STOPPED": 384
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.014837354999997387,
+          "cpu_s": 0.014833718999999856,
+          "outputs": 404,
+          "wall_us_per_output": 36.7261262376173,
+          "cpu_us_per_output": 36.71712623762341
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.01568704299998558,
+          "cpu_s": 0.015684627000000173,
+          "outputs": 404,
+          "wall_us_per_output": 38.82931435639995,
+          "cpu_us_per_output": 38.823334158416266
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 0.07060464109742881,
+        "h08_exact_midpoint": 0.07060738293025666
+      },
+      "max_abs_speed_delta_between_models": 1.0948104174485218e-05,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30618_095a115b",
+      "group": "e894436afa9dd9f1",
+      "outputs": 26435,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 9692,
+            "FUSED": 8831,
+            "STOPPED": 7910,
+            "SINGLE_WHEEL": 1
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 9692,
+            "FUSED": 8831,
+            "STOPPED": 7910,
+            "SINGLE_WHEEL": 1
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.8814468580000039,
+          "cpu_s": 0.881381084,
+          "outputs": 26435,
+          "wall_us_per_output": 33.3439325893703,
+          "cpu_us_per_output": 33.34144444864763
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.9923799190000011,
+          "cpu_s": 0.9922296470000003,
+          "outputs": 26435,
+          "wall_us_per_output": 37.540379005106914,
+          "cpu_us_per_output": 37.53469442027616
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 5433.782663517936,
+        "h08_exact_midpoint": 5433.789670309446
+      },
+      "max_abs_speed_delta_between_models": 0.03955463048938586,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30618_0a83c933",
+      "group": "86c32e441a296aaa",
+      "outputs": 21910,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 8828,
+            "FUSED": 8129,
+            "STOPPED": 4951,
+            "SINGLE_WHEEL": 1
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 8828,
+            "FUSED": 8129,
+            "STOPPED": 4951,
+            "SINGLE_WHEEL": 1
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.7288862730000005,
+          "cpu_s": 0.728835771,
+          "outputs": 21910,
+          "wall_us_per_output": 33.26728767685991,
+          "cpu_us_per_output": 33.26498270196257
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.7675229300000126,
+          "cpu_s": 0.7674300930000006,
+          "outputs": 21910,
+          "wall_us_per_output": 35.030713372889664,
+          "cpu_us_per_output": 35.02647617526247
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 5407.560738817363,
+        "h08_exact_midpoint": 5407.57119367477
+      },
+      "max_abs_speed_delta_between_models": 0.013357050786508333,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30618_0d865417",
+      "group": "96d0ec5b7ee50e7e",
+      "outputs": 235,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "FUSED": 48,
+            "MODEL_ONLY": 65,
+            "STOPPED": 121
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "FUSED": 48,
+            "MODEL_ONLY": 65,
+            "STOPPED": 121
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.010227979000006826,
+          "cpu_s": 0.010224481999999924,
+          "outputs": 235,
+          "wall_us_per_output": 43.52331489364607,
+          "cpu_us_per_output": 43.508434042552864
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.010629905999991252,
+          "cpu_s": 0.01057797500000035,
+          "outputs": 235,
+          "wall_us_per_output": 45.23364255315426,
+          "cpu_us_per_output": 45.01265957446957
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 1.9256133648958151,
+        "h08_exact_midpoint": 1.9258349728379989
+      },
+      "max_abs_speed_delta_between_models": 0.005291655689655339,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30618_1cc230fa",
+      "group": "0f36b619fba02a9b",
+      "outputs": 26223,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 10607,
+            "FUSED": 8637,
+            "STOPPED": 6977,
+            "SINGLE_WHEEL": 1
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 10607,
+            "FUSED": 8637,
+            "STOPPED": 6977,
+            "SINGLE_WHEEL": 1
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.8500075000000038,
+          "cpu_s": 0.8499466799999995,
+          "outputs": 26223,
+          "wall_us_per_output": 32.4145788048661,
+          "cpu_us_per_output": 32.4122594668802
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.9045636039999749,
+          "cpu_s": 0.904423607,
+          "outputs": 26223,
+          "wall_us_per_output": 34.49504648590836,
+          "cpu_us_per_output": 34.48970777561682
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 5462.143434264135,
+        "h08_exact_midpoint": 5462.162244742897
+      },
+      "max_abs_speed_delta_between_models": 0.04470478347277058,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30618_20096314",
+      "group": "c8a1e61d1b0710e9",
+      "outputs": 23746,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 8853,
+            "FUSED": 8124,
+            "STOPPED": 6765,
+            "SINGLE_WHEEL": 3
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 8853,
+            "FUSED": 8124,
+            "STOPPED": 6765,
+            "SINGLE_WHEEL": 3
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.7854714350000052,
+          "cpu_s": 0.7853949930000006,
+          "outputs": 23746,
+          "wall_us_per_output": 33.07805251410785,
+          "cpu_us_per_output": 33.07483336140827
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.8303716359999953,
+          "cpu_s": 0.8302731850000011,
+          "outputs": 23746,
+          "wall_us_per_output": 34.9689057525476,
+          "cpu_us_per_output": 34.964759749010405
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 5402.6423935701005,
+        "h08_exact_midpoint": 5402.656652136527
+      },
+      "max_abs_speed_delta_between_models": 0.03989804763286536,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30618_2050d396",
+      "group": "4a5f0d46327316bb",
+      "outputs": 26810,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 9969,
+            "FUSED": 8456,
+            "STOPPED": 7677,
+            "SINGLE_WHEEL": 707
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 9969,
+            "FUSED": 8456,
+            "STOPPED": 7677,
+            "SINGLE_WHEEL": 707
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.8621731439999962,
+          "cpu_s": 0.8620819659999999,
+          "outputs": 26810,
+          "wall_us_per_output": 32.158640208877145,
+          "cpu_us_per_output": 32.15523931368892
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.9291826729999855,
+          "cpu_s": 0.9290532779999996,
+          "outputs": 26810,
+          "wall_us_per_output": 34.65806314807853,
+          "cpu_us_per_output": 34.65323677732188
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 5356.595220604062,
+        "h08_exact_midpoint": 5356.619984139817
+      },
+      "max_abs_speed_delta_between_models": 0.0376483946912636,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30618_2161b58b",
+      "group": "8ff91290187a9769",
+      "outputs": 21396,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 9857,
+            "FUSED": 7884,
+            "STOPPED": 3653,
+            "SINGLE_WHEEL": 1
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 9857,
+            "FUSED": 7884,
+            "STOPPED": 3653,
+            "SINGLE_WHEEL": 1
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.6902808560000153,
+          "cpu_s": 0.6901843350000014,
+          "outputs": 21396,
+          "wall_us_per_output": 32.2621450738463,
+          "cpu_us_per_output": 32.25763390353344
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.735502944999979,
+          "cpu_s": 0.7353905090000001,
+          "outputs": 21396,
+          "wall_us_per_output": 34.37572186389882,
+          "cpu_us_per_output": 34.370466862965046
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 5327.7699363357215,
+        "h08_exact_midpoint": 5327.784855423667
+      },
+      "max_abs_speed_delta_between_models": 0.006687555066944517,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30618_21dd3af3",
+      "group": "bc403256f12f9710",
+      "outputs": 21484,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 9634,
+            "FUSED": 7975,
+            "STOPPED": 3874
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 9634,
+            "FUSED": 7975,
+            "STOPPED": 3874
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.7003876590000004,
+          "cpu_s": 0.7002924009999987,
+          "outputs": 21484,
+          "wall_us_per_output": 32.60043097188608,
+          "cpu_us_per_output": 32.595997067585124
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.751973444000015,
+          "cpu_s": 0.7519038829999989,
+          "outputs": 21484,
+          "wall_us_per_output": 35.00155669335389,
+          "cpu_us_per_output": 34.9983188884751
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 5425.038345878588,
+        "h08_exact_midpoint": 5425.064046207461
+      },
+      "max_abs_speed_delta_between_models": 0.010222864661801001,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30618_22c1c589",
+      "group": "dc785decbed3d7ce",
+      "outputs": 23040,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 8947,
+            "FUSED": 7846,
+            "STOPPED": 6243,
+            "SINGLE_WHEEL": 3
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 8947,
+            "FUSED": 7846,
+            "STOPPED": 6243,
+            "SINGLE_WHEEL": 3
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.7618558549999932,
+          "cpu_s": 0.7617863260000028,
+          "outputs": 23040,
+          "wall_us_per_output": 33.066660373263595,
+          "cpu_us_per_output": 33.063642621527904
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.8145336789999931,
+          "cpu_s": 0.813127913999999,
+          "outputs": 23040,
+          "wall_us_per_output": 35.35302426215248,
+          "cpu_us_per_output": 35.29201015624995
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 5416.176977899892,
+        "h08_exact_midpoint": 5416.189057720419
+      },
+      "max_abs_speed_delta_between_models": 0.030842335567852385,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30618_2366c74a",
+      "group": "58dd5f96d4201195",
+      "outputs": 21610,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 7623,
+            "FUSED": 6973,
+            "STOPPED": 7011,
+            "SINGLE_WHEEL": 2
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 7623,
+            "FUSED": 6973,
+            "STOPPED": 7011,
+            "SINGLE_WHEEL": 2
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.7472446669999897,
+          "cpu_s": 0.7472028020000003,
+          "outputs": 21610,
+          "wall_us_per_output": 34.57865187413187,
+          "cpu_us_per_output": 34.57671457658493
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.7763693029999956,
+          "cpu_s": 0.776084045000001,
+          "outputs": 21610,
+          "wall_us_per_output": 35.92639069875038,
+          "cpu_us_per_output": 35.91319042110139
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 4551.823539116363,
+        "h08_exact_midpoint": 4551.842431333223
+      },
+      "max_abs_speed_delta_between_models": 0.008292411616599438,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30618_2d2fa7be",
+      "group": "bf69dbfe85be52b0",
+      "outputs": 23966,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 9711,
+            "FUSED": 7990,
+            "STOPPED": 6262,
+            "SINGLE_WHEEL": 2
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 9711,
+            "FUSED": 7990,
+            "STOPPED": 6262,
+            "SINGLE_WHEEL": 2
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.767436478999997,
+          "cpu_s": 0.767328127999999,
+          "outputs": 23966,
+          "wall_us_per_output": 32.021884294416964,
+          "cpu_us_per_output": 32.01736326462485
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.8265645430000177,
+          "cpu_s": 0.8265141480000011,
+          "outputs": 23966,
+          "wall_us_per_output": 34.489048777435436,
+          "cpu_us_per_output": 34.48694600684308
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 5398.178857545744,
+        "h08_exact_midpoint": 5398.1973424089665
+      },
+      "max_abs_speed_delta_between_models": 0.026785770975559783,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30618_2f2f1175",
+      "group": "bf69dbfe85be52b0",
+      "outputs": 23369,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 9254,
+            "FUSED": 7775,
+            "STOPPED": 6338,
+            "SINGLE_WHEEL": 1
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 9254,
+            "FUSED": 7775,
+            "STOPPED": 6338,
+            "SINGLE_WHEEL": 1
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.7578499729999919,
+          "cpu_s": 0.757738561,
+          "outputs": 23369,
+          "wall_us_per_output": 32.42971342376618,
+          "cpu_us_per_output": 32.42494591124995
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.8103709390000233,
+          "cpu_s": 0.8102849749999983,
+          "outputs": 23369,
+          "wall_us_per_output": 34.677176558689865,
+          "cpu_us_per_output": 34.67349801018436
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 5328.36776082825,
+        "h08_exact_midpoint": 5328.384556988093
+      },
+      "max_abs_speed_delta_between_models": 0.007277508241838385,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30618_3e9f4952",
+      "group": "b8fda5f0647666fb",
+      "outputs": 26408,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 9922,
+            "FUSED": 8598,
+            "STOPPED": 6765,
+            "SINGLE_WHEEL": 1122
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 9922,
+            "FUSED": 8598,
+            "STOPPED": 6765,
+            "SINGLE_WHEEL": 1122
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.8474510149999901,
+          "cpu_s": 0.8472765080000002,
+          "outputs": 26408,
+          "wall_us_per_output": 32.09069278248978,
+          "cpu_us_per_output": 32.08408467131173
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.9222026049999954,
+          "cpu_s": 0.9221102389999984,
+          "outputs": 26408,
+          "wall_us_per_output": 34.92133463344424,
+          "cpu_us_per_output": 34.917836981217754
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 5460.341043421277,
+        "h08_exact_midpoint": 5460.365232606965
+      },
+      "max_abs_speed_delta_between_models": 0.008688915843609119,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30618_40ffd323",
+      "group": "58dd5f96d4201195",
+      "outputs": 25556,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 33,
+          "catchups": 2,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 10746,
+            "FUSED": 9368,
+            "STOPPED": 5440,
+            "SINGLE_WHEEL": 1
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 33,
+          "catchups": 2,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 10746,
+            "FUSED": 9368,
+            "STOPPED": 5440,
+            "SINGLE_WHEEL": 1
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.835672446999979,
+          "cpu_s": 0.8355311390000004,
+          "outputs": 25556,
+          "wall_us_per_output": 32.69965749726009,
+          "cpu_us_per_output": 32.694128149945236
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.8902040190000093,
+          "cpu_s": 0.8901399499999982,
+          "outputs": 25556,
+          "wall_us_per_output": 34.833464509313245,
+          "cpu_us_per_output": 34.8309575050868
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 5470.186339469671,
+        "h08_exact_midpoint": 5470.210934327627
+      },
+      "max_abs_speed_delta_between_models": 0.05288038818235939,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30618_45ff6f99",
+      "group": "5c1be3e9a2189121",
+      "outputs": 261,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 6,
+            "FUSED": 4,
+            "STOPPED": 250
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 6,
+            "FUSED": 4,
+            "STOPPED": 250
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.010736487000002626,
+          "cpu_s": 0.010732739999998131,
+          "outputs": 261,
+          "wall_us_per_output": 41.13596551725144,
+          "cpu_us_per_output": 41.12160919539514
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.011274753999998666,
+          "cpu_s": 0.011272477000002112,
+          "outputs": 261,
+          "wall_us_per_output": 43.198291187734355,
+          "cpu_us_per_output": 43.189567049816525
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 0.0,
+        "h08_exact_midpoint": 0.0
+      },
+      "max_abs_speed_delta_between_models": 0.0,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30618_4d487b0d",
+      "group": "bc403256f12f9710",
+      "outputs": 21456,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 10604,
+            "FUSED": 8406,
+            "STOPPED": 2443,
+            "SINGLE_WHEEL": 2
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 10604,
+            "FUSED": 8406,
+            "STOPPED": 2443,
+            "SINGLE_WHEEL": 2
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.6880773629999908,
+          "cpu_s": 0.6879681439999992,
+          "outputs": 21456,
+          "wall_us_per_output": 32.06922832774006,
+          "cpu_us_per_output": 32.06413795674865
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.7320345429999975,
+          "cpu_s": 0.7319916689999992,
+          "outputs": 21456,
+          "wall_us_per_output": 34.11794104213262,
+          "cpu_us_per_output": 34.11594281319907
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 5482.436459782189,
+        "h08_exact_midpoint": 5482.464466292605
+      },
+      "max_abs_speed_delta_between_models": 0.007060719951923922,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30618_616ec56b",
+      "group": "6090ff2c1bc8dee6",
+      "outputs": 24793,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 9744,
+            "FUSED": 7960,
+            "STOPPED": 7085,
+            "SINGLE_WHEEL": 3
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 9744,
+            "FUSED": 7960,
+            "STOPPED": 7085,
+            "SINGLE_WHEEL": 3
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.8109983980000095,
+          "cpu_s": 0.8109234710000024,
+          "outputs": 24793,
+          "wall_us_per_output": 32.710781188239,
+          "cpu_us_per_output": 32.70775908522577
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.8952824730000088,
+          "cpu_s": 0.8951987859999981,
+          "outputs": 24793,
+          "wall_us_per_output": 36.11029213891053,
+          "cpu_us_per_output": 36.10691671036172
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 5392.638881986755,
+        "h08_exact_midpoint": 5392.66141847866
+      },
+      "max_abs_speed_delta_between_models": 0.011426766157187629,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30618_67b89902",
+      "group": "b8fda5f0647666fb",
+      "outputs": 19662,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 7893,
+            "FUSED": 7262,
+            "STOPPED": 4187,
+            "SINGLE_WHEEL": 319
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 7893,
+            "FUSED": 7262,
+            "STOPPED": 4187,
+            "SINGLE_WHEEL": 319
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.6325983459999804,
+          "cpu_s": 0.6300320070000005,
+          "outputs": 19662,
+          "wall_us_per_output": 32.17365201912219,
+          "cpu_us_per_output": 32.04312923405556
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.6684002030000045,
+          "cpu_s": 0.6683484849999992,
+          "outputs": 19662,
+          "wall_us_per_output": 33.99451749567717,
+          "cpu_us_per_output": 33.99188714271179
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 5384.290518260336,
+        "h08_exact_midpoint": 5384.2970320617305
+      },
+      "max_abs_speed_delta_between_models": 0.008730650670180667,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30618_748832b9",
+      "group": "0f36b619fba02a9b",
+      "outputs": 22227,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 8868,
+            "FUSED": 8302,
+            "STOPPED": 5053,
+            "SINGLE_WHEEL": 3
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 8868,
+            "FUSED": 8302,
+            "STOPPED": 5053,
+            "SINGLE_WHEEL": 3
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.7555773880000061,
+          "cpu_s": 0.755504755000004,
+          "outputs": 22227,
+          "wall_us_per_output": 33.99367382012894,
+          "cpu_us_per_output": 33.99040603770207
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.797172340000003,
+          "cpu_s": 0.7970631230000009,
+          "outputs": 22227,
+          "wall_us_per_output": 35.86504431547231,
+          "cpu_us_per_output": 35.860130606919554
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 5409.129504904888,
+        "h08_exact_midpoint": 5409.137709712059
+      },
+      "max_abs_speed_delta_between_models": 0.040497306244904246,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30618_7849303f",
+      "group": "0f36b619fba02a9b",
+      "outputs": 22227,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 8868,
+            "FUSED": 8302,
+            "STOPPED": 5053,
+            "SINGLE_WHEEL": 3
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 8868,
+            "FUSED": 8302,
+            "STOPPED": 5053,
+            "SINGLE_WHEEL": 3
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.731306563000004,
+          "cpu_s": 0.7312503930000034,
+          "outputs": 22227,
+          "wall_us_per_output": 32.90172146488523,
+          "cpu_us_per_output": 32.89919435821314
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.7744877840000015,
+          "cpu_s": 0.7743516179999972,
+          "outputs": 22227,
+          "wall_us_per_output": 34.84445872137497,
+          "cpu_us_per_output": 34.83833256849764
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 5409.129504904888,
+        "h08_exact_midpoint": 5409.137709712059
+      },
+      "max_abs_speed_delta_between_models": 0.040497306244904246,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30618_79b204dc",
+      "group": "8ff91290187a9769",
+      "outputs": 21229,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 8924,
+            "FUSED": 7929,
+            "STOPPED": 4371,
+            "SINGLE_WHEEL": 4
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 8924,
+            "FUSED": 7929,
+            "STOPPED": 4371,
+            "SINGLE_WHEEL": 4
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.6872309409999957,
+          "cpu_s": 0.6871638560000051,
+          "outputs": 21229,
+          "wall_us_per_output": 32.37227099722058,
+          "cpu_us_per_output": 32.369110933157714
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.7323184869999864,
+          "cpu_s": 0.7322689649999958,
+          "outputs": 21229,
+          "wall_us_per_output": 34.49613674690218,
+          "cpu_us_per_output": 34.49380399453558
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 5395.2797729205095,
+        "h08_exact_midpoint": 5395.293582589109
+      },
+      "max_abs_speed_delta_between_models": 0.032214428611424914,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30618_7a152380",
+      "group": "c8a1e61d1b0710e9",
+      "outputs": 25063,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 10127,
+            "FUSED": 8364,
+            "STOPPED": 6568,
+            "SINGLE_WHEEL": 3
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 10127,
+            "FUSED": 8364,
+            "STOPPED": 6568,
+            "SINGLE_WHEEL": 3
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.8187965939999913,
+          "cpu_s": 0.8187424950000022,
+          "outputs": 25063,
+          "wall_us_per_output": 32.66953652794922,
+          "cpu_us_per_output": 32.667378007421384
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.8638989480000134,
+          "cpu_s": 0.8638415770000023,
+          "outputs": 25063,
+          "wall_us_per_output": 34.46909579858809,
+          "cpu_us_per_output": 34.46680672704793
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 5415.307890713868,
+        "h08_exact_midpoint": 5415.322767145101
+      },
+      "max_abs_speed_delta_between_models": 0.03559708664226869,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30618_7b4d83f4",
+      "group": "2b1581126a480c0f",
+      "outputs": 23135,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 8810,
+            "FUSED": 8205,
+            "STOPPED": 6115,
+            "SINGLE_WHEEL": 4
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 8810,
+            "FUSED": 8205,
+            "STOPPED": 6115,
+            "SINGLE_WHEEL": 4
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.7563626319999912,
+          "cpu_s": 0.7563214799999969,
+          "outputs": 23135,
+          "wall_us_per_output": 32.69343557380554,
+          "cpu_us_per_output": 32.691656797060595
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.8095902929999852,
+          "cpu_s": 0.8095093359999979,
+          "outputs": 23135,
+          "wall_us_per_output": 34.994177350334354,
+          "cpu_us_per_output": 34.99067802031544
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 5416.7138486620215,
+        "h08_exact_midpoint": 5416.729753084626
+      },
+      "max_abs_speed_delta_between_models": 0.006634043593575528,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30618_8158f0b0",
+      "group": "6090ff2c1bc8dee6",
+      "outputs": 23629,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 9819,
+            "FUSED": 8337,
+            "STOPPED": 5467,
+            "SINGLE_WHEEL": 5
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 9819,
+            "FUSED": 8337,
+            "STOPPED": 5467,
+            "SINGLE_WHEEL": 5
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.7637136909999924,
+          "cpu_s": 0.7636161710000025,
+          "outputs": 23629,
+          "wall_us_per_output": 32.321033094925404,
+          "cpu_us_per_output": 32.316905963011656
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.8158133739999869,
+          "cpu_s": 0.8153399229999962,
+          "outputs": 23629,
+          "wall_us_per_output": 34.52593736510165,
+          "cpu_us_per_output": 34.50590050361828
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 5512.614851244647,
+        "h08_exact_midpoint": 5512.630189126447
+      },
+      "max_abs_speed_delta_between_models": 0.0068702642860582475,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30618_81c22fee",
+      "group": "86c32e441a296aaa",
+      "outputs": 23627,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 9923,
+            "FUSED": 7934,
+            "STOPPED": 5769
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 9923,
+            "FUSED": 7934,
+            "STOPPED": 5769
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.7689073059999885,
+          "cpu_s": 0.7687896330000044,
+          "outputs": 23627,
+          "wall_us_per_output": 32.54358598213859,
+          "cpu_us_per_output": 32.53860553603946
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.8099646630000166,
+          "cpu_s": 0.8099117269999994,
+          "outputs": 23627,
+          "wall_us_per_output": 34.281316417658466,
+          "cpu_us_per_output": 34.27907593007997
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 5412.937377587569,
+        "h08_exact_midpoint": 5412.954113326983
+      },
+      "max_abs_speed_delta_between_models": 0.03209788668475452,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30618_87afe526",
+      "group": "2b1581126a480c0f",
+      "outputs": 24313,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "FUSED": 8483,
+            "MODEL_ONLY": 9869,
+            "STOPPED": 5959,
+            "SINGLE_WHEEL": 1
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "FUSED": 8483,
+            "MODEL_ONLY": 9869,
+            "STOPPED": 5959,
+            "SINGLE_WHEEL": 1
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.8004502050000042,
+          "cpu_s": 0.8003156200000063,
+          "outputs": 24313,
+          "wall_us_per_output": 32.92272467404287,
+          "cpu_us_per_output": 32.91718915806385
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.8546838259999845,
+          "cpu_s": 0.853802378999994,
+          "outputs": 24313,
+          "wall_us_per_output": 35.1533675811288,
+          "cpu_us_per_output": 35.11711343725554
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 5438.224942982502,
+        "h08_exact_midpoint": 5438.237144290393
+      },
+      "max_abs_speed_delta_between_models": 0.005307689624779441,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30618_887a2b9a",
+      "group": "8ff91290187a9769",
+      "outputs": 21229,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 8924,
+            "FUSED": 7929,
+            "STOPPED": 4371,
+            "SINGLE_WHEEL": 4
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 8924,
+            "FUSED": 7929,
+            "STOPPED": 4371,
+            "SINGLE_WHEEL": 4
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.7013963109999963,
+          "cpu_s": 0.7012841439999988,
+          "outputs": 21229,
+          "wall_us_per_output": 33.03953605916418,
+          "cpu_us_per_output": 33.03425239059771
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.7378380399999855,
+          "cpu_s": 0.7377919979999987,
+          "outputs": 21229,
+          "wall_us_per_output": 34.75613735927201,
+          "cpu_us_per_output": 34.75396853360963
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 5395.2797729205095,
+        "h08_exact_midpoint": 5395.293582589109
+      },
+      "max_abs_speed_delta_between_models": 0.032214428611424914,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30618_8eb8615c",
+      "group": "bf69dbfe85be52b0",
+      "outputs": 23966,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 9711,
+            "FUSED": 7990,
+            "STOPPED": 6262,
+            "SINGLE_WHEEL": 2
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 9711,
+            "FUSED": 7990,
+            "STOPPED": 6262,
+            "SINGLE_WHEEL": 2
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.7832832309999844,
+          "cpu_s": 0.7832483279999991,
+          "outputs": 23966,
+          "wall_us_per_output": 32.68310235333324,
+          "cpu_us_per_output": 32.681645998497835
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.8248145420000128,
+          "cpu_s": 0.8247139580000038,
+          "outputs": 23966,
+          "wall_us_per_output": 34.416028623884365,
+          "cpu_us_per_output": 34.41183167821096
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 5398.178857545744,
+        "h08_exact_midpoint": 5398.1973424089665
+      },
+      "max_abs_speed_delta_between_models": 0.026785770975559783,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30618_8f08df08",
+      "group": "c8a1e61d1b0710e9",
+      "outputs": 25063,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 10127,
+            "FUSED": 8364,
+            "STOPPED": 6568,
+            "SINGLE_WHEEL": 3
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 10127,
+            "FUSED": 8364,
+            "STOPPED": 6568,
+            "SINGLE_WHEEL": 3
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.8283383140000069,
+          "cpu_s": 0.8282635099999993,
+          "outputs": 25063,
+          "wall_us_per_output": 33.050245940230894,
+          "cpu_us_per_output": 33.04726130152014
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.8769024009999953,
+          "cpu_s": 0.8767773119999944,
+          "outputs": 25063,
+          "wall_us_per_output": 34.98792646530724,
+          "cpu_us_per_output": 34.98293548258367
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 5415.307890713868,
+        "h08_exact_midpoint": 5415.322767145101
+      },
+      "max_abs_speed_delta_between_models": 0.03559708664226869,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30618_92b1b453",
+      "group": "86c32e441a296aaa",
+      "outputs": 23627,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 9923,
+            "FUSED": 7934,
+            "STOPPED": 5769
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 9923,
+            "FUSED": 7934,
+            "STOPPED": 5769
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.770913553000014,
+          "cpu_s": 0.7708147080000032,
+          "outputs": 23627,
+          "wall_us_per_output": 32.62849930164701,
+          "cpu_us_per_output": 32.62431574046655
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.815394236000003,
+          "cpu_s": 0.8152702339999962,
+          "outputs": 23627,
+          "wall_us_per_output": 34.51112015914009,
+          "cpu_us_per_output": 34.505871841537065
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 5412.937377587569,
+        "h08_exact_midpoint": 5412.954113326983
+      },
+      "max_abs_speed_delta_between_models": 0.03209788668475452,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30618_93dc866e",
+      "group": "58dd5f96d4201195",
+      "outputs": 21610,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 7623,
+            "FUSED": 6973,
+            "STOPPED": 7011,
+            "SINGLE_WHEEL": 2
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 7623,
+            "FUSED": 6973,
+            "STOPPED": 7011,
+            "SINGLE_WHEEL": 2
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.7190352390000214,
+          "cpu_s": 0.7189392860000012,
+          "outputs": 21610,
+          "wall_us_per_output": 33.27326418324949,
+          "cpu_us_per_output": 33.26882397038414
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.7548307220000083,
+          "cpu_s": 0.7547196860000014,
+          "outputs": 21610,
+          "wall_us_per_output": 34.929695603887474,
+          "cpu_us_per_output": 34.924557427117136
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 4551.823539116363,
+        "h08_exact_midpoint": 4551.842431333223
+      },
+      "max_abs_speed_delta_between_models": 0.008292411616599438,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30618_98161270",
+      "group": "5c1be3e9a2189121",
+      "outputs": 771,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 7,
+            "FUSED": 5,
+            "STOPPED": 758
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 7,
+            "FUSED": 5,
+            "STOPPED": 758
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.027777962000016032,
+          "cpu_s": 0.027774277999995434,
+          "outputs": 771,
+          "wall_us_per_output": 36.02848508432689,
+          "cpu_us_per_output": 36.023706874183446
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.02941401399999677,
+          "cpu_s": 0.029391122999996355,
+          "outputs": 771,
+          "wall_us_per_output": 38.150472114133294,
+          "cpu_us_per_output": 38.12078210116259
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 0.0,
+        "h08_exact_midpoint": 0.0
+      },
+      "max_abs_speed_delta_between_models": 0.0,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30618_9bbe6faa",
+      "group": "95a748306e6cbf16",
+      "outputs": 24368,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 9312,
+            "FUSED": 7455,
+            "STOPPED": 7600
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 9312,
+            "FUSED": 7455,
+            "STOPPED": 7600
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.791367852999997,
+          "cpu_s": 0.7912972639999936,
+          "outputs": 24368,
+          "wall_us_per_output": 32.47569981122771,
+          "cpu_us_per_output": 32.4728030203543
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.8435233760000074,
+          "cpu_s": 0.8434062529999977,
+          "outputs": 24368,
+          "wall_us_per_output": 34.61602823374948,
+          "cpu_us_per_output": 34.61122180728815
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 5410.457808509065,
+        "h08_exact_midpoint": 5410.476972592078
+      },
+      "max_abs_speed_delta_between_models": 0.006089939451620299,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30618_9c09b081",
+      "group": "dc785decbed3d7ce",
+      "outputs": 26573,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 10256,
+            "FUSED": 9232,
+            "STOPPED": 7083,
+            "SINGLE_WHEEL": 1
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 10256,
+            "FUSED": 9232,
+            "STOPPED": 7083,
+            "SINGLE_WHEEL": 1
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.8753625079999949,
+          "cpu_s": 0.8752724060000006,
+          "outputs": 26573,
+          "wall_us_per_output": 32.94180212998137,
+          "cpu_us_per_output": 32.93841139502505
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.9253227540000069,
+          "cpu_s": 0.9251672209999953,
+          "outputs": 26573,
+          "wall_us_per_output": 34.82191525232405,
+          "cpu_us_per_output": 34.81606220599839
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 5470.415022047954,
+        "h08_exact_midpoint": 5470.429498224386
+      },
+      "max_abs_speed_delta_between_models": 0.05099249674573272,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30618_9c10cd0d",
+      "group": "95a748306e6cbf16",
+      "outputs": 24368,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 9312,
+            "FUSED": 7455,
+            "STOPPED": 7600
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 9312,
+            "FUSED": 7455,
+            "STOPPED": 7600
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.8019959599999993,
+          "cpu_s": 0.8019192590000017,
+          "outputs": 24368,
+          "wall_us_per_output": 32.91184996717003,
+          "cpu_us_per_output": 32.90870235554833
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.851375532999981,
+          "cpu_s": 0.8512910140000045,
+          "outputs": 24368,
+          "wall_us_per_output": 34.93826054661774,
+          "cpu_us_per_output": 34.9347921043994
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 5410.457808509065,
+        "h08_exact_midpoint": 5410.476972592078
+      },
+      "max_abs_speed_delta_between_models": 0.006089939451620299,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30618_a395846d",
+      "group": "0f36b619fba02a9b",
+      "outputs": 26223,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 10607,
+            "FUSED": 8637,
+            "STOPPED": 6977,
+            "SINGLE_WHEEL": 1
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 10607,
+            "FUSED": 8637,
+            "STOPPED": 6977,
+            "SINGLE_WHEEL": 1
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.8452451749999739,
+          "cpu_s": 0.845160767000003,
+          "outputs": 26223,
+          "wall_us_per_output": 32.2329701025807,
+          "cpu_us_per_output": 32.229751248903746
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.8965828879999833,
+          "cpu_s": 0.8964919749999964,
+          "outputs": 26223,
+          "wall_us_per_output": 34.19070617396878,
+          "cpu_us_per_output": 34.18723925561517
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 5462.143434264135,
+        "h08_exact_midpoint": 5462.162244742897
+      },
+      "max_abs_speed_delta_between_models": 0.04470478347277058,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30618_a53d5f6f",
+      "group": "4a5f0d46327316bb",
+      "outputs": 24201,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 10285,
+            "FUSED": 8580,
+            "STOPPED": 4861,
+            "SINGLE_WHEEL": 474
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 10285,
+            "FUSED": 8580,
+            "STOPPED": 4861,
+            "SINGLE_WHEEL": 474
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.8316881940000087,
+          "cpu_s": 0.8192245280000066,
+          "outputs": 24201,
+          "wall_us_per_output": 34.36586066691495,
+          "cpu_us_per_output": 33.850854427503265
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.8372836300000017,
+          "cpu_s": 0.8372199410000007,
+          "outputs": 24201,
+          "wall_us_per_output": 34.59706747655063,
+          "cpu_us_per_output": 34.5944358084377
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 5432.0716613405975,
+        "h08_exact_midpoint": 5432.087161630184
+      },
+      "max_abs_speed_delta_between_models": 0.01939649885373738,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30618_ab5921a4",
+      "group": "1cff0aebccb39ff5",
+      "outputs": 23028,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 10691,
+            "FUSED": 9050,
+            "STOPPED": 3286
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 10691,
+            "FUSED": 9050,
+            "STOPPED": 3286
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.7442430959999911,
+          "cpu_s": 0.7441808060000028,
+          "outputs": 23028,
+          "wall_us_per_output": 32.31905054715959,
+          "cpu_us_per_output": 32.3163455792949
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.7993859799999825,
+          "cpu_s": 0.7993203569999991,
+          "outputs": 23028,
+          "wall_us_per_output": 34.71365207573313,
+          "cpu_us_per_output": 34.71080237102654
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 5454.989912695461,
+        "h08_exact_midpoint": 5455.007571034719
+      },
+      "max_abs_speed_delta_between_models": 0.006226455274742582,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30618_b3042f78",
+      "group": "bc403256f12f9710",
+      "outputs": 21456,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 10604,
+            "FUSED": 8406,
+            "STOPPED": 2443,
+            "SINGLE_WHEEL": 2
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 10604,
+            "FUSED": 8406,
+            "STOPPED": 2443,
+            "SINGLE_WHEEL": 2
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.6875225109999974,
+          "cpu_s": 0.6874216630000092,
+          "outputs": 21456,
+          "wall_us_per_output": 32.04336833519749,
+          "cpu_us_per_output": 32.0386681114844
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.730486701000018,
+          "cpu_s": 0.7304215200000073,
+          "outputs": 21456,
+          "wall_us_per_output": 34.04580075503439,
+          "cpu_us_per_output": 34.04276286353502
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 5482.436459782189,
+        "h08_exact_midpoint": 5482.464466292605
+      },
+      "max_abs_speed_delta_between_models": 0.007060719951923922,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30618_b83d854d",
+      "group": "eeabf7d118bbcdac",
+      "outputs": 24056,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 9980,
+            "FUSED": 8981,
+            "STOPPED": 5093,
+            "SINGLE_WHEEL": 1
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 9980,
+            "FUSED": 8981,
+            "STOPPED": 5093,
+            "SINGLE_WHEEL": 1
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.7743037669999921,
+          "cpu_s": 0.7741946089999914,
+          "outputs": 24056,
+          "wall_us_per_output": 32.18755266877254,
+          "cpu_us_per_output": 32.18301500665079
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.8294855970000015,
+          "cpu_s": 0.8293943639999952,
+          "outputs": 24056,
+          "wall_us_per_output": 34.481443174260114,
+          "cpu_us_per_output": 34.477650648486666
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 5423.126274679421,
+        "h08_exact_midpoint": 5423.142426864965
+      },
+      "max_abs_speed_delta_between_models": 0.005496311132835635,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30618_b95ca60a",
+      "group": "e894436afa9dd9f1",
+      "outputs": 21715,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 9366,
+            "FUSED": 7564,
+            "STOPPED": 4784
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 9366,
+            "FUSED": 7564,
+            "STOPPED": 4784
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.6953096519999917,
+          "cpu_s": 0.6951734980000026,
+          "outputs": 21715,
+          "wall_us_per_output": 32.01978595440901,
+          "cpu_us_per_output": 32.013515910660956
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.7462056429999961,
+          "cpu_s": 0.7461538249999933,
+          "outputs": 21715,
+          "wall_us_per_output": 34.363603177526876,
+          "cpu_us_per_output": 34.36121690075953
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 5408.44921956372,
+        "h08_exact_midpoint": 5408.4646239710355
+      },
+      "max_abs_speed_delta_between_models": 0.015071578934455855,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30618_bab2fe58",
+      "group": "5c1be3e9a2189121",
+      "outputs": 1070,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 479,
+            "FUSED": 452,
+            "STOPPED": 138
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 479,
+            "FUSED": 452,
+            "STOPPED": 138
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.03751502299999743,
+          "cpu_s": 0.03749601999999186,
+          "outputs": 1070,
+          "wall_us_per_output": 35.060769158876106,
+          "cpu_us_per_output": 35.04300934578678
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.03888987700000257,
+          "cpu_s": 0.03888659599999755,
+          "outputs": 1070,
+          "wall_us_per_output": 36.34567943925474,
+          "cpu_us_per_output": 36.342613084109864
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 155.6192244589322,
+        "h08_exact_midpoint": 155.62095989311413
+      },
+      "max_abs_speed_delta_between_models": 0.0035605796523959926,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30618_bc5e53c2",
+      "group": "49fc4c6fb44fd0ea",
+      "outputs": 523,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 6,
+            "FUSED": 4,
+            "STOPPED": 512
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 6,
+            "FUSED": 4,
+            "STOPPED": 512
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.018834491000006892,
+          "cpu_s": 0.018791120999992472,
+          "outputs": 523,
+          "wall_us_per_output": 36.012411089879336,
+          "cpu_us_per_output": 35.929485659641436
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.0199633130000052,
+          "cpu_s": 0.019960682000004226,
+          "outputs": 523,
+          "wall_us_per_output": 38.17077055450325,
+          "cpu_us_per_output": 38.165739961767166
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 0.0,
+        "h08_exact_midpoint": 0.0
+      },
+      "max_abs_speed_delta_between_models": 0.0,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30618_cfd9fd5a",
+      "group": "95a748306e6cbf16",
+      "outputs": 24562,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 9154,
+            "FUSED": 8400,
+            "STOPPED": 7007
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 9154,
+            "FUSED": 8400,
+            "STOPPED": 7007
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.8068827849999991,
+          "cpu_s": 0.8066397090000095,
+          "outputs": 24562,
+          "wall_us_per_output": 32.85085843986642,
+          "cpu_us_per_output": 32.84096201449432
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.8602630440000212,
+          "cpu_s": 0.8602066490000055,
+          "outputs": 24562,
+          "wall_us_per_output": 35.02414477648486,
+          "cpu_us_per_output": 35.02184875010201
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 5430.350136455797,
+        "h08_exact_midpoint": 5430.36459091985
+      },
+      "max_abs_speed_delta_between_models": 0.008137321870491598,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30618_d4ba7005",
+      "group": "0448e10aab8a0e05",
+      "outputs": 23162,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 8560,
+            "FUSED": 7459,
+            "STOPPED": 6442,
+            "SINGLE_WHEEL": 700
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 8560,
+            "FUSED": 7459,
+            "STOPPED": 6442,
+            "SINGLE_WHEEL": 700
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.7462305800000024,
+          "cpu_s": 0.7461968650000017,
+          "outputs": 23162,
+          "wall_us_per_output": 32.21788187548581,
+          "cpu_us_per_output": 32.21642625852697
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.8040881280000178,
+          "cpu_s": 0.8039684370000089,
+          "outputs": 23162,
+          "wall_us_per_output": 34.715833175028834,
+          "cpu_us_per_output": 34.71066561609571
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 5342.444323737707,
+        "h08_exact_midpoint": 5342.463057401938
+      },
+      "max_abs_speed_delta_between_models": 0.006252847057451924,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30618_dd8e6395",
+      "group": "0448e10aab8a0e05",
+      "outputs": 24527,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 9462,
+            "FUSED": 7996,
+            "SINGLE_WHEEL": 1066,
+            "STOPPED": 6002
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 9462,
+            "FUSED": 7996,
+            "SINGLE_WHEEL": 1066,
+            "STOPPED": 6002
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.7944680230000074,
+          "cpu_s": 0.7943069269999938,
+          "outputs": 24527,
+          "wall_us_per_output": 32.39156941329993,
+          "cpu_us_per_output": 32.38500130468439
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.8670974659999899,
+          "cpu_s": 0.8653892720000016,
+          "outputs": 24527,
+          "wall_us_per_output": 35.35277310718759,
+          "cpu_us_per_output": 35.28312765523715
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 5368.207256930261,
+        "h08_exact_midpoint": 5368.22584880838
+      },
+      "max_abs_speed_delta_between_models": 0.0062979230117949925,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30618_ddad08d6",
+      "group": "bf69dbfe85be52b0",
+      "outputs": 23369,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 9254,
+            "FUSED": 7775,
+            "STOPPED": 6338,
+            "SINGLE_WHEEL": 1
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 9254,
+            "FUSED": 7775,
+            "STOPPED": 6338,
+            "SINGLE_WHEEL": 1
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.773236149000013,
+          "cpu_s": 0.7731844819999907,
+          "outputs": 23369,
+          "wall_us_per_output": 33.08811455346883,
+          "cpu_us_per_output": 33.0859036330177
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.812107984999983,
+          "cpu_s": 0.8120119569999957,
+          "outputs": 23369,
+          "wall_us_per_output": 34.75150776669875,
+          "cpu_us_per_output": 34.7473985621976
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 5328.36776082825,
+        "h08_exact_midpoint": 5328.384556988093
+      },
+      "max_abs_speed_delta_between_models": 0.007277508241838385,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30618_e2dcf65f",
+      "group": "de891506667c23f9",
+      "outputs": 21849,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 8534,
+            "FUSED": 7323,
+            "STOPPED": 5989,
+            "SINGLE_WHEEL": 2
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 8534,
+            "FUSED": 7323,
+            "STOPPED": 5989,
+            "SINGLE_WHEEL": 2
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.7071977150000066,
+          "cpu_s": 0.7071439449999986,
+          "outputs": 21849,
+          "wall_us_per_output": 32.36750949700245,
+          "cpu_us_per_output": 32.365048514806105
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.7609999160000029,
+          "cpu_s": 0.7609325210000009,
+          "outputs": 21849,
+          "wall_us_per_output": 34.829965490411595,
+          "cpu_us_per_output": 34.8268809098815
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 5324.5100020837845,
+        "h08_exact_midpoint": 5324.517642737112
+      },
+      "max_abs_speed_delta_between_models": 0.036301961104302456,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30618_e392e5bd",
+      "group": "86c32e441a296aaa",
+      "outputs": 21910,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 8828,
+            "FUSED": 8129,
+            "STOPPED": 4951,
+            "SINGLE_WHEEL": 1
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 8828,
+            "FUSED": 8129,
+            "STOPPED": 4951,
+            "SINGLE_WHEEL": 1
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.7230434820000085,
+          "cpu_s": 0.7229624320000028,
+          "outputs": 21910,
+          "wall_us_per_output": 33.00061533546364,
+          "cpu_us_per_output": 32.996916111364804
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.768712996000005,
+          "cpu_s": 0.7686921760000018,
+          "outputs": 21910,
+          "wall_us_per_output": 35.085029484253994,
+          "cpu_us_per_output": 35.084079233226916
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 5407.560738817363,
+        "h08_exact_midpoint": 5407.57119367477
+      },
+      "max_abs_speed_delta_between_models": 0.013357050786508333,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30618_e3d94878",
+      "group": "eeabf7d118bbcdac",
+      "outputs": 23367,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "FUSED": 7897,
+            "MODEL_ONLY": 8963,
+            "STOPPED": 6506
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "FUSED": 7897,
+            "MODEL_ONLY": 8963,
+            "STOPPED": 6506
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.7734642089999966,
+          "cpu_s": 0.7734149959999996,
+          "outputs": 23367,
+          "wall_us_per_output": 33.10070650917947,
+          "cpu_us_per_output": 33.09860041939486
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.8150377890000016,
+          "cpu_s": 0.81495774199999,
+          "outputs": 23367,
+          "wall_us_per_output": 34.879864295801845,
+          "cpu_us_per_output": 34.87643865280054
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 5408.904327851501,
+        "h08_exact_midpoint": 5408.91523023492
+      },
+      "max_abs_speed_delta_between_models": 0.032522571980343855,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30618_e7dcdab1",
+      "group": "c8a1e61d1b0710e9",
+      "outputs": 23746,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 8853,
+            "FUSED": 8124,
+            "STOPPED": 6765,
+            "SINGLE_WHEEL": 3
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 8853,
+            "FUSED": 8124,
+            "STOPPED": 6765,
+            "SINGLE_WHEEL": 3
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.7732637590000024,
+          "cpu_s": 0.7731593059999966,
+          "outputs": 23746,
+          "wall_us_per_output": 32.563958519329674,
+          "cpu_us_per_output": 32.559559757432694
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.8232976719999954,
+          "cpu_s": 0.8232226679999997,
+          "outputs": 23746,
+          "wall_us_per_output": 34.67100446390951,
+          "cpu_us_per_output": 34.66784586877789
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 5402.6423935701005,
+        "h08_exact_midpoint": 5402.656652136527
+      },
+      "max_abs_speed_delta_between_models": 0.03989804763286536,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30618_efb92709",
+      "group": "58dd5f96d4201195",
+      "outputs": 25556,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 33,
+          "catchups": 2,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 10746,
+            "FUSED": 9368,
+            "STOPPED": 5440,
+            "SINGLE_WHEEL": 1
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 33,
+          "catchups": 2,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 10746,
+            "FUSED": 9368,
+            "STOPPED": 5440,
+            "SINGLE_WHEEL": 1
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.830111770000002,
+          "cpu_s": 0.8299640850000003,
+          "outputs": 25556,
+          "wall_us_per_output": 32.48206957270316,
+          "cpu_us_per_output": 32.476290694944446
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.8787325979999991,
+          "cpu_s": 0.8786452370000006,
+          "outputs": 25556,
+          "wall_us_per_output": 34.38459062451084,
+          "cpu_us_per_output": 34.38117221004855
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 5470.186339469671,
+        "h08_exact_midpoint": 5470.210934327627
+      },
+      "max_abs_speed_delta_between_models": 0.05288038818235939,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30618_f19a4ac3",
+      "group": "1cff0aebccb39ff5",
+      "outputs": 23882,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 9517,
+            "FUSED": 8688,
+            "STOPPED": 5675,
+            "SINGLE_WHEEL": 1
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 9517,
+            "FUSED": 8688,
+            "STOPPED": 5675,
+            "SINGLE_WHEEL": 1
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.7701562649999971,
+          "cpu_s": 0.770042310000008,
+          "outputs": 23882,
+          "wall_us_per_output": 32.24839900343343,
+          "cpu_us_per_output": 32.24362741813952
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.8169874360000051,
+          "cpu_s": 0.816882801999995,
+          "outputs": 23882,
+          "wall_us_per_output": 34.209339083829036,
+          "cpu_us_per_output": 34.20495779247948
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 5414.601552233272,
+        "h08_exact_midpoint": 5414.619169927217
+      },
+      "max_abs_speed_delta_between_models": 0.01467771172976354,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30618_f28179bb",
+      "group": "8ff91290187a9769",
+      "outputs": 21396,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 9857,
+            "FUSED": 7884,
+            "STOPPED": 3653,
+            "SINGLE_WHEEL": 1
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 9857,
+            "FUSED": 7884,
+            "STOPPED": 3653,
+            "SINGLE_WHEEL": 1
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.6816978800000015,
+          "cpu_s": 0.6815481720000065,
+          "outputs": 21396,
+          "wall_us_per_output": 31.860996447934266,
+          "cpu_us_per_output": 31.85399943914781
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.7393090379999876,
+          "cpu_s": 0.7391886720000116,
+          "outputs": 21396,
+          "wall_us_per_output": 34.5536099270886,
+          "cpu_us_per_output": 34.54798429613066
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 5327.7699363357215,
+        "h08_exact_midpoint": 5327.784855423667
+      },
+      "max_abs_speed_delta_between_models": 0.006687555066944517,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30618_f3b8c99b",
+      "group": "bc403256f12f9710",
+      "outputs": 21484,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 9634,
+            "FUSED": 7975,
+            "STOPPED": 3874
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 9634,
+            "FUSED": 7975,
+            "STOPPED": 3874
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.6982002190000003,
+          "cpu_s": 0.6981504549999897,
+          "outputs": 21484,
+          "wall_us_per_output": 32.4986138056228,
+          "cpu_us_per_output": 32.496297477191845
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.7485617229999946,
+          "cpu_s": 0.7484309889999992,
+          "outputs": 21484,
+          "wall_us_per_output": 34.842753816793646,
+          "cpu_us_per_output": 34.836668637125264
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 5425.038345878588,
+        "h08_exact_midpoint": 5425.064046207461
+      },
+      "max_abs_speed_delta_between_models": 0.010222864661801001,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30639_0be558e2",
+      "group": "0d4506540f0e7621",
+      "outputs": 25780,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 10125,
+            "FUSED": 9670,
+            "STOPPED": 5978,
+            "SINGLE_WHEEL": 6
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 10125,
+            "FUSED": 9670,
+            "STOPPED": 5978,
+            "SINGLE_WHEEL": 6
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.8306682559999956,
+          "cpu_s": 0.8305994879999901,
+          "outputs": 25780,
+          "wall_us_per_output": 32.22142187742419,
+          "cpu_us_per_output": 32.21875438324244
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.8814312410000014,
+          "cpu_s": 0.8813132739999929,
+          "outputs": 25780,
+          "wall_us_per_output": 34.19050585725374,
+          "cpu_us_per_output": 34.18592994569406
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 5515.425427009172,
+        "h08_exact_midpoint": 5515.441202306042
+      },
+      "max_abs_speed_delta_between_models": 0.03383021711264361,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30639_2b4a6347",
+      "group": "bc1e4cbe924a90ce",
+      "outputs": 22174,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 8921,
+            "FUSED": 8489,
+            "STOPPED": 4757,
+            "SINGLE_WHEEL": 6
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 8921,
+            "FUSED": 8489,
+            "STOPPED": 4757,
+            "SINGLE_WHEEL": 6
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.7174268369999766,
+          "cpu_s": 0.7173439029999997,
+          "outputs": 22174,
+          "wall_us_per_output": 32.35441674934503,
+          "cpu_us_per_output": 32.350676603229
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.763097987000009,
+          "cpu_s": 0.7629289139999997,
+          "outputs": 22174,
+          "wall_us_per_output": 34.41408798592987,
+          "cpu_us_per_output": 34.406463155046445
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 5389.5114927907925,
+        "h08_exact_midpoint": 5389.521875873383
+      },
+      "max_abs_speed_delta_between_models": 0.016007220170981773,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30639_4285f2bc",
+      "group": "bc1e4cbe924a90ce",
+      "outputs": 26057,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 10878,
+            "FUSED": 9401,
+            "STOPPED": 5399,
+            "SINGLE_WHEEL": 378
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 10878,
+            "FUSED": 9401,
+            "STOPPED": 5399,
+            "SINGLE_WHEEL": 378
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.8325967430000105,
+          "cpu_s": 0.8325370519999922,
+          "outputs": 26057,
+          "wall_us_per_output": 31.95290106305448,
+          "cpu_us_per_output": 31.95061027746833
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.8896284950000108,
+          "cpu_s": 0.8894928010000029,
+          "outputs": 26057,
+          "wall_us_per_output": 34.14163161530532,
+          "cpu_us_per_output": 34.13642403193011
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 5454.6086955049095,
+        "h08_exact_midpoint": 5454.627505068112
+      },
+      "max_abs_speed_delta_between_models": 0.041422346261744354,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30639_44226bde",
+      "group": "f28fe86416cc8dc2",
+      "outputs": 21640,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "SINGLE_WHEEL": 164,
+            "MODEL_ONLY": 9812,
+            "FUSED": 8384,
+            "STOPPED": 3279
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "SINGLE_WHEEL": 164,
+            "MODEL_ONLY": 9812,
+            "FUSED": 8384,
+            "STOPPED": 3279
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.6977574920000222,
+          "cpu_s": 0.6977034300000042,
+          "outputs": 21640,
+          "wall_us_per_output": 32.243876709797696,
+          "cpu_us_per_output": 32.24137846580426
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.7409065029999908,
+          "cpu_s": 0.7408553129999973,
+          "outputs": 21640,
+          "wall_us_per_output": 34.237823613677946,
+          "cpu_us_per_output": 34.23545808687603
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 5438.633975792359,
+        "h08_exact_midpoint": 5438.64255882987
+      },
+      "max_abs_speed_delta_between_models": 0.039551908445241014,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30639_92226df0",
+      "group": "4ca08ed0da0cb611",
+      "outputs": 24364,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 10606,
+            "FUSED": 9475,
+            "STOPPED": 4277,
+            "SINGLE_WHEEL": 5
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 10606,
+            "FUSED": 9475,
+            "STOPPED": 4277,
+            "SINGLE_WHEEL": 5
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.7894800540000233,
+          "cpu_s": 0.7894214279999971,
+          "outputs": 24364,
+          "wall_us_per_output": 32.403548432113915,
+          "cpu_us_per_output": 32.40114217698232
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.8437612509999894,
+          "cpu_s": 0.8437238129999969,
+          "outputs": 24364,
+          "wall_us_per_output": 34.631474757839,
+          "cpu_us_per_output": 34.62993814644545
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 5468.977932458881,
+        "h08_exact_midpoint": 5468.993694978169
+      },
+      "max_abs_speed_delta_between_models": 0.03332490159175351,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30639_927002c2",
+      "group": "8232b134be2a5002",
+      "outputs": 22841,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 10142,
+            "FUSED": 8292,
+            "STOPPED": 4167,
+            "SINGLE_WHEEL": 239
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 10142,
+            "FUSED": 8292,
+            "STOPPED": 4167,
+            "SINGLE_WHEEL": 239
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.7399325630000249,
+          "cpu_s": 0.7397307159999968,
+          "outputs": 22841,
+          "wall_us_per_output": 32.3949285495392,
+          "cpu_us_per_output": 32.386091502123236
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.7783233119999977,
+          "cpu_s": 0.7780727490000032,
+          "outputs": 22841,
+          "wall_us_per_output": 34.0757108708024,
+          "cpu_us_per_output": 34.0647409920758
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 5367.437678413042,
+        "h08_exact_midpoint": 5367.456175751451
+      },
+      "max_abs_speed_delta_between_models": 0.031928816158702696,
+      "note": "Positions and model deltas are not errors against ground truth"
+    },
+    {
+      "bag": "30639_d3c43d69",
+      "group": "f28fe86416cc8dc2",
+      "outputs": 22010,
+      "runtime": {
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 10399,
+            "FUSED": 8347,
+            "STOPPED": 3260,
+            "SINGLE_WHEEL": 3
+          }
+        },
+        "h08_exact_midpoint": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 1,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 10399,
+            "FUSED": 8347,
+            "STOPPED": 3260,
+            "SINGLE_WHEEL": 3
+          }
+        }
+      },
+      "timing": {
+        "balanced_physics": {
+          "wall_s": 0.6920581689999779,
+          "cpu_s": 0.6919914040000066,
+          "outputs": 22010,
+          "wall_us_per_output": 31.442897273965375,
+          "cpu_us_per_output": 31.43986388005482
+        },
+        "h08_exact_midpoint": {
+          "wall_s": 0.7453740610000068,
+          "cpu_s": 0.7453044720000008,
+          "outputs": 22010,
+          "wall_us_per_output": 33.865245842799034,
+          "cpu_us_per_output": 33.86208414357114
+        }
+      },
+      "reference_accuracy": null,
+      "terminal_positions_m": {
+        "balanced_physics": 5243.526390151554,
+        "h08_exact_midpoint": 5243.544657669986
+      },
+      "max_abs_speed_delta_between_models": 0.033940542343321535,
+      "note": "Positions and model deltas are not errors against ground truth"
+    }
+  ],
+  "access": [
+    {
+      "bag": "30618_0259fe53",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "406132a1f86b17d284c6ce4e8a4f2569d801dc7262ba38af3b63787240d84556"
+    },
+    {
+      "bag": "30618_082f1d65",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "447ec1edc79bea775b1aa0c6ed6764255524ca01954d61a981e6e10b4ca01182"
+    },
+    {
+      "bag": "30618_095a115b",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "7f36267fef31a0b49fb315f13ce8b2b8eabaffea84879b4d0bcc0a50bfbe5604"
+    },
+    {
+      "bag": "30618_0a83c933",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "bb5b3b67fc2411880a0e81849c05751b89dac7c17780c1441848cd325cd66d7d"
+    },
+    {
+      "bag": "30618_0d865417",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "267b881e1091dde5166e8b1ec2ceffc67cf025aaa438b0b9559fe606ad140503"
+    },
+    {
+      "bag": "30618_1cc230fa",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "0fdf2c3e42c798d704f59c3f48b889c1c5abe1636163b7f5b9ac0833d8af87ee"
+    },
+    {
+      "bag": "30618_20096314",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "6b538462a593a792ac4066139020137a37098d3eda775c07c59f2b2bbe797ea1"
+    },
+    {
+      "bag": "30618_2050d396",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "0c63f7d8a45c605ee40853a6018ff2899e7825b4dea5a2ea50874ed80ff61de6"
+    },
+    {
+      "bag": "30618_2161b58b",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "936224a4627bd9cf1422e1101793e4a3e7b83443588faf7e87f0875c0a8478f9"
+    },
+    {
+      "bag": "30618_21dd3af3",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "073300bc783d1e49ee32c4b15b0130fcb2c43189003728a31cd80b732cd75b2d"
+    },
+    {
+      "bag": "30618_22c1c589",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "fe16479c9f11ce3bdaab9910c48306caecba420688701bcba63cc02b37790d15"
+    },
+    {
+      "bag": "30618_2366c74a",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "6e8b7e0a8e309abbd6b346d5acbbd4e4d04aa2df04da7467453de00d0bb89470"
+    },
+    {
+      "bag": "30618_2d2fa7be",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "beb8aa1d14f7a382aef0565550caa3b645928c8ff1ee94d7de17a87d722fa0f9"
+    },
+    {
+      "bag": "30618_2f2f1175",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "038bc86008f6ec6abe9ba32f89354370fbed16a83dd5b4b9504294893ba62c94"
+    },
+    {
+      "bag": "30618_3e9f4952",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "d7d4fc570a0ae5cfb8bdcb7b1ebecf15e6a9dc9391b9d663125e3ba56ce5c9a5"
+    },
+    {
+      "bag": "30618_40ffd323",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "aac3c05ca6c428ea8b5913bd717d385b7486f3359afaa3171add9aeaa32f9d34"
+    },
+    {
+      "bag": "30618_45ff6f99",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "b6bfa5dd61b7a8b5ea433f9888cc157bdbc7e856b754b0dea09881927a77fe88"
+    },
+    {
+      "bag": "30618_4d487b0d",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "d68a0ab25402a48352540149926ae4005a2a4eac81d1e949f5d8cd06d346a2a4"
+    },
+    {
+      "bag": "30618_616ec56b",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "b3330df01a4314314d4ef80681733e093627297a24f9098e21bfb027143fb6fd"
+    },
+    {
+      "bag": "30618_67b89902",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "3a412e6cc81aa4649d07f80a77bf074c1ca11e152eb9b87be29d4f0846688f30"
+    },
+    {
+      "bag": "30618_748832b9",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "fac743fe65dd6a88da48d53f6086dfe2af66343af49762f02182ae3b0dc9a225"
+    },
+    {
+      "bag": "30618_7849303f",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "fac743fe65dd6a88da48d53f6086dfe2af66343af49762f02182ae3b0dc9a225"
+    },
+    {
+      "bag": "30618_79b204dc",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "053439d6e17a0d5d659601ecc7980ab5967b9a42434789e30e858402e5cf0d70"
+    },
+    {
+      "bag": "30618_7a152380",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "677a1990891ba7b259aa4734b3f1947e63783c3d4d977b2e43e790c850f1539f"
+    },
+    {
+      "bag": "30618_7b4d83f4",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "47e6058bb142c9b4cba2d47bc9f535e55071446cf59ef96d82d8cddb4d5b6bc5"
+    },
+    {
+      "bag": "30618_8158f0b0",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "3c7cb9331296b196165cb3c4bf8f3343eb826e7a43bcc18377b1109fc21e2638"
+    },
+    {
+      "bag": "30618_81c22fee",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "76bf11126452c9ba3ac196d35724fb3820fd5280c08c39d845f39d6545d376cb"
+    },
+    {
+      "bag": "30618_87afe526",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "18701124b81d963695e47df0d838ccff8f61d4b7cecf204e3d8290bc094459e1"
+    },
+    {
+      "bag": "30618_887a2b9a",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "053439d6e17a0d5d659601ecc7980ab5967b9a42434789e30e858402e5cf0d70"
+    },
+    {
+      "bag": "30618_8eb8615c",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "beb8aa1d14f7a382aef0565550caa3b645928c8ff1ee94d7de17a87d722fa0f9"
+    },
+    {
+      "bag": "30618_8f08df08",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "677a1990891ba7b259aa4734b3f1947e63783c3d4d977b2e43e790c850f1539f"
+    },
+    {
+      "bag": "30618_92b1b453",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "76bf11126452c9ba3ac196d35724fb3820fd5280c08c39d845f39d6545d376cb"
+    },
+    {
+      "bag": "30618_93dc866e",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "6e8b7e0a8e309abbd6b346d5acbbd4e4d04aa2df04da7467453de00d0bb89470"
+    },
+    {
+      "bag": "30618_98161270",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "4b250bec9f5956aadcf1e1199e71dcfe5ce74c914b9aa5db6534d6432be4353d"
+    },
+    {
+      "bag": "30618_9bbe6faa",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "0076b08f20381772fc63df16b380643dfe149f1fb6688f195c9cd277ebf8784b"
+    },
+    {
+      "bag": "30618_9c09b081",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "c1e58ade51f9e3375aad0601f2f457e633e237f8e9bf90e3052df363d843d114"
+    },
+    {
+      "bag": "30618_9c10cd0d",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "0076b08f20381772fc63df16b380643dfe149f1fb6688f195c9cd277ebf8784b"
+    },
+    {
+      "bag": "30618_a395846d",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "0fdf2c3e42c798d704f59c3f48b889c1c5abe1636163b7f5b9ac0833d8af87ee"
+    },
+    {
+      "bag": "30618_a53d5f6f",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "18dbb0251cf555263db1b34771afe702e36c615db4fe8e347fd7be04610b2a87"
+    },
+    {
+      "bag": "30618_ab5921a4",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "ace1bb695ba9d6708c5ed499bdff7baa22a12a3f601e71d00401f5bda7c5c3c7"
+    },
+    {
+      "bag": "30618_b3042f78",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "d68a0ab25402a48352540149926ae4005a2a4eac81d1e949f5d8cd06d346a2a4"
+    },
+    {
+      "bag": "30618_b83d854d",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "83dff475b9a25f5c97afc22b4c8ae48b5fdce2394343e8a9061f18e96b938ce1"
+    },
+    {
+      "bag": "30618_b95ca60a",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "1ed5b1c83e793c9b982b3a236b3eb2bf19f5625647533bb3b50a78cff3616091"
+    },
+    {
+      "bag": "30618_bab2fe58",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "8a02fa1fc2e34bd5609e084c5451a29f5b98ab0e3796fa11d582727cb6b58e0f"
+    },
+    {
+      "bag": "30618_bc5e53c2",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "70beb443db1d99ef3f06863a2aeca1578a70bc573596458c9b01fcc18ba28363"
+    },
+    {
+      "bag": "30618_cfd9fd5a",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "406132a1f86b17d284c6ce4e8a4f2569d801dc7262ba38af3b63787240d84556"
+    },
+    {
+      "bag": "30618_d4ba7005",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "bfa85c5d654e27599b17c90cc1b4265e48c106808f19484c48828a0bc4e90f5e"
+    },
+    {
+      "bag": "30618_dd8e6395",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "5839e1b438b61795329451db5f211dbd7b37b6e2ad25774a0074e219c84246b4"
+    },
+    {
+      "bag": "30618_ddad08d6",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "038bc86008f6ec6abe9ba32f89354370fbed16a83dd5b4b9504294893ba62c94"
+    },
+    {
+      "bag": "30618_e2dcf65f",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "1c4bf92c3b3dc242cf10651eccc6b353e523d70ac5da002bfa387a9ae1c6cbcd"
+    },
+    {
+      "bag": "30618_e392e5bd",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "bb5b3b67fc2411880a0e81849c05751b89dac7c17780c1441848cd325cd66d7d"
+    },
+    {
+      "bag": "30618_e3d94878",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "057f524825af8a004baf8b41eefe4a595dfaf8da9d478c884c527b60c015f05a"
+    },
+    {
+      "bag": "30618_e7dcdab1",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "6b538462a593a792ac4066139020137a37098d3eda775c07c59f2b2bbe797ea1"
+    },
+    {
+      "bag": "30618_efb92709",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "aac3c05ca6c428ea8b5913bd717d385b7486f3359afaa3171add9aeaa32f9d34"
+    },
+    {
+      "bag": "30618_f19a4ac3",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "d9a2e045cdec986f2ca94f7eb9a490292a254739c89f69fb6e72f89afe52ef15"
+    },
+    {
+      "bag": "30618_f28179bb",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "936224a4627bd9cf1422e1101793e4a3e7b83443588faf7e87f0875c0a8478f9"
+    },
+    {
+      "bag": "30618_f3b8c99b",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "073300bc783d1e49ee32c4b15b0130fcb2c43189003728a31cd80b732cd75b2d"
+    },
+    {
+      "bag": "30639_0be558e2",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "87a566a33c504351d1beb9829ee8a8fd9e82ef2036c4a1cf7f8dbc73673b7be8"
+    },
+    {
+      "bag": "30639_2b4a6347",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "37625a8377119e27193263c5bf3663194127bfd9a10f0fa804387a6d435917ea"
+    },
+    {
+      "bag": "30639_4285f2bc",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "de0fee7a4995364829e7c3eaf7cdc2e8c27fb5c982ef3fc0d61733a96608d74e"
+    },
+    {
+      "bag": "30639_44226bde",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "028dcb9d08506a8650d0947ff6c1548fd2784acad7d7f86c76637af4e6734956"
+    },
+    {
+      "bag": "30639_92226df0",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "44c1e2c5d4b970a5a1f24f4c717d70229779dc4fee56719f38718cef685a151b"
+    },
+    {
+      "bag": "30639_927002c2",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "f30728f07a80d51287620494925530a5c80d3aff2c774a71889a3e44213a1876"
+    },
+    {
+      "bag": "30639_d3c43d69",
+      "purpose": "train",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "sha256": "cfc4a873d53a1c2c9876a45a74225e00cb3640affa097828159a1ce28b72730f"
+    }
+  ],
+  "passed": true,
+  "ground_truth_accuracy_measured": false
+}
