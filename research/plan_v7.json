@@ -1,0 +1,42 @@
+{
+  "version": 7,
+  "base_main": "efc473e415795d64770ef9dfa4f1bc417078da32",
+  "source_pr": 11,
+  "source_pr_head": "9d9bbf53ffe02520b98eaf78ae974e0864d75508",
+  "activation": {
+    "profile": "time_aligned_v6",
+    "reason": "Owner explicitly requested making the improved PR11 profile the main solution after the clean/distance versus fault tradeoff was disclosed.",
+    "automatic_v6_policy_passed": false,
+    "known_tradeoff": "Compared with v5, clean group-macro RMSE -2.2722%, scalar span distance RMSE -1.1627%, fault-event RMSE +1.9585%. This is an owner-directed choice, not a retroactive change of the earlier 0.5% automatic-promotion gate.",
+    "fallback": "src/reserve_odometry/config/adaptive_v5.yaml",
+    "historical_v4_archive": "Preserve byte-for-byte. No old final-test claim is inherited by v6."
+  },
+  "next_task": "Reduce the fault regression of time-aligned odometry while preserving its clean-speed and scalar-distance advantage.",
+  "data_policy": {
+    "roles": ["validation"],
+    "split": "research/split_v3.json",
+    "bags": "The existing 19 validation bags, all receivers and the unchanged main fault windows.",
+    "independent_test": false,
+    "test_access": "No test measurement reads or re-evaluation. Existing validation has been reused adaptively; no independent generalization claim.",
+    "no_tuning_after_round": true
+  },
+  "baselines": ["v5_adaptive", "v6_time_aligned"],
+  "hypotheses": [
+    {"name": "paired_only", "rule": "Apply compensation and its noise allowance only when both new accepted wheel samples agree. Never increase trust in a single wheel during a detected asymmetric fault."},
+    {"name": "paired_cooldown", "rule": "As paired_only; after range/rate/model/pair/stale/command failure, suppress compensation for one second. Prediction-only duplicate ticks do not restart the cooldown."},
+    {"name": "residual_weight", "rule": "On an accepted agreeing pair, multiply compensation by max(0,1-(abs(raw_mean-model_prediction)/innovation_floor_mps)^2). Single-wheel compensation is disabled. Keep raw samples for all gates and adaptation."}
+  ],
+  "invariants": ["unchanged physics and wheel scale", "unchanged timeline/evaluator/fault placement", "no future input", "one assimilation per sample", "same output schedule and reference mask", "runtime constant memory", "both measured baselines reproduce published values"],
+  "acceptance": {
+    "clean_rmse_max_relative_to_v6": 1.01,
+    "scalar_span_distance_rmse_max_relative_to_v6": 1.01,
+    "fault_rmse_max_relative_to_v5": 1.005,
+    "fault_gain_min_relative_to_v6": 0.01,
+    "per_bag_clean_regression": "max(0.005 m/s, 5% of v6)",
+    "coverage_loss": 0,
+    "false_stop_increase": 0,
+    "unrecovered_fault_increase": 0,
+    "on_failure": "Preserve the requested v6 default, publish rejected hypotheses; do not soften gates or label the round successful."
+  },
+  "checkpoints": "Push plan, code, per-bag results, failures, decision and test outcomes. Compare main again before merging; never force-push or overwrite another contributor's work."
+}
