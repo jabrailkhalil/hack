@@ -31,12 +31,19 @@ jobs:
           echo "H06_OUT=$out" >> "$GITHUB_ENV"
       - name: Install research dependencies
         run: python -m pip install -r requirements-research.txt
-      - name: Baseline and candidate invariant checks
+      - name: Baseline and evaluator invariant checks
         run: |
           set -euo pipefail
           PYTHONPATH=src/reserve_odometry python -m unittest discover -s tests -v 2>&1 | tee "$H06_OUT/unit-baseline.log"
-          PYTHONPATH=src/reserve_odometry python -m unittest discover -s research/H06/tests -v 2>&1 | tee "$H06_OUT/unit-h06.log"
           python -m unittest discover -s research/tests -v 2>&1 | tee "$H06_OUT/research-integrity.log"
+      - name: Apply isolated experimental core hooks and test H06
+        run: |
+          set -euo pipefail
+          git apply --check research/H06/core-hooks.patch
+          git apply research/H06/core-hooks.patch
+          PYTHONPATH=src/reserve_odometry python -m unittest discover -s tests -p test_core.py -v 2>&1 | tee "$H06_OUT/unit-core-hooks.log"
+          PYTHONPATH=src/reserve_odometry python -m unittest discover -s research/H06/tests -v 2>&1 | tee "$H06_OUT/unit-h06.log"
+          PYTHONPATH=src/reserve_odometry:tests python -c 'import unittest, test_core; from reserve_odometry.recovery import RecoveryObserver; test_core.Observer = RecoveryObserver; result = unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.loadTestsFromTestCase(test_core.ObserverTests)); raise SystemExit(not result.wasSuccessful())' 2>&1 | tee "$H06_OUT/unit-legacy-on-h06.log"
       - name: Fetch exact audited data
         run: |
           set -euo pipefail
@@ -60,6 +67,7 @@ jobs:
         run: |
           set -eu
           if [ -z "${H06_OUT:-}" ] || [ ! -d "$H06_OUT" ]; then exit 0; fi
+          git restore src/reserve_odometry/reserve_odometry/core.py
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           branch="checkpoint/H06-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
