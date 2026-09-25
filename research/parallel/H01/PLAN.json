@@ -1,0 +1,64 @@
+{
+  "hypothesis": "H01",
+  "title": "Условная компенсация возраста измерений",
+  "baseline_commit": "984fdf2fc4faf05325249215d6b8541c0e68209a",
+  "baseline_profile": "src/reserve_odometry/config/adaptive_v5.json",
+  "branch": "research/parallel-H01",
+  "status": "preregistered_before_implementation_and_experiments",
+  "historical_negative": "reports/research_v6/REPORT.md and research/patches/v6-projection.patch: unconditional gain 0.5/1.0 improved clean RMSE but regressed fault RMSE by 0.71%/1.89%. No disturbance decay in H01.",
+  "mechanism": {
+    "correction": "z_current = raw_pair_mean + gain * bounded_a_model * mean_measurement_age; only after original wheel/model gates. Raw samples, adaptation, stop evidence, reacquisition and timestamps remain unchanged.",
+    "trust": [
+      "Both current samples must be new and accepted by the original gates, with a fresh valid controller command. No single-wheel projection or projection during reacquisition/bootstrap.",
+      "Both ages must be nonnegative and <= min(max_age_s, pair_skew_s). Pair skew <= pair_skew_s; wheel disagreement <= min(disagreement_mps, 3*wheel_sigma_mps).",
+      "Raw pair speed must exceed max(0.5 m/s, reacquire_min_speed_mps), both wheels must have the same nonzero direction, and each raw innovation must be <= innovation_floor_mps.",
+      "Consecutive raw accepted pairs provide separate per-wheel accelerations over 0.05..max_age_s. Both accelerations are bounded by max_accel_mps2, agree with each other and a_model within reacquire_accel_margin_mps2.",
+      "The model must not be at acceleration or disturbance saturation. Trust must persist for stop_dwell_s; hard rejection, missing/stale input, fresh single-wheel evidence, or inconsistent acceleration restarts trust. Prediction-only duplicate ticks preserve trust only while histories remain fresh.",
+      "Projection delta is clipped to +/-rate_noise_margin_mps and must not reverse either wheel direction or exceed max_speed_mps. No delay, future input, external sensor or unbounded history."
+    ],
+    "parameters": "All trust thresholds are derived from the frozen baseline Config; only projection gain differs. Gate is a deterministic consistency heuristic, not a calibrated probability of sensor health."
+  },
+  "variants": [
+    {"id": "H01_gain05", "h01_projection_gain": 0.5},
+    {"id": "H01_gain10", "h01_projection_gain": 1.0}
+  ],
+  "search_budget": {"max_variants": 2, "no_additional_tuning_after_results": true},
+  "data": {
+    "dataset_sha256": "d0b2483e13990edb8219b0d7bbcafc7ed001cce549a4d3af467069b2472e7d52",
+    "split_sha256": "20928a29daad2b4178ddb92e2a4d9ddb347952f6c03845802a8d82fff7da5ae0",
+    "development": "All 17 development bags from research/plan_v3.json; read only the three vehicle topics and the same two GNSS-speed reference topics for offline scoring. Separate development-only loader enforces membership and checksums before SQLite access. No train GNSS access.",
+    "validation": "All 19 validation bags, only the frozen development-selected candidate. Existing Store.load(bag, 'validation') and immutable score/fault/aggregation definitions.",
+    "test": "Never read test measurement databases or historical final-test metrics. Never invoke FinalStore or final-test CLI. Archive unpacking is not measurement evaluation.",
+    "reference_limitation": "Validation was reused historically and is not an independent final test. GNSS is evaluator-only, never an algorithm input."
+  },
+  "evaluator": {
+    "files_frozen_at_baseline": ["tools/finalization/evaluate.py", "tools/research_v3/experiment.py", "tools/research_v3/manifest.py", "tools/export_bags.py", "tools/research_v6/compare.py", "research/split_v3.json", "research/plan_v3.json"],
+    "functions": "evaluate.score/replay; compare.summary/decide; identical 20 Hz, zero alignment delay, timestamps, two receivers and reference masks. Exact v6 anchor/window construction and four fault scenarios. v4 is auxiliary compatibility/reproduction baseline, not the target to beat.",
+    "baseline_integrity": "Check disabled H01 replay against the original baseline Observer and compare validation v5 numeric fields with the published baseline. Persist hashes of source, configs, data and evaluator.",
+    "raw_outputs": "Per-bag clean and all fault results including receiver metrics and runtime counters; aggregate JSON and CSV; data access journal; test commands/logs; candidate freeze before validation."
+  },
+  "selection": {
+    "development": "Apply unchanged v6 gates. For development ranking only, disregard insufficient_gain (efficacy is tested on validation); all safety/nonregression gates still apply. Also require pooled RMSE <= baseline*1.005. Among safe variants choose smallest clean group-macro RMSE, tie by smaller gain. If none is safe, stop as a negative development result without opening validation.",
+    "freeze": "Write immutable FREEZE.json with candidate ID, full config and SHA256, algorithm/evaluator/plan hashes and development results hash before first validation database is opened. No post-validation retuning.",
+    "validation": "Use unchanged v6 decide thresholds plus the predeclared pooled-RMSE guard. Candidate is confirmed only when all gates pass and the required runtime checks are available; otherwise rejected or insufficient evidence. No promotion or merge."
+  },
+  "acceptance": {
+    "min_clean_group_macro_gain": 0.02,
+    "or_min_fault_event_group_macro_gain": 0.05,
+    "max_clean_fault_pooled_aggregate_regression": 0.005,
+    "max_scalar_span_distance_regression": 0.01,
+    "max_per_bag_receiver_clean_regression": "max(0.005 m/s, 5% of baseline RMSE)",
+    "coverage_loss": 0,
+    "additional_false_stop_samples": 0,
+    "additional_unrecovered_fault_comparisons": 0,
+    "causality_errors_or_unexpected_resets": 0,
+    "runtime": "Preserve the existing 20 Hz/no-added-wait controller/front/rear-only contract, bounded memory, <=2 CPU and <500000000 bytes runtime requirement; report actual ROS/timing checks separately from offline replay and microbenchmarks."
+  },
+  "falsification": [
+    "Neither bounded variant passes development nonregression/safety gates.",
+    "Frozen candidate fails validation efficacy or any unchanged nonregression/safety gate.",
+    "Trust heuristic cannot distinguish plausible common-mode wheel faults; such a limitation must be reported even when the measured suite passes."
+  ],
+  "stop_rules": "No extra variants, changed masks, acceptance thresholds, fault windows or repeated selection on validation. Implementation correctness fixes before data runs are allowed and documented. If data, execution or GitHub write is unavailable, record that exact stage as blocked, never invent metrics.",
+  "publication": "Draft Russian PR only. Unique reports/research_parallel/H01/run_id-run_attempt directories and H01 checkpoint branches; never overwrite prior reports, main or another hypothesis branch. No merge/auto-merge."
+}
