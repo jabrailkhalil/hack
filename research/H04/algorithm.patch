@@ -1,0 +1,60 @@
+diff --git a/src/reserve_odometry/reserve_odometry/core.py b/src/reserve_odometry/reserve_odometry/core.py
+index f6fc8ec..9126dfe 100644
+--- a/src/reserve_odometry/reserve_odometry/core.py
++++ b/src/reserve_odometry/reserve_odometry/core.py
+@@ -6,6 +6,7 @@ parameters are illustrative until identified on the organizer's training data.
+ from dataclasses import dataclass, asdict
+ import math
+ from typing import Optional
++from .adaptation import AdaptationSchedule
+ 
+ 
+ def clip(x, lo, hi):
+@@ -49,6 +50,7 @@ class Config:
+     stop_model_speed_mps: float = 0.25
+     stop_dwell_s: float = 0.5
+     adaptation_tau_s: float = 8.0
++    adaptation_schedule_enabled: float = 0.0
+     disturbance_limit_mps2: float = 0.6
+     max_step_s: float = 0.20
+     reacquire_dwell_s: float = 0.8
+@@ -75,6 +77,8 @@ class Config:
+                 raise ValueError(f'{key} must be positive')
+         if not 0 <= self.command_deadband < 1 or self.efficiency > 1:
+             raise ValueError('Invalid deadband or efficiency')
++        if self.adaptation_schedule_enabled not in (0.0, 1.0):
++            raise ValueError('adaptation_schedule_enabled must be 0 or 1')
+         if self.travel_direction not in (-1.0, 1.0):
+             raise ValueError('travel_direction must be -1 or 1')
+         if self.innovation_cap_mps < self.innovation_floor_mps:
+@@ -123,6 +127,8 @@ class Observer:
+         self.raw_previous = [None, None]
+         self.stop_since = None
+         self.adapt_previous = None
++        self.adaptation_schedule = AdaptationSchedule()
++        self.adaptation_tau = self.c.adaptation_tau_s
+         self.reacquire_since = None
+         self.reacquire_previous = None
+         self.pair_pending = [None, None]
+@@ -338,6 +344,12 @@ class Observer:
+                     self.pv = max(self.pv, 4 * c.wheel_sigma_mps ** 2)
+                     mode = 'REACQUIRING'
+                     statuses = ['REACQUIRE_ACCEPTED', 'REACQUIRE_ACCEPTED']
++        # H04 is opt-in; disabled follows the original arithmetic exactly.
++        self.adaptation_tau = c.adaptation_tau_s
++        if c.adaptation_schedule_enabled:
++            self.adaptation_tau = self.adaptation_schedule.select(
++                t=t, u=u, command_stale=command_stale, mode=mode, statuses=statuses,
++                front=samples[0], rear=samples[1], predicted=predicted, config=c)
+         # Adapt disturbance only from two new, agreeing and model-consistent wheels.
+         if mode == 'FUSED' and not command_stale:
+             z = (samples[0].value + samples[1].value) * 0.5
+@@ -347,7 +359,7 @@ class Observer:
+                 measured_a = (z - old.value) / (tz - old.t)
+                 if abs(measured_a) <= c.max_accel_mps2 and abs(z) > 0.5:
+                     desired = measured_a - self.drive_a + self.resistance(self.v)
+-                    weight = 1 - math.exp(-(tz - old.t) / c.adaptation_tau_s)
++                    weight = 1 - math.exp(-(tz - old.t) / self.adaptation_tau)
+                     self.disturbance = clip(self.disturbance + weight * (desired - self.disturbance),
+                                             -c.disturbance_limit_mps2, c.disturbance_limit_mps2)
+                 self.adapt_previous = Sample(tz, z)
