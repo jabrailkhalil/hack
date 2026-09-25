@@ -1,0 +1,342 @@
+diff --git a/src/reserve_odometry/reserve_odometry/core.py b/src/reserve_odometry/reserve_odometry/core.py
+index e6c472a..f6fc8ec 100644
+--- a/src/reserve_odometry/reserve_odometry/core.py
++++ b/src/reserve_odometry/reserve_odometry/core.py
+@@ -125,6 +125,7 @@ class Observer:
+         self.adapt_previous = None
+         self.reacquire_since = None
+         self.reacquire_previous = None
++        self.pair_pending = [None, None]
+         self.last_estimate = None
+ 
+     def drive_target(self, u, v):
+@@ -167,6 +168,26 @@ class Observer:
+     def _clear_reacquire(self):
+         self.reacquire_since = None
+         self.reacquire_previous = None
++        self.pair_pending = [None, None]
++
++    def _take_pending_pair(self, t):
++        """Consume two distinct, fresh candidates, even from different ticks.
++
++        This buffer does NOT feed the Kalman correction. It is only evidence
++        for bootstrap or recovery after both channels failed the model gate.
++        Each pair is consumed once, and prediction-only ticks cannot erase it.
++        """
++        for i, sample in enumerate(self.pair_pending):
++            if sample is not None and not self._valid(sample, t, self.c.max_age_s):
++                self.pair_pending[i] = None
++        if any(sample is None for sample in self.pair_pending):
++            return None
++        front, rear = self.pair_pending
++        if abs(front.t - rear.t) > self.c.pair_skew_s + 1e-9:
++            self.pair_pending[0 if front.t < rear.t else 1] = None
++            return None
++        self.pair_pending = [None, None]
++        return front, rear
+ 
+     def _reacquire_pair(self, samples, predicted):
+         """Return a sustained agreeing pair target after model/odometry divergence.
+@@ -246,12 +267,17 @@ class Observer:
+         pair = (all(x is not None for x in samples) and
+                 abs(samples[0].t - samples[1].t) <= c.pair_skew_s)
+         agree = pair and abs(samples[0].value - samples[1].value) <= c.disagreement_mps
+-        # Conservative bootstrap needs two agreeing wheels unless reset(v=...) was used.
++        # Bootstrap must also work when front/rear arrive on alternating ticks.
+         if not self.initialized:
+-            if agree:
+-                self.v = (samples[0].value + samples[1].value) * 0.5
++            for i, sample in enumerate(samples):
++                if sample is not None:
++                    self.pair_pending[i] = sample
++            initial_pair = self._take_pending_pair(t)
++            if initial_pair and abs(initial_pair[0].value - initial_pair[1].value) <= c.disagreement_mps:
++                self.v = sum(sample.value for sample in initial_pair) * .5
+                 self.initialized = True
+                 self.pv = c.wheel_sigma_mps ** 2
++                self.drive_a = 0.0
+                 self.t = t
+                 return self._output(t, 0.0, 'INITIALIZED', ['ACCEPTED'] * 2, command_stale)
+             self.t = t
+@@ -290,17 +316,28 @@ class Observer:
+             mode = 'FUSED' if len(accepted) == 2 and agree else 'SINGLE_WHEEL'
+             for i in accepted:
+                 statuses[i] = 'ACCEPTED'
+-        elif pair and agree:
+-            target_v = self._reacquire_pair(samples, predicted)
+-            if target_v is not None:
+-                correction = clip(target_v - predicted,
+-                                  -c.reacquire_step_mps, c.reacquire_step_mps)
+-                self.v = clip(predicted + correction, -c.max_speed_mps, c.max_speed_mps)
+-                self.pv = max(self.pv, 4 * c.wheel_sigma_mps ** 2)
+-                mode = 'REACQUIRING'
+-                statuses = ['REACQUIRE_ACCEPTED', 'REACQUIRE_ACCEPTED']
+         else:
+-            self._clear_reacquire()
++            # Prediction ticks at 20 Hz must not reset 10 Hz wheel evidence.
++            hard_failure = any(status not in ('MODEL_DISAGREEMENT', 'DUPLICATE_OR_OLD')
++                               for status in statuses)
++            if hard_failure:
++                self._clear_reacquire()
++            for i, sample in enumerate(samples):
++                if sample is not None and statuses[i] == 'MODEL_DISAGREEMENT':
++                    self.pair_pending[i] = sample
++            recovery_pair = self._take_pending_pair(t)
++            if recovery_pair is not None:
++                old_pair = self.reacquire_previous
++                target_v = self._reacquire_pair(recovery_pair, predicted)
++                if target_v is not None:
++                    pair_dt = self.reacquire_previous.t - old_pair.t if old_pair else 0.0
++                    # Config limit is per nominal 0.1 s pair, not per output tick.
++                    limit = c.reacquire_step_mps * min(1.0, max(0.0, pair_dt) / .1)
++                    correction = clip(target_v - predicted, -limit, limit)
++                    self.v = clip(predicted + correction, -c.max_speed_mps, c.max_speed_mps)
++                    self.pv = max(self.pv, 4 * c.wheel_sigma_mps ** 2)
++                    mode = 'REACQUIRING'
++                    statuses = ['REACQUIRE_ACCEPTED', 'REACQUIRE_ACCEPTED']
+         # Adapt disturbance only from two new, agreeing and model-consistent wheels.
+         if mode == 'FUSED' and not command_stale:
+             z = (samples[0].value + samples[1].value) * 0.5
+diff --git a/src/reserve_odometry/reserve_odometry/node.py b/src/reserve_odometry/reserve_odometry/node.py
+index 0fed1f9..d672c9f 100644
+--- a/src/reserve_odometry/reserve_odometry/node.py
++++ b/src/reserve_odometry/reserve_odometry/node.py
+@@ -1,6 +1,7 @@
+ """ROS 2 Humble adapter for the organizer's exact message contract."""
+ import math
+ import time
++from collections import OrderedDict
+ from dataclasses import fields
+ import rclpy
+ from rclpy.node import Node
+@@ -26,6 +27,7 @@ class ReserveOdometryNode(Node):
+         self.declare_parameter('rate_hz', 20.0)
+         self.declare_parameter('alignment_delay_s', .06)
+         self.declare_parameter('clock_mode', 'input_stamp')
++        self.trace_timing = self.declare_parameter('trace_timing', False).value
+         # Explicit empirical dataset conversion; README says m/s, measured ratio ~3.6.
+         self.scale_front = self.declare_parameter('front_scale', 1.0 / 3.6).value
+         self.scale_rear = self.declare_parameter('rear_scale', 1.0 / 3.6).value
+@@ -55,33 +57,45 @@ class ReserveOdometryNode(Node):
+         self.velocity_pub = self.create_publisher(VelocitySensor, '/result/velocity', 10)
+         self.position_pub = self.create_publisher(Odometry, '/result/position', 10)
+         self.diag_pub = self.create_publisher(DiagnosticArray, '/result/diagnostics', 10)
++        self.timing_pub = self.create_publisher(DiagnosticArray, '/result/timing', 64) if self.trace_timing else None
+         self.create_service(Trigger, '~/reset', self.reset_service)
+         self.bad_messages = 0
+         self.total_outputs = 0
+         self.last_diag = 0.0
+         self.last_input_receipt = None
+         self.last_publish_stamp = None
++        self.origin_ns = None
++        self.last_ros_ns = None
++        self.clock_resets_total = 0
++        self.receipts = [OrderedDict(), OrderedDict(), OrderedDict()]
++        self.route_ok = True
+         # Use a steady timer even if /clock pauses; never advance the estimator on wall time.
+         self.steady_clock = Clock(clock_type=ClockType.STEADY_TIME)
+         self.create_timer(.01, self.tick, clock=self.steady_clock)
+ 
+-    @staticmethod
+-    def sample(msg, value):
+-        stamp = msg.header.stamp
+-        if stamp.nanosec >= 1000000000:
+-            raise ValueError('Invalid header nanoseconds')
+-        t = stamp.sec + stamp.nanosec * 1e-9
+-        if t <= 0 or not math.isfinite(value):
+-            raise ValueError('Invalid/zero source timestamp or nonfinite measurement')
+-        return Sample(t, float(value))
+-
+     def receive(self, channel, msg, value):
++        received = time.perf_counter_ns()
+         try:
+-            s = self.sample(msg, value)
+-            if channel == 0 and abs(value) > 1:
+-                raise ValueError('Controller notch out of [-15,15]')
+-            self.timeline.ingest(channel, s)
+-            self.last_input_receipt = time.perf_counter()
++            stamp = msg.header.stamp
++            absolute_ns = stamp.sec * 1000000000 + stamp.nanosec
++            limit = 1.000001 if channel == 0 else self.timeline.observer.c.max_speed_mps
++            if stamp.nanosec >= 1000000000 or absolute_ns <= 0:
++                raise ValueError('Invalid/zero absolute source timestamp')
++            if not math.isfinite(value) or abs(value) > limit:
++                raise ValueError('Nonfinite/out-of-range input')
++            if self.origin_ns is None:
++                self.origin_ns = absolute_ns
++            # Subtract integer origin BEFORE float conversion; no epoch precision loss.
++            sample = Sample((absolute_ns - self.origin_ns) / 1e9, float(value))
++            if self.timeline.ingest(channel, sample):
++                self.last_input_receipt = received / 1e9
++                if self.trace_timing:
++                    entries = self.receipts[channel]
++                    entries[sample.t] = received
++                    while len(entries) > 256:
++                        entries.popitem(last=False)
++            else:
++                self.bad_messages += 1
+         except (ValueError, TypeError, OverflowError):
+             self.bad_messages += 1
+ 
+@@ -97,6 +111,9 @@ class ReserveOdometryNode(Node):
+     def reset_service(self, request, response):
+         self.timeline.reset()
+         self.last_publish_stamp = None
++        self.origin_ns = None
++        self.last_ros_ns = None
++        self.receipts = [OrderedDict(), OrderedDict(), OrderedDict()]
+         response.success = True
+         response.message = 'Observer reset; new relative origin. Restart for each independent bag.'
+         return response
+@@ -105,26 +122,33 @@ class ReserveOdometryNode(Node):
+         started = time.perf_counter()
+         now = None
+         if self.clock_mode == 'ros_clock':
+-            now = self.get_clock().now().nanoseconds * 1e-9
+-            if now <= 0:
++            absolute_now = self.get_clock().now().nanoseconds
++            if absolute_now <= 0 or self.origin_ns is None:
++                return
++            if self.last_ros_ns is not None and absolute_now < self.last_ros_ns:
++                self.timeline.reset()
++                self.origin_ns = None
++                self.receipts = [OrderedDict(), OrderedDict(), OrderedDict()]
++                self.clock_resets_total += 1
++                self.last_ros_ns = absolute_now
+                 return
++            self.last_ros_ns = absolute_now
++            now = (absolute_now - self.origin_ns) / 1e9
+         for estimate, held in self.timeline.advance(now):
+             if estimate.mode != 'WAITING_FOR_INITIALIZATION':
+-                self.publish(estimate)
++                self.publish(estimate, held)
+         elapsed = (time.perf_counter() - started) * 1000
+         if time.monotonic() - self.last_diag >= 1.0:
+             self.diagnostics(elapsed)
+             self.last_diag = time.monotonic()
+ 
+-    def publish(self, e):
+-        # Integer nanoseconds to avoid nanosec=1e9 after rounding.
+-        ns = int(round(e.t * 1e9))
++    def publish(self, e, held):
++        ns = self.origin_ns + int(round(e.t * 1e9))
+         vel = VelocitySensor()
+         vel.header.stamp.sec, vel.header.stamp.nanosec = divmod(ns, 1000000000)
+         vel.header.frame_id = 'base_link'
+         vel.velocity = float(e.v)
+         odom = Odometry()
+-        odom.header = vel.header
+         # Header is a mutable Python object; avoid changing the velocity header frame.
+         from copy import deepcopy
+         odom.header = deepcopy(vel.header)
+@@ -148,11 +172,27 @@ class ReserveOdometryNode(Node):
+             odom.twist.covariance[i] = 1e6
+         odom.pose.covariance[0] = float(e.variance_s) if not self.route else 1e6
+         odom.twist.covariance[0] = float(e.variance_v)
++        self.route_ok = route_ok
++        before_publish = time.perf_counter_ns()
+         self.velocity_pub.publish(vel)
+         if route_ok:
+             self.position_pub.publish(odom)
+         self.total_outputs += 1
+         self.last_publish_stamp = e.t
++        if self.timing_pub is not None:
++            timing = DiagnosticArray()
++            timing.header = deepcopy(vel.header)
++            status = DiagnosticStatus(name='reserve_odometry/timing', hardware_id='tram')
++            values = {'publish_mono_ns': before_publish, 'source_ns': ns,
++                      'mode': e.mode, 'front_status': e.front_status, 'rear_status': e.rear_status}
++            for i, name in enumerate(('command', 'front', 'rear')):
++                sample = held[i]
++                if sample is not None:
++                    values[name + '_stamp_ns'] = self.origin_ns + int(round(sample.t * 1e9))
++                    values[name + '_receipt_ns'] = self.receipts[i].get(sample.t, 0)
++            status.values = [KeyValue(key=k, value=str(v)) for k, v in values.items()]
++            timing.status = [status]
++            self.timing_pub.publish(timing)
+ 
+     def diagnostics(self, callback_ms):
+         msg = DiagnosticArray()
+@@ -165,15 +205,23 @@ class ReserveOdometryNode(Node):
+         d.message = e.mode if e else 'WAITING_FOR_INPUT'
+         if e and e.mode in ('FUSED', 'STOPPED', 'SINGLE_WHEEL') and self.route:
+             d.level = DiagnosticStatus.OK
++        input_age = time.perf_counter() - self.last_input_receipt if self.last_input_receipt is not None else None
++        if input_age is None or input_age > 1.0:
++            d.level = DiagnosticStatus.WARN
++            d.message = 'INPUT_STALE_OR_PAUSED'
++        if not self.route_ok:
++            d.level = DiagnosticStatus.ERROR
++            d.message = 'OUTSIDE_AUTHORIZED_ROUTE'
+         values = dict(callback_compute_ms=callback_ms, outputs=self.total_outputs,
++                      input_receipt_age_s=input_age, source_origin_ns=self.origin_ns,
+                       invalid_messages=self.bad_messages, buffer_dropped=self.timeline.dropped,
+-                      backward_clock_resets=self.timeline.resets,
++                      backward_clock_resets=self.timeline.resets + self.clock_resets_total,
+                       forward_gap_catchups=self.timeline.catchup_events,
+                       position_mode='route' if self.route else 'relative_1d')
+         if e:
+             values.update(front_status=e.front_status, rear_status=e.rear_status,
+                           command_stale=e.command_stale, disturbance=e.disturbance,
+-                          source_stamp=e.t, variance_v=e.variance_v)
++                          source_stamp_relative_s=e.t, variance_v=e.variance_v)
+         d.values = [KeyValue(key=k, value=str(v)) for k, v in values.items()]
+         msg.status = [d]
+         self.diag_pub.publish(msg)
+diff --git a/src/reserve_odometry/reserve_odometry/timeline.py b/src/reserve_odometry/reserve_odometry/timeline.py
+index 8ea5bf3..e98b17c 100644
+--- a/src/reserve_odometry/reserve_odometry/timeline.py
++++ b/src/reserve_odometry/reserve_odometry/timeline.py
+@@ -12,6 +12,8 @@ class Timeline:
+         if not math.isfinite(delay_s) or not 0 <= delay_s <= .1:
+             raise ValueError('delay_s must be between 0 and 0.1')
+         self.dt = 1 / rate_hz
++        if self.dt > self.observer.c.max_step_s + 1e-9:
++            raise ValueError('Output interval exceeds observer max_step_s')
+         self.delay = delay_s
+         self.reset()
+ 
+@@ -21,6 +23,8 @@ class Timeline:
+         self.held = [None, None, None]
+         self.latest = None
+         self.next_tick = None
++        self.grid_origin = None
++        self.tick_index = 0
+         self.dropped = 0
+         self.resets = 0
+         self.catchup_events = 0
+@@ -32,11 +36,10 @@ class Timeline:
+         if not math.isfinite(sample.t) or not math.isfinite(sample.value):
+             self.dropped += 1
+             return False
+-        if self.latest is None:
+-            self.next_tick = sample.t
+-            self.latest = sample.t
+-        else:
+-            self.latest = max(self.latest, sample.t)
++        limit = 1.000001 if channel == 0 else self.observer.c.max_speed_mps
++        if abs(sample.value) > limit:
++            self.dropped += 1
++            return False
+         held = self.held[channel]
+         if held is not None and sample.t <= held.t:
+             self.dropped += 1
+@@ -51,6 +54,10 @@ class Timeline:
+         if len(q) > 128:
+             q.pop(0)
+             self.dropped += 1
++        if self.latest is None:
++            self.grid_origin = sample.t
++            self.next_tick = sample.t
++        self.latest = sample.t if self.latest is None else max(self.latest, sample.t)
+         return True
+ 
+     def advance(self, now=None):
+@@ -88,5 +95,6 @@ class Timeline:
+                     self.held[i] = q.pop(0)
+             estimate = self.observer.step(t, *self.held)
+             yield estimate, tuple(self.held)
+-            self.next_tick += self.dt
++            self.tick_index += 1
++            self.next_tick = self.grid_origin + self.tick_index * self.dt
+             steps += 1
