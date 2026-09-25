@@ -1,0 +1,82 @@
+name: R2 H14 preregistered development
+on:
+  push:
+    branches: [research/round2-H14]
+    paths: [research/R2_H14/RUN-development]
+permissions:
+  contents: write
+jobs:
+  development:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 25
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - name: New evidence directory and exact source record
+        run: |
+          set -eu
+          OUT="$RUNNER_TEMP/R2-H14-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          mkdir "$OUT"
+          echo "H14_OUT=$OUT" >> "$GITHUB_ENV"
+          git rev-parse HEAD > "$OUT/source-commit.txt"
+          cp research/R2_H14/PLAN.md "$OUT/PLAN.md"
+          cp -a research/R2_H14/science "$OUT/science"
+          cp research/R2_H14/adaptation-hook.patch "$OUT/adaptation-hook.patch"
+      - name: Research dependencies
+        run: python -m pip install -r requirements-research.txt
+      - name: Original tests before research patch
+        run: |
+          set -euo pipefail
+          PYTHONPATH=src/reserve_odometry python -m unittest discover -s tests -v 2>&1 | tee "$H14_OUT/original-tests.log"
+          python -m unittest discover -s research/tests -v 2>&1 | tee "$H14_OUT/original-integrity.log"
+      - name: Apply hook and test the enabled H14 candidate
+        run: |
+          set -euo pipefail
+          git apply --check research/R2_H14/adaptation-hook.patch
+          git apply research/R2_H14/adaptation-hook.patch
+          cp src/reserve_odometry/reserve_odometry/core.py "$H14_OUT/applied-core.py"
+          cp src/reserve_odometry/reserve_odometry/async_adaptation.py "$H14_OUT/async_adaptation.py"
+          PYTHONPATH=src/reserve_odometry python -m unittest discover -s research/R2_H14/tests -v 2>&1 | tee "$H14_OUT/h14-tests.log"
+          PYTHONPATH=src/reserve_odometry:tests python -c 'import unittest,test_core; from reserve_odometry.async_adaptation import AsyncAdaptationObserver; test_core.Observer=AsyncAdaptationObserver; r=unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.loadTestsFromTestCase(test_core.ObserverTests)); raise SystemExit(not r.wasSuccessful())' 2>&1 | tee "$H14_OUT/legacy-enabled-h14.log"
+          python -m compileall -q tools/research_R2_H14 src/reserve_odometry/reserve_odometry
+      - name: Preregistered synthetic safety and activation diagnoses
+        run: |
+          set -euo pipefail
+          python tools/research_R2_H14/diagnostics.py --output "$H14_OUT/synthetic" 2>&1 | tee "$H14_OUT/synthetic.log"
+      - name: Exact audited organizer data
+        run: |
+          set -euo pipefail
+          python tools/get_dataset.py 2>&1 | tee "$H14_OUT/dataset.log"
+      - name: Train smoke, all natural development bags, original faults, activation, cost and separate arrival diagnosis
+        run: |
+          set -euo pipefail
+          python tools/research_R2_H14/run.py --stage development --output "$H14_OUT/development" --workers 2 2>&1 | tee "$H14_OUT/development.log"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: R2-H14-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.H14_OUT }}/
+          retention-days: 30
+      - name: Preserve separate immutable checkpoint; never run validation automatically
+        if: always()
+        run: |
+          set -eu
+          if [ -z "${H14_OUT:-}" ] || [ ! -d "$H14_OUT" ]; then exit 0; fi
+          git restore src/reserve_odometry/reserve_odometry/core.py
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          branch="checkpoint/R2-H14-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          git switch -c "$branch"
+          destination="reports/research_R2/H14/$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          mkdir -p "$destination"
+          cp -a "$H14_OUT/." "$destination/"
+          git add -f "$destination"
+          git diff --cached --quiet || git commit -m "research(R2-H14): preserve development evidence $GITHUB_RUN_ID/$GITHUB_RUN_ATTEMPT"
+          git push origin "HEAD:refs/heads/$branch"
