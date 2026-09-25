@@ -1,0 +1,9 @@
+# This prepares dependencies while online. Build and run the solution separately
+# with --network none; see .github/workflows/ci.yml and docs/RUNBOOK.md.
+FROM ros:humble-ros-base@sha256:1813d3c85d7f96ff7d3012d865204583255740182db5d0065f8f8cd029a83138
+RUN apt-get update -qq && apt-get install -y --no-install-recommends \
+    python3-colcon-common-extensions ros-humble-diagnostic-msgs \
+    ros-humble-nav-msgs ros-humble-std-srvs \
+    && rm -rf /var/lib/apt/lists/*
+ENV ROS_LOCALHOST_ONLY=1
+WORKDIR /work
