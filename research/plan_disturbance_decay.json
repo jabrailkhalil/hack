@@ -1,0 +1,9 @@
+{
+  "base_commit": "2f7851364c6afe9786fad040e0938454d8b0d210",
+  "hypothesis": "Frozen disturbance may preserve noisy or obsolete acceleration throughout both-wheel dropout. Decay disturbance exponentially only when both wheels are missing/stale; keep normal wheel correction, adaptation and fault gates unchanged.",
+  "candidates": {"main_v4":null,"main_v5":null,"v5_decay_2s":2.0,"v5_decay_5s":5.0},
+  "selection": "At least 2% clean OR 5% fault-event group-macro RMSE gain relative to v5. Neither aggregate may regress >1%. No clean bag/receiver regression >max(0.01m/s,10%); no coverage loss, false-stop or unrecovered-fault increase. Scalar-span distance group macro must not regress >0.5%. v4 also reported.",
+  "runtime":{"rate_hz":20.0,"alignment_delay_s":0.0},
+  "data_policy":"Reuse fixed v3 validation; no test measurements. Both GNSS receivers retained. Selection evidence, not independent test.",
+  "bound":"Only tau 2s and 5s. No parameter sweep after seeing results in this hypothesis. Full-dataset clean and all four existing fault scenarios. Preserve failures."
+}
