@@ -9,61 +9,42 @@ permissions:
 jobs:
   inspect:
     runs-on: ubuntu-22.04
-    timeout-minutes: 5
+    timeout-minutes: 10
     steps:
-      - name: Inspect public inventory and README (no bag downloads)
+      - name: Download checksum-verified organizer archive and inspect text only
         shell: bash
         run: |
           python3 - <<'PY'
-          import json, urllib.parse, urllib.request
+          import hashlib, json, pathlib, urllib.parse, urllib.request, zipfile
           API = 'https://cloud-api.yandex.net/v1/disk/public/resources'
           KEY = 'https://disk.yandex.ru/d/DdnscmWTBtzkOQ'
-          def read(url, limit=1048576):
-              with urllib.request.urlopen(url, timeout=25) as response:
-                  payload = response.read(limit + 1)
-              if len(payload) > limit:
-                  raise ValueError('Response exceeds audit size limit')
-              return payload
-          def get(path, offset=0):
-              query = urllib.parse.urlencode(dict(public_key=KEY, path=path, limit=100, offset=offset))
-              return json.loads(read(API + '?' + query))
-          queue = [('/', 0)]
-          seen = set()
-          readmes = 0
-          while queue and len(seen) < 60:
-              path, depth = queue.pop(0)
-              if path in seen:
-                  continue
-              seen.add(path)
-              try:
-                  data = get(path)
-                  print('RESOURCE', json.dumps({k: data.get(k) for k in ('name','path','type','size','sha256')}, ensure_ascii=False))
-                  if data.get('type') == 'dir':
-                      offset = 0
-                      while True:
-                          embedded = data.get('_embedded', {})
-                          items = embedded.get('items', [])
-                          for item in items:
-                              print('ITEM', json.dumps({k: item.get(k) for k in ('name','path','type','size','sha256')}, ensure_ascii=False))
-                              name = item.get('name', '').lower()
-                              if depth < 3 and (item.get('type') == 'dir' or 'readme' in name):
-                                  queue.append((item['path'], depth + 1))
-                          offset += len(items)
-                          if not items or offset >= embedded.get('total', offset):
-                              break
-                          data = get(path, offset)
-                  elif 'readme' in data.get('name', '').lower() and readmes < 8:
-                      if data.get('size', 0) > 262144:
-                          print('README skipped: larger than 256 KiB')
-                          continue
-                      query = urllib.parse.urlencode(dict(public_key=KEY, path=path))
-                      link = json.loads(read(API + '/download?' + query))['href']
-                      payload = read(link, 262144)
-                      print('README_BEGIN', path)
-                      print(payload.decode('utf-8-sig', errors='replace'))
-                      print('README_END', path)
-                      readmes += 1
-              except Exception as exc:
-                  print('AUDIT_ERROR', path, type(exc).__name__, str(exc)[:300])
-          print('AUDIT_COMPLETE resources=', len(seen), 'readmes=', readmes)
+          EXPECTED = 'd0b2483e13990edb8219b0d7bbcafc7ed001cce549a4d3af467069b2472e7d52'
+          query = urllib.parse.urlencode(dict(public_key=KEY, path='/dataset.zip'))
+          with urllib.request.urlopen(API + '/download?' + query, timeout=30) as response:
+              link = json.load(response)['href']
+          digest = hashlib.sha256()
+          total = 0
+          with urllib.request.urlopen(link, timeout=60) as response, open('dataset.zip','wb') as output:
+              while True:
+                  chunk = response.read(1024 * 1024)
+                  if not chunk:
+                      break
+                  total += len(chunk)
+                  if total > 300 * 1024 * 1024:
+                      raise ValueError('Download exceeds expected size bound')
+                  output.write(chunk)
+                  digest.update(chunk)
+          assert digest.hexdigest() == EXPECTED, 'Dataset SHA256 changed; inspect before use'
+          print('VERIFIED_ARCHIVE', total, digest.hexdigest())
+          with zipfile.ZipFile('dataset.zip') as archive:
+              items = archive.infolist()
+              print('ARCHIVE_ENTRIES', len(items))
+              for entry in items[:250]:
+                  print('FILE', entry.filename, entry.file_size)
+              for entry in items:
+                  name = entry.filename.lower()
+                  if entry.file_size <= 262144 and ('readme' in name or name.endswith(('.msg','.idl','metadata.yaml'))):
+                      print('TEXT_BEGIN', entry.filename)
+                      print(archive.read(entry).decode('utf-8-sig', errors='replace'))
+                      print('TEXT_END', entry.filename)
           PY
