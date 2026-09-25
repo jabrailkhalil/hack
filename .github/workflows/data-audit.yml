@@ -1,0 +1,124 @@
+name: Organizer data audit
+on:
+  push:
+    paths:
+      - '.github/workflows/data-audit.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    steps:
+      - name: Verify archive and export deterministic smoke subset
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import collections, csv, gzip, hashlib, io, json, pathlib, sqlite3, struct, urllib.parse, urllib.request, zipfile
+          API = 'https://cloud-api.yandex.net/v1/disk/public/resources'
+          KEY = 'https://disk.yandex.ru/d/DdnscmWTBtzkOQ'
+          EXPECTED = 'd0b2483e13990edb8219b0d7bbcafc7ed001cce549a4d3af467069b2472e7d52'
+          query = urllib.parse.urlencode(dict(public_key=KEY, path='/dataset.zip'))
+          with urllib.request.urlopen(API + '/download?' + query, timeout=30) as response:
+              link = json.load(response)['href']
+          digest = hashlib.sha256()
+          total = 0
+          with urllib.request.urlopen(link, timeout=60) as response, open('dataset.zip','wb') as output:
+              while True:
+                  chunk = response.read(1024 * 1024)
+                  if not chunk:
+                      break
+                  total += len(chunk)
+                  if total > 300 * 1024 * 1024:
+                      raise ValueError('Unexpected archive size')
+                  output.write(chunk)
+                  digest.update(chunk)
+          assert digest.hexdigest() == EXPECTED, 'Dataset SHA256 changed'
+          out = pathlib.Path('audit'); out.mkdir()
+          with zipfile.ZipFile('dataset.zip') as outer:
+              for entry in outer.infolist():
+                  if entry.file_size < 262144 and not entry.is_dir():
+                      p = out / entry.filename
+                      assert out.resolve() in p.resolve().parents
+                      p.parent.mkdir(parents=True, exist_ok=True)
+                      p.write_bytes(outer.read(entry))
+              with open('data.zip','wb') as target:
+                  with outer.open('data.zip') as source:
+                      while chunk := source.read(1024 * 1024):
+                          target.write(chunk)
+          class CDR:
+              def __init__(self, raw):
+                  self.raw, self.pos = raw, 4
+                  assert raw[:2] in (b'\x00\x01', b'\x00\x00')
+                  self.end = '<' if raw[1] == 1 else '>'
+              def take(self, fmt, align):
+                  self.pos = 4 + ((self.pos - 4 + align - 1) // align) * align
+                  value = struct.unpack_from(self.end + fmt, self.raw, self.pos)
+                  self.pos += struct.calcsize(fmt)
+                  return value[0] if len(value) == 1 else value
+              def header(self):
+                  sec, ns = self.take('iI', 4)
+                  n = self.take('I', 4)
+                  assert 0 < n < 4096
+                  frame = self.raw[self.pos:self.pos+n-1].decode()
+                  self.pos += n
+                  return sec * 1000000000 + ns, frame
+          inventory = []
+          with zipfile.ZipFile('data.zip') as inner:
+              dbs = sorted((i for i in inner.infolist() if i.filename.endswith('.db3')), key=lambda i:i.filename)
+              for entry in dbs:
+                  inventory.append({'path':entry.filename, 'bytes':entry.file_size})
+              chosen = set()
+              for prefix in ('30618_', '30639_'):
+                  group = [i for i in dbs if prefix in i.filename]
+                  for entry in sorted(group, key=lambda i:i.file_size)[:2] + sorted(group,key=lambda i:i.file_size)[-2:]:
+                      chosen.add(entry.filename)
+              print('BAGS', len(dbs), 'SUBSET', sorted(chosen))
+              for entry in dbs:
+                  if entry.filename not in chosen:
+                      continue
+                  bag_id = pathlib.Path(entry.filename).parent.name
+                  local = pathlib.Path('current.db3'); local.write_bytes(inner.read(entry))
+                  con = sqlite3.connect('file:current.db3?mode=ro', uri=True)
+                  topics = {r[0]:(r[1],r[2]) for r in con.execute('SELECT id,name,type FROM topics')}
+                  count = collections.Counter(); ranges = {}; lag = {}; frames = collections.defaultdict(set)
+                  with gzip.open(out / (bag_id + '.csv.gz'), 'wt', newline='') as target:
+                      writer = csv.writer(target)
+                      writer.writerow(['topic','record_ns','stamp_ns','v0','v1','v2','status','covmax'])
+                      for topic_id, record_ns, raw in con.execute('SELECT topic_id,timestamp,data FROM messages ORDER BY timestamp,id'):
+                          name, typ = topics[topic_id]
+                          decoder = CDR(raw); stamp, frame = decoder.header()
+                          frames[name].add(frame)
+                          values = ['', '', '', '', '']
+                          if typ.endswith('/VelocitySensor'):
+                              values[0] = decoder.take('d',8)
+                          elif typ.endswith('/DriverControllerCommand'):
+                              values[0] = decoder.take('b',1)
+                          elif typ.endswith('/TwistStamped'):
+                              values[:3] = decoder.take('6d',8)[:3]
+                          elif typ.endswith('/NavSatFix'):
+                              values[3] = decoder.take('b',1); decoder.take('H',2)
+                              values[:3] = decoder.take('3d',8)
+                              cov = decoder.take('9d',8)
+                              values[4] = max(cov[0],cov[4],cov[8]); decoder.take('B',1)
+                          else:
+                              raise ValueError(typ)
+                          assert 0 <= len(raw) - decoder.pos < 8, (typ,len(raw),decoder.pos)
+                          writer.writerow([name,record_ns,stamp,*values])
+                          count[name] += 1
+                          x = float(values[0]); old = ranges.get(name,[x,x]); ranges[name]=[min(old[0],x),max(old[1],x)]
+                          delta = (record_ns-stamp)*1e-9; old = lag.get(name,[delta,delta]); lag[name]=[min(old[0],delta),max(old[1],delta)]
+                  con.close(); local.unlink()
+                  print('BAG',bag_id,'COUNTS',dict(count),'RANGES',ranges,'LAG',lag,'FRAMES',{k:list(v) for k,v in frames.items()})
+                  meta = str(pathlib.PurePosixPath(entry.filename).parent / 'metadata.yaml')
+                  if meta in inner.namelist():
+                      (out/(bag_id+'.metadata.yaml')).write_bytes(inner.read(meta))
+          (out/'inventory.json').write_text(json.dumps({'source':KEY,'sha256':EXPECTED,'archive_bytes':total,'bags':inventory,'smoke_subset':sorted(chosen)},indent=2))
+          print('AUDIT_ARTIFACT_FILES', [(p.name,p.stat().st_size) for p in out.glob('*') if p.is_file()])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: organizer-audit
+          path: audit/
+          retention-days: 3

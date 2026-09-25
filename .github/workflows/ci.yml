@@ -1,0 +1,55 @@
+name: Tests and ROS Humble
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  core:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Unit tests without ROS or external Python packages
+        run: PYTHONPATH=src/reserve_odometry python3 -m unittest discover -s tests -v
+      - name: Compile Python sources
+        run: python3 -m compileall -q src tools tests
+  ros-humble:
+    runs-on: ubuntu-22.04
+    container: ros:humble-ros-base
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Prepare build environment (network allowed only here)
+        shell: bash
+        run: |
+          apt-get update -qq
+          apt-get install -y --no-install-recommends python3-colcon-common-extensions ros-humble-diagnostic-msgs ros-humble-nav-msgs ros-humble-std-srvs
+      - name: Build both packages
+        shell: bash
+        run: |
+          source /opt/ros/humble/setup.bash
+          colcon build --executor sequential --event-handlers console_direct+
+      - name: Check installed node with actual ROS messages
+        shell: bash
+        run: |
+          source /opt/ros/humble/setup.bash
+          source install/setup.bash
+          python3 tests/ros_smoke.py
+  offline-limited:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Provision dependencies before disconnecting network
+        run: docker build -t tram-odometry-env -f Dockerfile.environment .
+      - name: Offline build and ROS smoke under 2 CPU / 512 MiB limit
+        run: |
+          docker run --rm --network none --cpus 2 --memory 512m \
+            -e CMAKE_BUILD_PARALLEL_LEVEL=2 -e MAKEFLAGS=-j2 \
+            -v "$PWD:/work" -w /work tram-odometry-env bash -lc '
+              set -e
+              source /opt/ros/humble/setup.bash
+              colcon --log-base log_offline build --build-base build_offline --install-base install_offline --executor sequential
+              source install_offline/setup.bash
+              python3 tests/ros_smoke.py
+              python3 tests/cdr_roundtrip.py
+            '

@@ -1,0 +1,21 @@
+reserve_odometry:
+  ros__parameters:
+    rate_hz: 20.0
+    alignment_delay_s: 0.06
+    clock_mode: input_stamp
+    # README claims m/s; 8-bag audit finds wheel/GNSS speed ratio near 3.6.
+    # Explicit dataset-specific conversion; NOT an automatic runtime GNSS fit.
+    front_scale: 0.2777777777777778
+    rear_scale: 0.2777777777777778
+    route_csv: ''
+    route_s0: 0.0
+    route_frame: map
+    # Illustrative effective physical parameters; NOT calibrated tram specifications.
+    model.mass_kg: 40000.0
+    model.wheel_radius_m: 0.33
+    model.gear_ratio: 6.0
+    model.efficiency: 0.9
+    model.total_motor_torque_nm: 4400.0
+    model.max_power_w: 300000.0
+    model.max_brake_force_n: 65000.0
+    model.actuator_tau_s: 0.35
