@@ -1,0 +1,946 @@
+diff --git a/.github/workflows/h18-source.yml b/.github/workflows/h18-source.yml
+new file mode 100644
+index 0000000..eed232a
+--- /dev/null
++++ b/.github/workflows/h18-source.yml
+@@ -0,0 +1,22 @@
++name: H18 pinned source export
++on:
++  push:
++    branches: [research/round2-H18-covariance-20260925]
++    paths: [.github/workflows/h18-source.yml]
++permissions:
++  contents: read
++jobs:
++  export:
++    runs-on: ubuntu-22.04
++    steps:
++      - uses: actions/checkout@v4
++        with:
++          fetch-depth: 0
++      - name: Archive pinned source only; no measurements or secrets
++        run: |
++          mkdir -p "$RUNNER_TEMP/h18-source"
++          git archive 65bba39ed05c781f3f69a65c02f69931152cbfd9 src tools tests research requirements-research.txt Dockerfile.environment reports/research_v3 reports/research_v5 reports/research_v6 reports/guarded_time_alignment reports/champion_v7 submission/dist > "$RUNNER_TEMP/h18-source/source.tar"
++      - uses: actions/upload-artifact@v4
++        with:
++          name: H18-pinned-source
++          path: ${{ runner.temp }}/h18-source/source.tar
+diff --git a/.github/workflows/research-r2-h18-covariance.yml b/.github/workflows/research-r2-h18-covariance.yml
+new file mode 100644
+index 0000000..9e7fa30
+--- /dev/null
++++ b/.github/workflows/research-r2-h18-covariance.yml
+@@ -0,0 +1,94 @@
++name: R2 H18 covariance train-development gated validation
++on:
++  push:
++    branches: [research/round2-H18-covariance-20260925]
++    paths: [.github/workflows/research-r2-h18-covariance.yml, research/R2/H18/RUN]
++permissions:
++  contents: write
++jobs:
++  experiment:
++    runs-on: ubuntu-22.04
++    timeout-minutes: 30
++    env:
++      OPENBLAS_NUM_THREADS: '1'
++      OMP_NUM_THREADS: '1'
++    steps:
++      - uses: actions/checkout@v4
++        with:
++          fetch-depth: 0
++      - uses: actions/setup-python@v5
++        with:
++          python-version: '3.13.5'
++      - name: Create unique evidence directory and preserve exact source
++        run: |
++          set -eu
++          OUT="reports/research_R2/H18/covariance-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
++          echo "OUT=$OUT" >> "$GITHUB_ENV"
++          echo "CHECKPOINT=checkpoint/R2-H18-covariance-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT" >> "$GITHUB_ENV"
++          mkdir -p "$OUT/checks" "$OUT/source"
++          cp research/R2/H18/{PLAN.md,SOURCES.md,wolfram.wl,wolfram-output.txt} "$OUT/"
++          git rev-parse HEAD > "$OUT/source/candidate.sha"
++          git diff --binary 65bba39ed05c781f3f69a65c02f69931152cbfd9 HEAD > "$OUT/source/candidate.patch"
++          git archive HEAD research/R2/H18 src/reserve_odometry/reserve_odometry/outage_covariance.py .github/workflows/research-r2-h18-covariance.yml > "$OUT/source/source.tar"
++          sha256sum research/R2/H18/* src/reserve_odometry/reserve_odometry/outage_covariance.py .github/workflows/research-r2-h18-covariance.yml > "$OUT/source/files.sha256"
++      - name: Install exact offline research dependencies
++        run: python -m pip install -r requirements-research.txt 2>&1 | tee "$OUT/checks/dependencies.log"
++      - name: Required H18 mechanism and driver checks
++        run: |
++          set -euo pipefail
++          PYTHONPATH=src/reserve_odometry python -m unittest discover -s research/R2/H18 -p 'test_*.py' -v 2>&1 | tee "$OUT/checks/h18-tests.log"
++          python -m compileall -q src tools tests research/R2/H18 2>&1 | tee "$OUT/checks/compile.log"
++      - name: Record unchanged historical suites without weakening guards
++        run: |
++          set +e
++          PYTHONPATH=src/reserve_odometry python -m unittest discover -s tests -v > "$OUT/checks/original-unit.log" 2>&1
++          echo "$?" > "$OUT/checks/original-unit.exit"
++          python -m unittest discover -s research/tests -v > "$OUT/checks/original-research.log" 2>&1
++          echo "$?" > "$OUT/checks/original-research.exit"
++          exit 0
++      - name: Download pinned organizer archive, never decode final test
++        run: python tools/get_dataset.py 2>&1 | tee "$OUT/checks/dataset.log"
++      - name: Train only causal trusted residual variance, no GNSS
++        run: python research/R2/H18/run.py --stage train --output "$OUT/train" 2>&1 | tee "$OUT/checks/train.log"
++      - name: All genuine development bags, original faults, safety diagnostics and AB-BA cost
++        run: python research/R2/H18/run.py --stage development --training "$OUT/train" --output "$OUT/development" 2>&1 | tee "$OUT/checks/development.log"
++      - name: Commit and push freeze before validation or explicitly stop
++        id: admission
++        run: |
++          set -euo pipefail
++          ADMIT=$(python -c 'import json,os; print(str(json.load(open(os.environ["OUT"]+"/development/decision.json"))["admit_validation"]).lower())')
++          echo "admit=$ADMIT" >> "$GITHUB_OUTPUT"
++          if test "$ADMIT" != true; then
++            printf '%s\n' 'Validation NOT OPENED: preregistered development safety/activation stop rule.' > "$OUT/VALIDATION_NOT_RUN.txt"
++            exit 0
++          fi
++          python research/R2/H18/run.py --stage freeze --training "$OUT/train" --development "$OUT/development" --output "$OUT/freeze" 2>&1 | tee "$OUT/checks/freeze.log"
++          git config user.name 'github-actions[bot]'
++          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
++          git switch -c "$CHECKPOINT"
++          git add "$OUT"
++          git commit -m "research(H18): freeze selected covariance BEFORE validation $GITHUB_RUN_ID [skip ci]"
++          git push origin "HEAD:refs/heads/$CHECKPOINT"
++          echo "FREEZE_COMMIT=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
++          git rev-parse HEAD > "$OUT/freeze-commit.txt"
++      - name: Single frozen paired validation, only if development safety permits
++        if: steps.admission.outputs.admit == 'true'
++        run: |
++          python research/R2/H18/run.py --stage validation --freeze "$OUT/freeze/FREEZE.json" --freeze-commit "$FREEZE_COMMIT" --output "$OUT/validation" 2>&1 | tee "$OUT/checks/validation.log"
++      - name: Preserve complete or partial evidence in unique checkpoint branch
++        if: always()
++        run: |
++          set -eu
++          if ! test -d "$OUT"; then exit 0; fi
++          git config user.name 'github-actions[bot]'
++          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
++          if test "$(git branch --show-current)" != "$CHECKPOINT"; then git switch -c "$CHECKPOINT"; fi
++          git add "$OUT"
++          git diff --cached --quiet || git commit -m "research(H18): preserve R2 execution $GITHUB_RUN_ID/$GITHUB_RUN_ATTEMPT [skip ci]"
++          git push origin "HEAD:refs/heads/$CHECKPOINT"
++      - uses: actions/upload-artifact@v4
++        if: always()
++        with:
++          name: H18-covariance-${{ github.run_id }}-${{ github.run_attempt }}
++          path: ${{ env.OUT }}/
++          retention-days: 30
+diff --git a/research/R2/H18/PLAN.md b/research/R2/H18/PLAN.md
+new file mode 100644
+index 0000000..0730138
+--- /dev/null
++++ b/research/R2/H18/PLAN.md
+@@ -0,0 +1,55 @@
++# H18 — R2-v7-fixed: предварительный план
++
++Baseline: 65bba39ed05c781f3f69a65c02f69931152cbfd9, GuardedReadoutObserver, guarded_readout_v7.yaml/json, readout gain=1, holdoff=0.5, inner wheel_time_compensation=0, adaptation_tau_s=0.5, output 20 Hz, alignment_delay=0. Сравниваются возвращаемые Estimate, не внутренние v/s. H11/v8 не включается.
++
++Ветка research/round2-H18 уже существовала на 2ddf918ec990085f070caed003e24b616ce27fe8; её содержимое/результаты не используются. Эта независимая попытка: research/round2-H18-covariance-20260925, создана от общего baseline. Не менять main, чужие ветки, старые pins/отчёты; не merge/auto-merge.
++
++## Единственный вариант (budget=1, baseline/off не считаются)
++
++Fixed train-calibrated consider covariance для эпизодов отсутствия принятых wheel updates. Среднее предсказание, drive_a, legacy d/adaptation, численное интегрирование, readout, raw rate/range/timestamp/disagreement/zero-lock guards и bounded reacquisition остаются исходными. Runtime — новый subclass GuardedReadoutObserver, без патча старых модулей.
++
++Когда после инициализации прошло больше Config.max_age_s с последнего ACCEPTED wheel update, начинается covariance-эпизод. Он не зависит от injected-fault флага, reference, bag ID или будущих samples. Вне эпизодов до первого outage — точный baseline. Один вариант, никаких Qv множителей и Qd random walk: данные не обосновывают Qd и это был бы другой вариант.
++
++Новый nuisance error — неопределённость удерживаемого d. На старте эпизода неизвестную cross-correlation ограничиваем PSD envelope diag(2*Pvv,2*Vd): для любой |Pvd|<=sqrt(Pvv*Vd) разность с [[Pvv,Pvd],[Pvd,Vd]] PSD. Это консервативная декорреляция, не произвольное удвоение Q. Далее F=[[1,dt],[0,1]], Pvv+=2*dt*Pvd+dt^2*Pdd плюс прежний Qv*dt (и прежний stale multiplier), Pvd+=dt*Pdd, Pdd постоянно. При velocity correction используем прежний scalar gain; Schmidt/Joseph Kd=0 даёт Pvd*=(1-K), Pdd не уменьшается. После первого реально выполненного legacy d adaptation или STOPPED nuisance-эпизод маргинализируется: накопленное Pvv не уменьшается, cross/Pdd больше не распространяются до нового outage. Это не утверждение точной covariance для нелинейного clipped observer: derivative pseudo-label, actuator-history uncertainty и корреляции с адаптацией не моделируются полностью. Перезапуск nuisance после нового доверенного mean reanchor — объявленное допущение. Explicit reset возвращает исходные prior и все счётчики.
++
++Добавочный Pvv вводится перед исходным GuardedReadoutObserver.step, поэтому неизменный readout восстанавливает gain из фактического prior, а не устаревшего линейного prior. Hard innovation cap неизменен; рост мягкого gate возможен и проверяется отдельно на false acceptance.
++
++## Train calibration, без GNSS
++
++Пройти все 64 штатных train-bag только исходным baseline. Использовать только причинные пары свежих ACCEPTED согласованных колёс, валидную команду, 0.05<=delta wheel stamp<=max_age_s, |wheel acceleration|<=max_accel, |wheel mean speed|>0.5. Residual=wheel acceleration-drive_a+resistance(v_after_correction)-d_before_update (именно ошибка baseline adaptation target). Квадрат residual ограничить сверху (2*disturbance_limit)^2. Для каждой группы вычислить mean squared residual; Vd=90-й percentile этих group means, ограниченный [0.0025,0.36] (m/s^2)^2. Не считать колёсное расхождение независимой полной ошибкой d. Сохранить clipped count, все per-bag/group stats. Минимум 1000 eligible residuals и 5 групп; иначе INCONCLUSIVE без validation. Единственный детерминированный calibrator, без оптимизации по GNSS или расширения диапазонов.
++
++## Development и stop rule
++
++Использовать настоящие 17 development-bag через новый read-only role loader. Train/validation loader и split не менять. Runtime имеет только vehicle inputs; оба reference receiver доступны только внешнему evaluator. Оценить baseline, candidate off и единственный calibrated candidate на всех development clean и исходных faults. Сетка, score/matching/distance/fault anchors/group aggregation импортируются из pinned evaluator. Добавить отдельный общий R2 gate, не редактировать исторические decide/pins.
++
++Перед validation обязательны: disabled exact Estimate/status/counter equivalence; causal prefix, duplicate/stale/future/reset/finite/O(1) tests; Joseph matrix/PSD/closed-form/finite-difference tests; реальные активации >=10 эпизодов в >=3 development-группах и >=100 active ticks; common-mode safety и genuine recovery отдельно. На тех же vehicle-only anchors отдельная diagnostic suite: common +5 m/s на обеих тележках на 0.7/1.2 s, ramp +1 m/s за 1 s с удержанием до 2 s, и dropout 5 s с ложной согласованной парой +2 m/s в последующие 1 s. Это диагностические наборы, не замена original admission.
++
++False acceptance: число corrupted wheel updates со статусами ACCEPTED/REACQUIRE_ACCEPTED в диагностическом fault interval. Любой рост относительно baseline, новые false stops/unrecovered, causality/reset/nonfinite failures => REJECTED без validation. Недостаточная активация => INCONCLUSIVE. Если safety/coverage пройдены, единственный вариант допускается к одному validation даже если development gain ниже admission: параметры не меняются, negative validation разрешён. Это правило задано заранее.
++
++## Freeze и validation
++
++После train/development опубликовать отдельный freeze commit до validation с source/candidate/config/data/split/driver/evaluator hashes. Один paired validation на всех 19 штатных validation-bag, 76 original fault scenarios; оба receiver; одинаковые timestamps/masks. Сначала воспроизвести baseline тем же driver и независимой прямой canonical factory на development; подтвердить config/launch. Исторические v7 цифры — лишь cross-check после исполнения, не замена прогона. Не читать test payloads и не перенастраивать после validation. Infrastructure retry того же freeze — отдельный run, без выбора удачного результата.
++
++Admission: >=2% clean group-macro RMSE gain ИЛИ >=5% original fault-event group-macro RMSE gain. Clean/fault/pooled regression <=0.5%, scalar-span distance <=1%, clean per-bag/receiver <=baseline+max(0.005,0.05*baseline). Без потерь n/coverage, дополнительных false stops, новых индивидуальных unrecovered, causal errors или unexpected resets. При baseline=0: абсолютный допуск 1e-12 для численных метрик, ноль для counters; gain по нулевой метрике не засчитывается. Отдельно MAE, signed bias, recovery distributions, локальные регрессии и missing reference. Группы, не receiver/ticks, являются независимыми единицами.
++
++## Диагностика и стоимость
++
++Сохранить первые/последующие gains при genuine recovery, Pvv/Pvd/Pdd до/в/после outage, error^2/Pvv descriptively, факт активации/изменения траектории, corrupted acceptance, bounded-memory counters. Не заявлять calibrated CI. На первом лексикографическом development-bag после 10 s warmup три AB/BA пары повторов с OMP/OPENBLAS=1; одинаковые outputs, replay process CPU и wall отдельно, step CPU отдельно на одинаковой captured input sequence. RSS процесса отдельно; не считать offline timings installed ROS latency. При accuracy reject полный ROS benchmark не требуется и отмечается not executed. При accuracy pass необходим свежий enabled installed ROS offline 2 CPU/500000000 bytes в обоих clock modes с real development replay, иначе INCONCLUSIVE/not ready.
++
++## Команды и публикация
++
++python tools/get_dataset.py
++python -m pip install -r requirements-research.txt
++PYTHONPATH=src/reserve_odometry python -m unittest discover -s research/R2/H18 -p 'test_*.py' -v
++python research/R2/H18/run.py --stage train --output <fresh>/train
++python research/R2/H18/run.py --stage development --training <fresh>/train --output <fresh>/development
++# отдельный commit/push FREEZE.json до любой validation IO
++python research/R2/H18/run.py --stage validation --freeze <committed>/FREEZE.json --output <fresh>/validation
++
++Все стадии сохраняют access journal до SQLite IO и отказывают для test. Evidence: reports/research_R2/H18/<run-id>/, уникальная checkpoint ветка, без raw bags/secrets/caches. Русский Draft PR с REJECTED/INCONCLUSIVE/CONFIRMED, отдельно mechanism и merge-ready. Checkout не меняет default: candidate включается явной H18 factory с calibrated Vd.
++
++## Изученные предшественники и научный контекст
++
++Прочитаны runtime core/guarded_readout/Timeline/config, старые evaluator/compare и v3/v5/v6. PR #18 H10 менял совместное mean [v,d] и Qd=0.04, был отклонён; H18 этого не повторяет. v5 process-noise x4 ухудшал faults/false stops; не использовать произвольный Q multiplier. H07 #22 и v6 projection/decay — отрицательные примеры по прежнему baseline. PR #14/#23 дают canonical output-only guarded v7. PR #26/H11 — quarantine common RATE_ANOMALY, изучен отдельно, не включён.
++
++Consensus найден и fetched: Zanetti/Bishop, Kalman Filters with Uncompensated Biases (2012), DOI 10.2514/1.55120; реально прочитана карточка/abstract-like introduction, не весь текст. Primary author bibliography подтверждает DOI (pages 327-330; Consensus metadata 327-335 различается). Scite actual attempt: monthly MCP usage limit, full text/citation context НЕ прочитаны. Wolfram выполнил symbolic FPF'+Q, Qd terms, Schmidt Joseph, PSD-envelope determinant p*d-c^2, zero-time and semigroup. Исполнимый worksheet и фактический текст вывода сохранить. Аналитика не доказывает real-bag accuracy.
+diff --git a/research/R2/H18/SOURCES.md b/research/R2/H18/SOURCES.md
+new file mode 100644
+index 0000000..7df1330
+--- /dev/null
++++ b/research/R2/H18/SOURCES.md
+@@ -0,0 +1,24 @@
++# H18: источники, реально прочитанные материалы и границы математики
++
++1. Renato Zanetti, Robert H. Bishop (2012), Kalman Filters with Uncompensated Biases, Journal of Guidance, Control, and Dynamics 35(1), DOI 10.2514/1.55120. Через Consensus: узкий поиск Schmidt/consider uncertainty и fetch(c9658c437c8754ae8e13cda8d1dcb9eb). Прочитаны карточка, metadata и abstract/introduction-like текст, НЕ полный текст. https://consensus.app/papers/kalman-filters-with-uncompensated-biases-zanetti-bishop/c9658c437c8754ae8e13cda8d1dcb9eb/ . Источник мотивирует учёт структурированной bias-uncertainty без оценки bias как нового mean state; не доказывает нашу конструкцию или точность на odometry.
++2. Primary author bibliography: https://sites.utexas.edu/near/publications/journal-publications/ . Прочитана библиографическая запись: 327–330, DOI выше. Consensus metadata указывал 327–335; это расхождение сохранено, а не выдано за прочитанный PDF.
++3. Scite search_literature по точным названиям Kalman Filters with Uncompensated Biases и Partial-Update Schmidt–Kalman Filter вернул: monthly MCP usage limit (25 calls), reset 2026-10-01 UTC. Ни full text, ни citation context через Scite не прочитаны. Подписки не покупались, права не менялись. Citation count/mentioning не используется как независимая проверка результатов.
++
++# Wolfram и аналитические допущения
++
++WolframContext вызван; точные поисковые запросы не дали ответа. WolframLanguageEvaluator затем реально выполнил worksheet wolfram.wl; полный фактический результат в wolfram-output.txt.
++
++Для локальной ошибки x=[v,d], F(T)=[[1,T],[0,1]], P(T)=F P0 F^T+Q(T):
++Pvv(T)=Pvv0+2*T*Pvd0+T^2*Pdd0+Qv*T+Qd*T^3/3;
++Pvd(T)=Pvd0+T*Pdd0+Qd*T^2/2; Pdd(T)=Pdd0+Qd*T.
++Вариант H18 использует Qd=0: random walk не идентифицирован и добавление означало бы другой вариант.
++
++Единицы (проверка размерностей аналитически): v — m/s; d — m/s^2; Pvv — m^2/s^2; Pvd — m^2/s^3; Pdd — m^2/s^4; Qv — m^2/s^3; Qd — m^2/s^5. Все слагаемые согласованы. T=0 возвращает P0; F имеет semigroup. Детерминант двухстрочной observability matrix H=[1,0], H F(T) равен T: в идеальной модели d наблюдаем при двух разнесённых измерениях, но во время outage наблюдений нет. Физическую идентифицируемость common-mode wheel error это не доказывает.
++
++Шмидтовский gain [K,0] сохраняет mean d и Pdd, а Joseph даёт Pvv+=(1-K)^2 Pvv- + K^2 R; Pvd+=(1-K)Pvd-. PSD следует из суммы A P A^T+K R K^T. Начальный envelope diag(2p,2d) доминирует любую PSD P=[[p,c],[c,d]], поскольку разность [[p,-c],[-c,d]] имеет неотрицательные диагонали и determinant p*d-c^2>=0. Это увеличение initial covariance, а не Q×2 tuning.
++
++После legacy d adaptation marginalization сохраняет Pvv, не уменьшает его до старого scalar prior. Новый эпизод вновь применяет train-derived Vd envelope. Это приближённая episode-local модель: clipped nonlinear dynamics, actuator-history uncertainty, selection bias trusted residuals и корреляции derivative pseudo-label с velocity error не оценены полностью. Нельзя называть её точной covariance нелинейного observer или calibrated confidence intervals. Residual variance может содержать common wheel noise и модельную ошибку; два согласованных колеса не становятся независимой истиной.
++
++# Код и прежние исследования
++
++Baseline frozen 65bba39ed05c781f3f69a65c02f69931152cbfd9. Прочитаны core/guarded_readout/Timeline, v7 JSON/YAML, launch, evaluator/score/matching, роли данных, тесты и v3/v5/v6 отчёты. PR #18 H10 — отрицательная совместная коррекция mean [v,d] с Qd; H18 сохраняет прежнее mean d. PR #22 H07 и v5 Q×2/Q×4, v6 projection/decay — исторические отрицательные результаты, не сравнение с R2. PR #14/#23 — механизм и интеграция guarded v7. PR #26 H11 — соседняя quarantine common-mode, изучена, но не включена. Результаты других R2 агентов не использовались.
+diff --git a/research/R2/H18/run.py b/research/R2/H18/run.py
+new file mode 100644
+index 0000000..22414cc
+--- /dev/null
++++ b/research/R2/H18/run.py
+@@ -0,0 +1,381 @@
++"""Fixed R2 H18 experiment; imports immutable score/masks/fault placement.
++
++No validation is opened unless train/development safety+activation gates pass
++and a separate committed freeze is supplied. No test measurement access.
++"""
++import argparse
++from collections import defaultdict
++import csv
++from dataclasses import asdict
++import datetime
++import hashlib
++import importlib.util
++import json
++import math
++import os
++from pathlib import Path
++import platform
++import resource
++import sqlite3
++import subprocess
++import sys
++import time
++ROOT = Path(__file__).resolve().parents[3]
++sys.path.insert(0,str(ROOT/'tools/finalization'))
++import evaluate as ev
++np,ex=ev.np,ev.ex
++from reserve_odometry.core import Config, Sample, clip
++from reserve_odometry.timeline import Timeline
++from reserve_odometry.guarded_readout import GuardedReadoutObserver, ReadoutConfig
++from reserve_odometry.outage_covariance import OutageCovarianceObserver, trusted_residual
++spec=importlib.util.spec_from_file_location('guarded_metrics',ROOT/'tools/research_guarded/compare.py')
++gc=importlib.util.module_from_spec(spec);spec.loader.exec_module(gc)
++BASE='65bba39ed05c781f3f69a65c02f69931152cbfd9'
++OPS=dict(rate_hz=20.,alignment_delay_s=0.)
++PROFILE=json.loads((ROOT/'src/reserve_odometry/config/guarded_readout_v7.json').read_text())
++PIN_PATHS=['src/reserve_odometry/reserve_odometry/'+n for n in
++           ('core.py','guarded_readout.py','timeline.py','node.py','guarded_node.py')]
++PIN_PATHS += ['src/reserve_odometry/config/guarded_readout_v7.'+x for x in ('yaml','json')]
++PIN_PATHS += ['src/reserve_odometry/launch/odometry.launch.py','tools/finalization/evaluate.py',
++             'tools/research_v3/experiment.py','tools/research_v3/manifest.py','tools/research_guarded/compare.py',
++             'tools/export_bags.py','tools/get_dataset.py','research/plan_v3.json','research/split_v3.json','requirements-research.txt']
++NEW_PATHS=['src/reserve_odometry/reserve_odometry/outage_covariance.py',
++           'research/R2/H18/run.py','research/R2/H18/test_covariance.py','research/R2/H18/PLAN.md']
++VARIANCE=.0025
++PROBES=[]
++RECORD=False
++TRAIN=False
++
++
++def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
++def save(p,obj):ev.save(p,obj)
++def git(*args):return subprocess.check_output(['git',*args],cwd=ROOT)
++def config():return Config(**PROFILE['config'])
++def canonical(c=None):return GuardedReadoutObserver(c or config(),readout=ReadoutConfig(**PROFILE['readout']))
++def candidate(c=None,enabled=True):
++    return OutageCovarianceObserver(c or config(),readout=ReadoutConfig(**PROFILE['readout']),enabled=enabled,disturbance_variance=VARIANCE)
++
++
++def provenance():
++    for path in PIN_PATHS:
++        if (ROOT/path).read_bytes()!=git('show',BASE+':'+path):raise AssertionError('changed pinned source: '+path)
++    actual={};readout={};ops={}
++    for line in (ROOT/'src/reserve_odometry/config/guarded_readout_v7.yaml').read_text().splitlines():
++        k,sep,v=line.strip().partition(':')
++        if sep and k.startswith('model.'):actual[k[6:]]=float(v)
++        if sep and k.startswith('readout.'):readout[k[8:]]=float(v)
++        if k in ('rate_hz','alignment_delay_s'):ops[k]=float(v)
++    assert actual==PROFILE['config'] and readout==PROFILE['readout'] and ops==OPS
++    assert config().wheel_time_compensation==0 and config().adaptation_tau_s==.5
++    assert 'guarded_odometry_node' in (ROOT/'src/reserve_odometry/launch/odometry.launch.py').read_text()
++    return dict(round='R2-v7-fixed',hypothesis='H18',baseline_sha=BASE,
++        source_commit=os.getenv('GITHUB_SHA',git('rev-parse','HEAD').decode().strip()),
++        source_sha256={p:sha(ROOT/p) for p in PIN_PATHS+NEW_PATHS},profile=PROFILE,ops=OPS,
++        utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),python=platform.python_version(),
++        numpy=np.__version__,final_test_opened=False)
++
++
++class RoleStore(ex.Store):
++    """Same split/decoding/ordering, with an explicit real development role."""
++    def __init__(self,journal):super().__init__();self.journal=journal
++    def load(self,bag,purpose):
++        row=self.records[bag]
++        if purpose not in ('train','development','validation') or row['split']!=purpose:
++            raise PermissionError('Role denied BEFORE measurement IO: '+bag+'/'+purpose)
++        topics=list(ex.CHANNELS)+(list(ex.REFS) if purpose!='train' else [])
++        self.access.append(dict(bag=bag,purpose=purpose,topics=topics,sha256=row['sha256'],status='opening'))
++        save(self.journal,dict(final_test_opened=False,access=self.access))
++        path=self.root/bag/(bag+'_0.db3')
++        if sha(path)!=row['sha256']:raise ValueError('Bag checksum mismatch')
++        events=[];refs={'master':[],'rover':[]};origin=row['sensor_start_ns']
++        with sqlite3.connect(path.resolve().as_uri()+'?mode=ro',uri=True) as con:
++            sql='SELECT t.name,t.type,m.data FROM messages m JOIN topics t ON t.id=m.topic_id WHERE t.name IN ('+','.join('?' for _ in topics)+') ORDER BY m.timestamp,m.id'
++            for topic,typ,raw in con.execute(sql,topics):
++                stamp,values=ex.decode(raw,typ);t=(stamp-origin)/1e9
++                if topic in ex.CHANNELS:
++                    ch=ex.CHANNELS[topic];events.append((t,ch,float(values[0])/(15 if ch==0 else 3.6)))
++                else:
++                    speed=math.hypot(float(values[0]),float(values[1]))
++                    if math.isfinite(speed):refs[ex.REFS[topic]].append((t,speed))
++        self.access[-1]['status']='loaded';save(self.journal,dict(final_test_opened=False,access=self.access))
++        return np.asarray(events,float).reshape(-1,3),refs
++
++
++class Probe:
++    """OFFLINE instrumentation; never supplies diagnostics/reference to runtime."""
++    def __init__(self,inner):self.inner=inner;self.c=inner.c;self.reset()
++    def __getattr__(self,k):return getattr(self.inner,k)
++    def reset(self,**kw):
++        self.inner.reset(**kw);self.rows=[];self.n=0;self.ss=0.;self.clipped=0;self.active_ticks=0;self.added=0.
++    def step(self,t,command=None,front=None,rear=None):
++        o=self.inner;old,old_d,oldpv,oldt=o.adapt_previous,o.disturbance,o.pv,o.t
++        stale=not o._valid(command,t,o.c.command_timeout_s) or abs(command.value)>1.000001
++        prior=oldpv+o.c.process_noise_v*(0 if oldt is None else t-oldt)*(4 if stale else 1)
++        e=o.step(t,command,front,rear)
++        if TRAIN:
++            residual=trusted_residual(o,old,old_d,e,front,rear)
++            if residual is not None:
++                cap=(2*o.c.disturbance_limit_mps2)**2;self.n+=1;self.ss+=min(residual*residual,cap);self.clipped+=residual*residual>cap
++        added=getattr(o,'h18_added_variance',0.)
++        self.active_ticks+=int(added>0);self.added+=added
++        if RECORD:
++            if hasattr(o,'h18_prior'):prior=o.h18_prior
++            gain=clip(1-o.pv/prior,0,1) if e.mode in ('FUSED','SINGLE_WHEEL') else 0.
++            self.rows.append(dict(t=t,v=e.v,s=e.s,pvv=o.pv,pvd=getattr(o,'h18_pvd',0.),pdd=getattr(o,'h18_pdd',0.),
++                active=getattr(o,'h18_active',False),added=added,gain=gain,d=o.disturbance,
++                mode=e.mode,front_status=e.front_status,rear_status=e.rear_status,
++                front_t=front.t if front else None,rear_t=rear.t if rear else None))
++        return e
++
++
++def factory(c):
++    kind=getattr(c,'_h18_kind','main')
++    o=canonical(c) if kind=='main' else candidate(c,enabled=kind!='off')
++    p=Probe(o);PROBES.append(p);return p
++
++
++def replay_plain(events,kind,fault=None):
++    previous=ev.Observer
++    try:
++        ev.Observer=canonical if kind=='main' else lambda c:candidate(c,kind!='off')
++        return ev.replay(events,config(),OPS,fault)
++    finally:ev.Observer=previous
++
++
++def paired(events,refs,metadata,out,label,fault=None,compatibility=False):
++    global RECORD
++    RECORD=fault is not None;PROBES.clear();previous=ev.Observer
++    models={}
++    for internal,kind in [('baseline_v2','main'),('balanced_physics','candidate')]:
++        c=config();c._h18_kind=kind;models[internal]=c
++    try:
++        ev.Observer=factory;result=ev.score(events,refs,models,OPS,fault)
++    finally:ev.Observer=previous
++    probes=list(PROBES);trace={}
++    for internal,name in [('baseline_v2','main'),('balanced_physics','candidate')]:
++        result['runtime'][name]=result['runtime'].pop(internal)
++        for scores in result['receivers'].values():scores[name]=scores.pop(internal)
++    for name,p in zip(('main','candidate'),probes):
++        trace[name]=p.rows
++        result.setdefault('activation',{})[name]=dict(active_ticks=p.active_ticks,episodes=getattr(p.inner,'h18_episodes',0),added_variance=p.added)
++        if fault:
++            path=out/'traces'/f"{metadata['bag']}_{label}_{name}.csv";path.parent.mkdir(parents=True,exist_ok=True)
++            if p.rows:
++                with path.open('w') as f:
++                    w=csv.DictWriter(f,fieldnames=list(p.rows[0]));w.writeheader();w.writerows(p.rows)
++    if compatibility:
++        a,ai=replay_plain(events,'main',fault);b,bi=replay_plain(events,'off',fault)
++        if not np.array_equal(a,b,equal_nan=True) or ai!=bi:raise AssertionError('Disabled/canonical trajectory mismatch')
++        # Check the actual driver result against the independent direct factory.
++        for receiver,values in refs.items():
++            target=ex.match(values,a[:,0]);mask=np.isfinite(target)
++            if fault:mask&=(a[:,0]>=fault['start'])&(a[:,0]<fault['end']+10.)
++            m=ex.metrics(a[:,0],a[:,1],target,mask)
++            for key,value in m.items():
++                if result['receivers'][receiver]['main'][key]!=value:raise AssertionError('Canonical driver mismatch')
++        result['disabled_and_canonical_reproduced']=True
++    result.update(metadata)
++    if fault:result['fault']=fault
++    return result,trace
++
++
++def gate(clean,stress,summary,require_gain=True):
++    reasons=[];b,c=summary['main'],summary['candidate']
++    def worsened(a,z,relative):return z>a*(1+relative)+1e-12 if a else z>1e-12
++    required=['macro_rmse','fault_macro','pooled_rmse','distance_macro']
++    if any(b[k] is None or c[k] is None for k in required):return ['missing_reference']
++    gains=[1-c[k]/b[k] if b[k]>0 else 0 for k in ('macro_rmse','fault_macro')]
++    if require_gain and gains[0]<.02 and gains[1]<.05:reasons.append('insufficient_gain')
++    for k,r in [('macro_rmse',.005),('fault_macro',.005),('pooled_rmse',.005),('distance_macro',.01)]:
++        if worsened(b[k],c[k],r):reasons.append('aggregate_regression:'+k)
++    for rows,isclean in ((clean,True),(stress,False)):
++        for row in rows:
++            for name in ('main','candidate'):
++                rt=row['runtime'][name]
++                if rt['causal_errors'] or rt['resets']:reasons.append('causality_or_reset:'+row['bag'])
++            for receiver,scores in row['receivers'].items():
++                x,y=scores['main'],scores['candidate'];tag=row['bag']+'/'+receiver
++                if x['n']!=y['n'] or x['coverage']!=y['coverage']:reasons.append('coverage:'+tag)
++                if y['false_stop_samples']>x['false_stop_samples']:reasons.append('false_stops:'+tag)
++                if not isclean and x.get('recovery_s') is not None and y.get('recovery_s') is None:reasons.append('new_unrecovered:'+tag)
++                if isclean and x['rmse'] is not None and (y['rmse'] is None or y['rmse']>x['rmse']+max(.005,.05*x['rmse'])):reasons.append('per_pair_clean:'+tag)
++    return sorted(set(reasons))
++
++
++def csv_metrics(out,clean,stress):
++    rows=[]
++    for kind,items in [('clean',clean),('fault',stress)]:
++        for row in items:
++            for receiver,m in row['receivers'].items():
++                z=dict(bag=row['bag'],group=row['group'],receiver=receiver,role=row['role'],kind=kind,
++                       fault=row.get('fault',{}).get('kind',''),start=row.get('fault',{}).get('start'),end=row.get('fault',{}).get('end'))
++                for metric in ('rmse','mae','bias','p95','event_rmse','n','coverage','false_stop_samples','recovery_s'):
++                    for name in ('main','candidate'):z[name+'_'+metric]=m[name].get(metric)
++                for name in ('main','candidate'):z[name+'_distance']=m[name].get('distance_surrogate',{}).get('reanchored_span_rmse_m')
++                rows.append(z)
++    if rows:
++        with (out/'per_bag_receiver_fault.csv').open('w') as f:
++            w=csv.DictWriter(f,fieldnames=list(rows[0]));w.writeheader();w.writerows(rows)
++
++
++def train(out):
++    global TRAIN,RECORD
++    TRAIN=True;RECORD=False;store=RoleStore(out/'access.json');stats=[];groups=defaultdict(lambda:[0,0.])
++    for bag in store.plan['splits']['train']:
++        events,_=store.load(bag,'train');p=Probe(canonical());old=ev.Observer
++        try:ev.Observer=lambda c:p;arr,info=ev.replay(events,config(),OPS)
++        finally:ev.Observer=old
++        group=store.records[bag]['group'];groups[group][0]+=p.n;groups[group][1]+=p.ss
++        stats.append(dict(bag=bag,group=group,n=p.n,squares=p.ss,clipped=p.clipped,outputs=len(arr),runtime=info));print('TRAIN',bag,p.n,flush=True)
++    means={g:ss/n for g,(n,ss) in groups.items() if n}
++    n=sum(r['n'] for r in stats);enough=n>=1000 and len(means)>=5
++    variance=float(np.clip(np.quantile(list(means.values()),.9),.0025,.36)) if enough else None
++    save(out/'training.json',dict(stats=stats,group_means=means,n=n,groups=len(means),eligible=enough,disturbance_variance=variance,
++        method='causal trusted residual; clipped squares; group-mean 90th percentile; fixed range',train_reference_loaded=False))
++    TRAIN=False
++
++
++def diagnostic_events(events,anchor,kind,duration):
++    a=events.copy();wheel=np.isin(a[:,1],(1,2));t=a[:,0]
++    end=anchor+duration;corrupt_begin=anchor
++    if kind=='after_dropout_false_pair':
++        drop=wheel&(t>=anchor)&(t<anchor+5)
++        add=wheel&(t>=anchor+5)&(t<end);a[add,2]+=2.;a=a[~drop];corrupt_begin=anchor+5
++    else:
++        mask=wheel&(t>=anchor)&(t<end)
++        a[mask,2]+=5. if kind=='common_step' else np.minimum(1.,t[mask]-anchor)
++    window=a[(a[:,0]>=anchor-20)&(a[:,0]<=end+10.1)]
++    return window,dict(kind=kind,start=anchor,end=end),corrupt_begin
++
++
++def diagnose(row,traces,refs,corrupt_begin):
++    for name,trace in traces.items():
++        bad=0;gains=[]
++        for x in trace:
++            for ch in ('front','rear'):
++                stamp=x[ch+'_t']
++                if stamp is not None and corrupt_begin<=stamp<row['fault']['end'] and x[ch+'_status'] in ('ACCEPTED','REACQUIRE_ACCEPTED'):bad+=1
++            if x['t']>=row['fault']['end'] and x['gain']>0:gains.append(x['gain'])
++        ratios={}
++        if trace:
++            target_times=np.array([x['t'] for x in trace]);v=np.array([x['v'] for x in trace]);p=np.array([x['pvv'] for x in trace])
++            for receiver,values in refs.items():
++                target=ex.match(values,target_times);mask=np.isfinite(target)&(target_times>=row['fault']['start'])
++                ratios[receiver]=float(np.mean((v[mask]-target[mask])**2/np.maximum(p[mask],1e-12))) if mask.any() else None
++        row.setdefault('diagnostics',{})[name]=dict(corrupted_acceptances=bad,first_recovery_gains=gains[:10],mean_squared_error_over_internal_variance=ratios)
++
++
++def cost(events,out):
++    warm=10.+float(events[0,0]);sequence=[];tl=Timeline(canonical(),20.,0.)
++    for t,ch,v in events:
++        tl.ingest(int(ch),Sample(float(t),float(v)))
++        for e,held in tl.advance():sequence.append((e.t,held))
++    def once(kind,level):
++        o=canonical() if kind=='main' else candidate();outputs=[];start=None
++        if level=='step':
++            for t,held in sequence:
++                if start is None and t>=warm:start=(time.process_time(),time.perf_counter())
++                e=o.step(t,*held);outputs.append((e.t,e.v,e.s))
++        else:
++            timeline=Timeline(o,20.,0.)
++            for t,ch,v in events:
++                if start is None and t>=warm:start=(time.process_time(),time.perf_counter())
++                timeline.ingest(int(ch),Sample(float(t),float(v)))
++                for e,_ in timeline.advance():outputs.append((e.t,e.v,e.s))
++        array=np.asarray(outputs);end=(time.process_time(),time.perf_counter())
++        return dict(cpu_s=end[0]-start[0],wall_s=end[1]-start[1],outputs=len(array),postwarm_outputs=int(np.sum(array[:,0]>=warm))),array
++    result=[];references={}
++    for level in ('replay','step'):
++        for block in range(6):
++            for name in (('main','candidate') if block%2==0 else ('candidate','main')):
++                metrics,a=once(name,level);key=(name,level)
++                if key in references:assert np.array_equal(a,references[key])
++                references[key]=a
++                result.append(dict(level=level,block=block,name=name,**metrics))
++    assert np.array_equal(references['main','step'],references['main','replay'])
++    assert np.array_equal(references['candidate','step'],references['candidate','replay'])
++    save(out/'cost.json',dict(runs=result,warmup_s=10,order='AB BA AB BA AB BA, separately step/replay',
++        process_peak_rss_bytes=resource.getrusage(resource.RUSAGE_SELF).ru_maxrss*1024,
++        rss_scope='whole offline process including scientific libraries and evaluation; not installed runtime RSS',
++        installed_ros_latency_measured=False,omp=os.getenv('OMP_NUM_THREADS'),openblas=os.getenv('OPENBLAS_NUM_THREADS')))
++
++
++def evaluate_role(role,out,training):
++    global VARIANCE
++    if not training['eligible']:
++        save(out/'decision.json',dict(verdict='INCONCLUSIVE',admit_validation=False,reason='insufficient_train_residuals'));return
++    VARIANCE=training['disturbance_variance'];store=RoleStore(out/'access.json')
++    clean=[];stress=[];extra=[];coverage_groups=set();episodes=active=0;first_events=None
++    for bag in store.plan['splits'][role]:
++        events,refs=store.load(bag,role)
++        if first_events is None:first_events=events.copy()
++        meta=dict(bag=bag,group=store.records[bag]['group'],role=role)
++        c,_=paired(events,refs,meta,out,'clean',compatibility=role=='development');clean.append(c)
++        faults=list(gc.fault_windows(events));sf=[];diag=[]
++        for idx,(fault,window) in enumerate(faults):
++            row,traces=paired(window,refs,meta,out,'original'+str(idx),fault,compatibility=role=='development')
++            diagnose(row,traces,refs,fault['end']) # original faults: recovery gains, not common corruption admission.
++            stress.append(row);sf.append(row)
++        if faults:
++            anchor=faults[0][0]['start']
++            for idx,(kind,duration) in enumerate([('common_step',.7),('common_step',1.2),('common_ramp',2.),('after_dropout_false_pair',6.)]):
++                window,fault,corrupt_begin=diagnostic_events(events,anchor,kind,duration)
++                row,traces=paired(window,refs,meta,out,'diagnostic'+str(idx),fault)
++                diagnose(row,traces,refs,corrupt_begin);extra.append(row);diag.append(row)
++        for row in [c]+sf:
++            a=row['activation']['candidate'];episodes+=a['episodes'];active+=a['active_ticks']
++            if a['episodes']:coverage_groups.add(meta['group'])
++        save(out/'bags'/(bag+'.json'),dict(clean=c,stress=sf,diagnostic=diag))
++        print(role.upper(),bag,'original',len(sf),'diagnostic',len(diag),flush=True)
++    summary=gc.aggregate(clean,stress);rejections=gate(clean,stress,summary)
++    safety=[r for r in gate(clean,stress,summary,False) if not r.startswith(('aggregate_regression:','per_pair_clean:'))]
++    for row in extra:
++        if row['diagnostics']['candidate']['corrupted_acceptances']>row['diagnostics']['main']['corrupted_acceptances']:
++            safety.append('increased_common_mode_acceptance:'+row['bag']+':'+row['fault']['kind']+':'+str(row['fault']['end']-row['fault']['start']))
++        for scores in row['receivers'].values():
++            b,c=scores['main'],scores['candidate']
++            if b['n']!=c['n'] or b['coverage']!=c['coverage']:safety.append('diagnostic_coverage:'+row['bag'])
++            if c['false_stop_samples']>b['false_stop_samples']:safety.append('diagnostic_false_stops:'+row['bag'])
++            if b['recovery_s'] is not None and c['recovery_s'] is None:safety.append('diagnostic_new_unrecovered:'+row['bag'])
++        if any(row['runtime'][n]['causal_errors'] or row['runtime'][n]['resets'] for n in ('main','candidate')):safety.append('diagnostic_causality')
++    enough=episodes>=10 and len(coverage_groups)>=3 and active>=100
++    admit=enough and not safety
++    verdict=('REJECTED' if safety else ('PENDING_VALIDATION' if admit else 'INCONCLUSIVE')) if role=='development' else ('REJECTED' if rejections or safety else 'ACCURACY_PASSED_ROS_PENDING')
++    decision=dict(verdict=verdict,admit_validation=admit if role=='development' else False,disturbance_variance=VARIANCE,
++        admission_rejections=rejections,safety_rejections=sorted(set(safety)),activation=dict(episodes=episodes,active_ticks=active,groups=len(coverage_groups),sufficient=enough),
++        summary=summary,ready_to_merge=False,final_test_opened=False)
++    save(out/'results.json',dict(role=role,clean=clean,stress=stress,diagnostic=extra,summary=summary,config=PROFILE,disturbance_variance=VARIANCE))
++    save(out/'decision.json',decision);csv_metrics(out,clean,stress)
++    diagpath=out/'diagnostics';diagpath.mkdir();csv_metrics(diagpath,[],extra)
++    if role=='development':cost(first_events,out)
++    else:
++        old=json.loads((ROOT/'reports/champion_v7/PROMOTION.json').read_text())['combined_validation']['champion_v7']
++        for new,previous in [('macro_rmse','clean_macro_rmse_mps'),('fault_macro','fault_macro_rmse_mps'),('distance_macro','distance_macro_rm')]:
++            if abs(summary['main'][new]-old[previous])>1e-10:raise AssertionError('Executed canonical v7 differs from published cross-check')
++        save(out/'baseline_reproduction.json',dict(executed=True,published_aggregates_matched=True,samples=summary['main']['n']))
++    print(json.dumps(decision,indent=2),flush=True)
++
++
++def main():
++    parser=argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('--stage',choices=['train','development','freeze','validation'],required=True)
++    parser.add_argument('--output',type=Path,required=True);parser.add_argument('--training',type=Path)
++    parser.add_argument('--development',type=Path);parser.add_argument('--freeze',type=Path);parser.add_argument('--freeze-commit')
++    args=parser.parse_args();args.output.mkdir(parents=True,exist_ok=False);prov=provenance();save(args.output/'started.json',prov)
++    if args.stage=='train':train(args.output);return
++    if args.stage=='freeze':
++        training=json.loads((args.training/'training.json').read_text());d=json.loads((args.development/'decision.json').read_text())
++        if not d['admit_validation']:raise PermissionError('Development safety/coverage denies validation')
++        store=ex.Store();save(args.output/'FREEZE.json',dict(**prov,training=training,
++            training_sha256=sha(args.training/'training.json'),development_decision_sha256=sha(args.development/'decision.json'),
++            data_sha256={r['bag']:r['sha256'] for r in store.records.values() if r['split']!='test'},validation_opened=False));return
++    if args.stage=='validation':
++        if not args.freeze_commit:raise PermissionError('A separate prevalidation freeze commit is mandatory')
++        frozen=json.loads(args.freeze.read_text());rel=args.freeze.resolve().relative_to(ROOT)
++        if git('show',args.freeze_commit+':'+str(rel))!=args.freeze.read_bytes():raise AssertionError('Freeze not committed')
++        if frozen['source_sha256']!=prov['source_sha256']:raise AssertionError('Source changed after freeze')
++        training=frozen['training']
++    else:traininging=None;training=json.loads((args.training/'training.json').read_text())
++    evaluate_role(args.stage,args.output,training)
++
++if __name__=='__main__':main()
+diff --git a/research/R2/H18/test_covariance.py b/research/R2/H18/test_covariance.py
+new file mode 100644
+index 0000000..fe35ccf
+--- /dev/null
++++ b/research/R2/H18/test_covariance.py
+@@ -0,0 +1,132 @@
++import copy
++import json
++import math
++from pathlib import Path
++import random
++import sys
++import unittest
++ROOT = Path(__file__).resolve().parents[3]
++sys.path.insert(0, str(ROOT/'src/reserve_odometry'))
++from reserve_odometry.core import Config, Observer, Sample
++from reserve_odometry.guarded_readout import GuardedReadoutObserver, ReadoutConfig
++from reserve_odometry.outage_covariance import OutageCovarianceObserver
++PROFILE = json.loads((ROOT/'src/reserve_odometry/config/guarded_readout_v7.json').read_text())
++
++
++def make(cls=OutageCovarianceObserver, **kw):
++    return cls(Config(**PROFILE['config']), readout=ReadoutConfig(**PROFILE['readout']), **kw)
++
++
++class CovarianceTests(unittest.TestCase):
++    def test_parameter_bounds(self):
++        for x in (float('nan'), float('inf'), -1, 0, .37):
++            with self.assertRaises(ValueError): make(disturbance_variance=x)
++        with self.assertRaises(ValueError): make(enabled=1)
++
++    def test_disabled_exact_all_base_fields_6000_steps(self):
++        a,b=make(GuardedReadoutObserver),make(enabled=False)
++        rng=random.Random(182026)
++        for i in range(6000):
++            t=i*.05; v=5+math.sin(t/10)
++            f=Sample(t,v);r=Sample(t,v+.01*rng.random())
++            if i%500 in range(200,300): f=r=None
++            if i%501==10:f=r=Sample(t,0)
++            if i%502==30:f=r=Sample(t,20)
++            args=(t,Sample(t,.1*math.sin(t)),f,r)
++            self.assertEqual(a.step(*args),b.step(*args))
++            for key,value in vars(a).items():self.assertEqual(value,getattr(b,key),key)
++
++    def test_no_outage_mean_and_state_equivalence(self):
++        a,b=make(GuardedReadoutObserver),make(enabled=True,disturbance_variance=.1)
++        for i in range(1000):
++            t=i*.05;w=Sample(t,5+.1*math.sin(t));args=(t,Sample(t,.1),w,w)
++            self.assertEqual(a.step(*args),b.step(*args))
++            for k,v in vars(a).items():self.assertEqual(v,getattr(b,k),k)
++        self.assertEqual(b.h18_episodes,0)
++
++    def test_outage_mean_unchanged_variance_grows(self):
++        a,b=make(GuardedReadoutObserver),make(enabled=True,disturbance_variance=.1)
++        for i in range(200):
++            t=i*.05;w=Sample(t,5) if i<50 else None
++            x,y=a.step(t,Sample(t,.1),w,w),b.step(t,Sample(t,.1),w,w)
++            for k in ('v','s','a','disturbance','mode','front_status','rear_status'):
++                self.assertEqual(getattr(x,k),getattr(y,k),k)
++        self.assertGreater(b.pv,a.pv)
++        self.assertGreater(b.h18_active_ticks,100)
++
++    def test_constant_bias_closed_form(self):
++        o=make(enabled=True,disturbance_variance=.1);o.reset(velocity=5)
++        o.step(0,Sample(0,0));o.h18_active=True;o.h18_pdd=.2;o.h18_pvd=.03;o.pv=.5
++        for i in range(1,21):o.step(i*.05,Sample(i*.05,0))
++        self.assertAlmostEqual(o.pv,.5+2*.03+.2+.1,places=11)
++        self.assertAlmostEqual(o.h18_pvd,.03+.2,places=11)
++        self.assertAlmostEqual(o.h18_pdd,.2,places=11)
++
++    def test_joseph_and_unknown_correlation_envelope(self):
++        rng=random.Random(18)
++        for _ in range(2000):
++            p,d,r=[10**rng.uniform(-4,1) for _ in range(3)]
++            c=rng.uniform(-1,1)*math.sqrt(p*d);k=p/(p+r)
++            post=(1-k)**2*p+k*k*r;cross=(1-k)*c
++            self.assertGreaterEqual(post*d-cross*cross,-1e-10)
++            self.assertGreaterEqual(p*d-c*c,-1e-10)
++            self.assertAlmostEqual(post,p*r/(p+r),places=11)
++
++    def test_local_transition_finite_difference(self):
++        for dt in (.01,.05,.2):
++            eps=1e-6;v,d=3.,.2
++            dv=((v+eps+dt*d)-(v-eps+dt*d))/(2*eps)
++            dd=((v+dt*(d+eps))-(v+dt*(d-eps)))/(2*eps)
++            self.assertAlmostEqual(dv,1,places=8);self.assertAlmostEqual(dd,dt,places=8)
++
++    def test_psd_finite_and_constant_memory_20000_steps(self):
++        o=make(enabled=True,disturbance_variance=.36);keys=set(vars(o))
++        for i in range(20000):
++            t=i*.05;w=Sample(t,5+.2*math.sin(t)) if i%300<80 else None
++            e=o.step(t,Sample(t,.1),w,w)
++            self.assertTrue(all(math.isfinite(x) for x in (e.v,e.s,e.variance_v,e.variance_s,o.h18_pvd,o.h18_pdd)))
++            if o.h18_active:self.assertGreaterEqual(o.pv*o.h18_pdd-o.h18_pvd**2,-1e-7)
++            self.assertEqual(set(vars(o)),keys)
++            self.assertEqual(len(o.used),2);self.assertEqual(len(o.raw_previous),2)
++        self.assertGreater(o.h18_episodes,20)
++
++    def test_prefix_and_future_inputs(self):
++        a,b=make(enabled=True),make(enabled=True)
++        for i in range(100):
++            t=i*.05;w=Sample(t,5) if i<20 else None
++            self.assertEqual(a.step(t,Sample(t,0),w,w),b.step(t,Sample(t,0),w,w))
++        past=copy.deepcopy(a.last_estimate)
++        a.step(5.,Sample(6.,1),Sample(6.,30),Sample(6.,30))
++        b.step(5.,None,None,None)
++        self.assertEqual(a.last_estimate,b.last_estimate)
++        self.assertEqual(past.t,4.95)
++
++    def test_duplicates_not_reassimilated(self):
++        o=make(enabled=True);w=Sample(0,5)
++        o.step(0,Sample(0,0),w,w)
++        e=o.step(.05,Sample(.05,0),w,w)
++        self.assertEqual(e.front_status,'DUPLICATE_OR_OLD');self.assertEqual(o.h18_last_gain,0)
++
++    def test_invalid_time_is_transactional(self):
++        o=make(enabled=True);o.step(1,Sample(1,0),Sample(1,5),Sample(1,5))
++        for t in (1,.5,2,float('nan')):
++            old=copy.deepcopy(vars(o))
++            with self.assertRaises(ValueError):o.step(t)
++            self.assertEqual(vars(o),old)
++
++    def test_reset_clears_covariance(self):
++        o=make(enabled=True);o.step(0,Sample(0,0),Sample(0,5),Sample(0,5))
++        for i in range(1,40):o.step(i*.05,Sample(i*.05,0))
++        self.assertTrue(o.h18_active);o.reset()
++        self.assertFalse(o.h18_active);self.assertEqual(o.h18_episodes,0)
++        self.assertEqual(o.pv,1);self.assertEqual(o.h18_pvd,0);self.assertEqual(o.h18_pdd,0)
++
++    def test_guards_inherited_unchanged_and_zero_lock(self):
++        for name in ('_wheel','_reacquire_pair','_take_pending_pair','drive_target','resistance'):
++            self.assertIs(getattr(OutageCovarianceObserver,name),getattr(Observer,name))
++        o=make(enabled=True);o.step(0,Sample(0,0),Sample(0,1.5),Sample(0,1.5))
++        for i in range(1,15):
++            t=i*.05;e=o.step(t,Sample(t,0),Sample(t,0),Sample(t,0))
++            self.assertNotEqual(e.mode,'STOPPED');self.assertNotEqual(e.front_status,'ACCEPTED')
++
++if __name__=='__main__': unittest.main()
+diff --git a/research/R2/H18/test_driver.py b/research/R2/H18/test_driver.py
+new file mode 100644
+index 0000000..c904793
+--- /dev/null
++++ b/research/R2/H18/test_driver.py
+@@ -0,0 +1,54 @@
++"""Offline driver checks; scientific dependencies are research-only."""
++import copy
++import importlib.util
++from pathlib import Path
++import tempfile
++import unittest
++from unittest.mock import patch
++spec=importlib.util.spec_from_file_location('h18_driver',Path(__file__).with_name('run.py'))
++r=importlib.util.module_from_spec(spec);spec.loader.exec_module(r)
++
++class DriverTests(unittest.TestCase):
++    def test_test_and_role_mismatch_denied_before_any_io(self):
++        with tempfile.TemporaryDirectory() as d:
++            store=r.RoleStore(Path(d)/'access.json')
++            with patch.object(r.sqlite3,'connect',side_effect=AssertionError('must not open')), patch.object(r,'sha',side_effect=AssertionError('must not read bytes')):
++                for bag in store.plan['splits']['test']:
++                    for purpose in ('train','development','validation','test'):
++                        with self.assertRaises(PermissionError):store.load(bag,purpose)
++                for bag in store.plan['splits']['development']:
++                    with self.assertRaises(PermissionError):store.load(bag,'validation')
++            self.assertEqual(store.access,[])
++
++    def test_direct_factory_off_and_unchanged_score(self):
++        events=r.np.array([(i*.1+j*.001,j,0. if j==0 else 5.) for i in range(601) for j in range(3)])
++        refs={n:[(i*.05,5.) for i in range(1201)] for n in ('master','rover')}
++        meta=dict(bag='synthetic',group='sanity',role='development')
++        with tempfile.TemporaryDirectory() as d:
++            row,_=r.paired(events,refs,meta,Path(d),'clean',compatibility=True)
++            self.assertTrue(row['disabled_and_canonical_reproduced'])
++            self.assertEqual(row['receivers']['master']['main']['rmse'],row['receivers']['master']['candidate']['rmse'])
++            for i,(fault,window) in enumerate(r.gc.fault_windows(events)):
++                row,_=r.paired(window,refs,meta,Path(d),str(i),fault,compatibility=True)
++                self.assertTrue(row['disabled_and_canonical_reproduced'])
++
++    def test_pooled_gate_not_omitted(self):
++        b=dict(macro_rmse=1.,fault_macro=1.,pooled_rmse=1.,distance_macro=1.)
++        c=dict(b,macro_rmse=.97,pooled_rmse=1.006)
++        self.assertIn('aggregate_regression:pooled_rmse',r.gate([],[],dict(main=b,candidate=c)))
++        c['pooled_rmse']=1.005
++        self.assertEqual(r.gate([],[],dict(main=b,candidate=c)),[])
++
++    def test_zero_baseline_never_divides_by_zero_or_claims_gain(self):
++        b=dict(macro_rmse=0.,fault_macro=0.,pooled_rmse=0.,distance_macro=0.)
++        self.assertEqual(r.gate([],[],dict(main=b,candidate=b)),['insufficient_gain'])
++
++    def test_false_pair_injection_does_not_change_command_or_reference(self):
++        events=r.np.array([(i*.1,j,0. if j==0 else 5.) for i in range(501) for j in range(3)])
++        out,fault,start=r.diagnostic_events(events,25.,'after_dropout_false_pair',6.)
++        self.assertEqual(start,30.);self.assertEqual(fault['end'],31.)
++        self.assertFalse(r.np.any(r.np.isin(out[:,1],(1,2))&(out[:,0]>=25)&(out[:,0]<30)))
++        self.assertTrue(r.np.all(out[out[:,1]==0,2]==0.))
++        self.assertTrue(r.np.all(out[(out[:,1]>0)&(out[:,0]>=30)&(out[:,0]<31),2]==7.))
++
++if __name__=='__main__':unittest.main()
+diff --git a/research/R2/H18/wolfram-output.txt b/research/R2/H18/wolfram-output.txt
+new file mode 100644
+index 0000000..126a2e4
+--- /dev/null
++++ b/research/R2/H18/wolfram-output.txt
+@@ -0,0 +1,2 @@
++Actual WolframLanguageEvaluator output, 2026-09-25; not a hand-invented service result.
++Out[1]= <|"propagated" -> {{p + 2*c*tt + qv*tt + d*tt^2 + (qd*tt^3)/3, c + d*tt + (qd*tt^2)/2}, {c + d*tt + (qd*tt^2)/2, d + qd*tt}}, "processNoise" -> {{qv*tt + (qd*tt^3)/3, (qd*tt^2)/2}, {(qd*tt^2)/2, qd*tt}}, "constantBiasLimit" -> {{p + tt*(2*c + qv + d*tt), c + d*tt}, {c + d*tt, d}}, "joseph" -> {{p - 2*k*p + k^2*p + k^2*r, c - c*k}, {c - c*k, d}}, "optimalVelocityGain" -> {{(p*r)/(p + r), (c*r)/(p + r)}, {(c*r)/(p + r), d}}, "PSDJosephDeterminant" -> -c^2 + 2*c^2*k - c^2*k^2 + d*p - 2*d*k*p + d*k^2*p + d*k^2*r, "decorrelationEnvelopeDifference" -> {{p, -c}, {-c, d}}, "envelopeDifferenceDeterminant" -> -c^2 + d*p, "zeroTime" -> True, "semigroup" -> True, "observabilityDeterminant" -> tt|>
+diff --git a/research/R2/H18/wolfram.wl b/research/R2/H18/wolfram.wl
+new file mode 100644
+index 0000000..4c959b9
+--- /dev/null
++++ b/research/R2/H18/wolfram.wl
+@@ -0,0 +1,17 @@
++Clear[tt,s,p,c,d,qv,qd,k,r];
++f[x_]:={{1,x},{0,1}};
++p0={{p,c},{c,d}};
++q=Integrate[f[s].DiagonalMatrix[{qv,qd}].Transpose[f[s]],{s,0,tt}];
++pp=Expand[f[tt].p0.Transpose[f[tt]]+q];
++h={{1,0}}; gain={{k},{0}}; a=IdentityMatrix[2]-gain.h;
++joseph=Expand[a.p0.Transpose[a]+gain.{{r}}.Transpose[gain]];
++optimal=FullSimplify[joseph/.k->p/(p+r),Assumptions->{p>0,r>0}];
++envelope=DiagonalMatrix[{2p,2d}]-p0;
++<|"propagated"->pp,"processNoise"->q,
++"constantBiasLimit"->Simplify[pp/.qd->0],"joseph"->joseph,
++"optimalVelocityGain"->optimal,"PSDJosephDeterminant"->Factor[Det[joseph]],
++"decorrelationEnvelopeDifference"->envelope,
++"envelopeDifferenceDeterminant"->Factor[Det[envelope]],
++"zeroTime"->Simplify[(pp/.tt->0)==p0],
++"semigroup"->Simplify[f[tt].f[s]==f[tt+s]],
++"observabilityDeterminant"->Det[Join[h,h.f[tt]]]|>
+diff --git a/src/reserve_odometry/reserve_odometry/outage_covariance.py b/src/reserve_odometry/reserve_odometry/outage_covariance.py
+new file mode 100644
+index 0000000..67bb6f2
+--- /dev/null
++++ b/src/reserve_odometry/reserve_odometry/outage_covariance.py
+@@ -0,0 +1,105 @@
++"""H18: episode-local held-disturbance uncertainty, not a joint mean observer.
++
++Research only. The default launch remains canonical v7. Covariance is exact only
++for the stated local constant-bias model, NOT calibrated confidence intervals.
++"""
++import math
++from .core import clip
++from .guarded_readout import GuardedReadoutObserver
++
++
++def trusted_residual(observer, old, old_d, estimate, front, rear):
++    """Return the causal legacy adaptation residual, or None (no new label)."""
++    if estimate.mode != 'FUSED' or estimate.command_stale or old is None:
++        return None
++    z = 0.5 * (front.value + rear.value)
++    dt = 0.5 * (front.t + rear.t) - old.t
++    if not 0.05 <= dt <= observer.c.max_age_s:
++        return None
++    a = (z - old.value) / dt
++    if abs(a) > observer.c.max_accel_mps2 or abs(z) <= 0.5:
++        return None
++    return a - observer.drive_a + observer.resistance(observer.v) - old_d
++
++
++class OutageCovarianceObserver(GuardedReadoutObserver):
++    """Add O(1) covariance only while a previously observed d is held.
++
++    Unknown onset correlation is bounded by diag(2 Pvv, 2 Vd). This dominates
++    every PSD matrix with marginal variances Pvv,Vd. During the episode use
++    F=[[1,dt],[0,1]] and Schmidt gain [K,0]. On a legacy d reanchor marginalize
++    the nuisance state WITHOUT lowering accumulated Pvv. Existing d is never
++    assigned here. Gate cap, wheel guards and bounded recovery stay inherited.
++    """
++    def __init__(self, config=None, *, readout=None, enabled=False,
++                 disturbance_variance=0.0025):
++        if not isinstance(enabled, bool):
++            raise ValueError('enabled must be bool')
++        if (not math.isfinite(disturbance_variance)
++                or not 0.0025 <= disturbance_variance <= 0.36):
++            raise ValueError('disturbance_variance must be in [0.0025, 0.36]')
++        self.h18_enabled = enabled
++        self.h18_variance = float(disturbance_variance)
++        super().__init__(config, readout=readout)
++
++    def reset(self, *, velocity=None, position=0.0):
++        super().reset(velocity=velocity, position=position)
++        self.h18_last_accepted = None
++        self.h18_active = False
++        self.h18_pvd = 0.0
++        self.h18_pdd = 0.0
++        self.h18_episodes = 0
++        self.h18_active_ticks = 0
++        self.h18_reanchors = 0
++        self.h18_last_gain = 0.0
++        self.h18_prior = self.pv
++        self.h18_added_variance = 0.0
++
++    def step(self, t, command=None, front=None, rear=None):
++        if not self.h18_enabled:
++            return super().step(t, command, front, rear)
++        # Let the canonical implementation reject invalid time without mutation.
++        if (not math.isfinite(t) or (self.t is not None and
++                (t <= self.t or t - self.t > self.c.max_step_s + 1e-9))):
++            return super().step(t, command, front, rear)
++        dt = 0.0 if self.t is None else t - self.t
++        old_adapt, old_d = self.adapt_previous, self.disturbance
++        self.h18_added_variance = 0.0
++        if (not self.h18_active and self.initialized
++                and self.h18_last_accepted is not None
++                and t - self.h18_last_accepted > self.c.max_age_s + 1e-9):
++            self.h18_active = True
++            self.h18_pvd = 0.0
++            self.h18_pdd = 2.0 * self.h18_variance
++            self.h18_added_variance = self.pv
++            self.pv *= 2.0
++            self.h18_episodes += 1
++        if self.h18_active:
++            increment = 2.0 * dt * self.h18_pvd + dt * dt * self.h18_pdd
++            self.pv += increment
++            self.h18_added_variance += increment
++            self.h18_pvd += dt * self.h18_pdd
++            self.h18_active_ticks += 1
++        # Inject BEFORE guarded readout takes old_pv: its unmodified scalar gain
++        # reconstruction then uses exactly the same prior as the inherited core.
++        stale = (not self._valid(command, t, self.c.command_timeout_s)
++                 or abs(command.value) > 1.000001)
++        prior = self.pv + self.c.process_noise_v * dt * (4.0 if stale else 1.0)
++        self.h18_prior = prior
++        estimate = super().step(t, command, front, rear)
++        self.h18_last_gain = 0.0
++        accepted = 'ACCEPTED' in (estimate.front_status, estimate.rear_status)
++        if accepted:
++            self.h18_last_accepted = t
++            if estimate.mode not in ('INITIALIZED', 'WAITING_FOR_INITIALIZATION'):
++                k = clip(1.0 - self.pv / prior, 0.0, 1.0)
++                self.h18_last_gain = k
++                if self.h18_active:
++                    self.h18_pvd *= 1.0 - k  # Joseph with Kd=0; Pdd unchanged.
++        if self.h18_active and (estimate.mode == 'STOPPED' or
++                trusted_residual(self, old_adapt, old_d, estimate, front, rear) is not None):
++            self.h18_active = False
++            self.h18_reanchors += 1
++            # Marginalization keeps Pvv. Retain the last nuisance entries for
++            # diagnostics; do not pretend adaptation is an independent d sensor.
++        return estimate

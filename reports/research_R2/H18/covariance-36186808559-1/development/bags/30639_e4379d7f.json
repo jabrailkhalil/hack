@@ -1,0 +1,1303 @@
+{
+  "clean": {
+    "outputs": 28764,
+    "expected_ticks": 28765,
+    "output_span_s": 1438.15,
+    "first_output_s": 0.05,
+    "last_output_s": 1438.2,
+    "sensor_duration_s": 1438.211624775,
+    "receivers": {
+      "master": {
+        "front_scaled": {
+          "n": 0,
+          "coverage": 0.0,
+          "rmse": null
+        },
+        "mean_scaled": {
+          "n": 0,
+          "coverage": 0.0,
+          "rmse": null
+        },
+        "main": {
+          "n": 0,
+          "coverage": 0.0,
+          "rmse": null,
+          "false_stop_samples": 0,
+          "distance_surrogate": {
+            "definition": "s versus integral matched horizontal GNSS speed; NOT xyz",
+            "full_span_terminal_error_m": null,
+            "full_span_reference_distance_m": null,
+            "full_span_terminal_drift_percent": null,
+            "continuous_spans": 0,
+            "reanchored_span_rmse_m": null,
+            "longest_reference_span": null
+          }
+        },
+        "candidate": {
+          "n": 0,
+          "coverage": 0.0,
+          "rmse": null,
+          "false_stop_samples": 0,
+          "distance_surrogate": {
+            "definition": "s versus integral matched horizontal GNSS speed; NOT xyz",
+            "full_span_terminal_error_m": null,
+            "full_span_reference_distance_m": null,
+            "full_span_terminal_drift_percent": null,
+            "continuous_spans": 0,
+            "reanchored_span_rmse_m": null,
+            "longest_reference_span": null
+          },
+          "common_front_scaled_rmse": null,
+          "common_mean_scaled_rmse": null
+        }
+      },
+      "rover": {
+        "front_scaled": {
+          "n": 11405,
+          "coverage": 0.3965025726602698,
+          "rmse": 0.14418283002219515,
+          "mae": 0.05586959627259398,
+          "bias": 0.019998515192876605,
+          "p95": 0.1446274108886718,
+          "integrated_error_m_not_xyz": 6.292014642482108
+        },
+        "mean_scaled": {
+          "n": 11405,
+          "coverage": 0.3965025726602698,
+          "rmse": 0.143930373675765,
+          "mae": 0.05575808318471746,
+          "bias": 0.020165197067252182,
+          "p95": 0.14483505520290785,
+          "integrated_error_m_not_xyz": 6.352893807685213
+        },
+        "main": {
+          "n": 11410,
+          "coverage": 0.3966764010568766,
+          "rmse": 0.13814212669565956,
+          "mae": 0.04530186424414684,
+          "bias": 0.019914317950860905,
+          "p95": 0.11662264361818621,
+          "integrated_error_m_not_xyz": 6.113859648678671,
+          "false_stop_samples": 0,
+          "distance_surrogate": {
+            "definition": "s versus integral matched horizontal GNSS speed; NOT xyz",
+            "full_span_terminal_error_m": null,
+            "full_span_reference_distance_m": null,
+            "full_span_terminal_drift_percent": null,
+            "continuous_spans": 4,
+            "reanchored_span_rmse_m": 0.02928796648509978,
+            "longest_reference_span": {
+              "start_s": 1255.9,
+              "duration_s": 5.75,
+              "reference_distance_m": 1.8199249999999958,
+              "terminal_error_m": -0.048324005051865404
+            }
+          }
+        },
+        "candidate": {
+          "n": 11410,
+          "coverage": 0.3966764010568766,
+          "rmse": 0.13814201649473462,
+          "mae": 0.045301716684532624,
+          "bias": 0.019914671132598306,
+          "p95": 0.1166432629330666,
+          "integrated_error_m_not_xyz": 6.113960393769265,
+          "false_stop_samples": 0,
+          "distance_surrogate": {
+            "definition": "s versus integral matched horizontal GNSS speed; NOT xyz",
+            "full_span_terminal_error_m": null,
+            "full_span_reference_distance_m": null,
+            "full_span_terminal_drift_percent": null,
+            "continuous_spans": 4,
+            "reanchored_span_rmse_m": 0.02928796648522136,
+            "longest_reference_span": {
+              "start_s": 1255.9,
+              "duration_s": 5.75,
+              "reference_distance_m": 1.8199249999999958,
+              "terminal_error_m": -0.0483240050527749
+            }
+          },
+          "common_front_scaled_rmse": 0.1381708242154817,
+          "common_mean_scaled_rmse": 0.1381708242154817
+        }
+      }
+    },
+    "runtime": {
+      "main": {
+        "resets": 0,
+        "dropped": 0,
+        "catchups": 1,
+        "causal_errors": 0,
+        "mode_counts": {
+          "INITIALIZED": 1,
+          "MODEL_ONLY": 11256,
+          "FUSED": 9918,
+          "STOPPED": 7587,
+          "SINGLE_WHEEL": 2
+        }
+      },
+      "candidate": {
+        "resets": 0,
+        "dropped": 0,
+        "catchups": 1,
+        "causal_errors": 0,
+        "mode_counts": {
+          "INITIALIZED": 1,
+          "MODEL_ONLY": 11256,
+          "FUSED": 9918,
+          "STOPPED": 7587,
+          "SINGLE_WHEEL": 2
+        }
+      }
+    },
+    "activation": {
+      "main": {
+        "active_ticks": 0,
+        "episodes": 0,
+        "added_variance": 0.0
+      },
+      "candidate": {
+        "active_ticks": 100,
+        "episodes": 5,
+        "added_variance": 1.920134116862607
+      }
+    },
+    "disabled_and_canonical_reproduced": true,
+    "bag": "30639_e4379d7f",
+    "group": "a0c46036cc19092a",
+    "role": "development"
+  },
+  "stress": [
+    {
+      "outputs": 700,
+      "expected_ticks": 702,
+      "output_span_s": 34.95000000000002,
+      "first_output_s": 145.611615933,
+      "last_output_s": 180.561615933,
+      "sensor_duration_s": 35.057509562999996,
+      "receivers": {
+        "master": {
+          "main": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null,
+            "false_stop_samples": 0,
+            "event_rmse": null,
+            "recovery_s": null
+          },
+          "candidate": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null,
+            "false_stop_samples": 0,
+            "event_rmse": null,
+            "recovery_s": null
+          }
+        },
+        "rover": {
+          "main": {
+            "n": 116,
+            "coverage": 0.1657142857142857,
+            "rmse": 0.09691170545430397,
+            "mae": 0.0830014364560184,
+            "bias": 0.05473588549175669,
+            "p95": 0.16540547848235843,
+            "integrated_error_m_not_xyz": 0.15873406792608658,
+            "false_stop_samples": 0,
+            "event_rmse": 0.07437063789617557,
+            "recovery_s": null
+          },
+          "candidate": {
+            "n": 116,
+            "coverage": 0.1657142857142857,
+            "rmse": 0.09691170545430397,
+            "mae": 0.0830014364560184,
+            "bias": 0.05473588549175669,
+            "p95": 0.16540547848235843,
+            "integrated_error_m_not_xyz": 0.15873406792608658,
+            "false_stop_samples": 0,
+            "event_rmse": 0.07437063789617557,
+            "recovery_s": null
+          }
+        }
+      },
+      "runtime": {
+        "main": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 0,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 258,
+            "FUSED": 195,
+            "STOPPED": 195,
+            "SINGLE_WHEEL": 51
+          }
+        },
+        "candidate": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 0,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 258,
+            "FUSED": 195,
+            "STOPPED": 195,
+            "SINGLE_WHEEL": 51
+          }
+        }
+      },
+      "activation": {
+        "main": {
+          "active_ticks": 0,
+          "episodes": 0,
+          "added_variance": 0.0
+        },
+        "candidate": {
+          "active_ticks": 0,
+          "episodes": 0,
+          "added_variance": 0.0
+        }
+      },
+      "disabled_and_canonical_reproduced": true,
+      "bag": "30639_e4379d7f",
+      "group": "a0c46036cc19092a",
+      "role": "development",
+      "fault": {
+        "kind": "bias",
+        "start": 165.5,
+        "end": 170.5
+      },
+      "diagnostics": {
+        "main": {
+          "corrupted_acceptances": 0,
+          "first_recovery_gains": [
+            0.39171866792527377,
+            0.39088223851181436,
+            0.7193792970689373,
+            0.6322690251125088,
+            0.6200996211026417,
+            0.5283240513576166,
+            0.6697843483587006,
+            0.6254379120116262,
+            0.6191111603039907,
+            0.618191081327012
+          ],
+          "mean_squared_error_over_internal_variance": {
+            "master": null,
+            "rover": 1.0120610997066952
+          }
+        },
+        "candidate": {
+          "corrupted_acceptances": 0,
+          "first_recovery_gains": [
+            0.39171866792527377,
+            0.39088223851181436,
+            0.7193792970689373,
+            0.6322690251125088,
+            0.6200996211026417,
+            0.5283240513576166,
+            0.6697843483587006,
+            0.6254379120116262,
+            0.6191111603039907,
+            0.618191081327012
+          ],
+          "mean_squared_error_over_internal_variance": {
+            "master": null,
+            "rover": 1.0120610997066952
+          }
+        }
+      }
+    },
+    {
+      "outputs": 700,
+      "expected_ticks": 702,
+      "output_span_s": 34.95000000000002,
+      "first_output_s": 145.611615933,
+      "last_output_s": 180.561615933,
+      "sensor_duration_s": 35.057509562999996,
+      "receivers": {
+        "master": {
+          "main": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null,
+            "false_stop_samples": 0,
+            "event_rmse": null,
+            "recovery_s": null
+          },
+          "candidate": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null,
+            "false_stop_samples": 0,
+            "event_rmse": null,
+            "recovery_s": null
+          }
+        },
+        "rover": {
+          "main": {
+            "n": 116,
+            "coverage": 0.1657142857142857,
+            "rmse": 0.21325647752245103,
+            "mae": 0.15643809018861574,
+            "bias": 0.1445778165967107,
+            "p95": 0.5083867434338583,
+            "integrated_error_m_not_xyz": 0.41927566813043465,
+            "false_stop_samples": 0,
+            "event_rmse": 0.34011946552944894,
+            "recovery_s": null
+          },
+          "candidate": {
+            "n": 116,
+            "coverage": 0.1657142857142857,
+            "rmse": 0.21328903910825203,
+            "mae": 0.15657509327083916,
+            "bias": 0.1443216685773035,
+            "p95": 0.5083867434338583,
+            "integrated_error_m_not_xyz": 0.41853283887415355,
+            "false_stop_samples": 0,
+            "event_rmse": 0.34011946552944894,
+            "recovery_s": null
+          }
+        }
+      },
+      "runtime": {
+        "main": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 0,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 308,
+            "FUSED": 196,
+            "STOPPED": 195
+          }
+        },
+        "candidate": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 0,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 308,
+            "FUSED": 196,
+            "STOPPED": 195
+          }
+        }
+      },
+      "activation": {
+        "main": {
+          "active_ticks": 0,
+          "episodes": 0,
+          "added_variance": 0.0
+        },
+        "candidate": {
+          "active_ticks": 99,
+          "episodes": 1,
+          "added_variance": 3.689575395537653
+        }
+      },
+      "disabled_and_canonical_reproduced": true,
+      "bag": "30639_e4379d7f",
+      "group": "a0c46036cc19092a",
+      "role": "development",
+      "fault": {
+        "kind": "dropout",
+        "start": 165.5,
+        "end": 170.5
+      },
+      "diagnostics": {
+        "main": {
+          "corrupted_acceptances": 0,
+          "first_recovery_gains": [
+            0.9679086069897334,
+            0.7265141332503124,
+            0.6332313162052425,
+            0.6202384523357696,
+            0.5283549362580929,
+            0.6697877160873029,
+            0.625438384492434,
+            0.6191112288497497,
+            0.6181910913194788,
+            0.6180569083305314
+          ],
+          "mean_squared_error_over_internal_variance": {
+            "master": null,
+            "rover": 1.0176884786861597
+          }
+        },
+        "candidate": {
+          "corrupted_acceptances": 0,
+          "first_recovery_gains": [
+            0.9959451845106465,
+            0.7449662173982672,
+            0.635696791580976,
+            0.6205936877131495,
+            0.5284339447985684,
+            0.6697963309658423,
+            0.6254395931250124,
+            0.6191114041935581,
+            0.6181911168807543,
+            0.6180569120594236
+          ],
+          "mean_squared_error_over_internal_variance": {
+            "master": null,
+            "rover": 0.9322216378883172
+          }
+        }
+      }
+    },
+    {
+      "outputs": 800,
+      "expected_ticks": 802,
+      "output_span_s": 39.95000000000002,
+      "first_output_s": 145.611615933,
+      "last_output_s": 185.561615933,
+      "sensor_duration_s": 40.05751128599999,
+      "receivers": {
+        "master": {
+          "main": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null,
+            "false_stop_samples": 0,
+            "event_rmse": null,
+            "recovery_s": null
+          },
+          "candidate": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null,
+            "false_stop_samples": 0,
+            "event_rmse": null,
+            "recovery_s": null
+          }
+        },
+        "rover": {
+          "main": {
+            "n": 154,
+            "coverage": 0.1925,
+            "rmse": 0.2621641060383793,
+            "mae": 0.21592306113842596,
+            "bias": 0.2097055298683478,
+            "p95": 0.5051663280522861,
+            "integrated_error_m_not_xyz": 0.8073662899931341,
+            "false_stop_samples": 0,
+            "event_rmse": 0.3504594682056353,
+            "recovery_s": null
+          },
+          "candidate": {
+            "n": 154,
+            "coverage": 0.1925,
+            "rmse": 0.2621627829570122,
+            "mae": 0.21591615198295377,
+            "bias": 0.20969862071287562,
+            "p95": 0.5051663280522861,
+            "integrated_error_m_not_xyz": 0.8073396897445664,
+            "false_stop_samples": 0,
+            "event_rmse": 0.3504594682056353,
+            "recovery_s": null
+          }
+        }
+      },
+      "runtime": {
+        "main": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 0,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 407,
+            "FUSED": 197,
+            "STOPPED": 195
+          }
+        },
+        "candidate": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 0,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 407,
+            "FUSED": 197,
+            "STOPPED": 195
+          }
+        }
+      },
+      "activation": {
+        "main": {
+          "active_ticks": 0,
+          "episodes": 0,
+          "added_variance": 0.0
+        },
+        "candidate": {
+          "active_ticks": 199,
+          "episodes": 1,
+          "added_variance": 15.113654729270669
+        }
+      },
+      "disabled_and_canonical_reproduced": true,
+      "bag": "30639_e4379d7f",
+      "group": "a0c46036cc19092a",
+      "role": "development",
+      "fault": {
+        "kind": "dropout",
+        "start": 165.5,
+        "end": 175.5
+      },
+      "diagnostics": {
+        "main": {
+          "corrupted_acceptances": 0,
+          "first_recovery_gains": [
+            0.9902551284994738,
+            0.6655803745743496,
+            0.5382300228886072,
+            0.6708609972034876,
+            0.62558890146396,
+            0.7241827390865612,
+            0.6329174303720431,
+            0.6201931786904851,
+            0.6183487507208153,
+            0.6180799063819409
+          ],
+          "mean_squared_error_over_internal_variance": {
+            "master": null,
+            "rover": 1.0401970453761706
+          }
+        },
+        "candidate": {
+          "corrupted_acceptances": 0,
+          "first_recovery_gains": [
+            0.9993803480390818,
+            0.6849192877082777,
+            0.5423171896436687,
+            0.6713031752888639,
+            0.6256508773505705,
+            0.7241874538315451,
+            0.6329180656810052,
+            0.6201932703358275,
+            0.6183487640696624,
+            0.6180799083290431
+          ],
+          "mean_squared_error_over_internal_variance": {
+            "master": null,
+            "rover": 0.9326019739410583
+          }
+        }
+      }
+    },
+    {
+      "outputs": 660,
+      "expected_ticks": 662,
+      "output_span_s": 32.95000000000002,
+      "first_output_s": 145.611615933,
+      "last_output_s": 178.561615933,
+      "sensor_duration_s": 33.057450222,
+      "receivers": {
+        "master": {
+          "main": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null,
+            "false_stop_samples": 0,
+            "event_rmse": null,
+            "recovery_s": null
+          },
+          "candidate": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null,
+            "false_stop_samples": 0,
+            "event_rmse": null,
+            "recovery_s": null
+          }
+        },
+        "rover": {
+          "main": {
+            "n": 100,
+            "coverage": 0.15151515151515152,
+            "rmse": 0.12186167910499171,
+            "mae": 0.09838491179439326,
+            "bias": 0.0848236816388249,
+            "p95": 0.24437122371621567,
+            "integrated_error_m_not_xyz": 0.212059204097049,
+            "false_stop_samples": 0,
+            "event_rmse": 0.15777796614564962,
+            "recovery_s": null
+          },
+          "candidate": {
+            "n": 100,
+            "coverage": 0.15151515151515152,
+            "rmse": 0.12184848578179805,
+            "mae": 0.09827478415886294,
+            "bias": 0.08467744139705548,
+            "p95": 0.24437122371621567,
+            "integrated_error_m_not_xyz": 0.21169360349262553,
+            "false_stop_samples": 0,
+            "event_rmse": 0.15777796614564962,
+            "recovery_s": null
+          }
+        }
+      },
+      "runtime": {
+        "main": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 0,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 269,
+            "FUSED": 195,
+            "STOPPED": 195
+          }
+        },
+        "candidate": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 0,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 269,
+            "FUSED": 195,
+            "STOPPED": 195
+          }
+        }
+      },
+      "activation": {
+        "main": {
+          "active_ticks": 0,
+          "episodes": 0,
+          "added_variance": 0.0
+        },
+        "candidate": {
+          "active_ticks": 61,
+          "episodes": 1,
+          "added_variance": 1.3863201788398178
+        }
+      },
+      "disabled_and_canonical_reproduced": true,
+      "bag": "30639_e4379d7f",
+      "group": "a0c46036cc19092a",
+      "role": "development",
+      "fault": {
+        "kind": "lock",
+        "start": 165.5,
+        "end": 168.5
+      },
+      "diagnostics": {
+        "main": {
+          "corrupted_acceptances": 0,
+          "first_recovery_gains": [
+            0.950154756808518,
+            0.7242030657882729,
+            0.6329201693667936,
+            0.6201935737988906,
+            0.6183488082713787,
+            0.6180799147764777,
+            0.6180406891493233,
+            0.6180349663224864,
+            0.6180341313757522,
+            0.6180340095587176
+          ],
+          "mean_squared_error_over_internal_variance": {
+            "master": null,
+            "rover": 0.815976222932082
+          }
+        },
+        "candidate": {
+          "corrupted_acceptances": 0,
+          "first_recovery_gains": [
+            0.9900926428046932,
+            0.7462243541008411,
+            0.6358636909956917,
+            0.6206177112207674,
+            0.6184105771252726,
+            0.6180889243512744,
+            0.6180420035779313,
+            0.6180351580939581,
+            0.61803415935481,
+            0.6180340136408066
+          ],
+          "mean_squared_error_over_internal_variance": {
+            "master": null,
+            "rover": 0.7904089153434798
+          }
+        }
+      }
+    }
+  ],
+  "diagnostic": [
+    {
+      "outputs": 614,
+      "expected_ticks": 616,
+      "output_span_s": 30.650000000000006,
+      "first_output_s": 145.611615933,
+      "last_output_s": 176.261615933,
+      "sensor_duration_s": 30.757511553,
+      "receivers": {
+        "master": {
+          "main": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null,
+            "false_stop_samples": 0,
+            "event_rmse": null,
+            "recovery_s": null
+          },
+          "candidate": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null,
+            "false_stop_samples": 0,
+            "event_rmse": null,
+            "recovery_s": null
+          }
+        },
+        "rover": {
+          "main": {
+            "n": 82,
+            "coverage": 0.13355048859934854,
+            "rmse": 0.08501218857080958,
+            "mae": 0.0664098247947283,
+            "bias": 0.0374661491845903,
+            "p95": 0.1639177418828671,
+            "integrated_error_m_not_xyz": 0.07680560582840432,
+            "false_stop_samples": 0,
+            "event_rmse": 0.034210231864872154,
+            "recovery_s": null
+          },
+          "candidate": {
+            "n": 82,
+            "coverage": 0.13355048859934854,
+            "rmse": 0.08509373004172432,
+            "mae": 0.066434088444301,
+            "bias": 0.03743248024993974,
+            "p95": 0.1639177418828671,
+            "integrated_error_m_not_xyz": 0.07673658451237066,
+            "false_stop_samples": 0,
+            "event_rmse": 0.034210231864872154,
+            "recovery_s": null
+          }
+        }
+      },
+      "runtime": {
+        "main": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 0,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 223,
+            "FUSED": 195,
+            "STOPPED": 195
+          }
+        },
+        "candidate": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 0,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 223,
+            "FUSED": 195,
+            "STOPPED": 195
+          }
+        }
+      },
+      "activation": {
+        "main": {
+          "active_ticks": 0,
+          "episodes": 0,
+          "added_variance": 0.0
+        },
+        "candidate": {
+          "active_ticks": 15,
+          "episodes": 1,
+          "added_variance": 0.09940183859323347
+        }
+      },
+      "bag": "30639_e4379d7f",
+      "group": "a0c46036cc19092a",
+      "role": "development",
+      "fault": {
+        "kind": "common_step",
+        "start": 165.5,
+        "end": 166.2
+      },
+      "diagnostics": {
+        "main": {
+          "corrupted_acceptances": 0,
+          "first_recovery_gains": [
+            0.905821011781493,
+            0.655863180854714,
+            0.62347457986213,
+            0.6188261141632766,
+            0.6181495233334631,
+            0.6180508442746202,
+            0.618036447921969,
+            0.6180343475379199,
+            0.6180340410963883,
+            0.6180339963871369
+          ],
+          "mean_squared_error_over_internal_variance": {
+            "master": null,
+            "rover": 0.8510729256069659
+          }
+        },
+        "candidate": {
+          "corrupted_acceptances": 0,
+          "first_recovery_gains": [
+            0.9507469336806182,
+            0.6880562369857975,
+            0.6279839736086203,
+            0.6194801756622732,
+            0.6182448680883047,
+            0.6180647531526852,
+            0.61803847716302,
+            0.6180346435994135,
+            0.6180340842911614,
+            0.6180340026891689
+          ],
+          "mean_squared_error_over_internal_variance": {
+            "master": null,
+            "rover": 0.8444887726037622
+          }
+        }
+      }
+    },
+    {
+      "outputs": 624,
+      "expected_ticks": 626,
+      "output_span_s": 31.150000000000006,
+      "first_output_s": 145.611615933,
+      "last_output_s": 176.761615933,
+      "sensor_duration_s": 31.257521953999998,
+      "receivers": {
+        "master": {
+          "main": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null,
+            "false_stop_samples": 0,
+            "event_rmse": null,
+            "recovery_s": null
+          },
+          "candidate": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null,
+            "false_stop_samples": 0,
+            "event_rmse": null,
+            "recovery_s": null
+          }
+        },
+        "rover": {
+          "main": {
+            "n": 86,
+            "coverage": 0.13782051282051283,
+            "rmse": 0.11692108902647731,
+            "mae": 0.0777815253334622,
+            "bias": 0.05591391718438432,
+            "p95": 0.16030736887644004,
+            "integrated_error_m_not_xyz": 0.1202149219464136,
+            "false_stop_samples": 0,
+            "event_rmse": 0.03941780050949016,
+            "recovery_s": null
+          },
+          "candidate": {
+            "n": 86,
+            "coverage": 0.13782051282051283,
+            "rmse": 0.11705614559605675,
+            "mae": 0.07808085052295988,
+            "bias": 0.055612256674831835,
+            "p95": 0.16030736887644004,
+            "integrated_error_m_not_xyz": 0.11956635185087565,
+            "false_stop_samples": 0,
+            "event_rmse": 0.03941780050949016,
+            "recovery_s": null
+          }
+        }
+      },
+      "runtime": {
+        "main": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 0,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 230,
+            "FUSED": 195,
+            "STOPPED": 195,
+            "REACQUIRING": 3
+          }
+        },
+        "candidate": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 0,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 230,
+            "FUSED": 195,
+            "STOPPED": 195,
+            "REACQUIRING": 3
+          }
+        }
+      },
+      "activation": {
+        "main": {
+          "active_ticks": 0,
+          "episodes": 0,
+          "added_variance": 0.0
+        },
+        "candidate": {
+          "active_ticks": 25,
+          "episodes": 1,
+          "added_variance": 0.23995123416853095
+        }
+      },
+      "bag": "30639_e4379d7f",
+      "group": "a0c46036cc19092a",
+      "role": "development",
+      "fault": {
+        "kind": "common_step",
+        "start": 165.5,
+        "end": 166.7
+      },
+      "diagnostics": {
+        "main": {
+          "corrupted_acceptances": 6,
+          "first_recovery_gains": [
+            0.8873310051581418,
+            0.7258023555733037,
+            0.6331355433913344,
+            0.6202246395899663,
+            0.6183533331872988,
+            0.6180805747928869,
+            0.618040785441017,
+            0.6180349803711829,
+            0.6180341334254693,
+            0.6180340098577672
+          ],
+          "mean_squared_error_over_internal_variance": {
+            "master": null,
+            "rover": 0.7775410750840827
+          }
+        },
+        "candidate": {
+          "corrupted_acceptances": 6,
+          "first_recovery_gains": [
+            0.9537684514209539,
+            0.7555630724315894,
+            0.6370977641540277,
+            0.6207952493863227,
+            0.6184364267929063,
+            0.6180926946449358,
+            0.6180425536324866,
+            0.6180352383453279,
+            0.6180341710633577,
+            0.6180340153490604
+          ],
+          "mean_squared_error_over_internal_variance": {
+            "master": null,
+            "rover": 0.7467160620802984
+          }
+        }
+      }
+    },
+    {
+      "outputs": 640,
+      "expected_ticks": 642,
+      "output_span_s": 31.950000000000017,
+      "first_output_s": 145.611615933,
+      "last_output_s": 177.561615933,
+      "sensor_duration_s": 32.057464863999996,
+      "receivers": {
+        "master": {
+          "main": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null,
+            "false_stop_samples": 0,
+            "event_rmse": null,
+            "recovery_s": null
+          },
+          "candidate": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null,
+            "false_stop_samples": 0,
+            "event_rmse": null,
+            "recovery_s": null
+          }
+        },
+        "rover": {
+          "main": {
+            "n": 92,
+            "coverage": 0.14375,
+            "rmse": 0.37231334506766006,
+            "mae": 0.20834584944400972,
+            "bias": 0.19693040729731717,
+            "p95": 1.0291851551160183,
+            "integrated_error_m_not_xyz": 0.45293993678380484,
+            "false_stop_samples": 0,
+            "event_rmse": 0.8459390299376384,
+            "recovery_s": null
+          },
+          "candidate": {
+            "n": 92,
+            "coverage": 0.14375,
+            "rmse": 0.37231334506766006,
+            "mae": 0.20834584944400972,
+            "bias": 0.19693040729731717,
+            "p95": 1.0291851551160183,
+            "integrated_error_m_not_xyz": 0.45293993678380484,
+            "false_stop_samples": 0,
+            "event_rmse": 0.8459390299376384,
+            "recovery_s": null
+          }
+        }
+      },
+      "runtime": {
+        "main": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 0,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 229,
+            "FUSED": 215,
+            "STOPPED": 195
+          }
+        },
+        "candidate": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 0,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 229,
+            "FUSED": 215,
+            "STOPPED": 195
+          }
+        }
+      },
+      "activation": {
+        "main": {
+          "active_ticks": 0,
+          "episodes": 0,
+          "added_variance": 0.0
+        },
+        "candidate": {
+          "active_ticks": 0,
+          "episodes": 0,
+          "added_variance": 0.0
+        }
+      },
+      "bag": "30639_e4379d7f",
+      "group": "a0c46036cc19092a",
+      "role": "development",
+      "fault": {
+        "kind": "common_ramp",
+        "start": 165.5,
+        "end": 167.5
+      },
+      "diagnostics": {
+        "main": {
+          "corrupted_acceptances": 40,
+          "first_recovery_gains": [
+            0.618033988750571,
+            0.4273405823795351,
+            0.5615830556987157,
+            0.6769723222009109,
+            0.5406464336721785,
+            0.6711225649499872,
+            0.5394087758362074,
+            0.6709886449133978,
+            0.6256067947333245,
+            0.6191356596098431
+          ],
+          "mean_squared_error_over_internal_variance": {
+            "master": null,
+            "rover": 16.897736874035218
+          }
+        },
+        "candidate": {
+          "corrupted_acceptances": 40,
+          "first_recovery_gains": [
+            0.618033988750571,
+            0.4273405823795351,
+            0.5615830556987157,
+            0.6769723222009109,
+            0.5406464336721785,
+            0.6711225649499872,
+            0.5394087758362074,
+            0.6709886449133978,
+            0.6256067947333245,
+            0.6191356596098431
+          ],
+          "mean_squared_error_over_internal_variance": {
+            "master": null,
+            "rover": 16.897736874035218
+          }
+        }
+      }
+    },
+    {
+      "outputs": 720,
+      "expected_ticks": 722,
+      "output_span_s": 35.95000000000002,
+      "first_output_s": 145.611615933,
+      "last_output_s": 181.561615933,
+      "sensor_duration_s": 36.057443592,
+      "receivers": {
+        "master": {
+          "main": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null,
+            "false_stop_samples": 0,
+            "event_rmse": null,
+            "recovery_s": null
+          },
+          "candidate": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null,
+            "false_stop_samples": 0,
+            "event_rmse": null,
+            "recovery_s": null
+          }
+        },
+        "rover": {
+          "main": {
+            "n": 124,
+            "coverage": 0.17222222222222222,
+            "rmse": 0.7407382305689579,
+            "mae": 0.4066337102808917,
+            "bias": 0.398808322474599,
+            "p95": 1.9820322089583973,
+            "integrated_error_m_not_xyz": 1.2363057996714018,
+            "false_stop_samples": 0,
+            "event_rmse": 0.8691830742449785,
+            "recovery_s": null
+          },
+          "candidate": {
+            "n": 124,
+            "coverage": 0.17222222222222222,
+            "rmse": 0.6942891375669161,
+            "mae": 0.3691480778656058,
+            "bias": 0.3612911438686689,
+            "p95": 1.9734178708327945,
+            "integrated_error_m_not_xyz": 1.1200025459930065,
+            "false_stop_samples": 0,
+            "event_rmse": 0.8799919772135433,
+            "recovery_s": null
+          }
+        }
+      },
+      "runtime": {
+        "main": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 0,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 328,
+            "FUSED": 195,
+            "STOPPED": 195,
+            "REACQUIRING": 1
+          }
+        },
+        "candidate": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 0,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 325,
+            "FUSED": 199,
+            "STOPPED": 195
+          }
+        }
+      },
+      "activation": {
+        "main": {
+          "active_ticks": 0,
+          "episodes": 0,
+          "added_variance": 0.0
+        },
+        "candidate": {
+          "active_ticks": 112,
+          "episodes": 2,
+          "added_variance": 3.77533374799257
+        }
+      },
+      "bag": "30639_e4379d7f",
+      "group": "a0c46036cc19092a",
+      "role": "development",
+      "fault": {
+        "kind": "after_dropout_false_pair",
+        "start": 165.5,
+        "end": 171.5
+      },
+      "diagnostics": {
+        "main": {
+          "corrupted_acceptances": 20,
+          "first_recovery_gains": [
+            0.6180569316026986,
+            0.6766144092051634,
+            0.7609751537936773,
+            0.7104294662933726,
+            0.6310547784268433,
+            0.6199242949256145,
+            0.6183095817169733,
+            0.6180741929897131,
+            0.618039854379348,
+            0.6180348445317732
+          ],
+          "mean_squared_error_over_internal_variance": {
+            "master": null,
+            "rover": 34.77583643944461
+          }
+        },
+        "candidate": {
+          "corrupted_acceptances": 20,
+          "first_recovery_gains": [
+            0.6180569343503983,
+            0.7158151819727601,
+            0.7690953282772237,
+            0.710786093098437,
+            0.6311033162867462,
+            0.6199313064561809,
+            0.7237516639565722,
+            0.6328593339719517,
+            0.6201847979126884,
+            0.6183475299923344
+          ],
+          "mean_squared_error_over_internal_variance": {
+            "master": null,
+            "rover": 33.03884295819495
+          }
+        }
+      }
+    }
+  ]
+}
