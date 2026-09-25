@@ -1,0 +1,204 @@
+{
+  "clean": {
+    "bag": "30618_1551d0a9",
+    "group": "8269991eafa82c45",
+    "role": "development",
+    "outputs": 23,
+    "expected_ticks": 99,
+    "output_span_s": 1.1,
+    "first_output_s": 3.8000000000000003,
+    "last_output_s": 4.9,
+    "sensor_duration_s": 4.909201191,
+    "runtime": {
+      "main": {
+        "resets": 0,
+        "dropped": 0,
+        "catchups": 1,
+        "causal_errors": 0,
+        "mode_counts": {
+          "INITIALIZED": 1,
+          "MODEL_ONLY": 6,
+          "FUSED": 4,
+          "STOPPED": 12
+        }
+      },
+      "candidate": {
+        "resets": 0,
+        "dropped": 0,
+        "catchups": 1,
+        "causal_errors": 0,
+        "mode_counts": {
+          "INITIALIZED": 1,
+          "MODEL_ONLY": 6,
+          "FUSED": 4,
+          "STOPPED": 12
+        }
+      }
+    },
+    "receivers": {
+      "master": {
+        "main": {
+          "n": 22,
+          "coverage": 0.9565217391304348,
+          "rmse": 0.003942772444036626,
+          "mae": 0.003545454545454546,
+          "bias": -0.003545454545454546,
+          "p95": 0.00695,
+          "integrated_error_m_not_xyz": -0.0037750000000000023,
+          "false_stop_samples": 0,
+          "distance_surrogate": {
+            "definition": "s versus integral matched horizontal GNSS speed; NOT xyz",
+            "full_span_terminal_error_m": null,
+            "full_span_reference_distance_m": null,
+            "full_span_terminal_drift_percent": null,
+            "continuous_spans": 1,
+            "reanchored_span_rmse_m": 0.0022139408508153715,
+            "longest_reference_span": {
+              "start_s": 3.8000000000000003,
+              "duration_s": 1.0500000000000003,
+              "reference_distance_m": 0.003775000000000002,
+              "terminal_error_m": -0.003775000000000002
+            }
+          }
+        },
+        "candidate": {
+          "n": 22,
+          "coverage": 0.9565217391304348,
+          "rmse": 0.003942772444036626,
+          "mae": 0.003545454545454546,
+          "bias": -0.003545454545454546,
+          "p95": 0.00695,
+          "integrated_error_m_not_xyz": -0.0037750000000000023,
+          "false_stop_samples": 0,
+          "distance_surrogate": {
+            "definition": "s versus integral matched horizontal GNSS speed; NOT xyz",
+            "full_span_terminal_error_m": null,
+            "full_span_reference_distance_m": null,
+            "full_span_terminal_drift_percent": null,
+            "continuous_spans": 1,
+            "reanchored_span_rmse_m": 0.0022139408508153715,
+            "longest_reference_span": {
+              "start_s": 3.8000000000000003,
+              "duration_s": 1.0500000000000003,
+              "reference_distance_m": 0.003775000000000002,
+              "terminal_error_m": -0.003775000000000002
+            }
+          },
+          "common_front_scaled_rmse": 0.003942772444036626,
+          "common_mean_scaled_rmse": 0.003942772444036626
+        }
+      },
+      "rover": {
+        "main": {
+          "n": 22,
+          "coverage": 0.9565217391304348,
+          "rmse": 0.004033946860424326,
+          "mae": 0.0033636363636363647,
+          "bias": -0.0033636363636363647,
+          "p95": 0.007,
+          "integrated_error_m_not_xyz": -0.003550000000000003,
+          "false_stop_samples": 0,
+          "distance_surrogate": {
+            "definition": "s versus integral matched horizontal GNSS speed; NOT xyz",
+            "full_span_terminal_error_m": null,
+            "full_span_reference_distance_m": null,
+            "full_span_terminal_drift_percent": null,
+            "continuous_spans": 1,
+            "reanchored_span_rmse_m": 0.002231565899460818,
+            "longest_reference_span": {
+              "start_s": 3.8000000000000003,
+              "duration_s": 1.0500000000000003,
+              "reference_distance_m": 0.003550000000000003,
+              "terminal_error_m": -0.003550000000000003
+            }
+          }
+        },
+        "candidate": {
+          "n": 22,
+          "coverage": 0.9565217391304348,
+          "rmse": 0.004033946860424326,
+          "mae": 0.0033636363636363647,
+          "bias": -0.0033636363636363647,
+          "p95": 0.007,
+          "integrated_error_m_not_xyz": -0.003550000000000003,
+          "false_stop_samples": 0,
+          "distance_surrogate": {
+            "definition": "s versus integral matched horizontal GNSS speed; NOT xyz",
+            "full_span_terminal_error_m": null,
+            "full_span_reference_distance_m": null,
+            "full_span_terminal_drift_percent": null,
+            "continuous_spans": 1,
+            "reanchored_span_rmse_m": 0.002231565899460818,
+            "longest_reference_span": {
+              "start_s": 3.8000000000000003,
+              "duration_s": 1.0500000000000003,
+              "reference_distance_m": 0.003550000000000003,
+              "terminal_error_m": -0.003550000000000003
+            }
+          },
+          "common_front_scaled_rmse": 0.004033946860424326,
+          "common_mean_scaled_rmse": 0.004033946860424326
+        }
+      }
+    },
+    "audit": {
+      "checked_ticks": 99,
+      "readout_updates": 4,
+      "materially_changed_updates": 0,
+      "multisegment_updates": 0,
+      "fallback_updates": 0,
+      "max_increment_delta_mps": 0.0,
+      "max_history_length": 5,
+      "bitwise_inner": true,
+      "disabled_exact": true,
+      "timing_bins": {
+        "updates": 4,
+        "age_le_05": 4,
+        "skew_le_025": 4
+      },
+      "maxima": {
+        "max_age_s": 0.007113300999999961,
+        "max_skew_s": 0.0
+      }
+    },
+    "output_hashes": {
+      "main": "6a6d185f5002c8e267fb1360754dba50bf7f199e14836b1ba671f01e8d6d6d85",
+      "candidate": "6a6d185f5002c8e267fb1360754dba50bf7f199e14836b1ba671f01e8d6d6d85"
+    },
+    "schedule_sha256": "93798e20ca008d1d96d327d42b02afb7759ac39fda40a0f30d4e45d57ac9532c",
+    "baseline_reproduction": {
+      "passed": true,
+      "compared_fields": 18,
+      "driver": "unchanged research_guarded.compare + canonical v7 factory"
+    },
+    "phase_metrics": {
+      "master": {
+        "main": {
+          "n": 0,
+          "coverage": 0.0,
+          "rmse": null
+        },
+        "candidate": {
+          "n": 0,
+          "coverage": 0.0,
+          "rmse": null
+        }
+      },
+      "rover": {
+        "main": {
+          "n": 0,
+          "coverage": 0.0,
+          "rmse": null
+        },
+        "candidate": {
+          "n": 0,
+          "coverage": 0.0,
+          "rmse": null
+        }
+      }
+    }
+  },
+  "stress": [],
+  "diagnostic": [],
+  "controller_anchors": []
+}
