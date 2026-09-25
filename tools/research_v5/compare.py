@@ -16,6 +16,7 @@ import evaluate as ev
 ex = ev.ex
 np = ev.np
 PLAN = ROOT / 'research/plan_v5.json'
+PREDICTIONS = {}
 
 
 def configuration():
@@ -27,7 +28,9 @@ def configuration():
 
 
 def replay(events, config, fault=None):
-    return ev.replay(events, config, json.loads(PLAN.read_text())['operational'], fault)
+    result = ev.replay(events, config, json.loads(PLAN.read_text())['operational'], fault)
+    PREDICTIONS[id(config)] = result[0]
+    return result
 
 
 def validate_bag(bag):
@@ -36,6 +39,15 @@ def validate_bag(bag):
     events, refs = store.load(bag, 'validation')
     ex.replay = replay
     clean = dict(bag=bag, group=store.records[bag]['group'], **ex.compare(events, refs, models))
+    for receiver, values in refs.items():
+        for name, config in models.items():
+            a = PREDICTIONS[id(config)]
+            if not len(a):
+                continue
+            target = ex.match(values, a[:, 0])
+            clean['receivers'][receiver][name]['false_stop_samples'] = int(
+                np.sum(np.isfinite(target) & (target > 1.) & (a[:, 5] > 0)))
+            clean['receivers'][receiver][name]['distance_surrogate'] = ev.distance_surrogate(a, target)
     stress = []
     grid = ex.grid_channels(events)
     if grid is not None:
@@ -53,6 +65,7 @@ def validate_bag(bag):
         row['counts']['main'] = row['counts'].pop('baseline_v2')
         for scores in row['receivers'].values():
             scores['main'] = scores.pop('baseline_v2')
+    PREDICTIONS.clear()
     print('VALIDATED', bag, flush=True)
     return clean, stress, store.access
 
