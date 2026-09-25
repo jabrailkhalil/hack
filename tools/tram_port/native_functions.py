@@ -20,7 +20,7 @@ def replay(events,config,ops,fault=None):
         if fault and fault['start']<=t<fault['end']:
             if fault['kind']=='dropout' and ch in (1,2): continue
             if fault['kind']=='lock' and ch in (1,2): value=0.
-            if fault['kind']=='bias' and ch==1:value+=5.
+            if fault['kind']=='bias' and ch==1: value+=5.
         timeline.ingest(ch,Sample(float(t),float(value)))
         for e,held in timeline.advance():
             if e.mode=='WAITING_FOR_INITIALIZATION':continue
