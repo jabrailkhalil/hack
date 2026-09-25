@@ -21,64 +21,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.13.5'
-      - name: Prepare evidence and exact baseline core
-        run: |
-          mkdir -p "$H01_EVIDENCE/logs"
-          git show 984fdf2fc4faf05325249215d6b8541c0e68209a:src/reserve_odometry/reserve_odometry/core.py > "$H01_EVIDENCE/logs/baseline_core.py"
-          git diff 984fdf2fc4faf05325249215d6b8541c0e68209a "$GITHUB_SHA" > "$H01_EVIDENCE/H01.patch"
-          tar -czf "$H01_EVIDENCE/reproduction-source.tar.gz" src tools tests research/parallel/H01 research/plan_v3.json research/split_v3.json requirements-research.txt
-      - name: Check baseline and H01 structural tests before measurements
-        run: |
-          set -o pipefail
-          PYTHONPATH=src/reserve_odometry python -m unittest discover -s tests -v 2>&1 | tee "$H01_EVIDENCE/logs/unit-tests.log"
-          PYTHONPATH=src/reserve_odometry H01_BASELINE_CORE="$H01_EVIDENCE/logs/baseline_core.py" python -m unittest discover -s research/parallel/H01/tests -v 2>&1 | tee "$H01_EVIDENCE/logs/H01-tests.log"
-          python -m compileall -q src research/parallel/H01
-      - name: Install pinned research dependencies and retrieve audited archive
-        run: |
-          set -o pipefail
-          python -m pip install -r requirements-research.txt 2>&1 | tee "$H01_EVIDENCE/logs/dependencies.log"
-          python tools/get_dataset.py 2>&1 | tee "$H01_EVIDENCE/logs/dataset.log"
-      - name: Evaluate two preregistered development variants
-        run: |
-          set -o pipefail
-          python research/parallel/H01/run.py --stage development --output "$H01_EVIDENCE/results" --workers 2 2>&1 | tee "$H01_EVIDENCE/logs/development.log"
-      - name: Publish development evidence and immutable candidate freeze BEFORE validation
-        run: |
-          set -eu
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          branch="checkpoint/parallel-H01-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
-          destination="reports/research_parallel/H01/$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
-          git switch -c "$branch"
-          mkdir -p "$destination"
-          cp -a "$H01_EVIDENCE/results/." "$destination/"
-          git add "$destination"
-          git commit -m "research(H01): preserve development decision and pre-validation freeze $GITHUB_RUN_ID"
-          git push origin "HEAD:refs/heads/$branch"
-      - name: Evaluate only the frozen candidate on unchanged validation
-        run: |
-          set -o pipefail
-          if test -f "$H01_EVIDENCE/results/FREEZE.json"; then
-            python research/parallel/H01/run.py --stage validation --output "$H01_EVIDENCE/results" --workers 2 2>&1 | tee "$H01_EVIDENCE/logs/validation.log"
-          else
-            echo 'No safe development candidate: validation remains unopened.' | tee "$H01_EVIDENCE/logs/validation.log"
-          fi
-      - name: Preserve complete or partial evidence on this run's checkpoint branch
-        if: always()
-        run: |
-          set -eu
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          branch="checkpoint/parallel-H01-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
-          destination="reports/research_parallel/H01/$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
-          if test "$(git branch --show-current)" != "$branch"; then git switch -c "$branch"; fi
-          mkdir -p "$destination/logs"
-          if test -d "$H01_EVIDENCE/results"; then rsync -a --ignore-existing "$H01_EVIDENCE/results/" "$destination/"; fi
-          if test -d "$H01_EVIDENCE/logs"; then cp -a "$H01_EVIDENCE/logs/." "$destination/logs/"; fi
-          printf '{"hypothesis":"H01","source_commit":"%s","run_id":"%s","run_attempt":"%s","test_evaluated":false}\n' "$GITHUB_SHA" "$GITHUB_RUN_ID" "$GITHUB_RUN_ATTEMPT" > "$destination/EXECUTION.json"
-          git add "$destination"
-          git diff --cached --quiet || git commit -m "research(H01): preserve results and execution logs $GITHUB_RUN_ID"
-          git push origin "HEAD:refs/heads/$branch"
+      - name: Behavioral tests, development, published freeze, then validation
+        run: bash research/parallel/H01/execute.sh
       - uses: actions/upload-artifact@v4
         if: always()
         with:
