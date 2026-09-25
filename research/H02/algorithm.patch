@@ -1,0 +1,35 @@
+--- a/src/reserve_odometry/reserve_odometry/core.py
++++ b/src/reserve_odometry/reserve_odometry/core.py
+@@ -56,6 +56,7 @@
+     reacquire_step_mps: float = 0.15
+     reacquire_min_speed_mps: float = 0.4
+     reacquire_accel_margin_mps2: float = 0.8
++    timing_accel_fraction: float = 0.0  # H02 opt-in; 0 preserves baseline
+ 
+     def __post_init__(self):
+         for key, value in asdict(self).items():
+@@ -75,6 +76,8 @@
+                 raise ValueError(f'{key} must be positive')
+         if not 0 <= self.command_deadband < 1 or self.efficiency > 1:
+             raise ValueError('Invalid deadband or efficiency')
++        if not 0.0 <= self.timing_accel_fraction <= 1.0:
++            raise ValueError('timing_accel_fraction must be between 0 and 1')
+         if self.travel_direction not in (-1.0, 1.0):
+             raise ValueError('travel_direction must be -1 or 1')
+         if self.innovation_cap_mps < self.innovation_floor_mps:
+@@ -307,7 +310,14 @@
+             self._clear_reacquire()
+             z = sum(samples[i].value for i in accepted) / len(accepted)
+             # No 1/N reduction: wheel errors can be correlated.
+-            r = c.wheel_sigma_mps ** 2 * (1.0 if len(accepted) == 2 and agree else 4.0)
++            r = c.wheel_sigma_mps ** 2
++            if c.timing_accel_fraction > 0.0:
++                # Only accepted causal samples affect R; z/stamps are unchanged.
++                age = max(max(0.0, t - samples[i].t) for i in accepted)
++                skew = abs(samples[0].t - samples[1].t) if len(accepted) == 2 else 0.0
++                sigma_a = c.timing_accel_fraction * c.max_accel_mps2
++                r += sigma_a ** 2 * (age ** 2 + 0.25 * skew ** 2)
++            r *= 1.0 if len(accepted) == 2 and agree else 4.0
+             residual = z - predicted
+             r *= max(1.0, abs(residual) / max(3 * c.wheel_sigma_mps, 1e-9))
+             gain = p_prior / (p_prior + r)

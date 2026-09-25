@@ -1,0 +1,62 @@
+{
+  "selected": "v5_adaptive_05s",
+  "candidates": {
+    "v4_default": {
+      "clean_rmse": 0.11806774263082002,
+      "fault_rmse": 0.5699729099411979,
+      "distance_rmse": 4.62025210189424,
+      "samples": 698891,
+      "pooled_rmse": 0.21687243076900956,
+      "false_stops_clean": 18,
+      "false_stops_fault": 0,
+      "unrecovered": 0,
+      "clean_gain_vs_v5": -0.007934797318232878,
+      "fault_gain_vs_v5": -0.058574449279590546,
+      "distance_change_vs_v5": -0.0023160781640222394,
+      "eligible": false,
+      "rejection_reasons": []
+    },
+    "v5_adaptive_05s": {
+      "clean_rmse": 0.11713827416709652,
+      "fault_rmse": 0.5384344108523412,
+      "distance_rmse": 4.63097780847452,
+      "samples": 698891,
+      "pooled_rmse": 0.2167236028496654,
+      "false_stops_clean": 18,
+      "false_stops_fault": 0,
+      "unrecovered": 0,
+      "clean_gain_vs_v5": 0.0,
+      "fault_gain_vs_v5": 0.0,
+      "distance_change_vs_v5": 0.0,
+      "eligible": false,
+      "rejection_reasons": []
+    },
+    "H02_timing_05": {
+      "clean_rmse": 0.11701342891137327,
+      "fault_rmse": 0.5389085306222027,
+      "distance_rmse": 4.593252344986985,
+      "samples": 698891,
+      "pooled_rmse": 0.2167221593263994,
+      "false_stops_clean": 18,
+      "false_stops_fault": 0,
+      "unrecovered": 0,
+      "clean_gain_vs_v5": 0.0010657938800187061,
+      "fault_gain_vs_v5": -0.0008805525061277297,
+      "distance_change_vs_v5": -0.008146327848623791,
+      "eligible": false,
+      "rejection_reasons": [
+        "insufficient_gain"
+      ]
+    }
+  },
+  "test_evaluated": false,
+  "scope": "one apriori candidate on reused validation; not independent final test",
+  "promotion_requires": "passing ROS/default/offline integrity checks; runner never changes default",
+  "hypothesis": "H02",
+  "evaluated_candidate": "H02_timing_05",
+  "preregistered_pooled_guard_passed": true,
+  "parameters_fitted": false,
+  "conclusion": "rejected",
+  "merge_ready": false,
+  "ros_candidate_runtime_measured": false
+}

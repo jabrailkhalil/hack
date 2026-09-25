@@ -1,0 +1,93 @@
+name: H02 age-skew uncertainty research
+on:
+  push:
+    branches: [research/parallel-H02]
+    paths:
+      - 'research/H02/**'
+      - '.github/workflows/research-h02.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: research-H02-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  experiment:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - name: Prepare unique evidence directory
+        run: |
+          echo "H02_OUTPUT=$RUNNER_TEMP/H02-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT" >> "$GITHUB_ENV"
+          mkdir -p "$RUNNER_TEMP/H02-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT/logs"
+      - name: Pristine runtime and candidate structural checks
+        run: |
+          set -o pipefail
+          PYTHONPATH=src/reserve_odometry python -m unittest discover -s tests -v 2>&1 | tee "$H02_OUTPUT/logs/baseline-unit.log"
+          python research/H02/test_h02.py 2>&1 | tee "$H02_OUTPUT/logs/h02-unit.log"
+          python -m compileall -q research/H02
+      - name: Prepare pinned research dependencies and organizer archive
+        run: |
+          set -o pipefail
+          python -m pip install -r requirements-research.txt 2>&1 | tee "$H02_OUTPUT/logs/dependencies.log"
+          python tools/get_dataset.py 2>&1 | tee "$H02_OUTPUT/logs/dataset.log"
+          python -m unittest discover -s research/tests -v 2>&1 | tee "$H02_OUTPUT/logs/research-integrity.log"
+      - name: Train inputs only; no reference labels or fitting
+        run: |
+          set -o pipefail
+          python research/H02/run.py --stage train --output "$H02_OUTPUT/experiment" 2>&1 | tee "$H02_OUTPUT/logs/train.log"
+      - name: Freeze the only candidate
+        run: |
+          set -o pipefail
+          python research/H02/run.py --stage freeze --output "$H02_OUTPUT/experiment" 2>&1 | tee "$H02_OUTPUT/logs/freeze.log"
+      - name: Commit freeze in own checkpoint branch BEFORE validation
+        run: |
+          set -eu
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          branch="checkpoint/H02-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          git switch -c "$branch"
+          destination="reports/research_H02/runs/$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          mkdir -p "$destination"
+          cp -a "$H02_OUTPUT/." "$destination/"
+          git add "$destination"
+          git commit -m "research(H02): freeze candidate before validation $GITHUB_RUN_ID"
+          git push origin "HEAD:refs/heads/$branch"
+      - name: One unchanged v6 validation evaluator; no final test
+        run: |
+          set -o pipefail
+          python research/H02/run.py --stage validation --output "$H02_OUTPUT/experiment" --workers 2 2>&1 | tee "$H02_OUTPUT/logs/validation.log"
+      - name: Preserve all available evidence, including failures
+        if: always()
+        run: |
+          set -eu
+          if ! test -d "$H02_OUTPUT"; then exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          branch="checkpoint/H02-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          if git show-ref --verify --quiet "refs/heads/$branch"; then
+            git switch "$branch"
+          else
+            git switch -c "$branch"
+          fi
+          destination="reports/research_H02/runs/$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          mkdir -p "$destination"
+          cp -a "$H02_OUTPUT/." "$destination/"
+          git add "$destination"
+          git diff --cached --quiet || git commit -m "research(H02): preserve actual measurements and logs $GITHUB_RUN_ID"
+          git push origin "HEAD:refs/heads/$branch"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: H02-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.H02_OUTPUT }}/
+          retention-days: 30
