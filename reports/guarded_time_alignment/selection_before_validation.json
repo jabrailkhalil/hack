@@ -1,0 +1,37 @@
+{
+  "base_main": "984fdf2fc4faf05325249215d6b8541c0e68209a",
+  "selected": "readout_long",
+  "implementation_commit": "be84bef1a0b58a070e6d3413ea3271728a362523",
+  "module_sha256": "6303c1230ff800e370875f7238912e47a0564da1b21d42ccf8f417f75b2e05e0",
+  "profile": {"gain": 1.0, "holdoff_s": 0.5, "age_limit": "Config.max_age_s = 0.25"},
+  "development": {
+    "bags": 17,
+    "macro_rmse": 0.09266814298282507,
+    "pooled_rmse": 0.1293056944774334,
+    "n": 394221,
+    "distance_macro": 5.310295004801444,
+    "false_stops": 0,
+    "fault_macro": 0.26776993359569695,
+    "fault_false_stops": 46,
+    "fault_missing_recovery": 4,
+    "mean_recovery_s": 0.8391980285714163,
+    "clean_paired_improved": 17,
+    "clean_paired_worse": 0
+  },
+  "development_baseline": {
+    "macro_rmse": 0.09591722758761219,
+    "pooled_rmse": 0.13172643745145862,
+    "n": 394221,
+    "distance_macro": 5.298327606042677,
+    "false_stops": 0,
+    "fault_macro": 0.26776396727564045,
+    "fault_false_stops": 46,
+    "fault_missing_recovery": 4,
+    "mean_recovery_s": 0.8454480285714178
+  },
+  "development_implementation_reproduction_exact": true,
+  "selection_rule": "Among round1 candidates passing strict main gates on development choose smallest clean group-macro RMSE. No validation results viewed in this iteration before this selection.",
+  "qualification": "Development scalar distance worsens by about 0.226%; fault RMSE by about 0.00223%. Both are below the unchanged main limits. Four development recovery failures and 46 fault false-stop samples exist in both versions and are not hidden.",
+  "validation_selection_policy": "Confirm this fixed implementation and profile once on all 19 existing validation bags; do not retune after observing those results. Reproduction runs are allowed, not new model selection.",
+  "test_evaluated": false
+}
