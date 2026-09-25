@@ -1,0 +1,74 @@
+{
+  "plan": {
+    "version": 6,
+    "round": 2,
+    "base_main": "2f7851364c6afe9786fad040e0938454d8b0d210",
+    "previous_plan": "research/plan_v6.json",
+    "previous_experiment": "75110a3774b78b1e2abc4af407d87cc1aff36971",
+    "observed_round1": "Half/full projection reduced clean RMSE versus v5 by 2.08%/2.40%, but worsened fault RMSE by 0.71%/1.89%; both rejected by the preregistered 0.5% cap. No gate is relaxed.",
+    "rationale": "The fast adapted unobserved acceleration is held indefinitely when both wheels disappear. Test bounded exponential relaxation toward the calibrated physics after trusted pair age exceeds max_age_s. A fixed 2-second time constant is a hypothesis, not a fitted physical fact; this may fail on sustained gradients. Keep all outcomes.",
+    "hypotheses": [
+      {
+        "id": "v5_decay_2s",
+        "changes": {
+          "wheel_projection_gain": 0.0,
+          "disturbance_decay_s": 2.0
+        }
+      },
+      {
+        "id": "v5_project_half_decay_2s",
+        "changes": {
+          "wheel_projection_gain": 0.5,
+          "disturbance_decay_s": 2.0
+        }
+      },
+      {
+        "id": "v5_project_full_decay_2s",
+        "changes": {
+          "wheel_projection_gain": 1.0,
+          "disturbance_decay_s": 2.0
+        }
+      }
+    ],
+    "acceptance": "UNCHANGED from round1: >=2% clean OR >=5% fault gain vs v5, <=0.5% clean/fault regression, <=1% scalar-distance regression, per-bag clean <=max(0.005m/s,5%), no coverage/false-stop/recovery/causal regression; actual ROS and offline checks before promotion.",
+    "data_policy": "Only the same 19 validation bag measurements; adaptive reuse, not an independent test. No reading/rerunning final-test measurements. Same matching, baselines, metrics and fault positions.",
+    "search_limit": "These are the last three hypotheses in this task. Select only a passing measured candidate; otherwise use the preregistered v5/v4 fallback. No tuning against final test.",
+    "intermediate_publication": "Plan, patch, per-bag results, rejected outcomes and final promotion decision go to GitHub; main stays unchanged until verified selection."
+  },
+  "plan_sha256": "1c63f9323838620eb704a98954b5386f4544bcf609afe0e24a09e3b9cb570559",
+  "source_sha256": {
+    "Dockerfile.environment": "89a20ba9783557cba82623f7b81fda48bbdc963f30df3f15c726b9bbeba88b94",
+    "research/plan_v3.json": "ddbc1130e214c3d338b3d292232391d3a329a0fd5f13a090027452ae070271b3",
+    "research/split_v3.json": "20928a29daad2b4178ddb92e2a4d9ddb347952f6c03845802a8d82fff7da5ae0",
+    "src/reserve_odometry/config/adaptive_v5.yaml": "dae5f5c80cd87e968b1e838c5b0d25cc531f816949b1fd2a59dd65e8e93efaec",
+    "src/reserve_odometry/config/calibrated_v3.yaml": "a34faa159b8e9436c58e957376f4dd4207395ad63f5b8391ed2a3737c339dbf5",
+    "src/reserve_odometry/config/candidates_v3/balanced_physics.json": "68b81682f9ac48d11bf7d8e67418a45de546ab35526954c5f6fc3eda2d7ec425",
+    "src/reserve_odometry/config/candidates_v3/balanced_physics.yaml": "d1f8fd9d96911ba0f1381a6d1b6837f50fa9f6a2c518cb38421e9c229d3f0a14",
+    "src/reserve_odometry/config/candidates_v3/baseline_v2.yaml": "3aa6c2105bdaf437956bd7e8479d9e97d888dcd7d81d7e39b0ca6278add1075a",
+    "src/reserve_odometry/config/candidates_v3/gain_only.yaml": "e4aa198fb8835335327180e91f42ab3c45efb537cc2bcbb9b7661f5fef761f2b",
+    "src/reserve_odometry/config/candidates_v3/nonlinear_physics.yaml": "68100c74c31ddeac2a634d66b521156991d526dceca38bed37c47ddab7ed7115",
+    "src/reserve_odometry/config/default.yaml": "a29d075cbcca235a1cf5ab1f79a0a992f70ba788e729b452f732c273932eeb0e",
+    "src/reserve_odometry/launch/odometry.launch.py": "bafb889e78964fdba892960a47e31d449fb89bc91195d8a573f33e2ed229e42f",
+    "src/reserve_odometry/package.xml": "a0a24f3f7ba564188ee0f223e2afe5378019a58fba1d296f62726263822ec883",
+    "src/reserve_odometry/reserve_odometry/__init__.py": "e1f572a23a3af0453ee58954e1ac155057c09f538f30cf660aa84e9dadba6b74",
+    "src/reserve_odometry/reserve_odometry/core.py": "93341898b4810544c75894cfc3be2d1d7eefdbd686be65df8c33fecc100409b5",
+    "src/reserve_odometry/reserve_odometry/node.py": "a63b6cf915d0621eda4a99f4a9a91c8b21a3d2209420e2fc9f4f21084a6dbdd4",
+    "src/reserve_odometry/reserve_odometry/route.py": "631c9be75cc8bcf9770deb3e79aa3fad7c40d01bfaf446015a3566325df47739",
+    "src/reserve_odometry/reserve_odometry/timeline.py": "ed63b44dede078cb3cde501bd1e5559260763c56ac9b832f39924c1d97b0bdbf",
+    "src/reserve_odometry/setup.cfg": "504ebb3ed9db6bc2727b1b3396daf6f5334ea6b7f6eda26672ba2c415f400b71",
+    "src/reserve_odometry/setup.py": "591329e89a9e6cfa324585cc3ec2f2a96129689afc8f6fa51b1d85f96d94a962",
+    "src/tram_vehicle_msgs/CMakeLists.txt": "f220119ed18c68585208da7689733bf38a1a6a5a76973371b6ba18a1086636a6",
+    "src/tram_vehicle_msgs/msg/DriverControllerCommand.msg": "fe294e3cd4132ed8dd732d677e78196ae882d2be5468e76d029ea785615517fb",
+    "src/tram_vehicle_msgs/msg/VelocitySensor.msg": "4fae2e24132e779ae396773fe3df0f54584c8e54323f6f36d249e45449d7e8fd",
+    "src/tram_vehicle_msgs/package.xml": "0fff58dd63afcc03627c11b9968e817043499f438467d90520f59fc5af54127d",
+    "tools/export_bags.py": "696f6bdbf853dac4d4fe6286f6a7f4742f4aea5b1bc508efda52f5bc179c3b66",
+    "tools/finalization/evaluate.py": "f6a19a1727274ca88e1fe1a9fb76d31dbc8ce4e9bbabf669c488f053d76caec7",
+    "tools/research_v3/experiment.py": "95a398003530454457bacb2096fb6bc9d0d5ee32520420c43a9ebeb406376aa0",
+    "tools/research_v3/manifest.py": "51f24a2b9486938ac935d0b648f0612c76df075f7372caf6cc5bd457a8e53abb"
+  },
+  "runner_sha256": "5c71fd41a70048cb82180cd43d618a76a8b71ddb7babd266f20df46be8e3cead",
+  "source_ref": "a3030f5f6d1f8d5160b39688f3725c1cb9e65118",
+  "python": "3.13.5",
+  "numpy": "2.3.5",
+  "test_evaluated": false
+}
