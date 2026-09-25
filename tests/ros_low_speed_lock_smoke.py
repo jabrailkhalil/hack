@@ -64,4 +64,4 @@ def check(profile):
 
 
 if __name__=='__main__':
-    for profile in ('default.yaml','adaptive_v5.yaml'):check(profile)
+    for profile in ('frozen_v4.yaml','default.yaml'):check(profile)

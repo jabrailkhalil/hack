@@ -29,8 +29,13 @@ def main():
     root = Path(__file__).resolve().parents[1]
     decision = json.loads((root / 'reports/research_v3/decision.json').read_text())
     selected = decision['selected']
+    active = root / 'reports/research_v6/PROMOTION.json'
+    promoted = json.loads(active.read_text()) if active.exists() else None
     expected_path = args.expected_json or (root / 'src/reserve_odometry/config/candidates_v3' /
                                            (selected + '.json'))
+    if args.expected_json is None and promoted is not None:
+        expected_path = root / promoted['profile_json']
+        selected = promoted['selected']
     expected = json.loads(expected_path.read_text())['config']
     launch = ['ros2', 'launch', 'reserve_odometry', 'odometry.launch.py']
     if args.params_file:

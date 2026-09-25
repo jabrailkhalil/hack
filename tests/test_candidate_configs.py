@@ -3,9 +3,12 @@ from dataclasses import asdict
 import json
 from pathlib import Path
 import unittest
+import sys
 from reserve_odometry.core import Config, Observer, Sample
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0,str(ROOT/'tools'))
+from evidence_archive import read_v4
 CANDIDATES = ROOT / 'src/reserve_odometry/config/candidates_v3'
 
 
@@ -30,14 +33,14 @@ class CandidateConfigs(unittest.TestCase):
             self.assertLess(abs(e.v - 5), .1)
             self.assertGreater(e.s, 24.)
 
-    def test_default_matches_eligible_selection(self):
+    def test_frozen_v4_default_matches_eligible_selection(self):
         decision = json.loads((ROOT / 'reports/research_v3/decision.json').read_text())
         name = decision['selected']
         self.assertTrue(decision['candidates'][name]['eligible'])
         expected = json.loads((CANDIDATES / (name + '.json')).read_text())['config']
         # Files emitted here contain scalar float model parameters, no YAML features.
         actual = {}
-        for line in (ROOT / 'src/reserve_odometry/config/default.yaml').read_text().splitlines():
+        for line in read_v4('src/reserve_odometry/config/default.yaml').decode().splitlines():
             line = line.strip()
             if line.startswith('model.'):
                 key, value = line.split(':', 1)

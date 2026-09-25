@@ -7,6 +7,9 @@ import unittest
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT/'tools/research_v5'))
 import compare as v5
+import hashlib
+sys.path.insert(0,str(ROOT/'tools'))
+from evidence_archive import read_v4
 
 
 class V5GateTests(unittest.TestCase):
@@ -57,12 +60,10 @@ class V5GateTests(unittest.TestCase):
         self.assertEqual({a['purpose'] for a in data['access']}, {'validation'})
         self.assertEqual(len(data['access']), 19)
 
-    def test_comparison_preserves_main_runtime_and_default(self):
+    def test_historical_comparison_matches_immutable_archive(self):
         data = json.loads((ROOT/'reports/research_v5/round3/results.json').read_text())
         for path, digest in data['source_sha256'].items():
-            actual = (ROOT/'tools/research_lock/baseline_core.py' if path ==
-                      'src/reserve_odometry/reserve_odometry/core.py' else ROOT/path)
-            self.assertEqual(v5.ev.sha(actual), digest, path)
+            self.assertEqual(hashlib.sha256(read_v4(path)).hexdigest(), digest, path)
 
 
 if __name__ == '__main__':

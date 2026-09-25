@@ -1,0 +1,18 @@
+{
+  "version": 6,
+  "round": 2,
+  "base_main": "2f7851364c6afe9786fad040e0938454d8b0d210",
+  "previous_plan": "research/plan_v6.json",
+  "previous_experiment": "75110a3774b78b1e2abc4af407d87cc1aff36971",
+  "observed_round1": "Half/full projection reduced clean RMSE versus v5 by 2.08%/2.40%, but worsened fault RMSE by 0.71%/1.89%; both rejected by the preregistered 0.5% cap. No gate is relaxed.",
+  "rationale": "The fast adapted unobserved acceleration is held indefinitely when both wheels disappear. Test bounded exponential relaxation toward the calibrated physics after trusted pair age exceeds max_age_s. A fixed 2-second time constant is a hypothesis, not a fitted physical fact; this may fail on sustained gradients. Keep all outcomes.",
+  "hypotheses": [
+    {"id":"v5_decay_2s","changes":{"wheel_projection_gain":0.0,"disturbance_decay_s":2.0}},
+    {"id":"v5_project_half_decay_2s","changes":{"wheel_projection_gain":0.5,"disturbance_decay_s":2.0}},
+    {"id":"v5_project_full_decay_2s","changes":{"wheel_projection_gain":1.0,"disturbance_decay_s":2.0}}
+  ],
+  "acceptance": "UNCHANGED from round1: >=2% clean OR >=5% fault gain vs v5, <=0.5% clean/fault regression, <=1% scalar-distance regression, per-bag clean <=max(0.005m/s,5%), no coverage/false-stop/recovery/causal regression; actual ROS and offline checks before promotion.",
+  "data_policy": "Only the same 19 validation bag measurements; adaptive reuse, not an independent test. No reading/rerunning final-test measurements. Same matching, baselines, metrics and fault positions.",
+  "search_limit": "These are the last three hypotheses in this task. Select only a passing measured candidate; otherwise use the preregistered v5/v4 fallback. No tuning against final test.",
+  "intermediate_publication": "Plan, patch, per-bag results, rejected outcomes and final promotion decision go to GitHub; main stays unchanged until verified selection."
+}

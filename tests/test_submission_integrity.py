@@ -3,23 +3,19 @@ import hashlib
 import json
 from pathlib import Path
 import unittest
-import zipfile
+import sys
 ROOT=Path(__file__).resolve().parents[1]
+sys.path.insert(0,str(ROOT/'tools'))
+from evidence_archive import read_v4
 
 
 class SubmissionIntegrityTests(unittest.TestCase):
-    def test_published_archive_and_report_are_identical(self):
+    def test_frozen_archive_source_and_report_are_identical(self):
         path=ROOT/'submission/FREEZE.json'
         frozen=json.loads(path.read_text())
         final=json.loads((ROOT/'reports/final/test/results.json').read_text())
-        archive=ROOT/'submission/dist/reserve-odometry-v4.zip'
-        expected=archive.with_suffix('.sha256').read_text().split()[0]
-        self.assertEqual(hashlib.sha256(archive.read_bytes()).hexdigest(),expected)
-        # Final-test evidence belongs to the immutable published release, while
-        # current development sources may contain later validated fixes.
-        with zipfile.ZipFile(archive) as release:
-            for name,digest in frozen['source_sha256'].items():
-                self.assertEqual(hashlib.sha256(release.read('reserve-odometry-v4/'+name)).hexdigest(),digest,name)
+        for name,digest in frozen['source_sha256'].items():
+            self.assertEqual(hashlib.sha256(read_v4(name)).hexdigest(),digest,name)
         self.assertEqual(final['source_sha256'],frozen['source_sha256'])
         self.assertEqual(final['freeze_sha256'],hashlib.sha256(path.read_bytes()).hexdigest())
         self.assertTrue(final['test_evaluated'])

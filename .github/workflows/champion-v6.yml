@@ -1,0 +1,77 @@
+name: Verify active champion v6
+on:
+  push:
+    branches: [research/observer-v6]
+    paths: ['.github/workflows/champion-v6.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  runtime:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Prepare data and environment before disconnecting network
+        run: |
+          python3 tools/get_dataset.py
+          docker build -t odometry-champion -f Dockerfile.environment .
+      - name: Verify installed champion and both clock modes offline under 2 CPU / 500 MB
+        run: |
+          mkdir -p reports/research_v6/runtime
+          docker run --rm --network none --cpus 2 --memory 500000000 \
+            -e CMAKE_BUILD_PARALLEL_LEVEL=2 -e MAKEFLAGS=-j2 -e ROS_DOMAIN_ID=89 \
+            -v "$PWD:/work" -w /work odometry-champion bash -lc '
+              set -e
+              source /opt/ros/humble/setup.bash
+              colcon --log-base log_champion build --build-base build_champion --install-base install_champion --executor sequential
+              source install_champion/setup.bash
+              python3 tests/ros_calibrated_smoke.py
+              python3 tools/finalization/ros_benchmark.py --seconds 180 --clock-mode input_stamp --output reports/research_v6/runtime/active_input_stamp.json
+              python3 tools/finalization/ros_benchmark.py --seconds 60 --clock-mode ros_clock --output reports/research_v6/runtime/active_ros_clock.json
+            '
+      - name: Gate measured latency, source rate and correctness
+        run: |
+          python3 - <<'PY'
+          import json,pathlib
+          for path in pathlib.Path('reports/research_v6/runtime').glob('active_*.json'):
+              r=json.loads(path.read_text())
+              assert r['latency_observed_within_nominal_and_peak'], path
+              assert not r['correctness_failures'], (path,r['correctness_failures'])
+              assert r['causal_errors']==0, path
+              assert r['source_rate_hz']>=10 and r['wall_rate_hz']>=10, path
+              assert r['rss_peak_bytes']<500000000, path
+          assert len(list(pathlib.Path('reports/research_v6/runtime').glob('active_*.json')))==2
+          PY
+      - name: Record exact measured profile and invocation
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import hashlib,json,os,pathlib
+          out=pathlib.Path('reports/research_v6/runtime');out.mkdir(parents=True,exist_ok=True)
+          profile=pathlib.Path('src/reserve_odometry/config/default.yaml')
+          out.joinpath('execution.json').write_text(json.dumps(dict(
+              source_commit=os.environ['GITHUB_SHA'],run_id=os.environ['GITHUB_RUN_ID'],
+              active_profile='v5_adaptive_05s',default_sha256=hashlib.sha256(profile.read_bytes()).hexdigest(),
+              cpu_limit=2,memory_limit_bytes=500000000,network='none',
+              durations_s={'input_stamp':180,'ros_clock':60},
+              full_bag=False,independent_test_evaluated=False,
+              scope='Development-data timing check of the active profile, not the old v4 full-bag benchmark'),indent=2)+'\n')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: active-champion-runtime
+          path: reports/research_v6/runtime/
+          retention-days: 30
+      - name: Push intermediate timing evidence without moving main or research HEAD
+        if: always()
+        run: |
+          set -eu
+          git config --global --add safe.directory "$PWD"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git switch -c "checkpoint/champion-v6-$GITHUB_RUN_ID"
+          git add reports/research_v6/runtime
+          git diff --cached --quiet || git commit -m "test: preserve active champion timing evidence $GITHUB_RUN_ID"
+          git push origin "HEAD:refs/heads/checkpoint/champion-v6-$GITHUB_RUN_ID"
