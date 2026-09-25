@@ -44,12 +44,12 @@ jobs:
           set -euo pipefail
           test "$GITHUB_REF_NAME" = 'research/round2-H20'
           python research/R2/H20/restore.py
+          python research/R2/H20/trace_extension.py
           python - <<'PY'
           from pathlib import Path
           p = Path('research/R2/H20/execute.sh')
           text = p.read_text()
-          # The currently open execution log is published only at the end, not
-          # rewritten after the freeze commit. All finished logs remain frozen.
+          # The currently open log is published only at the end.
           old = '  git add -f "$OUT"\n  git commit -m "research(H20): freeze'
           new = '  git add -f -- "$OUT" ":!$OUT/logs/execute.log"\n  git commit -m "research(H20): freeze'
           if old not in text:
