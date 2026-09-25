@@ -1,33 +1,25 @@
-# Инструкция для жюри: резервная одометрия v4
+# Запуск активного профиля v5 и воспроизведение архива v4
 
-## Что проверяется
+## Выбор версии
 
-Решение оценивает продольную скорость и относительную дистанцию трамвая по трём vehicle-топикам. Основной режим положения: `(s,0,0)` в `odom_path_1d`. Это вариант относительной одометрии, допускаемый PDF на странице 5 при отсутствии абсолютной привязки, **не восстановленная ENU/xyz-траектория**. README датасета содержит иной xyz-контракт; расхождение явно зафиксировано в [LIMITATIONS.md](LIMITATIONS.md). Карта пути, origin и ветвь маршрута не выдумываются.
+Текущий `main` использует **v5**: прежние fitted-коэффициенты и runtime v4, постоянная времени адаптации `0.5 с` вместо `8 с`. Отбор, регрессия скалярной дистанции и проверки приведены в [актуальном отчёте](../reports/research_v6/REPORT.md). Это повторно используемый validation, не новый независимый test.
 
-Состав исходников: `src/tram_vehicle_msgs` (два сообщения), `src/reserve_odometry` (ядро и ROS-нода). Никаких внешних моделей, GNSS/IMU-подписок или научных Python-библиотек в runtime. Научные зависимости используются только отдельным offline-evaluator.
+**Standalone `reserve-odometry-v4.zip` остаётся отдельной исторической версией.** Его `FREEZE.json`, final-test и 24-минутный runtime-прогон не подтверждают активный v5. При передаче архива передаются именно v4 и её инструкция внутри ZIP. При передаче текущего checkout указывать v5 и текущий отчёт, не подставлять старые test-числа.
 
 ## 1. Среда и сборка
 
-Ubuntu 22.04 x86_64, ROS 2 Humble, системный Python 3.10, colcon. Не устанавливать `requirements-research.txt` в системный Python ROS. Перед отключением интернета подготовить ROS base, colcon и пакеты diagnostic_msgs, nav_msgs, std_srvs. `Dockerfile.environment` содержит воспроизводимый рецепт такой предварительной подготовки.
+Ubuntu 22.04 x86_64, ROS 2 Humble, системный Python 3.10, colcon. Зависимости подготовить заранее; рецепт — `Dockerfile.environment`. Исследовательские requirements предназначены для отдельного Python 3.13, не системного ROS Python.
 
-Распаковать `reserve-odometry-v4.zip`, перейти в одноимённую папку:
+Из корня текущего checkout:
 
 ```bash
-cd reserve-odometry-v4
 bash submission/build.sh
-```
-
-Скрипт выполняет стандартный `colcon build --base-paths src --executor sequential` и unit/ROS-проверки. Интернет при сборке и исполнении решения не нужен. Команда не скачивает датасет и не запускает финальную статистическую оценку.
-
-## 2. Основной запуск
-
-Терминал 1 из корня пакета:
-
-```bash
 bash submission/run.sh
 ```
 
-Терминал 2:
+`build.sh` не скачивает данные и не переоценивает final test. Ноду запускать до bag, после независимых bag перезапускать. Стандартный launch загружает `config/default.yaml`, побайтно равный выбранному `adaptive_v5.yaml`. Все его model-параметры проверяются отдельным ROS-процессом через GetParameters, а не только чтением YAML.
+
+Во втором терминале:
 
 ```bash
 source /opt/ros/humble/setup.bash
@@ -38,81 +30,59 @@ ros2 bag play /absolute/path/to/bag --topics \
   /vehicle/rear_bogie_velocity
 ```
 
-Ноду запускать до bag. После каждого независимого bag перезапускать ноду. `run.sh` всегда подключает проверенный `default.yaml`: обученные коэффициенты v3 и исправленный runtime v4, 20 Гц, без искусственной задержки выравнивания. Голый `ros2 run ...` без params-file оставляет старые defaults и **не является запуском сдаваемой конфигурации**.
+Голый `ros2 run` без params-file использует базовые `Config()` defaults и не запускает выбранную конфигурацию. Воспроизведение прежнего профиля:
 
-## 3. Режим с /clock
+```bash
+ros2 launch reserve_odometry odometry.launch.py \
+  params_file:="$PWD/src/reserve_odometry/config/frozen_v4.yaml"
+```
 
-Для испытания полного пропадания всех трёх входов нужен продолжающийся источник времени:
+## 2. Контракт
+
+Runtime получает только `/vehicle/driver_position_cmd` (DriverControllerCommand, notch −15..15), `/vehicle/front_bogie_velocity` и `/vehicle/rear_bogie_velocity` (VelocitySensor). GNSS/IMU/LLM и научных библиотек внутри ноды нет.
+
+Выходы: `/result/velocity` — `tram_vehicle_msgs/msg/VelocitySensor`, м/с, frame `base_link`; `/result/position` — `nav_msgs/msg/Odometry`, метры, frame `odom_path_1d`, child `base_link`; `/result/diagnostics` — состояния и причины отклонения входов. Частота 20 Гц, искусственная задержка выравнивания 0 с, stamps относятся ко времени входов. Инициализация требует согласованных валидных показаний двух тележек.
+
+Входной коэффициент `1/3.6` — эмпирическое допущение, а не подтверждённое исправление README организатора. `(s,0,0)` — относительная дистанция, не ENU-траектория; согласование карты и xyz-контракта остаётся обязательным для оценки пространственного положения. Геометрия не восстанавливается из будущего GNSS тестовой записи.
+
+## 3. Полный dropout, pause и seek
+
+Для пропадания всех трёх входов должен продолжаться `/clock`:
 
 ```bash
 # Терминал 1
 bash submission/run.sh --clock
-# Терминал 2 (после source)
+# Терминал 2, после source
 ros2 bag play /absolute/path/to/bag --clock 100 --topics \
   /vehicle/driver_position_cmd \
   /vehicle/front_bogie_velocity \
   /vehicle/rear_bogie_velocity
 ```
 
-В основном `input_stamp` режиме время продвигается только входными stamps, поэтому без вообще всех входов оно останавливается. В `ros_clock` режиме оценка продолжает прогноз при dropout, но не интегрирует wall time на паузе `/clock`. Обратный скачок авторитетного `/clock` начинает новый относительный сегмент; без `/clock` seek требует явного reset/перезапуска.
+В `input_stamp` отсутствие вообще всех входов останавливает время. В `ros_clock` модель прогнозирует при dropout и не продолжает движение на паузе часов. Backward seek начинает новый относительный сегмент; для seek без `/clock` нужен reset/перезапуск:
 
 ```bash
 ros2 service call /reserve_odometry/reset std_srvs/srv/Trigger '{}'
 ```
 
-## 4. Топики и единицы
-
-| Направление | Топик | Тип / поле |
-|---|---|---|
-| Вход | `/vehicle/driver_position_cmd` | DriverControllerCommand / `position`, int8 notch −15..15 |
-| Вход | `/vehicle/front_bogie_velocity` | VelocitySensor / `velocity` |
-| Вход | `/vehicle/rear_bogie_velocity` | VelocitySensor / `velocity` |
-| Выход | `/result/velocity` | VelocitySensor / `velocity`, м/с, frame `base_link` |
-| Выход | `/result/position` | Odometry / `pose.pose.position`, метры; `twist.twist.linear.x`, м/с |
-| Диагностика | `/result/diagnostics` | DiagnosticArray: состояние, причины отказа входов, сбросы, stale |
-
-VelocitySensor и DriverControllerCommand находятся в `tram_vehicle_msgs/msg`. Положение по умолчанию имеет `header.frame_id=odom_path_1d`, `child_frame_id=base_link`. Quaternion единичный для условной продольной оси. Stamps восстанавливаются из исходного integer origin, а не из часов машины. Выходные сообщения не публикуются до двух согласованных валидных колёсных измерений.
-
-Входной коэффициент `front_scale=rear_scale=1/3.6` выбран по эмпирическому аудиту. README организатора называет вход м/с, тогда как отношение raw/GNSS в исследованных записях близко к 3.6. Это **не подтверждённое организатором исправление единиц**. Параметр явный, output всегда SI.
+## 4. Проверки и версия измерений
 
 ```bash
+PYTHONPATH=src/reserve_odometry python3 -m unittest discover -s tests -v
+python3 tests/ros_calibrated_smoke.py
 ros2 node info /reserve_odometry
-ros2 topic info /result/velocity -v
-ros2 topic echo /result/velocity --once
-ros2 topic echo /result/position --once
 ros2 topic hz /result/velocity
 ros2 topic hz /result/position
-ros2 topic echo /result/diagnostics --once
 ```
 
-## 5. Измерения и воспроизведение
+Текущие paired-метрики и реальные timing-отчёты находятся в `reports/research_v6/`. Старый `reports/final/` и `submission/RESULTS.md` — опубликованный v4. Тесты проверяют его точный ZIP и отдельно проверяют active-source по `PROMOTION.json`; смена профиля не получает автоматически старый сертификат freeze.
 
-Финальная точность и пропуски эталона приведены в [RESULTS.md](RESULTS.md), полные результаты всех 22 test-bag — `reports/final/test/results.json` и `reports/final/test/bags/`. Train/validation/test разделены по группам, источник/параметры/evaluator закреплены в `FREEZE.json` до теста. GNSS используется только эталоном offline, оба приёмника сохранены.
-
-`tools/finalization/ros_benchmark.py` запускает отдельную ROS-ноду и независимые publisher/subscribers. Он проигрывает реальные SQLite/CDR vehicle-сообщения в порядке записи при 1x и измеряет первое соответствующее сообщение обоих выходов. Непривязанные входы явно учитываются. Это не просто timer callback duration и не ускоренный replay.
+Сеть при сборке/работе не требуется после подготовки образа. Пример ограниченного окружения:
 
 ```bash
-# Датасет загружается заранее, с интернетом и проверкой SHA256.
-python3 tools/get_dataset.py
-# После source ROS и install; полный заранее просмотренный development-bag:
-python3 tools/finalization/ros_benchmark.py --seconds 0 --clock-mode input_stamp \
-  --output /tmp/odometry-runtime.json
-```
-
-Результат: JSON метрик, trace CSV, resource CSV и node.log. Для исследования/пересчёта точности использовать отдельный Python 3.13 и `requirements-research.txt`. Final-test запуск требует `--authorize-final-test`, проверяет неизменность FREEZE и отказывается перезаписывать существующую папку результатов. Повторное применение test для подбора решения не допускается.
-
-## 6. Проверка без сети и в лимитах
-
-```bash
-# Только предварительная подготовка с интернетом:
 docker build -t odometry-env -f Dockerfile.environment .
-# Сборка и проверки уже без интернета:
 docker run --rm --network none --cpus 2 --memory 500000000 \
   -v "$PWD:/work" -w /work odometry-env bash -lc 'bash submission/build.sh'
 ```
 
-Лимит всего контейнера включает тестовые процессы. Полный performance-прогон и проверка исходников именно из ZIP выполняются отдельно и имеют собственные протоколы. Короткий integration smoke не называется доказательством неограниченной работы без утечек.
-
-## 7. Карта (не включена в базовую сдачу)
-
-Уже реализован загрузчик упорядоченного CSV `x,y,z` в разрешённой метрической системе: `route_csv`, `route_s0`, `route_frame`. Он интерполирует позицию по накопленной длине, а не создаёт маршрут из test GNSS. Без разрешённых карты, origin и выбора ветвей этот режим не используется. За границей известной карты position не подменяется конечной точкой: публикация position прекращается, velocity продолжается и диагностика сообщает ошибку.
+Для текущего измерения задержки после подготовки dataset и source ROS/install можно использовать `tools/finalization/ros_benchmark.py --seconds 180 --clock-mode input_stamp --output /tmp/active-timing.json`. Он открывает только заранее просмотренный development bag, не final test; сохраняет p95/p99/max, несопоставленные входы, trace, RSS и CPU. Повторный запуск не равен независимому тесту обобщения.

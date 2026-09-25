@@ -1,8 +1,5 @@
 name: Paired v6 projection experiment
 on:
-  push:
-    branches: [research/observer-v6]
-    paths: ['tools/research_v6/compare.py', 'research/patches/v6-projection.patch', '.github/workflows/research-v6.yml']
   workflow_dispatch:
 permissions:
   contents: write
@@ -27,23 +24,28 @@ jobs:
           git apply --check research/patches/v6-projection.patch
           git apply research/patches/v6-projection.patch
           PYTHONPATH=src/reserve_odometry python -m unittest discover -s tests -p test_core.py -v
-          PYTHONPATH=src/reserve_odometry python -m unittest discover -s research/v6_tests -v
-      - name: Paired comparison and per-bag intermediate evidence
-        run: python tools/research_v6/compare.py --output reports/research_v6/round1 --workers 2
+          PYTHONPATH=src/reserve_odometry python -m unittest discover -s research/v6_tests -p test_projection.py -v
+      - name: Paired comparison in a fresh output directory
+        run: python tools/research_v6/compare.py --output "$RUNNER_TEMP/v6-round1" --workers 2
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: observer-v6-round1
-          path: reports/research_v6/round1/
+          path: ${{ runner.temp }}/v6-round1/
           retention-days: 30
-      - name: Preserve reports on isolated checkpoint branch even on failure
+      - name: Preserve repeat evidence without replacing the original round
         if: always()
         run: |
           set -eu
           git restore src/reserve_odometry/reserve_odometry/core.py
+          if ! test -d "$RUNNER_TEMP/v6-round1"; then exit 0; fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git switch -c "checkpoint/observer-v6-$GITHUB_RUN_ID"
-          git add reports/research_v6/round1
-          git diff --cached --quiet || git commit -m "research: preserve all v6 projection hypotheses and measurements $GITHUB_RUN_ID"
-          git push origin "HEAD:refs/heads/checkpoint/observer-v6-$GITHUB_RUN_ID"
+          branch="checkpoint/observer-v6-repeat-r1-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          git switch -c "$branch"
+          destination="reports/research_v6/reruns/round1-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          mkdir -p "$destination"
+          cp -a "$RUNNER_TEMP/v6-round1/." "$destination/"
+          git add "$destination"
+          git diff --cached --quiet || git commit -m "research: preserve repeated v6 projection measurements $GITHUB_RUN_ID"
+          git push origin "HEAD:refs/heads/$branch"
