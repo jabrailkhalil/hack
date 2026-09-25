@@ -13,14 +13,17 @@ from evidence_archive import read_v4
 
 class ActiveProfileTests(unittest.TestCase):
     def test_current_default_is_the_selected_profile(self):
-        promotion=json.loads((ROOT/'reports/research_v6/PROMOTION.json').read_text())
+        promotion=json.loads((ROOT/'submission/ACTIVE_PROFILE.json').read_text())
         actual={}
         for line in (ROOT/'src/reserve_odometry/config/default.yaml').read_text().splitlines():
             key,sep,value=line.strip().partition(':')
             if sep and key.startswith('model.'):
                 actual[key[6:]]=float(value)
         self.assertEqual(actual,promotion['config'])
-        self.assertEqual(dict(actual,wheel_time_compensation=0.0),asdict(Config(**actual)))
+        self.assertEqual(actual,asdict(Config(**actual)))
+        self.assertEqual(actual['wheel_time_compensation'],1.0)
+        self.assertFalse(promotion['automatic_previous_gate_passed'])
+        self.assertEqual(promotion['decision'],'owner_directed_clean_distance_priority')
         expected=json.loads((ROOT/promotion['profile_json']).read_text())['config']
         self.assertEqual(actual,expected)
         self.assertEqual(actual['adaptation_tau_s'],.5)
@@ -30,7 +33,12 @@ class ActiveProfileTests(unittest.TestCase):
         promotion=json.loads((ROOT/'reports/research_v6/PROMOTION.json').read_text())
         for path,digest in promotion['source_sha256'].items():
             # The opt-in core extension does not rewrite historical promotion evidence.
-            raw = read_v4(path) if path.endswith('/core.py') else (ROOT/path).read_bytes()
+            if path.endswith('/core.py'):
+                raw = read_v4(path)
+            elif path == 'src/reserve_odometry/config/default.yaml':
+                raw = (ROOT/'src/reserve_odometry/config/adaptive_v5.yaml').read_bytes()
+            else:
+                raw = (ROOT/path).read_bytes()
             self.assertEqual(hashlib.sha256(raw).hexdigest(),digest,path)
 
     def test_rejected_experimental_runtime_is_not_deployed(self):
@@ -41,6 +49,13 @@ class ActiveProfileTests(unittest.TestCase):
         self.assertEqual(Config().wheel_time_compensation,0.0)
         self.assertNotIn('wheel_projection_gain',asdict(Config()))
         self.assertNotIn('disturbance_decay_s',asdict(Config()))
+
+    def test_active_source_and_profile_hashes_match(self):
+        active=json.loads((ROOT/'submission/ACTIVE_PROFILE.json').read_text())
+        for path,digest in active['source_sha256'].items():
+            self.assertEqual(hashlib.sha256((ROOT/path).read_bytes()).hexdigest(),digest,path)
+        self.assertEqual((ROOT/'src/reserve_odometry/config/default.yaml').read_bytes(),
+                         (ROOT/'src/reserve_odometry/config/time_aligned_v6.yaml').read_bytes())
 
     def test_original_v4_default_is_retained_exactly(self):
         self.assertEqual((ROOT/'src/reserve_odometry/config/frozen_v4.yaml').read_bytes(),

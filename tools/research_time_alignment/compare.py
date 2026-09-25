@@ -50,7 +50,9 @@ def pinned_core():
 
 def models():
     for path, expected in PINNED_FILES.items():
-        if ev.sha(ROOT / path) != expected:
+        source = (ROOT / 'src/reserve_odometry/config/adaptive_v5.yaml'
+                  if path == 'src/reserve_odometry/config/default.yaml' else ROOT / path)
+        if ev.sha(source) != expected:
             raise ValueError('Pinned baseline/evaluator changed: ' + path)
     old = pinned_core()
     cfg = ROOT / 'src/reserve_odometry/config'
@@ -58,15 +60,15 @@ def models():
     v5 = json.loads((cfg / 'adaptive_v5.json').read_text())['config']
     if v5 != dict(base, adaptation_tau_s=.5):
         raise ValueError('Baseline v5 differs from pinned main profile')
-    # main promoted the already measured v5 to default while this PR was open.
-    # Verify the actual active YAML, not the historical balanced-physics default.
+    # Historical PR11 confirmation, not a declaration of today's default.
+    # Retained v5 fallback is byte-identical to the pinned original default.
     active = {}
-    for line in (cfg / 'default.yaml').read_text().splitlines():
+    for line in (cfg / 'adaptive_v5.yaml').read_text().splitlines():
         key, sep, value = line.strip().partition(':')
         if sep and key.startswith('model.'):
             active[key[6:]] = float(value)
     if active != v5:
-        raise ValueError('Active main profile differs from the paired v5 baseline')
+        raise ValueError('Retained v5 profile differs from the pinned baseline')
     candidate = json.loads((cfg / 'time_aligned_v6.json').read_text())['config']
     if candidate != dict(v5, wheel_time_compensation=1.):
         raise ValueError('Selected candidate changed: run a new experiment, not this confirmation')

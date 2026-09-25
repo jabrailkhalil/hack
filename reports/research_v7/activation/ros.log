@@ -1,0 +1,54 @@
+Starting >>> tram_vehicle_msgs
+Finished <<< tram_vehicle_msgs [8.05s]
+Starting >>> reserve_odometry
+Finished <<< reserve_odometry [0.75s]
+
+Summary: 2 packages finished [9.03s]
+[WARN] [1790361769.615304555] [reserve_odometry]: RELATIVE 1D POSITION: no map/heading. This is NOT an ENU trajectory.
+[WARN] [1790361769.616197033] [reserve_odometry]: Wheel scale defaults to 1/3.6 from measured dataset audit; verify organizer units.
+ROS_SMOKE_PASS outputs=99 rate=20.000Hz v=4.999586
+CALIBRATED_LAUNCH_PASS selected=time_aligned_v6 verified_parameters=37 outputs=120 rate=20.000Hz v=5.000000
+[INFO] [launch]: All log files can be found below /root/.ros/log/2026-09-25-18-42-55-214575-f81dcddff8cf-497
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [odometry_node-1]: process started with pid [509]
+[odometry_node-1] [WARN] [1790361775.485601242] [reserve_odometry]: RELATIVE 1D POSITION: no map/heading. This is NOT an ENU trajectory.
+[odometry_node-1] [WARN] [1790361775.486424841] [reserve_odometry]: Wheel scale defaults to 1/3.6 from measured dataset audit; verify organizer units.
+[WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+[INFO] [odometry_node-1]: sending signal 'SIGINT' to process[odometry_node-1]
+[odometry_node-1] Traceback (most recent call last):
+[odometry_node-1]   File "/work/install_active/reserve_odometry/lib/reserve_odometry/odometry_node", line 33, in <module>
+[odometry_node-1]     sys.exit(load_entry_point('reserve-odometry==0.1.0', 'console_scripts', 'odometry_node')())
+[odometry_node-1]   File "/work/install_active/reserve_odometry/lib/python3.10/site-packages/reserve_odometry/node.py", line 240, in main
+[odometry_node-1]     node.destroy_node()
+[odometry_node-1]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/node.py", line 1696, in destroy_node
+[odometry_node-1]     self.__node.destroy_when_not_in_use()
+[odometry_node-1] KeyboardInterrupt
+[ERROR] [odometry_node-1]: process has died [pid 509, exit code -2, cmd '/work/install_active/reserve_odometry/lib/reserve_odometry/odometry_node --ros-args --params-file /work/install_active/reserve_odometry/share/reserve_odometry/config/default.yaml --params-file /tmp/launch_params_7jr941p7'].
+
+CALIBRATED_LAUNCH_PASS selected=time_aligned_v6 verified_parameters=37 outputs=120 rate=20.000Hz v=5.000000
+[INFO] [launch]: All log files can be found below /root/.ros/log/2026-09-25-18-43-01-838248-f81dcddff8cf-522
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [odometry_node-1]: process started with pid [533]
+[odometry_node-1] [WARN] [1790361782.087224799] [reserve_odometry]: RELATIVE 1D POSITION: no map/heading. This is NOT an ENU trajectory.
+[odometry_node-1] [WARN] [1790361782.088045524] [reserve_odometry]: Wheel scale defaults to 1/3.6 from measured dataset audit; verify organizer units.
+[WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+[INFO] [odometry_node-1]: sending signal 'SIGINT' to process[odometry_node-1]
+[odometry_node-1] Traceback (most recent call last):
+[odometry_node-1]   File "/work/install_active/reserve_odometry/lib/reserve_odometry/odometry_node", line 33, in <module>
+[odometry_node-1]     sys.exit(load_entry_point('reserve-odometry==0.1.0', 'console_scripts', 'odometry_node')())
+[odometry_node-1]   File "/work/install_active/reserve_odometry/lib/python3.10/site-packages/reserve_odometry/node.py", line 240, in main
+[odometry_node-1]     node.destroy_node()
+[odometry_node-1]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/node.py", line 1691, in destroy_node
+[odometry_node-1]     self.destroy_service(self._services[0])
+[odometry_node-1]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/node.py", line 1615, in destroy_service
+[odometry_node-1]     service.destroy()
+[odometry_node-1]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/service.py", line 93, in destroy
+[odometry_node-1]     self.__service.destroy_when_not_in_use()
+[odometry_node-1] KeyboardInterrupt
+[ERROR] [odometry_node-1]: process has died [pid 533, exit code -2, cmd '/work/install_active/reserve_odometry/lib/reserve_odometry/odometry_node --ros-args --params-file /work/install_active/reserve_odometry/share/reserve_odometry/config/time_aligned_v6.yaml --params-file /tmp/launch_params_6t63ftcu'].
+
+ROS_FAULT_PASS outputs=340 dropout_outputs=60 pause_no_motion=true short_backward_seek_reset=true
+[WARN] [1790361788.896368017] [reserve_odometry]: RELATIVE 1D POSITION: no map/heading. This is NOT an ENU trajectory.
+[WARN] [1790361788.896979284] [reserve_odometry]: Wheel scale defaults to 1/3.6 from measured dataset audit; verify organizer units.
+
+CDR_ROUNDTRIP_PASS 4 types x 3 header lengths

@@ -30,7 +30,9 @@ def main(argv=None):
     root = Path(__file__).resolve().parents[1]
     decision = json.loads((root / 'reports/research_v3/decision.json').read_text())
     selected = decision['selected']
-    active = root / 'reports/research_v6/PROMOTION.json'
+    active = root / 'submission/ACTIVE_PROFILE.json'
+    if not active.exists():
+        active = root / 'reports/research_v6/PROMOTION.json'
     promoted = json.loads(active.read_text()) if active.exists() else None
     expected_path = args.expected_json or (root / 'src/reserve_odometry/config/candidates_v3' /
                                            (selected + '.json'))
