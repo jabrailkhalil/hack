@@ -38,6 +38,30 @@ jobs:
         if: hashFiles('research/R2/H20/RUN') != ''
         with:
           python-version: '3.13'
+      - name: Verify and publish research source before measurement access
+        if: hashFiles('research/R2/H20/RUN') != ''
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF_NAME" = 'research/round2-H20'
+          python research/R2/H20/restore.py
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('research/R2/H20/execute.sh')
+          text = p.read_text()
+          # The currently open execution log is published only at the end, not
+          # rewritten after the freeze commit. All finished logs remain frozen.
+          old = '  git add -f "$OUT"\n  git commit -m "research(H20): freeze'
+          new = '  git add -f -- "$OUT" ":!$OUT/logs/execute.log"\n  git commit -m "research(H20): freeze'
+          if old not in text:
+              raise ValueError('Unexpected execution script')
+          p.write_text(text.replace(old, new))
+          PY
+          git config user.name 'H20 research source'
+          git config user.email 'h20-research@users.noreply.github.com'
+          git add research/R2/H20
+          git commit -m 'research(H20): publish checked implementation and driver before real replay'
+          git push origin HEAD:refs/heads/research/round2-H20
+          echo "H20_SOURCE_SHA=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
       - name: Preregistered experiment
         if: hashFiles('research/R2/H20/RUN') != ''
         run: bash research/R2/H20/execute.sh
