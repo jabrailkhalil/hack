@@ -6,6 +6,7 @@ parameters are illustrative until identified on the organizer's training data.
 from dataclasses import dataclass, asdict
 import math
 from typing import Optional
+from .h01_projection import ConditionalProjection
 
 
 def clip(x, lo, hi):
@@ -49,6 +50,7 @@ class Config:
     stop_model_speed_mps: float = 0.25
     stop_dwell_s: float = 0.5
     adaptation_tau_s: float = 8.0
+    h01_projection_gain: float = 0.0  # Experimental; baseline/default stays disabled.
     disturbance_limit_mps2: float = 0.6
     max_step_s: float = 0.20
     reacquire_dwell_s: float = 0.8
@@ -75,6 +77,8 @@ class Config:
                 raise ValueError(f'{key} must be positive')
         if not 0 <= self.command_deadband < 1 or self.efficiency > 1:
             raise ValueError('Invalid deadband or efficiency')
+        if not 0.0 <= self.h01_projection_gain <= 1.0:
+            raise ValueError('h01_projection_gain must be between 0 and 1')
         if self.travel_direction not in (-1.0, 1.0):
             raise ValueError('travel_direction must be -1 or 1')
         if self.innovation_cap_mps < self.innovation_floor_mps:
@@ -127,6 +131,7 @@ class Observer:
         self.reacquire_previous = None
         self.pair_pending = [None, None]
         self.last_estimate = None
+        self.h01_projection = ConditionalProjection()
 
     def drive_target(self, u, v):
         c = self.c
@@ -303,9 +308,16 @@ class Observer:
         self.v = predicted
         self.pv = p_prior
         mode = 'MODEL_ONLY'
+        if c.h01_projection_gain:
+            projection_delta = self.h01_projection.delta(
+                c, t, a_model, predicted, self.disturbance,
+                samples, accepted, statuses, command_stale)
         if accepted:
             self._clear_reacquire()
             z = sum(samples[i].value for i in accepted) / len(accepted)
+            if c.h01_projection_gain:
+                # Raw evidence, adaptation, recovery and timestamps stay untouched.
+                z += projection_delta
             # No 1/N reduction: wheel errors can be correlated.
             r = c.wheel_sigma_mps ** 2 * (1.0 if len(accepted) == 2 and agree else 4.0)
             residual = z - predicted
