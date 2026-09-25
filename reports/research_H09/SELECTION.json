@@ -1,0 +1,41 @@
+{
+  "hypothesis": "H09",
+  "candidate_id": "H09_strict_stop_history",
+  "status": "REJECTED_DEVELOPMENT",
+  "ready_to_merge": false,
+  "baseline_commit": "984fdf2fc4faf05325249215d6b8541c0e68209a",
+  "preregistration_commit": "ef1e94de68ef74cc37dcd0eadf5e355c34137f0d",
+  "candidate_source_commit": "5d1c50ada7a9e7e4d3885b1329ffc15d60258477",
+  "candidate_hashes": {
+    "baseline_core_sha256": "780ca4796d86b4fa4e8c8679abfb73f58f23e003d4ee644ba964ffdeac9f0bfc",
+    "candidate_core_sha256": "8c1eb3118605ae48f2d589a0e12d69015e3e1b7fe0a96272db51ffcce5595e1a",
+    "patch_sha256": "28c20f196b3acf2cfddc8d682821a3bd6500782e5ea9005c3d36c2fa6d62e7c0",
+    "stop_history_sha256": "9630c8caf7b006bf21f0943195608fc96da1926b74720315cf87d411f1c5c265",
+    "evaluator_lock_sha256": "f6b5dfe04f80390429552d16798313e32a836525a2b2938233b6513cce6ede26",
+    "runner_sha256": "d444b2ae088f889e32de117120fff66dc8c00d695f88738228e2930379b4236c",
+    "loader_sha256": "0433c2af7c0330fb92f0f816af3be024e8ccae3d3ac42d4eb885a7c652ae8daa"
+  },
+  "evaluated_variants": 1,
+  "parameter_retuning_after_measurements": false,
+  "development_safety_passed": false,
+  "validation_candidate": null,
+  "validation_authorized": false,
+  "validation_opened": false,
+  "final_test_opened": false,
+  "rejection_reasons": [
+    "false_stops:30618_0652866c/master",
+    "false_stops:30618_0652866c/rover",
+    "insufficient_common_gain",
+    "slow_reference_stop_samples:30618_27e994fc/master",
+    "slow_reference_stop_samples:30639_dce52be4/master",
+    "slow_reference_stop_samples:30639_dce52be4/rover"
+  ],
+  "local_results_sha256": "789ec520187820a5be8757cadd7ebb3c324dbcd44d3c9a93067a14009dfc7f97",
+  "remote_results_sha256": "d05a4b5a5b52d0cf557cf10f6240e8e0038dacaf9089bd2037b7c4f0f18d6a7c",
+  "reproduction_run_id": "36175737653",
+  "reproduction_run_attempt": 1,
+  "checkpoint_commit": "919b54c352a7e3fb536b07a8ce1d4be91232074b",
+  "checkpoint_directory": "reports/research_H09/development/36175737653-1",
+  "runtime_scope": "Offline core+Timeline timing and causality only; no candidate ROS latency/resource certification",
+  "conclusion": "Отвергнут один заранее заданный вариант; это не универсальное опровержение всех возможных механизмов H09."
+}
