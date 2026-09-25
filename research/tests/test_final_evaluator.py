@@ -9,9 +9,28 @@ import numpy as np
 ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT/'tools/finalization'))
 import evaluate as ev
+sys.path.insert(0,str(ROOT/'tools'))
+from evidence_archive import extract_v4
 
 
 class FinalEvaluatorTests(unittest.TestCase):
+    def setUp(self):
+        # Run the historical evaluator's configuration/freeze tests against the
+        # exact v4 payload it certified, not the newer active ROS profile.
+        self.archive_dir = tempfile.TemporaryDirectory()
+        self.addCleanup(self.archive_dir.cleanup)
+        frozen_root = extract_v4(self.archive_dir.name)
+        self.root_patch = patch.object(ev, 'ROOT', frozen_root)
+        self.root_patch.start()
+        self.addCleanup(self.root_patch.stop)
+
+    def test_old_freeze_does_not_certify_active_default(self):
+        with patch.object(ev, 'ROOT', ROOT):
+            with self.assertRaises(ValueError):
+                ev.configuration()
+            with self.assertRaises(ValueError):
+                ev.verify_freeze(ROOT/'submission/FREEZE.json')
+
     def test_heldout_denied_without_authorization_before_io(self):
         store=ev.FinalStore();bag=store.plan['splits']['test'][0]
         with patch.object(ev.sqlite3,'connect') as connect:
