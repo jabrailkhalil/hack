@@ -37,6 +37,8 @@ def main():
     parser.add_argument('--directory', type=Path, default=Path('dataset'))
     args = parser.parse_args()
     args.directory.mkdir(parents=True, exist_ok=True)
+    # Dataset includes a second copy of tram_vehicle_msgs; keep colcon out.
+    (args.directory / 'COLCON_IGNORE').touch()
     destination = args.directory / 'dataset.zip'
     if not destination.exists():
         query = urllib.parse.urlencode(dict(public_key=KEY, path='/dataset.zip'))

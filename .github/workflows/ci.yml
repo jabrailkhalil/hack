@@ -46,6 +46,7 @@ jobs:
           docker run --rm --network none --cpus 2 --memory 512m \
             -e CMAKE_BUILD_PARALLEL_LEVEL=2 -e MAKEFLAGS=-j2 \
             -v "$PWD:/work" -w /work tram-odometry-env bash -lc '
+              set -e
               source /opt/ros/humble/setup.bash
               colcon --log-base log_offline build --build-base build_offline --install-base install_offline --executor sequential
               source install_offline/setup.bash
