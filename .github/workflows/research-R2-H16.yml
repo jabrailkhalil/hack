@@ -1,0 +1,128 @@
+name: R2 H16 recursive physics identification
+on:
+  push:
+    branches: [research/round2-H16]
+    paths: ['.github/workflows/research-R2-H16.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  research:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - name: Verify immutable runtime and publish source manifest BEFORE experiments
+        run: |
+          set -euo pipefail
+          out="reports/research_R2/H16/H16-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          mkdir -p "$out"
+          echo "H16_OUT=$out" >> "$GITHUB_ENV"
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib,json,subprocess
+          base='65bba39ed05c781f3f69a65c02f69931152cbfd9'
+          paths=subprocess.check_output(['git','ls-tree','-r','--name-only',base,'src'],text=True).splitlines()
+          paths+=['tools/finalization/evaluate.py','tools/research_v3/experiment.py','tools/research_v3/manifest.py','tools/research_v6/compare.py','tools/research_guarded/compare.py','tools/export_bags.py','research/split_v3.json','research/plan_v3.json','requirements-research.txt','Dockerfile.environment']
+          hashes={};blobs={}
+          for p in sorted(set(paths)):
+              data=Path(p).read_bytes()
+              expected=subprocess.check_output(['git','show',base+':'+p])
+              assert data==expected,p
+              hashes[p]=hashlib.sha256(data).hexdigest()
+              blobs[p]=hashlib.sha1(b'blob '+str(len(data)).encode()+b'\0'+data).hexdigest()
+          Path('research/R2/H16/manifest.json').write_text(json.dumps(dict(baseline=base,immutable_sha256=hashes,verified_git_blobs=blobs),indent=2)+'\n')
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git switch -c "checkpoint/H16-code-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          git add research/R2/H16/manifest.json
+          git commit -m "research(H16): pin exact runtime and evaluator before execution $GITHUB_RUN_ID/$GITHUB_RUN_ATTEMPT"
+          git push origin HEAD
+          echo "H16_SOURCE_SHA=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
+          git archive --format=zip HEAD research/R2/H16 .github/workflows/research-R2-H16.yml > "$out/measured-source.zip"
+          git rev-parse HEAD > "$out/measured-source-sha.txt"
+          cp research/R2/H16/PLAN.md research/R2/H16/SOURCES.md research/R2/H16/wolfram.wl "$out/"
+      - name: Dependencies and unchanged historical tests
+        run: |
+          set -euo pipefail
+          python -m pip install -r requirements-research.txt 2>&1 | tee "$H16_OUT/dependencies.log"
+          set +e
+          PYTHONPATH=src/reserve_odometry python -m unittest discover -s tests -v > "$H16_OUT/historical-tests.log" 2>&1
+          echo "$?" > "$H16_OUT/historical-tests.exit"
+          PYTHONPATH=src/reserve_odometry python -m unittest discover -s research/tests -v > "$H16_OUT/research-integrity-tests.log" 2>&1
+          echo "$?" > "$H16_OUT/research-integrity-tests.exit"
+          set -e
+          PYTHONPATH=src/reserve_odometry python -m unittest discover -s research/R2/H16 -p test_h16.py -v 2>&1 | tee "$H16_OUT/h16-tests.log"
+      - name: Checksum-pinned dataset and real baseline reproduction
+        run: |
+          set -euo pipefail
+          python tools/get_dataset.py 2>&1 | tee "$H16_OUT/dataset.log"
+          python research/R2/H16/run.py sanity --output "$H16_OUT/sanity" 2>&1 | tee "$H16_OUT/sanity.log"
+      - name: Exactly two preregistered train objectives
+        run: |
+          set -euo pipefail
+          python research/R2/H16/run.py train --output "$H16_OUT/train" 2>&1 | tee "$H16_OUT/train.log"
+      - name: Enabled safety and all true development bags for both variants
+        run: |
+          set -euo pipefail
+          if ! test -f "$H16_OUT/train/results.json"; then
+            echo 'No train candidate: coverage gate prevented fitting/development.' | tee "$H16_OUT/development-skipped.log"
+            exit 0
+          fi
+          python research/R2/H16/run.py develop --train "$H16_OUT/train" --output "$H16_OUT/development" 2>&1 | tee "$H16_OUT/development.log"
+      - name: Real-stream paired AB BA cost, not ROS latency
+        run: |
+          set -euo pipefail
+          if ! test -f "$H16_OUT/train/results.json"; then exit 0; fi
+          for candidate in A B; do
+            python research/R2/H16/run.py benchmark --candidate "$H16_OUT/train/$candidate.json" --output "$H16_OUT/benchmark-$candidate" 2>&1 | tee "$H16_OUT/benchmark-$candidate.log"
+          done
+      - name: Conditional published candidate freeze BEFORE validation access
+        run: |
+          set -euo pipefail
+          if ! test -f "$H16_OUT/development/selection.json"; then exit 0; fi
+          selected=$(python -c "import json,os;print(json.load(open(os.environ['H16_OUT']+'/development/selection.json'))['selected'] or '')")
+          if test -z "$selected"; then
+            echo 'Development rejected both candidates; validation intentionally not accessed.' | tee "$H16_OUT/validation-skipped.log"
+            exit 0
+          fi
+          python research/R2/H16/run.py freeze --train "$H16_OUT/train" --development "$H16_OUT/development" --output "$H16_OUT/freeze"
+          git switch -c "checkpoint/H16-freeze-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          git add "$H16_OUT"
+          git commit -m "research(H16): freeze development-selected candidate before validation $GITHUB_RUN_ID/$GITHUB_RUN_ATTEMPT"
+          git push origin HEAD
+          echo "H16_FREEZE_SHA=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
+      - name: One validation only when development and safety passed
+        run: |
+          set -euo pipefail
+          if ! test -f "$H16_OUT/freeze/freeze.json"; then exit 0; fi
+          python research/R2/H16/run.py validate --freeze "$H16_OUT/freeze/freeze.json" --freeze-commit "$H16_FREEZE_SHA" --output "$H16_OUT/validation" --workers 2 2>&1 | tee "$H16_OUT/validation.log"
+      - name: Preserve evidence without modifying main or research HEAD
+        if: always()
+        run: |
+          set -euo pipefail
+          if test -z "${H16_OUT:-}" || ! test -d "$H16_OUT"; then exit 0; fi
+          python - <<'PY'
+          import json,os,pathlib
+          out=pathlib.Path(os.environ['H16_OUT'])
+          (out/'execution.json').write_text(json.dumps(dict(run_id=os.environ['GITHUB_RUN_ID'],attempt=os.environ['GITHUB_RUN_ATTEMPT'],workflow_sha=os.environ['GITHUB_SHA'],measured_source_sha=os.environ.get('H16_SOURCE_SHA'),freeze_sha=os.environ.get('H16_FREEZE_SHA'),installed_enabled_ROS_benchmark_executed=False,final_test_evaluated=False),indent=2)+'\n')
+          PY
+          git switch -c "checkpoint/H16-result-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          git add "$H16_OUT"
+          git diff --cached --quiet || git commit -m "research(H16): preserve actual execution evidence $GITHUB_RUN_ID/$GITHUB_RUN_ATTEMPT"
+          git push origin HEAD
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: H16-evidence-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.H16_OUT }}/
+          retention-days: 30
