@@ -1,0 +1,85 @@
+name: H03 causal wheel acceleration research
+on:
+  push:
+    branches: [research/parallel-H03]
+    paths: [research/H03/RUN.json]
+permissions:
+  contents: write
+jobs:
+  experiment:
+    if: github.ref == 'refs/heads/research/parallel-H03'
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - name: Prepare isolated evidence and dependencies
+        run: |
+          set -euo pipefail
+          destination="reports/research_H03/runs/H03-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          echo "H03_OUTPUT=$destination" >> "$GITHUB_ENV"
+          mkdir -p "$destination"
+          python -m pip install -r requirements-research.txt 2>&1 | tee "$destination/dependencies.log"
+      - name: Apply only H03 algorithm patch and verify immutable evaluator
+        run: |
+          set -euo pipefail
+          if git apply --check research/H03/algorithm.patch; then
+            git apply research/H03/algorithm.patch
+          else
+            git apply --reverse --check research/H03/algorithm.patch
+          fi
+          python research/H03/run.py integrity --output "$H03_OUTPUT/integrity.json"
+      - name: Targeted baseline and H03 unit checks
+        run: |
+          set -euo pipefail
+          PYTHONPATH=src/reserve_odometry python -m unittest discover -s tests -p test_core.py -v 2>&1 | tee "$H03_OUTPUT/core-tests.log"
+          PYTHONPATH=src/reserve_odometry python -m unittest discover -s tests -p test_timeline.py -v 2>&1 | tee "$H03_OUTPUT/timeline-tests.log"
+          PYTHONPATH=src/reserve_odometry python -m unittest discover -s research/H03 -p test_h03.py -v 2>&1 | tee "$H03_OUTPUT/h03-tests.log"
+      - name: Download checksum-pinned organizer archive
+        run: |
+          set -euo pipefail
+          python tools/get_dataset.py 2>&1 | tee "$H03_OUTPUT/dataset.log"
+      - name: Train only, three preregistered variants
+        run: |
+          set -euo pipefail
+          python research/H03/run.py train --output "$H03_OUTPUT/train" 2>&1 | tee "$H03_OUTPUT/train.log"
+      - name: Commit candidate freeze BEFORE validation measurement access
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          branch="checkpoint/H03-freeze-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          git switch -c "$branch"
+          git add src/reserve_odometry/reserve_odometry/core.py "$H03_OUTPUT"
+          git commit -m "research(H03): freeze train-selected candidate before validation $GITHUB_RUN_ID/$GITHUB_RUN_ATTEMPT"
+          git push origin "HEAD:refs/heads/$branch"
+          echo "H03_FREEZE_SHA=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
+      - name: One frozen validation comparison, unchanged evaluator
+        run: |
+          set -euo pipefail
+          python research/H03/run.py validate --freeze "$H03_OUTPUT/train/freeze.json" --output "$H03_OUTPUT/validation" --workers 2 2>&1 | tee "$H03_OUTPUT/validation.log"
+      - name: Preserve actual evidence in a unique H03 checkpoint
+        if: always()
+        run: |
+          set -euo pipefail
+          if ! test -d "$H03_OUTPUT"; then exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          branch="checkpoint/H03-result-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          git switch -c "$branch"
+          git add "$H03_OUTPUT" src/reserve_odometry/reserve_odometry/core.py
+          git diff --cached --quiet || git commit -m "research(H03): preserve observed result $GITHUB_RUN_ID/$GITHUB_RUN_ATTEMPT"
+          git push origin "HEAD:refs/heads/$branch"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: H03-evidence-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.H03_OUTPUT }}/
+          retention-days: 30
