@@ -51,6 +51,11 @@ class Config:
     adaptation_tau_s: float = 8.0
     disturbance_limit_mps2: float = 0.6
     max_step_s: float = 0.20
+    reacquire_dwell_s: float = 0.8
+    reacquire_max_residual_mps: float = 8.0
+    reacquire_step_mps: float = 0.15
+    reacquire_min_speed_mps: float = 0.4
+    reacquire_accel_margin_mps2: float = 0.8
 
     def __post_init__(self):
         for key, value in asdict(self).items():
@@ -62,7 +67,9 @@ class Config:
                     'max_accel_mps2', 'wheel_sigma_mps', 'process_noise_v',
                     'max_age_s', 'command_timeout_s', 'pair_skew_s',
                     'wheel_rate_limit_mps2', 'innovation_floor_mps',
-                    'innovation_cap_mps', 'stop_dwell_s', 'adaptation_tau_s', 'max_step_s')
+                    'innovation_cap_mps', 'stop_dwell_s', 'adaptation_tau_s', 'max_step_s',
+                    'reacquire_dwell_s', 'reacquire_max_residual_mps', 'reacquire_step_mps',
+                    'reacquire_accel_margin_mps2')
         for key in positive:
             if getattr(self, key) <= 0:
                 raise ValueError(f'{key} must be positive')
@@ -74,7 +81,7 @@ class Config:
             raise ValueError('Innovation cap must be >= floor')
         for key in ('rolling_force_n', 'quadratic_drag_n_s2_m2', 'disagreement_mps',
                     'rate_noise_margin_mps', 'stop_speed_mps', 'stop_model_speed_mps',
-                    'disturbance_limit_mps2'):
+                    'disturbance_limit_mps2', 'reacquire_min_speed_mps'):
             if getattr(self, key) < 0:
                 raise ValueError(f'{key} must be nonnegative')
 
@@ -116,6 +123,8 @@ class Observer:
         self.raw_previous = [None, None]
         self.stop_since = None
         self.adapt_previous = None
+        self.reacquire_since = None
+        self.reacquire_previous = None
         self.last_estimate = None
 
     def drive_target(self, u, v):
@@ -154,6 +163,50 @@ class Observer:
                     self.c.wheel_rate_limit_mps2 * dt + self.c.rate_noise_margin_mps):
                 return None, 'RATE_ANOMALY'
         return sample, 'CANDIDATE'
+
+    def _clear_reacquire(self):
+        self.reacquire_since = None
+        self.reacquire_previous = None
+
+    def _reacquire_pair(self, samples, predicted):
+        """Return a sustained agreeing pair target after model/odometry divergence.
+
+        This is deliberately conservative: both fresh wheels must agree, the pair
+        trajectory must have plausible acceleration, the residual must be bounded,
+        and zero-locked wheels cannot drag a moving model to zero. The returned
+        target is still approached in bounded increments by step().
+        """
+        c = self.c
+        if not all(sample is not None for sample in samples):
+            self._clear_reacquire()
+            return None
+        front, rear = samples
+        if abs(front.t - rear.t) > c.pair_skew_s or abs(front.value - rear.value) > c.disagreement_mps:
+            self._clear_reacquire()
+            return None
+        t_pair = 0.5 * (front.t + rear.t)
+        z = 0.5 * (front.value + rear.value)
+        residual = z - predicted
+        if abs(residual) > c.reacquire_max_residual_mps:
+            self._clear_reacquire()
+            return None
+        if abs(z) < c.reacquire_min_speed_mps and abs(predicted) > c.stop_model_speed_mps:
+            self._clear_reacquire()
+            return None
+        previous = self.reacquire_previous
+        if previous is not None:
+            dt_pair = t_pair - previous.t
+            if dt_pair <= 0 or dt_pair > 2 * c.max_age_s:
+                self.reacquire_since = t_pair
+            elif abs(z - previous.value) / dt_pair > c.max_accel_mps2 + c.reacquire_accel_margin_mps2:
+                self._clear_reacquire()
+                return None
+        if self.reacquire_since is None:
+            self.reacquire_since = t_pair
+        self.reacquire_previous = Sample(t_pair, z)
+        if t_pair - self.reacquire_since + 1e-9 < c.reacquire_dwell_s:
+            return None
+        return z
 
     def step(self, t, command=None, front=None, rear=None):
         """Estimate at time t. A Sample can be assimilated at most once.
@@ -225,6 +278,7 @@ class Observer:
         self.pv = p_prior
         mode = 'MODEL_ONLY'
         if accepted:
+            self._clear_reacquire()
             z = sum(samples[i].value for i in accepted) / len(accepted)
             # No 1/N reduction: wheel errors can be correlated.
             r = c.wheel_sigma_mps ** 2 * (1.0 if len(accepted) == 2 and agree else 4.0)
@@ -236,6 +290,17 @@ class Observer:
             mode = 'FUSED' if len(accepted) == 2 and agree else 'SINGLE_WHEEL'
             for i in accepted:
                 statuses[i] = 'ACCEPTED'
+        elif pair and agree:
+            target_v = self._reacquire_pair(samples, predicted)
+            if target_v is not None:
+                correction = clip(target_v - predicted,
+                                  -c.reacquire_step_mps, c.reacquire_step_mps)
+                self.v = clip(predicted + correction, -c.max_speed_mps, c.max_speed_mps)
+                self.pv = max(self.pv, 4 * c.wheel_sigma_mps ** 2)
+                mode = 'REACQUIRING'
+                statuses = ['REACQUIRE_ACCEPTED', 'REACQUIRE_ACCEPTED']
+        else:
+            self._clear_reacquire()
         # Adapt disturbance only from two new, agreeing and model-consistent wheels.
         if mode == 'FUSED' and not command_stale:
             z = (samples[0].value + samples[1].value) * 0.5

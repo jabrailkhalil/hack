@@ -23,6 +23,8 @@ class Timeline:
         self.next_tick = None
         self.dropped = 0
         self.resets = 0
+        self.catchup_events = 0
+        self._catchup_active = False
 
     def ingest(self, channel, sample):
         if channel not in (0, 1, 2):
@@ -56,7 +58,9 @@ class Timeline:
 
         Without a ROS clock, only the newest received INPUT stamp advances time.
         In clock mode 'now' is ROS simulation time. Output time is now-delay.
-        Large discontinuities open a new relative-odometry segment, not fake motion.
+        Forward gaps are propagated causally in bounded dt steps so relative
+        distance is preserved. A backward clock jump is treated as a seek and
+        opens a new segment.
         """
         if self.latest is None:
             return
@@ -65,13 +69,17 @@ class Timeline:
             raise ValueError('Nonfinite clock')
         target = source_now - self.delay
         if self.observer.t is not None and target < self.observer.t - 1.0:
+            count = self.resets + 1
             self.reset()
+            self.resets = count
             return
-        if target - self.next_tick > 0.5:
-            self.observer.reset()
-            self.held = [None, None, None]
-            self.next_tick = target
-            self.resets += 1
+        lag = target - self.next_tick
+        if lag > 0.5:
+            if not self._catchup_active:
+                self.catchup_events += 1
+            self._catchup_active = True
+        else:
+            self._catchup_active = False
         steps = 0
         while self.next_tick <= target + 1e-9 and steps < 16:
             t = self.next_tick

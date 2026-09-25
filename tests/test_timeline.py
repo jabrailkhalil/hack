@@ -50,6 +50,31 @@ class TimelineTests(unittest.TestCase):
         list(t.advance(1))
         self.assertEqual(t.held[1], Sample(1, 4))
 
+    def test_forward_gap_preserves_relative_position_and_catches_up(self):
+        t = Timeline(delay_s=0)
+        for ch, value in ((0, 0), (1, 4), (2, 4)):
+            t.ingest(ch, Sample(1, value))
+        list(t.advance(1))
+        for ch, value in ((0, 0), (1, 4), (2, 4)):
+            t.ingest(ch, Sample(3, value))
+        outputs = []
+        for _ in range(8):
+            outputs.extend(t.advance(3))
+        self.assertEqual(t.resets, 0)
+        self.assertEqual(t.catchup_events, 1)
+        self.assertGreater(t.observer.s, 7.0)
+        self.assertTrue(outputs)
+
+    def test_backward_clock_jump_opens_new_segment(self):
+        t = Timeline(delay_s=0)
+        for ch, value in ((0, 0), (1, 4), (2, 4)):
+            t.ingest(ch, Sample(5, value))
+        list(t.advance(5))
+        list(t.advance(3))
+        self.assertEqual(t.resets, 1)
+        self.assertIsNone(t.latest)
+        self.assertEqual(t.observer.s, 0)
+
     def test_reset_clears_all_input_state(self):
         t = Timeline()
         t.ingest(1, Sample(1, 4))
