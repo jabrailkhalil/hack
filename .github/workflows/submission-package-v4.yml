@@ -1,0 +1,101 @@
+name: Build and verify final submission ZIP
+on:
+  push:
+    branches: [feat/final-submission-v4]
+    paths: ['.github/workflows/submission-package-v4.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  package:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Render only frozen results and measured runtime evidence
+        run: |
+          set -eu
+          python3 tools/finalization/report.py
+          python3 - <<'PY'
+          from pathlib import Path
+          targets={'RUNBOOK.md':'JUDGE_GUIDE.md','SOLUTION.md':'MODEL.md','VALIDATION.md':'RESULTS.md'}
+          for name,target in targets.items():
+              p=Path('docs')/name
+              banner='> Исторический документ v1–v3. Актуальная версия для сдачи: [submission/'+target+'](../submission/'+target+'). Числа и ограничения старых запусков не заменяют финальный протокол.\n\n'
+              if not p.read_text().startswith('> Исторический документ'):
+                  p.write_text(banner+p.read_text())
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git switch -c "checkpoint/release-$GITHUB_RUN_ID"
+          git add submission/RESULTS.md reports/final/accuracy.csv reports/final/faults.csv reports/final/summary.json docs/RUNBOOK.md docs/SOLUTION.md docs/VALIDATION.md
+          git commit -m "docs: render immutable final results for release $GITHUB_RUN_ID"
+          git push origin "HEAD:refs/heads/checkpoint/release-$GITHUB_RUN_ID"
+      - name: Build deterministic ZIP and verify every payload and frozen-source hash
+        id: zip
+        run: |
+          set -eu
+          python3 tools/finalization/package.py
+          python3 tools/finalization/package.py --verify submission/dist/reserve-odometry-v4.zip
+          PYTHONPATH=src/reserve_odometry python3 -m unittest discover -s tests -v
+      - name: Provision build environment before disconnecting network
+        run: docker build -t odometry-archive-env -f Dockerfile.environment .
+      - name: Build and run EXACT unpacked ZIP offline with 2 CPU and 500 MB
+        id: offline
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/odometry-unpacked"
+          python3 - <<'PY'
+          import os,zipfile
+          with zipfile.ZipFile('submission/dist/reserve-odometry-v4.zip') as archive:
+              archive.extractall(os.environ['RUNNER_TEMP']+'/odometry-unpacked')
+          PY
+          docker run --rm --network none --cpus 2 --memory 500000000 \
+            -e CMAKE_BUILD_PARALLEL_LEVEL=2 -e MAKEFLAGS=-j2 -e ROS_DOMAIN_ID=89 \
+            -v "$RUNNER_TEMP/odometry-unpacked/reserve-odometry-v4:/work" -w /work \
+            odometry-archive-env bash -lc 'bash submission/build.sh' \
+            2>&1 | tee reports/final/archive_build.log
+      - name: Bind verification outcome to exact ZIP digest
+        if: always()
+        env:
+          ZIP_OUTCOME: ${{ steps.zip.outcome }}
+          OFFLINE_OUTCOME: ${{ steps.offline.outcome }}
+        run: |
+          python3 - <<'PY'
+          import hashlib,json,os,pathlib
+          root=pathlib.Path('.');p=root/'submission/dist/reserve-odometry-v4.zip'
+          if not p.exists():
+              raise SystemExit('ZIP was not created; no verification claim')
+          x=dict(source_workflow_commit=os.environ['GITHUB_SHA'],run_id=os.environ['GITHUB_RUN_ID'],
+              archive_sha256=hashlib.sha256(p.read_bytes()).hexdigest(),archive_bytes=p.stat().st_size,
+              freeze_sha256=hashlib.sha256((root/'submission/FREEZE.json').read_bytes()).hexdigest(),
+              manifest_verification=os.environ['ZIP_OUTCOME'],exact_zip_offline_build=os.environ['OFFLINE_OUTCOME'],
+              cpu_limit=2,memory_limit_bytes=500000000,network='none',
+              tests=['44 dependency-free tests','ROS adapter','calibrated launch','installed-node dropout/pause/seek','CDR serialization'],
+              not_performed=['platform submission','privacy/access changes','true map-aligned xyz validation'])
+          (root/'reports/final/archive_verification.json').write_text(json.dumps(x,indent=2)+'\n')
+          print(json.dumps(x,indent=2))
+          PY
+      - name: Preserve release artifacts and verification checkpoint
+        if: always()
+        run: |
+          set -eu
+          git config --global --add safe.directory "$PWD"
+          git add reports/final/archive_*
+          git add -f submission/dist/reserve-odometry-v4.zip submission/dist/reserve-odometry-v4.sha256 submission/dist/reserve-odometry-v4.manifest.json
+          git commit -m "release: preserve tested standalone submission ZIP $GITHUB_RUN_ID"
+          git push origin "HEAD:refs/heads/checkpoint/release-$GITHUB_RUN_ID"
+          git archive --format=zip HEAD -o release-workspace.zip
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: submission-v4
+          path: |
+            submission/dist/
+            submission/RESULTS.md
+            reports/final/archive_verification.json
+            reports/final/archive_build.log
+            reports/final/summary.json
+            release-workspace.zip
+          retention-days: 30

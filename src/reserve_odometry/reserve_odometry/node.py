@@ -1,6 +1,7 @@
 """ROS 2 Humble adapter for the organizer's exact message contract."""
 import math
 import time
+from collections import OrderedDict
 from dataclasses import fields
 import rclpy
 from rclpy.node import Node
@@ -26,6 +27,7 @@ class ReserveOdometryNode(Node):
         self.declare_parameter('rate_hz', 20.0)
         self.declare_parameter('alignment_delay_s', .06)
         self.declare_parameter('clock_mode', 'input_stamp')
+        self.trace_timing = self.declare_parameter('trace_timing', False).value
         # Explicit empirical dataset conversion; README says m/s, measured ratio ~3.6.
         self.scale_front = self.declare_parameter('front_scale', 1.0 / 3.6).value
         self.scale_rear = self.declare_parameter('rear_scale', 1.0 / 3.6).value
@@ -55,33 +57,45 @@ class ReserveOdometryNode(Node):
         self.velocity_pub = self.create_publisher(VelocitySensor, '/result/velocity', 10)
         self.position_pub = self.create_publisher(Odometry, '/result/position', 10)
         self.diag_pub = self.create_publisher(DiagnosticArray, '/result/diagnostics', 10)
+        self.timing_pub = self.create_publisher(DiagnosticArray, '/result/timing', 64) if self.trace_timing else None
         self.create_service(Trigger, '~/reset', self.reset_service)
         self.bad_messages = 0
         self.total_outputs = 0
         self.last_diag = 0.0
         self.last_input_receipt = None
         self.last_publish_stamp = None
+        self.origin_ns = None
+        self.last_ros_ns = None
+        self.clock_resets_total = 0
+        self.receipts = [OrderedDict(), OrderedDict(), OrderedDict()]
+        self.route_ok = True
         # Use a steady timer even if /clock pauses; never advance the estimator on wall time.
         self.steady_clock = Clock(clock_type=ClockType.STEADY_TIME)
         self.create_timer(.01, self.tick, clock=self.steady_clock)
 
-    @staticmethod
-    def sample(msg, value):
-        stamp = msg.header.stamp
-        if stamp.nanosec >= 1000000000:
-            raise ValueError('Invalid header nanoseconds')
-        t = stamp.sec + stamp.nanosec * 1e-9
-        if t <= 0 or not math.isfinite(value):
-            raise ValueError('Invalid/zero source timestamp or nonfinite measurement')
-        return Sample(t, float(value))
-
     def receive(self, channel, msg, value):
+        received = time.perf_counter_ns()
         try:
-            s = self.sample(msg, value)
-            if channel == 0 and abs(value) > 1:
-                raise ValueError('Controller notch out of [-15,15]')
-            self.timeline.ingest(channel, s)
-            self.last_input_receipt = time.perf_counter()
+            stamp = msg.header.stamp
+            absolute_ns = stamp.sec * 1000000000 + stamp.nanosec
+            limit = 1.000001 if channel == 0 else self.timeline.observer.c.max_speed_mps
+            if stamp.nanosec >= 1000000000 or absolute_ns <= 0:
+                raise ValueError('Invalid/zero absolute source timestamp')
+            if not math.isfinite(value) or abs(value) > limit:
+                raise ValueError('Nonfinite/out-of-range input')
+            if self.origin_ns is None:
+                self.origin_ns = absolute_ns
+            # Subtract integer origin BEFORE float conversion; no epoch precision loss.
+            sample = Sample((absolute_ns - self.origin_ns) / 1e9, float(value))
+            if self.timeline.ingest(channel, sample):
+                self.last_input_receipt = received / 1e9
+                if self.trace_timing:
+                    entries = self.receipts[channel]
+                    entries[sample.t] = received
+                    while len(entries) > 256:
+                        entries.popitem(last=False)
+            else:
+                self.bad_messages += 1
         except (ValueError, TypeError, OverflowError):
             self.bad_messages += 1
 
@@ -97,6 +111,9 @@ class ReserveOdometryNode(Node):
     def reset_service(self, request, response):
         self.timeline.reset()
         self.last_publish_stamp = None
+        self.origin_ns = None
+        self.last_ros_ns = None
+        self.receipts = [OrderedDict(), OrderedDict(), OrderedDict()]
         response.success = True
         response.message = 'Observer reset; new relative origin. Restart for each independent bag.'
         return response
@@ -105,26 +122,33 @@ class ReserveOdometryNode(Node):
         started = time.perf_counter()
         now = None
         if self.clock_mode == 'ros_clock':
-            now = self.get_clock().now().nanoseconds * 1e-9
-            if now <= 0:
+            absolute_now = self.get_clock().now().nanoseconds
+            if absolute_now <= 0 or self.origin_ns is None:
                 return
+            if self.last_ros_ns is not None and absolute_now < self.last_ros_ns:
+                self.timeline.reset()
+                self.origin_ns = None
+                self.receipts = [OrderedDict(), OrderedDict(), OrderedDict()]
+                self.clock_resets_total += 1
+                self.last_ros_ns = absolute_now
+                return
+            self.last_ros_ns = absolute_now
+            now = (absolute_now - self.origin_ns) / 1e9
         for estimate, held in self.timeline.advance(now):
             if estimate.mode != 'WAITING_FOR_INITIALIZATION':
-                self.publish(estimate)
+                self.publish(estimate, held)
         elapsed = (time.perf_counter() - started) * 1000
         if time.monotonic() - self.last_diag >= 1.0:
             self.diagnostics(elapsed)
             self.last_diag = time.monotonic()
 
-    def publish(self, e):
-        # Integer nanoseconds to avoid nanosec=1e9 after rounding.
-        ns = int(round(e.t * 1e9))
+    def publish(self, e, held):
+        ns = self.origin_ns + int(round(e.t * 1e9))
         vel = VelocitySensor()
         vel.header.stamp.sec, vel.header.stamp.nanosec = divmod(ns, 1000000000)
         vel.header.frame_id = 'base_link'
         vel.velocity = float(e.v)
         odom = Odometry()
-        odom.header = vel.header
         # Header is a mutable Python object; avoid changing the velocity header frame.
         from copy import deepcopy
         odom.header = deepcopy(vel.header)
@@ -148,11 +172,27 @@ class ReserveOdometryNode(Node):
             odom.twist.covariance[i] = 1e6
         odom.pose.covariance[0] = float(e.variance_s) if not self.route else 1e6
         odom.twist.covariance[0] = float(e.variance_v)
+        self.route_ok = route_ok
+        before_publish = time.perf_counter_ns()
         self.velocity_pub.publish(vel)
         if route_ok:
             self.position_pub.publish(odom)
         self.total_outputs += 1
         self.last_publish_stamp = e.t
+        if self.timing_pub is not None:
+            timing = DiagnosticArray()
+            timing.header = deepcopy(vel.header)
+            status = DiagnosticStatus(name='reserve_odometry/timing', hardware_id='tram')
+            values = {'publish_mono_ns': before_publish, 'source_ns': ns,
+                      'mode': e.mode, 'front_status': e.front_status, 'rear_status': e.rear_status}
+            for i, name in enumerate(('command', 'front', 'rear')):
+                sample = held[i]
+                if sample is not None:
+                    values[name + '_stamp_ns'] = self.origin_ns + int(round(sample.t * 1e9))
+                    values[name + '_receipt_ns'] = self.receipts[i].get(sample.t, 0)
+            status.values = [KeyValue(key=k, value=str(v)) for k, v in values.items()]
+            timing.status = [status]
+            self.timing_pub.publish(timing)
 
     def diagnostics(self, callback_ms):
         msg = DiagnosticArray()
@@ -165,15 +205,23 @@ class ReserveOdometryNode(Node):
         d.message = e.mode if e else 'WAITING_FOR_INPUT'
         if e and e.mode in ('FUSED', 'STOPPED', 'SINGLE_WHEEL') and self.route:
             d.level = DiagnosticStatus.OK
+        input_age = time.perf_counter() - self.last_input_receipt if self.last_input_receipt is not None else None
+        if input_age is None or input_age > 1.0:
+            d.level = DiagnosticStatus.WARN
+            d.message = 'INPUT_STALE_OR_PAUSED'
+        if not self.route_ok:
+            d.level = DiagnosticStatus.ERROR
+            d.message = 'OUTSIDE_AUTHORIZED_ROUTE'
         values = dict(callback_compute_ms=callback_ms, outputs=self.total_outputs,
+                      input_receipt_age_s=input_age, source_origin_ns=self.origin_ns,
                       invalid_messages=self.bad_messages, buffer_dropped=self.timeline.dropped,
-                      backward_clock_resets=self.timeline.resets,
+                      backward_clock_resets=self.timeline.resets + self.clock_resets_total,
                       forward_gap_catchups=self.timeline.catchup_events,
                       position_mode='route' if self.route else 'relative_1d')
         if e:
             values.update(front_status=e.front_status, rear_status=e.rear_status,
                           command_stale=e.command_stale, disturbance=e.disturbance,
-                          source_stamp=e.t, variance_v=e.variance_v)
+                          source_stamp_relative_s=e.t, variance_v=e.variance_v)
         d.values = [KeyValue(key=k, value=str(v)) for k, v in values.items()]
         msg.status = [d]
         self.diag_pub.publish(msg)

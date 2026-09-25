@@ -1,0 +1,19 @@
+name: Final submission source snapshot
+on:
+  push:
+    paths: ['.github/workflows/final-snapshot.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  snapshot:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - run: git archive --format=zip HEAD -o final-source.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: final-source
+          path: final-source.zip
+          retention-days: 7

@@ -1,0 +1,32 @@
+name: Apply audited runtime checkpoint
+on:
+  push:
+    branches: [feat/final-submission-v4]
+    paths: ['.github/workflows/apply-runtime-v4.yml']
+permissions:
+  contents: write
+jobs:
+  apply:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply exact reviewed source diff and run regressions
+        run: |
+          set -eu
+          git apply --check submission/checkpoints/runtime_v4.patch
+          git apply submission/checkpoints/runtime_v4.patch
+          PYTHONPATH=src/reserve_odometry python3 -m unittest discover -s tests -v
+          python3 -m compileall -q src
+      - name: Publish only the three changed source files, never force push
+        env:
+          BRANCH: ${{ github.ref_name }}
+        run: |
+          set -eu
+          test "$BRANCH" = feat/final-submission-v4
+          test "$(git ls-remote origin "refs/heads/$BRANCH" | cut -f1)" = "$GITHUB_SHA"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/reserve_odometry/reserve_odometry/core.py src/reserve_odometry/reserve_odometry/node.py src/reserve_odometry/reserve_odometry/timeline.py
+          git commit -m 'fix: apply tested asynchronous recovery and integer-origin ROS timing'
+          git push origin "HEAD:refs/heads/$BRANCH"

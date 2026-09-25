@@ -22,7 +22,7 @@ jobs:
           python-version: '3.13.5'
       - name: Install research test dependencies only (no dataset download)
         run: python -m pip install -r requirements-research.txt
-      - name: Check role isolation and causality against committed evidence
+      - name: Check role isolation, source freeze, distance metrics and causality
         run: python -m unittest discover -s research/tests -v
   ros-humble:
     runs-on: ubuntu-22.04
@@ -40,13 +40,14 @@ jobs:
         run: |
           source /opt/ros/humble/setup.bash
           colcon build --executor sequential --event-handlers console_direct+
-      - name: Check core adapter and separately launched calibrated default
+      - name: Check adapter, actual calibrated launch and installed-node clock faults
         shell: bash
         run: |
           source /opt/ros/humble/setup.bash
           source install/setup.bash
           python3 tests/ros_smoke.py
           python3 tests/ros_calibrated_smoke.py
+          python3 tests/ros_fault_smoke.py
   offline-limited:
     runs-on: ubuntu-22.04
     timeout-minutes: 15
@@ -54,9 +55,9 @@ jobs:
       - uses: actions/checkout@v4
       - name: Provision dependencies before disconnecting network
         run: docker build -t tram-odometry-env -f Dockerfile.environment .
-      - name: Offline build and both ROS launch checks under 2 CPU / 512 MiB limit
+      - name: Offline build and all ROS checks under 2 CPU / 500 MB limit
         run: |
-          docker run --rm --network none --cpus 2 --memory 512m \
+          docker run --rm --network none --cpus 2 --memory 500000000 \
             -e CMAKE_BUILD_PARALLEL_LEVEL=2 -e MAKEFLAGS=-j2 \
             -v "$PWD:/work" -w /work tram-odometry-env bash -lc '
               set -e
@@ -65,5 +66,6 @@ jobs:
               source install_offline/setup.bash
               python3 tests/ros_smoke.py
               python3 tests/ros_calibrated_smoke.py
+              python3 tests/ros_fault_smoke.py
               python3 tests/cdr_roundtrip.py
             '

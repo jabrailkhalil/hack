@@ -1,0 +1,66 @@
+name: Prefinal validation and freeze v4
+on:
+  push:
+    branches: [feat/final-submission-v4]
+    paths: ['.github/workflows/prefinal-validation-v4.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  validate-freeze:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - name: Prepare pinned dataset and research-only environment
+        run: |
+          python -m pip install -r requirements-research.txt
+          python tools/get_dataset.py
+      - name: Test authorization and replay integrity before validation
+        run: |
+          PYTHONPATH=src/reserve_odometry python -m unittest discover -s tests -v
+          python -m unittest discover -s research/tests -v
+      - name: Validate fixed physical parameters with final runtime (NO test)
+        run: python tools/finalization/evaluate.py --stage validation --output reports/final/validation
+      - name: Verify continuity, then freeze source and test membership
+        run: |
+          python - <<'PY'
+          import json
+          x=json.load(open('reports/final/validation/results.json'))
+          assert x['test_evaluated'] is False and x['bags']==19
+          for row in x['clean']+x['stress']:
+              for name,info in row['runtime'].items():
+                  assert info['resets']==0 and info['causal_errors']==0,(row['bag'],name,info)
+          b=x['summary']['baseline_v2']['group_macro_rmse']
+          c=x['summary']['balanced_physics']['group_macro_rmse']
+          assert c<=b,(b,c)
+          print('PREFINAL_VALIDATION_PASS',b,c)
+          PY
+          python tools/finalization/evaluate.py --stage freeze --source-ref "$GITHUB_SHA"
+      - name: Preserve intermediate and frozen evidence before test
+        if: always()
+        run: |
+          set -eu
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git switch -c "checkpoint/prefinal-$GITHUB_RUN_ID"
+          git add reports/final/validation
+          if test -f submission/FREEZE.json; then git add submission/FREEZE.json; fi
+          git commit -m "test: record prefinal validation and source freeze $GITHUB_RUN_ID"
+          git push origin "HEAD:refs/heads/checkpoint/prefinal-$GITHUB_RUN_ID"
+          git archive --format=zip HEAD -o frozen-workspace.zip
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: prefinal-v4
+          path: |
+            reports/final/validation/
+            submission/FREEZE.json
+            frozen-workspace.zip
+          retention-days: 30
