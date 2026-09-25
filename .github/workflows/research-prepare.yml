@@ -1,0 +1,26 @@
+name: Prepare research workspace
+on:
+  push:
+    branches: [feat/train-validation-v3]
+    paths: ['.github/workflows/research-prepare.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  prepare:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Snapshot tracked source and verify organizer archive
+        run: |
+          mkdir handoff
+          git archive --format=zip HEAD -o handoff/source.zip
+          python3 tools/get_dataset.py
+          cp dataset/dataset.zip handoff/dataset.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: research-workspace
+          path: handoff/
+          compression-level: 0
+          retention-days: 1
