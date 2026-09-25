@@ -20,14 +20,14 @@ class ActiveProfileTests(unittest.TestCase):
     def test_canonical_launch_is_guarded_v7(self):
         launch=(ROOT/'src/reserve_odometry/launch/odometry.launch.py').read_text()
         self.assertIn("guarded_odometry_node",launch)
-        self.assertIn("guarded_readout_v7.yaml",launch)
+        self.assertIn("champion_v8.yaml",launch)
         setup=(ROOT/'src/reserve_odometry/setup.py').read_text()
         self.assertIn("guarded_odometry_node = reserve_odometry.guarded_node:main",setup)
 
     def test_guarded_profile_preserves_v5_inner_physics(self):
         v5=json.loads((ROOT/'src/reserve_odometry/config/adaptive_v5.json').read_text())['config']
-        guarded=json.loads((ROOT/'src/reserve_odometry/config/guarded_readout_v7.json').read_text())
-        self.assertEqual(guarded['config'],dict(v5,wheel_time_compensation=0.0,common_mode_quarantine_s=0.0))
+        guarded=json.loads((ROOT/'src/reserve_odometry/config/champion_v8.json').read_text())
+        self.assertEqual(guarded['config'],dict(v5,wheel_time_compensation=0.0,common_mode_quarantine_s=1.5))
         self.assertEqual(guarded['readout'],{'gain':1.0,'holdoff_s':0.5})
         self.assertEqual(self._yaml_model(ROOT/'src/reserve_odometry/config/default.yaml'),v5)
         self.assertEqual(asdict(Config(**v5)),dict(v5,wheel_time_compensation=0.0,common_mode_quarantine_s=0.0))
