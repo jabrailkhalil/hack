@@ -1,0 +1,48 @@
+{
+  "hypothesis": "H10: совместная оценка скорости и возмущения",
+  "baseline_sha": "984fdf2fc4faf05325249215d6b8541c0e68209a",
+  "baseline_profile": "adaptive_v5",
+  "status": "preregistered_before_implementation_and_experiments",
+  "mechanism": {
+    "state": ["v", "d"],
+    "covariance": ["Pvv", "Pvd", "Pdd"],
+    "prediction": "Keep the existing causal mean motion prediction. Propagate a 2x2 first-order covariance including the current-step drive/resistance velocity derivative and v-d coupling. Add integrated disturbance random-walk Q plus existing velocity process noise.",
+    "correction": "One robust velocity innovation and H=[1,0], existing correlated-pair R (no 1/N reduction). Joint gain only when the existing two-new-wheel adaptation eligibility predicates pass. Otherwise Kd=0 with the full Joseph covariance update (Schmidt-style nuisance state), not an independent scalar reset.",
+    "guards": "Keep timestamp, stale, range, rate, disagreement, innovation cap, bootstrap, zero-lock, stop and bounded reacquisition predicates/thresholds. Keep disturbance constant during missing/untrusted data; do not repeat rejected v6 mean-decay.",
+    "bounds": "Retain v and d limits; bound covariance using a PSD-preserving diagonal scaling. On constrained d projection remove cross-covariance rather than retain an inconsistent correlation. Clear cross-covariance on bootstrap, confirmed stop and bounded reacquisition.",
+    "runtime": "Only controller/front/rear. No future samples, no new delay, unchanged Timeline and 20 Hz. Constant state and memory, stdlib math only. Actuator-state uncertainty is not jointly estimated; covariance is an approximation, not a calibrated confidence interval."
+  },
+  "variants": [
+    {
+      "id": "H10_joint_q004",
+      "joint_observer_enabled": 1,
+      "joint_disturbance_process_noise": 0.04,
+      "initial_Pdd": "(disturbance_limit_mps2 / 2)^2",
+      "all_other_parameters": "exact adaptive_v5"
+    }
+  ],
+  "maximum_algorithm_variants": 1,
+  "parameter_selection": "No numerical fitting or search. The single variant is fixed here; train runs diagnose implementation/runtime only, and cannot change its parameters. Any later algorithm revision requires a separately declared hypothesis, not this validation round.",
+  "data_policy": {
+    "train": "Existing Store.load(bag, 'train'); controller/front/rear only. Do not read train GNSS. Train without reference cannot establish accuracy gains.",
+    "validation": "Freeze candidate source/patch, config and evaluator hashes after implementation checks and before the first validation bag is opened. One pass of all existing validation bags; reused validation, not independent final test.",
+    "test": "Never call FinalStore or authorize final test. Do not open or recompute final-test measurements, or attribute historical final metrics to H10.",
+    "evaluator": "Unmodified tools/finalization/evaluate.py score/replay/match/metrics and unmodified tools/research_v6/compare.py aggregation. Identical event arrays, timestamps, reference masks, 20 Hz, zero delay and original fault anchor/windows for baseline and candidate.",
+    "faults": "Published v6 anchor and bias 5s, dropout 5s, dropout 10s, lock 3s. No scenario replacement."
+  },
+  "acceptance": {
+    "minimum_clean_rmse_gain": 0.02,
+    "or_minimum_fault_rmse_gain": 0.05,
+    "maximum_each_primary_aggregate_regression": 0.005,
+    "maximum_distance_regression": 0.01,
+    "maximum_per_bag_clean_rmse_regression": "max(0.005 m/s, 5% of baseline)",
+    "no_coverage_loss": true,
+    "no_additional_false_stops": true,
+    "no_additional_unrecovered_faults": true,
+    "no_causality_violations_or_unexpected_resets": true,
+    "no_runtime_budget_violation": true,
+    "unchanged_after_results": true
+  },
+  "falsification": "Reject this variant on any acceptance-gate violation, even if another metric improves. No eligible accuracy gain means no promotion. Missing real recordings/evaluation/runtime evidence means insufficient data, not a positive result. Unit and synthetic tests are implementation evidence only.",
+  "publication": "Russian draft PR, never merge/auto-merge. All substantial regressions, per-bag raw measurements and limits retained. New reports only under reports/research_parallel/H10; immutable run_id/run_attempt checkpoint branches include H10."
+}

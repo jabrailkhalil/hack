@@ -1,0 +1,186 @@
+--- a/src/reserve_odometry/reserve_odometry/core.py
++++ b/src/reserve_odometry/reserve_odometry/core.py
+@@ -56,6 +56,9 @@
+     reacquire_step_mps: float = 0.15
+     reacquire_min_speed_mps: float = 0.4
+     reacquire_accel_margin_mps2: float = 0.8
++    # Research H10, opt-in only; the published adaptive_v5 path stays unchanged.
++    joint_observer_enabled: int = 0
++    joint_disturbance_process_noise: float = 0.04
+ 
+     def __post_init__(self):
+         for key, value in asdict(self).items():
+@@ -73,6 +76,10 @@
+         for key in positive:
+             if getattr(self, key) <= 0:
+                 raise ValueError(f'{key} must be positive')
++        if self.joint_observer_enabled not in (0, 1):
++            raise ValueError('joint_observer_enabled must be 0 or 1')
++        if self.joint_disturbance_process_noise <= 0:
++            raise ValueError('joint_disturbance_process_noise must be positive')
+         if not 0 <= self.command_deadband < 1 or self.efficiency > 1:
+             raise ValueError('Invalid deadband or efficiency')
+         if self.travel_direction not in (-1.0, 1.0):
+@@ -118,6 +125,8 @@
+         self.drive_a = 0.0
+         self.disturbance = 0.0
+         self.pv = 1.0
++        self.pvd = 0.0
++        self.pd = (self.c.disturbance_limit_mps2 / 2.0) ** 2
+         self.sigma_s = 0.0
+         self.used = [None, None]
+         self.raw_previous = [None, None]
+@@ -142,6 +151,85 @@
+         c = self.c
+         return (c.rolling_force_n * math.tanh(v / 0.20) +
+                 c.quadratic_drag_n_s2_m2 * v * abs(v)) / c.mass_kg
++
++    def _joint_bound_covariance(self):
++        """PSD-preserving diagonal rescaling, then roundoff-only correlation clamp.
++
++        A bounded variable cannot have variance above its squared half-range.
++        This is a numerical envelope, not a calibrated confidence interval.
++        """
++        vv, dd = max(1e-8, self.pv), max(0.0, self.pd)
++        bv = min(vv, max(1e-8, self.c.max_speed_mps ** 2))
++        bd = min(dd, self.c.disturbance_limit_mps2 ** 2)
++        scale = math.sqrt(bv / vv) * (math.sqrt(bd / dd) if dd else 0.0)
++        self.pv, self.pd = bv, bd
++        bound = math.sqrt(bv) * math.sqrt(bd)
++        self.pvd = clip(self.pvd * scale, -bound, bound)
++
++    def _joint_predict(self, dt, command_stale, u, alpha, a_model, predicted):
++        """First-order conditional motion Jacobian and integrated random-walk Q.
++
++        The actuator mean is unchanged. Its uncertainty/history is not a third
++        Kalman state, so this covariance is explicitly an approximation.
++        """
++        c, v = self.c, self.v
++        q = min(1.0, max(0.0, (abs(u) - c.command_deadband) /
++                            (1.0 - c.command_deadband))) ** c.command_exponent
++        tanh_v = math.tanh(v / .20)
++        resistance_slope = (c.rolling_force_n * (1.0 - tanh_v * tanh_v) / .20 +
++                            2.0 * c.quadratic_drag_n_s2_m2 * abs(v)) / c.mass_kg
++        if u < 0:
++            target_slope = -q * c.max_brake_force_n * (1.0 - tanh_v * tanh_v) / (.20 * c.mass_kg)
++        else:
++            torque_force = c.efficiency * c.gear_ratio * c.total_motor_torque_nm / c.wheel_radius_m
++            power_limited = abs(v) > 1.0 and c.max_power_w / abs(v) < torque_force
++            target_slope = (-c.travel_direction * q * c.max_power_w * math.copysign(1.0, v) /
++                            (c.mass_kg * v * v)) if power_limited else 0.0
++        f, g = 1.0, 0.0
++        if abs(a_model) < c.max_accel_mps2:
++            f += dt * (alpha * target_slope - resistance_slope)
++            g = dt
++        if predicted != v + dt * a_model:  # speed or no-sign-reversal projection
++            f, g = 0.0, 0.0
++        qd = c.joint_disturbance_process_noise if c.disturbance_limit_mps2 else 0.0
++        vv, vd, dd = self.pv, self.pvd, self.pd
++        self.pv = (f * f * vv + 2.0 * f * g * vd + g * g * dd +
++                   c.process_noise_v * dt * (4.0 if command_stale else 1.0) + qd * dt ** 3 / 3.0)
++        self.pvd = f * vd + g * dd + qd * dt * dt / 2.0
++        self.pd = dd + qd * dt
++        self._joint_bound_covariance()
++        return self.pv
++
++    def _joint_can_learn(self, samples, fused, command_stale):
++        # Exactly the baseline adaptation eligibility, not a new fault detector.
++        if not fused or command_stale or self.adapt_previous is None:
++            return False
++        z = (samples[0].value + samples[1].value) * .5
++        tz = (samples[0].t + samples[1].t) * .5
++        dt = tz - self.adapt_previous.t
++        return (0.05 <= dt <= self.c.max_age_s and abs(z) > .5 and
++                abs((z - self.adapt_previous.value) / dt) <= self.c.max_accel_mps2)
++
++    def _joint_correct(self, residual, r, learn):
++        """H=[1,0], robust R unchanged; full Joseph form even when Kd is zero.
++
++        Freezing d's mean must NOT pretend its uncertainty was observed by an
++        untrusted wheel. With Kd=0 Pdd is unchanged and Pvd is still propagated.
++        """
++        vv, vd, dd = self.pv, self.pvd, self.pd
++        innovation_variance = vv + r
++        kv = vv / innovation_variance
++        kd = vd / innovation_variance if learn else 0.0
++        self.v += kv * residual
++        unbounded_d = self.disturbance + kd * residual
++        self.disturbance = clip(unbounded_d, -self.c.disturbance_limit_mps2,
++                                self.c.disturbance_limit_mps2)
++        self.pv = (1.0 - kv) ** 2 * vv + kv * kv * r
++        self.pvd = (1.0 - kv) * (vd - kd * vv) + kv * kd * r
++        self.pd = dd - 2.0 * kd * vd + kd * kd * innovation_variance
++        if self.disturbance != unbounded_d:
++            self.pvd = 0.0  # do not carry an unconstrained cross term through projection
++        self._joint_bound_covariance()
+ 
+     def _valid(self, sample, t, timeout):
+         return (sample is not None and math.isfinite(sample.t) and
+@@ -259,6 +347,8 @@
+         if u <= c.command_deadband and self.v * predicted < 0:
+             predicted = 0.0
+         p_prior = self.pv + c.process_noise_v * dt * (4.0 if command_stale else 1.0)
++        if c.joint_observer_enabled:
++            p_prior = self._joint_predict(dt, command_stale, u, alpha, a_model, predicted)
+         samples, statuses = [], []
+         for i, sample in enumerate((front, rear)):
+             candidate, status = self._wheel(i, sample, t)
+@@ -277,6 +367,9 @@
+                 self.v = sum(sample.value for sample in initial_pair) * .5
+                 self.initialized = True
+                 self.pv = c.wheel_sigma_mps ** 2
++                if c.joint_observer_enabled:
++                    self.pvd = 0.0
++                    self.pd = (c.disturbance_limit_mps2 / 2.0) ** 2
+                 self.drive_a = 0.0
+                 self.t = t
+                 return self._output(t, 0.0, 'INITIALIZED', ['ACCEPTED'] * 2, command_stale)
+@@ -310,9 +403,13 @@
+             r = c.wheel_sigma_mps ** 2 * (1.0 if len(accepted) == 2 and agree else 4.0)
+             residual = z - predicted
+             r *= max(1.0, abs(residual) / max(3 * c.wheel_sigma_mps, 1e-9))
+-            gain = p_prior / (p_prior + r)
+-            self.v += gain * residual
+-            self.pv = max(1e-8, (1 - gain) ** 2 * p_prior + gain * gain * r)
++            if c.joint_observer_enabled:
++                learn = self._joint_can_learn(samples, len(accepted) == 2 and agree, command_stale)
++                self._joint_correct(residual, r, learn)
++            else:
++                gain = p_prior / (p_prior + r)
++                self.v += gain * residual
++                self.pv = max(1e-8, (1 - gain) ** 2 * p_prior + gain * gain * r)
+             mode = 'FUSED' if len(accepted) == 2 and agree else 'SINGLE_WHEEL'
+             for i in accepted:
+                 statuses[i] = 'ACCEPTED'
+@@ -336,6 +433,9 @@
+                     correction = clip(target_v - predicted, -limit, limit)
+                     self.v = clip(predicted + correction, -c.max_speed_mps, c.max_speed_mps)
+                     self.pv = max(self.pv, 4 * c.wheel_sigma_mps ** 2)
++                    if c.joint_observer_enabled:
++                        self.pvd = 0.0
++                        self.pd = max(self.pd, (c.disturbance_limit_mps2 / 2.0) ** 2)
+                     mode = 'REACQUIRING'
+                     statuses = ['REACQUIRE_ACCEPTED', 'REACQUIRE_ACCEPTED']
+         # Adapt disturbance only from two new, agreeing and model-consistent wheels.
+@@ -348,8 +448,9 @@
+                 if abs(measured_a) <= c.max_accel_mps2 and abs(z) > 0.5:
+                     desired = measured_a - self.drive_a + self.resistance(self.v)
+                     weight = 1 - math.exp(-(tz - old.t) / c.adaptation_tau_s)
+-                    self.disturbance = clip(self.disturbance + weight * (desired - self.disturbance),
+-                                            -c.disturbance_limit_mps2, c.disturbance_limit_mps2)
++                    if not c.joint_observer_enabled:
++                        self.disturbance = clip(self.disturbance + weight * (desired - self.disturbance),
++                                                -c.disturbance_limit_mps2, c.disturbance_limit_mps2)
+                 self.adapt_previous = Sample(tz, z)
+             elif old is None or tz - old.t > c.max_age_s:
+                 self.adapt_previous = Sample(tz, z)
+@@ -369,6 +470,9 @@
+                 self.v = 0.0
+                 self.drive_a = 0.0
+                 self.disturbance = 0.0
++                if c.joint_observer_enabled:
++                    self.pvd = 0.0
++                    self.pd = (c.disturbance_limit_mps2 / 2.0) ** 2
+                 mode = 'STOPPED'
+         else:
+             self.stop_since = None
