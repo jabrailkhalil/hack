@@ -1,0 +1,374 @@
+Starting >>> tram_vehicle_msgs
+Finished <<< tram_vehicle_msgs [6.05s]
+Starting >>> reserve_odometry
+Finished <<< reserve_odometry [0.54s]
+
+Summary: 2 packages finished [6.74s]
+CALIBRATED_LAUNCH_PASS selected=h08_exact_midpoint verified_parameters=37 outputs=120 rate=20.000Hz v=5.000000
+[INFO] [launch]: All log files can be found below /root/.ros/log/2026-09-25-18-48-33-108998-a4ef5a4b9976-485
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [odometry_node-1]: process started with pid [497]
+[odometry_node-1] [WARN] [1790362113.319710142] [reserve_odometry]: RELATIVE 1D POSITION: no map/heading. This is NOT an ENU trajectory.
+[odometry_node-1] [WARN] [1790362113.320275506] [reserve_odometry]: Wheel scale defaults to 1/3.6 from measured dataset audit; verify organizer units.
+[WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+[INFO] [odometry_node-1]: sending signal 'SIGINT' to process[odometry_node-1]
+[odometry_node-1] Traceback (most recent call last):
+[odometry_node-1]   File "/work/install_h08/reserve_odometry/lib/reserve_odometry/odometry_node", line 33, in <module>
+[odometry_node-1]     sys.exit(load_entry_point('reserve-odometry==0.1.0', 'console_scripts', 'odometry_node')())
+[odometry_node-1]   File "/work/install_h08/reserve_odometry/lib/python3.10/site-packages/reserve_odometry/node.py", line 240, in main
+[odometry_node-1]     node.destroy_node()
+[odometry_node-1]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/node.py", line 1696, in destroy_node
+[odometry_node-1]     self.__node.destroy_when_not_in_use()
+[odometry_node-1] KeyboardInterrupt
+[ERROR] [odometry_node-1]: process has died [pid 497, exit code -2, cmd '/work/install_h08/reserve_odometry/lib/reserve_odometry/odometry_node --ros-args --params-file /work/install_h08/reserve_odometry/share/reserve_odometry/config/h08_exact_midpoint.yaml --params-file /tmp/launch_params_i800ruao'].
+
+{
+  "bag": "30618_0652866c",
+  "role": "development",
+  "bag_sha256": "22b7dcd7139aa45ed1e992f7077243b0d83e903bbb02c2bfa7e663417e9720c1",
+  "playback": "1x actual rosbag SQLite record order via independent ROS publisher",
+  "full_bag": false,
+  "record_duration_s": 1460.46223261,
+  "measured_duration_s": 60.0,
+  "effective_parameters": {
+    "alignment_delay_s": 0.0,
+    "rate_hz": 20.0,
+    "clock_mode": "input_stamp"
+  },
+  "trace_timing_enabled": true,
+  "offered_messages": {
+    "2": 512,
+    "1": 504,
+    "0": 1257
+  },
+  "unique_offered": 2273,
+  "unique_inputs_with_matching_result": 2159,
+  "uncredited_inputs": 114,
+  "outputs": 1198,
+  "position_outputs": 1198,
+  "mode_counts": {
+    "INITIALIZED": 1,
+    "MODEL_ONLY": 638,
+    "FUSED": 414,
+    "STOPPED": 145
+  },
+  "source_rate_hz": 20.0,
+  "wall_rate_hz": 20.02999037681686,
+  "callback_to_publish_ms_after_10s": {
+    "n": 1811,
+    "p50": 58.510985,
+    "p95": 63.405824499999994,
+    "p99": 64.2171084,
+    "max": 119.290115
+  },
+  "publisher_to_both_result_subscribers_ms_after_10s": {
+    "n": 1811,
+    "p50": 59.643612,
+    "p95": 64.761769,
+    "p99": 65.4514463,
+    "max": 120.566811
+  },
+  "publisher_to_both_result_subscribers_ms_all": {
+    "n": 2159,
+    "p50": 59.728863,
+    "p95": 64.4550155,
+    "p99": 65.38595566000001,
+    "max": 120.566811
+  },
+  "rss_peak_bytes": 84877312,
+  "rss_median_first_window_bytes": 84877312.0,
+  "rss_median_last_window_bytes": 84877312,
+  "cpu_core_equivalents": {
+    "n": 60,
+    "p50": 0.05999029264163168,
+    "p95": 0.06999282534670043,
+    "p99": 0.08638967970631707,
+    "max": 0.10997728705076912
+  },
+  "final_diagnostics": {
+    "callback_compute_ms": "0.0031549999732760625",
+    "outputs": "1198",
+    "input_receipt_age_s": "0.058470400000004474",
+    "source_origin_ns": "1785168868059677832",
+    "invalid_messages": "0",
+    "buffer_dropped": "0",
+    "backward_clock_resets": "0",
+    "forward_gap_catchups": "1",
+    "position_mode": "relative_1d",
+    "front_status": "DUPLICATE_OR_OLD",
+    "rear_status": "DUPLICATE_OR_OLD",
+    "command_stale": "False",
+    "disturbance": "0.0",
+    "source_stamp_relative_s": "63.85",
+    "variance_v": "0.01118033988749869"
+  },
+  "causal_errors": 0,
+  "unknown_input_receipts": 0,
+  "correctness_failures": [],
+  "latency_note": "First held-input processing result; source age is not transport latency. Uncredited inputs are reported, not assigned zero latency.",
+  "test_not_evaluated": true,
+  "latency_observed_within_nominal_and_peak": true
+}
+{
+  "bag": "30618_0652866c",
+  "role": "development",
+  "bag_sha256": "22b7dcd7139aa45ed1e992f7077243b0d83e903bbb02c2bfa7e663417e9720c1",
+  "playback": "1x actual rosbag SQLite record order via independent ROS publisher",
+  "full_bag": false,
+  "record_duration_s": 1460.46223261,
+  "measured_duration_s": 60.0,
+  "effective_parameters": {
+    "alignment_delay_s": 0.0,
+    "rate_hz": 20.0,
+    "clock_mode": "input_stamp"
+  },
+  "trace_timing_enabled": true,
+  "offered_messages": {
+    "2": 512,
+    "1": 504,
+    "0": 1257
+  },
+  "unique_offered": 2273,
+  "unique_inputs_with_matching_result": 2159,
+  "uncredited_inputs": 114,
+  "outputs": 1198,
+  "position_outputs": 1198,
+  "mode_counts": {
+    "INITIALIZED": 1,
+    "MODEL_ONLY": 638,
+    "FUSED": 414,
+    "STOPPED": 145
+  },
+  "source_rate_hz": 20.0,
+  "wall_rate_hz": 20.029931547654385,
+  "callback_to_publish_ms_after_10s": {
+    "n": 1811,
+    "p50": 58.72987,
+    "p95": 63.1080465,
+    "p99": 64.1434019,
+    "max": 119.279832
+  },
+  "publisher_to_both_result_subscribers_ms_after_10s": {
+    "n": 1811,
+    "p50": 59.868726,
+    "p95": 64.33500649999999,
+    "p99": 65.46528889999999,
+    "max": 120.566895
+  },
+  "publisher_to_both_result_subscribers_ms_all": {
+    "n": 2159,
+    "p50": 59.778734,
+    "p95": 64.28762520000001,
+    "p99": 65.42556809999999,
+    "max": 120.566895
+  },
+  "rss_peak_bytes": 84692992,
+  "rss_median_first_window_bytes": 84561920.0,
+  "rss_median_last_window_bytes": 84692992,
+  "cpu_core_equivalents": {
+    "n": 60,
+    "p50": 0.05999259260330597,
+    "p95": 0.06999601319113852,
+    "p99": 0.08814947063266348,
+    "max": 0.09998620710270259
+  },
+  "final_diagnostics": {
+    "callback_compute_ms": "0.0020729999903323915",
+    "outputs": "1198",
+    "input_receipt_age_s": "0.05848672299998725",
+    "source_origin_ns": "1785168868059677832",
+    "invalid_messages": "0",
+    "buffer_dropped": "0",
+    "backward_clock_resets": "0",
+    "forward_gap_catchups": "1",
+    "position_mode": "relative_1d",
+    "front_status": "DUPLICATE_OR_OLD",
+    "rear_status": "DUPLICATE_OR_OLD",
+    "command_stale": "False",
+    "disturbance": "0.0",
+    "source_stamp_relative_s": "63.85",
+    "variance_v": "0.01118033988749869"
+  },
+  "causal_errors": 0,
+  "unknown_input_receipts": 0,
+  "correctness_failures": [],
+  "latency_note": "First held-input processing result; source age is not transport latency. Uncredited inputs are reported, not assigned zero latency.",
+  "test_not_evaluated": true,
+  "latency_observed_within_nominal_and_peak": true
+}
+{
+  "bag": "30618_0652866c",
+  "role": "development",
+  "bag_sha256": "22b7dcd7139aa45ed1e992f7077243b0d83e903bbb02c2bfa7e663417e9720c1",
+  "playback": "1x actual rosbag SQLite record order via independent ROS publisher",
+  "full_bag": false,
+  "record_duration_s": 1460.46223261,
+  "measured_duration_s": 60.0,
+  "effective_parameters": {
+    "alignment_delay_s": 0.0,
+    "rate_hz": 20.0,
+    "clock_mode": "ros_clock"
+  },
+  "trace_timing_enabled": true,
+  "offered_messages": {
+    "2": 512,
+    "1": 504,
+    "0": 1257
+  },
+  "unique_offered": 2273,
+  "unique_inputs_with_matching_result": 2155,
+  "uncredited_inputs": 118,
+  "outputs": 1196,
+  "position_outputs": 1196,
+  "mode_counts": {
+    "INITIALIZED": 1,
+    "MODEL_ONLY": 636,
+    "FUSED": 413,
+    "STOPPED": 144,
+    "SINGLE_WHEEL": 2
+  },
+  "source_rate_hz": 20.0,
+  "wall_rate_hz": 19.99963747268021,
+  "callback_to_publish_ms_after_10s": {
+    "n": 1810,
+    "p50": 51.7993145,
+    "p95": 56.0817337,
+    "p99": 57.21839664,
+    "max": 63.437036
+  },
+  "publisher_to_both_result_subscribers_ms_after_10s": {
+    "n": 1810,
+    "p50": 52.920915,
+    "p95": 57.3004593,
+    "p99": 58.40926392,
+    "max": 65.191403
+  },
+  "publisher_to_both_result_subscribers_ms_all": {
+    "n": 2155,
+    "p50": 52.781273,
+    "p95": 57.2454817,
+    "p99": 58.4202158,
+    "max": 65.191403
+  },
+  "rss_peak_bytes": 85032960,
+  "rss_median_first_window_bytes": 84901888.0,
+  "rss_median_last_window_bytes": 85032960,
+  "cpu_core_equivalents": {
+    "n": 60,
+    "p50": 0.09997510844498,
+    "p95": 0.11997560186415632,
+    "p99": 0.13403812245084964,
+    "max": 0.13990106224857995
+  },
+  "final_diagnostics": {
+    "callback_compute_ms": "0.5217969999762317",
+    "outputs": "1188",
+    "input_receipt_age_s": "0.0018224109999778193",
+    "source_origin_ns": "1785168868059677832",
+    "invalid_messages": "0",
+    "buffer_dropped": "0",
+    "backward_clock_resets": "0",
+    "forward_gap_catchups": "1",
+    "position_mode": "relative_1d",
+    "front_status": "DUPLICATE_OR_OLD",
+    "rear_status": "DUPLICATE_OR_OLD",
+    "command_stale": "False",
+    "disturbance": "0.0",
+    "source_stamp_relative_s": "63.45",
+    "variance_v": "0.011180339723997542"
+  },
+  "causal_errors": 0,
+  "unknown_input_receipts": 0,
+  "correctness_failures": [],
+  "latency_note": "First held-input processing result; source age is not transport latency. Uncredited inputs are reported, not assigned zero latency.",
+  "test_not_evaluated": true,
+  "latency_observed_within_nominal_and_peak": true
+}
+{
+  "bag": "30618_0652866c",
+  "role": "development",
+  "bag_sha256": "22b7dcd7139aa45ed1e992f7077243b0d83e903bbb02c2bfa7e663417e9720c1",
+  "playback": "1x actual rosbag SQLite record order via independent ROS publisher",
+  "full_bag": false,
+  "record_duration_s": 1460.46223261,
+  "measured_duration_s": 60.0,
+  "effective_parameters": {
+    "alignment_delay_s": 0.0,
+    "rate_hz": 20.0,
+    "clock_mode": "ros_clock"
+  },
+  "trace_timing_enabled": true,
+  "offered_messages": {
+    "2": 512,
+    "1": 504,
+    "0": 1257
+  },
+  "unique_offered": 2273,
+  "unique_inputs_with_matching_result": 2155,
+  "uncredited_inputs": 118,
+  "outputs": 1196,
+  "position_outputs": 1196,
+  "mode_counts": {
+    "INITIALIZED": 1,
+    "MODEL_ONLY": 636,
+    "FUSED": 413,
+    "STOPPED": 144,
+    "SINGLE_WHEEL": 2
+  },
+  "source_rate_hz": 20.0,
+  "wall_rate_hz": 20.00275651141352,
+  "callback_to_publish_ms_after_10s": {
+    "n": 1810,
+    "p50": 49.0842015,
+    "p95": 59.54068965,
+    "p99": 63.15129833,
+    "max": 64.835325
+  },
+  "publisher_to_both_result_subscribers_ms_after_10s": {
+    "n": 1810,
+    "p50": 50.615102,
+    "p95": 61.29360445,
+    "p99": 64.66229632000001,
+    "max": 66.310613
+  },
+  "publisher_to_both_result_subscribers_ms_all": {
+    "n": 2155,
+    "p50": 50.570099,
+    "p95": 61.3449808,
+    "p99": 64.66973354000001,
+    "max": 66.310613
+  },
+  "rss_peak_bytes": 84758528,
+  "rss_median_first_window_bytes": 84758528.0,
+  "rss_median_last_window_bytes": 84758528,
+  "cpu_core_equivalents": {
+    "n": 60,
+    "p50": 0.10990030422069477,
+    "p95": 0.11998631295703273,
+    "p99": 0.12817820937601682,
+    "max": 0.1399490809263957
+  },
+  "final_diagnostics": {
+    "callback_compute_ms": "0.02023000001827313",
+    "outputs": "1187",
+    "input_receipt_age_s": "0.019158541000024343",
+    "source_origin_ns": "1785168868059677832",
+    "invalid_messages": "0",
+    "buffer_dropped": "0",
+    "backward_clock_resets": "0",
+    "forward_gap_catchups": "1",
+    "position_mode": "relative_1d",
+    "front_status": "ACCEPTED",
+    "rear_status": "ACCEPTED",
+    "command_stale": "False",
+    "disturbance": "0.0",
+    "source_stamp_relative_s": "63.400000000000006",
+    "variance_v": "0.006180339887498974"
+  },
+  "causal_errors": 0,
+  "unknown_input_receipts": 0,
+  "correctness_failures": [],
+  "latency_note": "First held-input processing result; source age is not transport latency. Uncredited inputs are reported, not assigned zero latency.",
+  "test_not_evaluated": true,
+  "latency_observed_within_nominal_and_peak": true
+}
