@@ -1,4 +1,4 @@
-"""Reproduce guarded-readout validation against pinned active main 984fdf2.
+"""Reproduce guarded-readout validation on the integrated current core.
 
 Only the existing validation role is allowed; no fitting or test DB access.
 Source-time grid, fault placement, matching and metric definitions are unchanged.
@@ -24,11 +24,10 @@ import numpy as np
 from reserve_odometry.core import Config, Observer
 from reserve_odometry.guarded_readout import GuardedReadoutObserver, ReadoutConfig
 
-BASE_COMMIT = '984fdf2fc4faf05325249215d6b8541c0e68209a'
+BASE_COMMIT = 'efc473e415795d64770ef9dfa4f1bc417078da32'
 BASE_CORE_BLOB = 'f6fc8ecd0b4e16018d814407b1944ce26ea550b0'
 PINNED_FILES = {'src/reserve_odometry/reserve_odometry/timeline.py': 'ed63b44dede078cb3cde501bd1e5559260763c56ac9b832f39924c1d97b0bdbf', 'src/reserve_odometry/config/default.yaml': 'dae5f5c80cd87e968b1e838c5b0d25cc531f816949b1fd2a59dd65e8e93efaec', 'src/reserve_odometry/config/adaptive_v5.json': '3b84e6eb09262ba7a24771e5a56e0aa3ecb89c67f18e501cd0d0366514e99da1', 'src/reserve_odometry/config/candidates_v3/balanced_physics.json': '68b81682f9ac48d11bf7d8e67418a45de546ab35526954c5f6fc3eda2d7ec425', 'tools/finalization/evaluate.py': 'f6a19a1727274ca88e1fe1a9fb76d31dbc8ce4e9bbabf669c488f053d76caec7', 'tools/research_v3/experiment.py': '95a398003530454457bacb2096fb6bc9d0d5ee32520420c43a9ebeb406376aa0', 'tools/export_bags.py': '696f6bdbf853dac4d4fe6286f6a7f4742f4aea5b1bc508efda52f5bc179c3b66', 'research/split_v3.json': '20928a29daad2b4178ddb92e2a4d9ddb347952f6c03845802a8d82fff7da5ae0', 'research/plan_v3.json': 'ddbc1130e214c3d338b3d292232391d3a329a0fd5f13a090027452ae070271b3'}
 NAMES = ('main', 'candidate')
-PINNED_FILES['src/reserve_odometry/reserve_odometry/core.py'] = '780ca4796d86b4fa4e8c8679abfb73f58f23e003d4ee644ba964ffdeac9f0bfc'
 SELECTED_MODULE_SHA256 = '6303c1230ff800e370875f7238912e47a0564da1b21d42ccf8f417f75b2e05e0'
 OPS = {'rate_hz': 20., 'alignment_delay_s': 0.}
 
@@ -70,8 +69,9 @@ def models(check_inner=False):
         key, sep, value = line.strip().partition(':')
         if sep and key.startswith('model.'):
             active[key[6:]] = float(value)
-    if active != base or profile['config'] != base:
-        raise ValueError('Physical parameters differ from the current-main baseline')
+    expected_profile = dict(base, wheel_time_compensation=0.0)
+    if active != base or profile['config'] != expected_profile:
+        raise ValueError('Physical parameters differ from the integrated v5 inner baseline')
     if profile['readout'] != {'gain': 1.0, 'holdoff_s': 0.5}:
         raise ValueError('Readout options differ from the pre-validation selection')
     cls = CheckedGuardedObserver if check_inner else GuardedReadoutObserver
