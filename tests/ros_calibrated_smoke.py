@@ -24,6 +24,7 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--params-file', type=Path)
     parser.add_argument('--expected-json', type=Path)
+    parser.add_argument('--launch-file', default='odometry.launch.py')
     args = parser.parse_args(argv)
     if (args.params_file is None) != (args.expected_json is None):
         parser.error('--params-file and --expected-json must be supplied together')
@@ -37,8 +38,10 @@ def main(argv=None):
     if args.expected_json is None and promoted is not None:
         expected_path = root / promoted['profile_json']
         selected = promoted['selected']
-    expected = json.loads(expected_path.read_text())['config']
-    launch = ['ros2', 'launch', 'reserve_odometry', 'odometry.launch.py']
+    profile = json.loads(expected_path.read_text())
+    expected = {'model.' + key: value for key, value in profile['config'].items()}
+    expected.update({'readout.' + key: value for key, value in profile.get('readout', {}).items()})
+    launch = ['ros2', 'launch', 'reserve_odometry', args.launch_file]
     if args.params_file:
         launch.append('params_file:=' + str(args.params_file.resolve()))
         selected = expected_path.stem
@@ -52,7 +55,7 @@ def main(argv=None):
         if not client.wait_for_service(timeout_sec=20):
             raise AssertionError('Launched node did not expose parameter service')
         request = GetParameters.Request()
-        request.names = ['model.' + key for key in expected]
+        request.names = list(expected)
         future = client.call_async(request)
         rclpy.spin_until_future_complete(probe, future, timeout_sec=5)
         assert future.done() and future.result() is not None, 'No parameter response'
@@ -124,4 +127,9 @@ if __name__ == '__main__':
         share = Path(get_package_share_directory('reserve_odometry'))
         expected = Path(__file__).resolve().parents[1] / 'src/reserve_odometry/config/time_aligned_v6.json'
         main(['--params-file', str(share / 'config/time_aligned_v6.yaml'),
+              '--expected-json', str(expected)])
+        # Preserve both current-main launches and additionally exercise v7.
+        expected = Path(__file__).resolve().parents[1] / 'src/reserve_odometry/config/guarded_readout_v7.json'
+        main(['--launch-file', 'guarded_odometry.launch.py',
+              '--params-file', str(share / 'config/guarded_readout_v7.yaml'),
               '--expected-json', str(expected)])
