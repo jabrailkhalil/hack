@@ -1,8 +1,8 @@
-# Поля формы: active champion v7
+# Поля формы: active champion v8
 
-Эта версия полей относится к **текущему checkout main с guarded v7**.
+Эта версия полей относится к **текущему checkout main с champion v8**.
 Исторический `reserve-odometry-v4.zip` остаётся отдельной frozen-версией;
-его final-test нельзя выдавать за test v7. Репозиторий приватный: доступ жюри
+его final-test нельзя выдавать за test v8. Репозиторий приватный: доступ жюри
 или разрешённый способ передачи нужно обеспечить отдельно. Форма автоматически
 не отправлялась.
 
@@ -10,7 +10,7 @@
 
 https://github.com/jabrailkhalil/hack/tree/main/src
 
-Пакеты tram_vehicle_msgs и reserve_odometry. Активный runtime: guarded v7 readout поверх v5 inner observer плюс low-speed
+Пакеты tram_vehicle_msgs и reserve_odometry. Активный runtime: champion v8 readout поверх v5 inner observer плюс low-speed
 zero-lock protection. Стандартный `odometry.launch.py` запускает именно этот
 профиль. Входы controller/front/rear; выходы скорости, относительного положения
 и диагностики. Runtime без GNSS/IMU/LLM.
@@ -26,10 +26,11 @@ https://github.com/jabrailkhalil/hack/blob/main/submission/JUDGE_GUIDE.md
 https://github.com/jabrailkhalil/hack/blob/main/submission/MODEL.md
 https://github.com/jabrailkhalil/hack/blob/main/reports/research_v6/REPORT.md
 
-Базовые уравнения и runtime из v4 сохранены. Внутренний v5 использует adaptation_tau_s=0.5. Guarded v7 не меняет внутреннее
+Базовые уравнения и runtime из v4 сохранены. Внутренний v5 использует adaptation_tau_s=0.5. Champion v8 не меняет внутреннее
 состояние фильтра: рекурсивная поправка применяется только к публикуемым v/s и
-сбрасывается/блокируется при недостоверных wheel evidence. Общая нулевая пара
-не ассимилируется как остановка, пока модельная скорость выше порога.
+сбрасывается/блокируется при недостоверных wheel evidence. Общая нулевая пара не ассимилируется как остановка, пока модельная скорость
+выше порога. После почти одновременного RATE_ANOMALY на обеих тележках
+common-mode reacquisition блокируется на 1.5 с; ordinary fusion не меняется.
 
 ## 4. Допущения, ограничения и параметры
 
@@ -49,8 +50,10 @@ https://github.com/jabrailkhalil/hack/tree/main/reports/research_v6
 **0.538434→0.538287 м/с**, scalar span distance **4.630978→4.595481 м**.
 698891 matched samples. На отдельной low-speed lock suite event RMSE
 2.68877→0.316586 м/с; это специальный fault scenario, не full-dataset gain.
-Нового независимого final test для v7 нет; исторический v4 final test к нему
-не относится.
+Нового независимого final test для v8 нет; исторический v4 final test к нему
+не относится. На отдельной common-mode +5 м/с suite event RMSE
+0.092438→0.063562 м/с (-31.24%), REACQUIRING ticks 47→0; это специальная
+инъекция, не full-dataset metric.
 
 ## 6. Ограничения и дальнейшее развитие
 
