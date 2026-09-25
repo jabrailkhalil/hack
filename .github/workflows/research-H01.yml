@@ -13,7 +13,7 @@ jobs:
     env:
       OPENBLAS_NUM_THREADS: '1'
       OMP_NUM_THREADS: '1'
-      H01_EVIDENCE: ${{ runner.temp }}/H01-evidence
+      H01_EVIDENCE: /tmp/H01-evidence
     steps:
       - uses: actions/checkout@v4
         with:
@@ -83,5 +83,5 @@ jobs:
         if: always()
         with:
           name: H01-evidence-${{ github.run_id }}-${{ github.run_attempt }}
-          path: ${{ runner.temp }}/H01-evidence/
+          path: /tmp/H01-evidence/
           retention-days: 30
