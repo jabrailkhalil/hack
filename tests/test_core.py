@@ -81,6 +81,38 @@ class ObserverTests(unittest.TestCase):
             e = o.step(t, Sample(t, .1), Sample(t, z), Sample(t, z))
             self.assertLess(abs(e.v - 5), .2)
 
+    def test_short_common_mode_offset_does_not_reacquire(self):
+        o = Observer()
+        for i in range(101):
+            t = i * .02
+            z = 10 if 1.0 <= t < 1.6 else 5
+            e = o.step(t, Sample(t, 0), Sample(t, z), Sample(t, z))
+        self.assertLess(abs(e.v - 5), .2)
+        self.assertNotEqual(e.mode, 'REACQUIRING')
+
+    def test_persistent_agreeing_pair_reacquires_after_model_divergence(self):
+        o = Observer()
+        modes = []
+        for i in range(401):
+            t = i * .02
+            z = 5 if t < 1.0 else 10
+            e = o.step(t, Sample(t, 0), Sample(t, z), Sample(t, z))
+            modes.append(e.mode)
+        self.assertIn('REACQUIRING', modes)
+        self.assertGreater(e.v, 9.5)
+        self.assertIn(e.mode, ('FUSED', 'REACQUIRING'))
+
+    def test_locked_common_zero_pair_never_reacquires_moving_state(self):
+        o = Observer()
+        for i in range(51):
+            t = i * .02
+            e = o.step(t, Sample(t, 0), Sample(t, 10), Sample(t, 10))
+        for i in range(51, 251):
+            t = i * .02
+            e = o.step(t, Sample(t, -.8), Sample(t, 0), Sample(t, 0))
+            self.assertNotEqual(e.mode, 'REACQUIRING')
+        self.assertGreater(e.v, 4)
+
     def test_locked_wheels_not_zero_velocity_update(self):
         o = Observer()
         o.step(0, Sample(0, 0), Sample(0, 10), Sample(0, 10))

@@ -1,0 +1,60 @@
+name: Real-bag hypothesis smoke
+on:
+  push:
+    branches: [feat/gap-recovery-v2]
+    paths:
+      - 'src/reserve_odometry/**'
+      - 'tests/**'
+      - 'tools/**'
+      - '.github/workflows/real-smoke.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  real-smoke:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Prepare evaluator
+        run: python3 -m pip install --disable-pip-version-check 'numpy>=1.23,<3'
+      - name: Fetch pinned organizer dataset
+        run: python3 tools/get_dataset.py
+      - name: Export deterministic development smoke bags
+        run: |
+          python3 tools/export_bags.py \
+            dataset/data/30618_0652866c dataset/data/30618_1551d0a9 \
+            dataset/data/30618_27e994fc dataset/data/30618_e151d6e4 \
+            dataset/data/30639_0ab96c59 dataset/data/30639_9c362687 \
+            dataset/data/30639_c31df386 dataset/data/30639_e4379d7f
+      - name: Replay causal observer
+        run: python3 tools/replay_csv.py exports/*.csv.gz --output reports/hypothesis_gap_recovery.json
+      - name: Assert continuity invariant and summarize deltas
+        run: |
+          python3 - <<'PY'
+          import json
+          old=json.load(open('reports/real_smoke.json'))['results']
+          new=json.load(open('reports/hypothesis_gap_recovery.json'))['results']
+          old={r['bag']:r for r in old}; new={r['bag']:r for r in new}
+          rows=[]
+          for bag,n in new.items():
+              assert n['clock_resets']==0, (bag,n['clock_resets'])
+              o=old[bag]
+              refs=sorted(set(o['receiver_metrics']) & set(n['receiver_metrics']))
+              for ref in refs:
+                  om=o['receiver_metrics'][ref].get('observer')
+                  nm=n['receiver_metrics'][ref].get('observer')
+                  if om and nm:
+                      rows.append((bag,ref,om['rmse_mps'],nm['rmse_mps'],nm['rmse_mps']-om['rmse_mps']))
+          print('bag,reference,old_rmse,new_rmse,delta')
+          for row in rows: print(','.join(map(str,row)))
+          if rows:
+              mean_delta=sum(r[4] for r in rows)/len(rows)
+              print('mean_rmse_delta',mean_delta)
+              assert mean_delta < 0.02, mean_delta
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hypothesis-gap-recovery
+          path: reports/hypothesis_gap_recovery.json
+          retention-days: 5

@@ -167,7 +167,9 @@ class ReserveOdometryNode(Node):
             d.level = DiagnosticStatus.OK
         values = dict(callback_compute_ms=callback_ms, outputs=self.total_outputs,
                       invalid_messages=self.bad_messages, buffer_dropped=self.timeline.dropped,
-                      time_gap_resets=self.timeline.resets, position_mode='route' if self.route else 'relative_1d')
+                      backward_clock_resets=self.timeline.resets,
+                      forward_gap_catchups=self.timeline.catchup_events,
+                      position_mode='route' if self.route else 'relative_1d')
         if e:
             values.update(front_status=e.front_status, rear_status=e.rear_status,
                           command_stale=e.command_stale, disturbance=e.disturbance,
