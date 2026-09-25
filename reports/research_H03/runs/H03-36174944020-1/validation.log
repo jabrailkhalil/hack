@@ -1,0 +1,66 @@
+VALIDATION_CHECKPOINT 30618_0686195f
+VALIDATION_CHECKPOINT 30618_2255aade
+VALIDATION_CHECKPOINT 30618_2dbce472
+VALIDATION_CHECKPOINT 30618_2f104a1d
+VALIDATION_CHECKPOINT 30618_437e855c
+VALIDATION_CHECKPOINT 30618_49fe4c54
+VALIDATION_CHECKPOINT 30618_4e1e3181
+VALIDATION_CHECKPOINT 30618_68847170
+VALIDATION_CHECKPOINT 30618_68d1748a
+VALIDATION_CHECKPOINT 30618_76e1f9c7
+VALIDATION_CHECKPOINT 30618_7bfbb5ed
+VALIDATION_CHECKPOINT 30618_95c49c30
+VALIDATION_CHECKPOINT 30618_b15eafc3
+VALIDATION_CHECKPOINT 30618_b8044aa0
+VALIDATION_CHECKPOINT 30618_defd0170
+VALIDATION_CHECKPOINT 30639_3b3d9eb8
+VALIDATION_CHECKPOINT 30639_50956d6e
+VALIDATION_CHECKPOINT 30639_9f0b519f
+VALIDATION_CHECKPOINT 30639_d601d28f
+{
+  "candidate": "H03_w040",
+  "summary": {
+    "baseline_v2": {
+      "clean_rmse": 0.11713827416709652,
+      "fault_rmse": 0.5384344108523412,
+      "distance_rmse": 4.63097780847452,
+      "samples": 698891,
+      "pooled_rmse": 0.2167236028496654,
+      "false_stops_clean": 18,
+      "false_stops_fault": 0,
+      "unrecovered": 0
+    },
+    "balanced_physics": {
+      "clean_rmse": 0.11734855840574777,
+      "fault_rmse": 0.5505856121813248,
+      "distance_rmse": 4.624096283835266,
+      "samples": 698891,
+      "pooled_rmse": 0.21677274128998963,
+      "false_stops_clean": 18,
+      "false_stops_fault": 0,
+      "unrecovered": 0
+    }
+  },
+  "relative_change": {
+    "clean_rmse": 0.001795179587086082,
+    "fault_rmse": 0.022567653708737367,
+    "pooled_rmse": 0.0002267332200005523,
+    "distance_rmse": -0.0014859765958413762
+  },
+  "eligible": false,
+  "train_proxy_failed": false,
+  "rejection_reasons": [
+    "aggregate_regression:fault_rmse",
+    "insufficient_gain"
+  ],
+  "conclusion": "rejected",
+  "test_evaluated": false,
+  "independent_final_test": false,
+  "limitations": [
+    "Reused validation, not independent generalization",
+    "Train acceleration target derives from wheels, not independent ground truth",
+    "Scalar reanchored distance, not xyz or terminal drift",
+    "No installed-ROS latency/resource benchmark for H03",
+    "Common-mode wheel faults remain unidentifiable"
+  ]
+}
