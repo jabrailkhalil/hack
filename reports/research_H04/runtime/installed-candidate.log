@@ -1,0 +1,33 @@
+Starting >>> tram_vehicle_msgs
+Finished <<< tram_vehicle_msgs [7.93s]
+Starting >>> reserve_odometry
+Finished <<< reserve_odometry [0.73s]
+
+Summary: 2 packages finished [8.94s]
+CALIBRATED_LAUNCH_PASS selected=config verified_parameters=37 outputs=120 rate=20.000Hz v=5.000000
+[INFO] [launch]: All log files can be found below /root/.ros/log/2026-09-25-18-42-02-497403-efc8d4b55566-485
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [odometry_node-1]: process started with pid [497]
+[odometry_node-1] [WARN] [1790361722.771612674] [reserve_odometry]: RELATIVE 1D POSITION: no map/heading. This is NOT an ENU trajectory.
+[odometry_node-1] [WARN] [1790361722.772410215] [reserve_odometry]: Wheel scale defaults to 1/3.6 from measured dataset audit; verify organizer units.
+[WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+[INFO] [odometry_node-1]: sending signal 'SIGINT' to process[odometry_node-1]
+[odometry_node-1] Traceback (most recent call last):
+[odometry_node-1]   File "/work/install_H04/reserve_odometry/lib/reserve_odometry/odometry_node", line 33, in <module>
+[odometry_node-1]     sys.exit(load_entry_point('reserve-odometry==0.1.0', 'console_scripts', 'odometry_node')())
+[odometry_node-1]   File "/work/install_H04/reserve_odometry/lib/python3.10/site-packages/reserve_odometry/node.py", line 240, in main
+[odometry_node-1]     node.destroy_node()
+[odometry_node-1]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/node.py", line 1691, in destroy_node
+[odometry_node-1]     self.destroy_service(self._services[0])
+[odometry_node-1]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/node.py", line 1615, in destroy_service
+[odometry_node-1]     service.destroy()
+[odometry_node-1]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/service.py", line 93, in destroy
+[odometry_node-1]     self.__service.destroy_when_not_in_use()
+[odometry_node-1] KeyboardInterrupt
+[ERROR] [odometry_node-1]: process has died [pid 497, exit code -2, cmd '/work/install_H04/reserve_odometry/lib/reserve_odometry/odometry_node --ros-args --params-file /work/research/H04/config.yaml --params-file /tmp/launch_params_hknkrsw5'].
+
+H04_FAULT_PARAMS /work/research/H04/config.yaml
+ROS_FAULT_PASS outputs=340 dropout_outputs=60 pause_no_motion=true short_backward_seek_reset=true
+[WARN] [1790361729.588656907] [reserve_odometry]: RELATIVE 1D POSITION: no map/heading. This is NOT an ENU trajectory.
+[WARN] [1790361729.589301047] [reserve_odometry]: Wheel scale defaults to 1/3.6 from measured dataset audit; verify organizer units.
+

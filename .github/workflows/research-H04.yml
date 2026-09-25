@@ -1,0 +1,126 @@
+name: H04 singleton train freeze paired validation
+on:
+  push:
+    branches: [research/parallel-H04]
+    paths: ['.github/workflows/research-H04.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: research-H04
+  cancel-in-progress: false
+jobs:
+  compare:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 25
+    permissions:
+      contents: write
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - name: Prepare exact candidate and mechanism checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/H04"
+          git show 984fdf2fc4faf05325249215d6b8541c0e68209a:src/reserve_odometry/reserve_odometry/core.py > "$RUNNER_TEMP/H04-baseline-core.py"
+          git apply --check research/H04/algorithm.patch
+          git apply research/H04/algorithm.patch
+          export PYTHONPATH=src/reserve_odometry
+          export H04_BASELINE_CORE="$RUNNER_TEMP/H04-baseline-core.py"
+          python -m unittest discover -s tests -p test_core.py -v 2>&1 | tee "$RUNNER_TEMP/H04/core-tests.log"
+          python -m unittest discover -s tests -p test_timeline.py -v 2>&1 | tee "$RUNNER_TEMP/H04/timeline-tests.log"
+          python -m unittest discover -s research/H04/tests -v 2>&1 | tee "$RUNNER_TEMP/H04/H04-tests.log"
+      - name: Load checksum-pinned dataset and research dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install -r requirements-research.txt
+          python tools/get_dataset.py 2>&1 | tee "$RUNNER_TEMP/H04/dataset.log"
+      - name: Train-only diagnostics, no labels or tuning
+        shell: bash
+        run: |
+          set -euo pipefail
+          python research/H04/run.py train --output "$RUNNER_TEMP/H04/train" --workers 2 2>&1 | tee "$RUNNER_TEMP/H04/train.log"
+      - name: Freeze and publish selected candidate BEFORE validation
+        shell: bash
+        run: |
+          set -euo pipefail
+          python research/H04/run.py freeze --output "$RUNNER_TEMP/H04/FROZEN.json" --train-result "$RUNNER_TEMP/H04/train/results.json"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          branch="checkpoint/H04-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          destination="reports/research_H04/runs/$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          git switch -c "$branch"
+          mkdir -p "$destination"
+          cp "$RUNNER_TEMP/H04/FROZEN.json" "$destination/FROZEN.json"
+          git add "$destination/FROZEN.json"
+          git commit -m "research(H04): freeze singleton before validation $GITHUB_RUN_ID"
+          git push origin "HEAD:refs/heads/$branch"
+      - name: One frozen paired validation using unchanged v6 evaluator
+        shell: bash
+        run: |
+          set -euo pipefail
+          python research/H04/run.py validation --frozen "$RUNNER_TEMP/H04/FROZEN.json" --output "$RUNNER_TEMP/H04/validation" --workers 2 2>&1 | tee "$RUNNER_TEMP/H04/validation.log"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: H04-evidence-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/H04/
+          retention-days: 30
+      - name: Preserve results only in this run's own checkpoint branch
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! test -d "$RUNNER_TEMP/H04"; then exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          branch="checkpoint/H04-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          destination="reports/research_H04/runs/$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          if ! git show-ref --verify --quiet "refs/heads/$branch"; then git switch -c "$branch"; fi
+          mkdir -p "$destination"
+          cp -a "$RUNNER_TEMP/H04/." "$destination/"
+          git add "$destination"
+          git diff --cached --quiet || git commit -m "research(H04): preserve evidence $GITHUB_RUN_ID attempt $GITHUB_RUN_ATTEMPT"
+          git push origin "HEAD:refs/heads/$branch"
+  installed-candidate:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply candidate and provision dependencies before disconnecting network
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/H04-runtime"
+          git apply --check research/H04/algorithm.patch
+          git apply research/H04/algorithm.patch
+          docker build -t h04-odometry-env -f Dockerfile.environment . 2>&1 | tee "$RUNNER_TEMP/H04-runtime/environment.log"
+      - name: Installed H04 profile and fault assertions, offline 2 CPU 500 MB
+        shell: bash
+        run: |
+          set -euo pipefail
+          docker run --rm --network none --cpus 2 --memory 500000000 \
+            -e CMAKE_BUILD_PARALLEL_LEVEL=2 -e MAKEFLAGS=-j2 \
+            -v "$PWD:/work" -w /work h04-odometry-env bash -lc '
+              set -e
+              source /opt/ros/humble/setup.bash
+              colcon --log-base log_H04 build --build-base build_H04 --install-base install_H04 --executor sequential
+              source install_H04/setup.bash
+              python3 tests/ros_calibrated_smoke.py --params-file /work/research/H04/config.yaml --expected-json /work/research/H04/config.json
+              python3 research/H04/ros_fault_candidate.py
+            ' 2>&1 | tee "$RUNNER_TEMP/H04-runtime/installed-candidate.log"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: H04-runtime-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/H04-runtime/
+          retention-days: 30
