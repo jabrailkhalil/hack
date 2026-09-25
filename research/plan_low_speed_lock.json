@@ -1,0 +1,9 @@
+{
+ "base_commit":"2f7851364c6afe9786fad040e0938454d8b0d210",
+ "motivation":"Original >2m/s fault anchors did not exercise the zero-lock persistence bug. Synthetic low-speed case established a headroom before this additional evaluation.",
+ "anchor":"First valid agreeing wheel pair (difference <0.15m/s), mean speed strictly 1..2m/s, command>=0, t>max(25s,10%bag), t<end-25s. Selection uses only vehicle data, never GNSS/errors. No search for a favourable event.",
+ "faults":[{"kind":"lock","duration":3.0},{"kind":"lock","duration":5.0}],
+ "models":["main_v4","main_v5","v5_zero_lock"],
+ "acceptance":"Original clean and original four fault-scenario gates must remain non-regressing. On this separately labelled extension: >=5% group-macro event RMSE gain versus v5, fewer false-stop samples (same target>1m/s definition), no per-case false-stop/recovery regression. No change to thresholds or anchor based on results.",
+ "data_policy":"Only existing validation, both GNSS receivers; missing reference is null. Do not report as independent test, original fault suite gain, or all-speed superiority."
+}
