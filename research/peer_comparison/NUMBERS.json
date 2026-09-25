@@ -1,0 +1,50 @@
+{
+  "ours": {"repository": "jabrailkhalil/hack", "commit": "e3b0c9c039d2953fbfcda51231263d38ef9f1024", "profile": "champion_v8"},
+  "peer": {"repository": "godknows1337/tram-odometry", "commit": "0148c0563a781da18b1e25b57bd6e6ba15f45742", "default": "mean"},
+  "qualification": "Previously reused validation, not an independent final test or official score. No refitting or runtime/main changes. Comparisons normalize the scheduler, not native ROS latency.",
+  "peer_code_git_blobs": {"types.py": "7738e25a6183173aaa8ddb5b5e5ed79b8fe4a97d", "estimators.py": "218674e7dc09cd67e42ba5efb9a570c9c2f2a910", "replay.py": "187800c88ffb8ae2533058104111160b534ae907", "example.py": "f80fb5aa252d0988bb672771cd7568ff92e87989"},
+  "models_in_array_order": ["ours_v8", "peer_mean", "peer_front", "peer_rear", "peer_example_015"],
+  "counts": {"validation_bags": 19, "bags_with_reference": 15, "reference_groups": 9, "bag_receiver_pairs": 30, "matched_clean_samples": 698891, "original_fault_scenarios": 76, "abrupt_scenarios": 38, "slow_scenarios": 38, "causal_errors": 0},
+  "baseline_reproduction": {"expected": 0.1145498613174081, "actual": 0.1145498613174081, "difference": 0.0},
+  "clean": {
+    "group_macro_rmse_mps": [0.1145498613174081, 0.175989134, 0.125687365, 0.241011170, 0.208209966],
+    "pooled_rmse_mps": [0.21640679415489, 0.3471239248354644, 0.21999814147352814, 0.5860829674027492, 0.3570722812137165],
+    "scalar_span_distance_group_macro_rmse_m": [4.595480653017927, 14.576176786551027, 4.762908265871971, 26.61726728991944, 14.882621339108361],
+    "wins_ours_vs_mean_bag_receiver_pairs": 30,
+    "losses_ours_vs_mean_bag_receiver_pairs": 0,
+    "wins_ours_vs_front_bag_receiver_pairs": 28,
+    "losses_ours_vs_front_bag_receiver_pairs": 2,
+    "ours_macro_gain_vs_mean_percent": 34.91083310264522,
+    "ours_macro_gain_vs_front_percent": 8.861275604383279
+  },
+  "event_group_macro_rmse_mps_by_scenario": {
+    "front_bias_plus5_for5s": [0.414421398, 2.709635654, 5.104388202, 0.426609256, 2.613865283],
+    "both_wheels_dropout5s_controller_remains": [0.558804079, 1.991759474, 1.994433847, 1.989098553, 1.992047017],
+    "both_wheels_dropout10s_controller_remains": [0.723733997, 3.352762590, 3.355719591, 3.349813806, 3.352848835],
+    "both_wheels_zero_lock3s": [0.456187656, 5.428077003, 5.428078285, 5.428076049, 5.289834630],
+    "both_wheels_abrupt_plus5_for0p7s": [0.059511444, 4.760278335, 4.756742852, 4.763827073, 3.900747556],
+    "both_wheels_abrupt_plus5_for1p2s": [0.067612430, 4.848196724, 4.844991653, 4.851415878, 4.336997303],
+    "both_wheels_ramp_plus5_over3s_then_hold1s": [3.457112903, 3.456725759, 3.454891637, 3.458605046, 3.321779479],
+    "both_wheels_ramp_plus4_over4s_then_hold1s": [2.685839055, 2.664680652, 2.662776244, 2.666670027, 2.579843611]
+  },
+  "suite_event_group_macro_rmse_mps": {
+    "original_four_fault_types": [0.538286783, 3.370559, 3.970655, 2.798399, 3.312149],
+    "abrupt_common_mode": [0.063561937, 4.804238, 4.800867, 4.807621, 4.118872],
+    "slow_common_mode": [3.071475979, 3.060703, 3.058834, 3.062638, 2.950812]
+  },
+  "slow_common_mode_mean_confirmed_recovery_s": [4.407455492599998, 0.3616221592666648, 0.4066221592666654, 0.394955492599999, 1.5232888259333295],
+  "receipt_clock_sensitivity": {
+    "method": "Exact peer EventClock, actual SQLite receipt timestamps and raw header stamps, same 50 ms grid for all five models. Post-primary check, no tuning.",
+    "matched_samples": 698667,
+    "group_macro_rmse_mps": [0.11575803818464453, 0.1832477544850279, 0.1333292590486618, 0.24800758151634816, 0.21932356665855657],
+    "pooled_rmse_mps": [0.2170484844708901, 0.34910462297606454, 0.22298365727133526, 0.5873512807719206, 0.3613248590382598],
+    "min_bag_prediction_coverage_ours": 0.9996950821100318,
+    "min_bag_prediction_coverage_peer_mean": 0.999950231423879
+  },
+  "reproduction": {
+    "packaged_primary_runner_repeated": true,
+    "all_19_per_bag_json_equal": true,
+    "canonical_full_precision_aggregate_sha256": "e9b36deb186444a98f75d620a75cb37398ed60439dbfa9b1fa5fce2cc2ddd9cf"
+  },
+  "precision_note": "Some display values in this compact index are rounded. Full precision JSON, all per-case masks/counts/recovery, source hashes, both runners and logs are in the conversation evidence archive. No private peer source is republished."
+}
