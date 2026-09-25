@@ -1,12 +1,19 @@
-# Поля формы: активный профиль v5
+# Поля формы: active champion v7
 
-Эта версия полей относится к **текущему checkout main с v5**, а не к оставленному неизменным архиву `reserve-odometry-v4.zip`. При отправке исторического архива использовать его собственные поля и результаты внутри ZIP. Не смешивать v5-код с final-test числами v4. Репозиторий приватный: доступ жюри или разрешённый способ передачи нужно обеспечить отдельно. Форма не отправлялась автоматически.
+Эта версия полей относится к **текущему checkout main с guarded v7**.
+Исторический `reserve-odometry-v4.zip` остаётся отдельной frozen-версией;
+его final-test нельзя выдавать за test v7. Репозиторий приватный: доступ жюри
+или разрешённый способ передачи нужно обеспечить отдельно. Форма автоматически
+не отправлялась.
 
 ## 1. Ссылка на пакет(ы) ROS 2 Humble
 
 https://github.com/jabrailkhalil/hack/tree/main/src
 
-Пакеты tram_vehicle_msgs и reserve_odometry. Активная конфигурация adaptive_v5: нелинейная модель продольной динамики, независимые проверки двух тележек, ограниченная адаптивная поправка. Стандартный default.yaml совпадает с выбранным профилем. Входы controller/front/rear; выходы скорости, относительного положения и диагностики. Runtime без GNSS/IMU/LLM.
+Пакеты tram_vehicle_msgs и reserve_odometry. Активный runtime: guarded v7 readout поверх v5 inner observer плюс low-speed
+zero-lock protection. Стандартный `odometry.launch.py` запускает именно этот
+профиль. Входы controller/front/rear; выходы скорости, относительного положения
+и диагностики. Runtime без GNSS/IMU/LLM.
 
 ## 2. Инструкция для жюри
 
@@ -19,7 +26,10 @@ https://github.com/jabrailkhalil/hack/blob/main/submission/JUDGE_GUIDE.md
 https://github.com/jabrailkhalil/hack/blob/main/submission/MODEL.md
 https://github.com/jabrailkhalil/hack/blob/main/reports/research_v6/REPORT.md
 
-Базовые уравнения и runtime из v4 сохранены. Активный v5 меняет только постоянную времени адаптации неучтённого ускорения с 8 до 0.5 с; fitted-параметры тяги, мощности и торможения не переобучались. Пять экспериментальных вариантов v6 отклонены и не включены в ноду.
+Базовые уравнения и runtime из v4 сохранены. Внутренний v5 использует adaptation_tau_s=0.5. Guarded v7 не меняет внутреннее
+состояние фильтра: рекурсивная поправка применяется только к публикуемым v/s и
+сбрасывается/блокируется при недостоверных wheel evidence. Общая нулевая пара
+не ассимилируется как остановка, пока модельная скорость выше порога.
 
 ## 4. Допущения, ограничения и параметры
 
@@ -34,7 +44,13 @@ https://github.com/jabrailkhalil/hack/blob/main/submission/LIMITATIONS.md
 https://github.com/jabrailkhalil/hack/blob/main/reports/research_v6/REPORT.md
 https://github.com/jabrailkhalil/hack/tree/main/reports/research_v6
 
-На одинаковом повторно используемом validation: group-macro RMSE скорости 0.118068→0.117138 м/с; RMSE внутри искусственных fault-окон 0.569973→0.538434 м/с. Скалярная RMSE дистанции на непрерывных отрезках ухудшилась на 0.23%. 698891 сопоставленная точка; coverage и число ложных остановок не ухудшились. Нового независимого final test для v5 нет; старый final test относится только к неизменному v4. Фактические timing/RSS/CPU текущего default измерены отдельно и приведены с длительностью и source SHA в актуальном отчёте; прежний 24-минутный benchmark v4 не приписывается v5.
+На одинаковом повторно используемом validation: group-macro RMSE скорости
+**0.117138→0.114550 м/с**, исходный fault-event RMSE
+**0.538434→0.538287 м/с**, scalar span distance **4.630978→4.595481 м**.
+698891 matched samples. На отдельной low-speed lock suite event RMSE
+2.68877→0.316586 м/с; это специальный fault scenario, не full-dataset gain.
+Нового независимого final test для v7 нет; исторический v4 final test к нему
+не относится.
 
 ## 6. Ограничения и дальнейшее развитие
 
