@@ -1,0 +1,182 @@
+--- a/src/reserve_odometry/reserve_odometry/core.py
++++ b/src/reserve_odometry/reserve_odometry/core.py
+@@ -6,6 +6,7 @@
+ from dataclasses import dataclass, asdict
+ import math
+ from typing import Optional
++from .interval_disturbance import ModelHistory
+ 
+ 
+ def clip(x, lo, hi):
+@@ -132,6 +133,7 @@
+         self.reacquire_previous = None
+         self.pair_pending = [None, None]
+         self.last_estimate = None
++        self._interval_history = ModelHistory() if getattr(self, "_interval_enabled", False) else None
+ 
+     def drive_target(self, u, v):
+         c = self.c
+@@ -263,6 +265,18 @@
+         # Braking/coasting must not generate a sign reversal numerically.
+         if u <= c.command_deadband and self.v * predicted < 0:
+             predicted = 0.0
++        if self._interval_history is not None:
++            g = self.drive_a - self.resistance(previous_v)
++            reason = ''
++            if not self.initialized or dt <= 0:
++                reason = 'history'
++            elif command_stale or not all(self._valid(x, t, c.max_age_s) for x in (front, rear)):
++                reason = 'stale'
++            elif (abs(g + self.disturbance) >= c.max_accel_mps2 or
++                  abs(previous_v + dt * a_model) >= c.max_speed_mps or
++                  (u <= c.command_deadband and previous_v * (previous_v + dt * a_model) < 0)):
++                reason = 'clipped'
++            self._interval_history.record(self.t, t, g, reason)
+         p_prior = self.pv + c.process_noise_v * dt * (4.0 if command_stale else 1.0)
+         samples, statuses = [], []
+         for i, sample in enumerate((front, rear)):
+@@ -373,9 +387,13 @@
+                 measured_a = (z - old.value) / (tz - old.t)
+                 if abs(measured_a) <= c.max_accel_mps2 and abs(z) > 0.5:
+                     desired = measured_a - self.drive_a + self.resistance(self.v)
+-                    weight = 1 - math.exp(-(tz - old.t) / c.adaptation_tau_s)
+-                    self.disturbance = clip(self.disturbance + weight * (desired - self.disturbance),
+-                                            -c.disturbance_limit_mps2, c.disturbance_limit_mps2)
++                    if self._interval_history is not None:
++                        desired = self._interval_history.target(
++                            old.t, tz, measured_a, desired, g, self.disturbance)
++                    if desired is not None:
++                        weight = 1 - math.exp(-(tz - old.t) / c.adaptation_tau_s)
++                        self.disturbance = clip(self.disturbance + weight * (desired - self.disturbance),
++                                                -c.disturbance_limit_mps2, c.disturbance_limit_mps2)
+                 self.adapt_previous = Sample(tz, z)
+             elif old is None or tz - old.t > c.max_age_s:
+                 self.adapt_previous = Sample(tz, z)
+@@ -396,6 +414,8 @@
+                 self.drive_a = 0.0
+                 self.disturbance = 0.0
+                 mode = 'STOPPED'
++                if self._interval_history is not None:
++                    self._interval_history.clear()
+         else:
+             self.stop_since = None
+         self.s += 0.5 * (previous_v + self.v) * dt
+--- /dev/null
++++ b/src/reserve_odometry/reserve_odometry/interval_disturbance.py
+@@ -0,0 +1,97 @@
++"""Bounded causal interval reconstruction for disturbance targets (H13).
++
++The stored values are the native predictor's pre-correction g snapshots, not
++wheel acceleration and not g+disturbance. Linear interpolation is confined to
++valid adjacent snapshots. No extrapolation across missing/invalid history.
++"""
++from collections import deque
++from dataclasses import dataclass
++import math
++
++
++@dataclass(frozen=True)
++class Segment:
++    start: float
++    end: float
++    left: float
++    right: float
++    reason: str = ''
++
++
++class ModelHistory:
++    MAX_SEGMENTS = 32
++    HORIZON_S = 0.75
++    EPS = 1e-9
++
++    def __init__(self):
++        self.segments = deque(maxlen=self.MAX_SEGMENTS)
++        self.previous = None
++        self.last = None
++        self.endpoint_control = False  # non-selectable, offline ablation only
++        self.counts = dict(eligible=0, applied=0, changed=0, skipped=0,
++                           history=0, stale=0, clipped=0, gap=0, nonfinite=0)
++
++    def clear(self):
++        self.segments.clear()
++        self.previous = None
++
++    def record(self, previous_t, t, g, reason=''):
++        """Call once per native output tick after time validation, before fusion."""
++        self.last = None
++        if not math.isfinite(t) or not math.isfinite(g):
++            self.clear()
++            return
++        old = self.previous
++        if old is not None and previous_t is not None:
++            ot, og, why = old
++            if abs(ot - previous_t) > self.EPS or t <= ot:
++                self.clear()
++            else:
++                self.segments.append(Segment(ot, t, og, g, reason or why))
++        self.previous = (t, g, reason)
++        # Drop whole oldest segments; never stretch or bridge a missing edge.
++        cutoff = t - self.HORIZON_S
++        while self.segments and self.segments[0].start < cutoff - self.EPS:
++            self.segments.popleft()
++
++    def mean(self, start, end):
++        if not math.isfinite(start) or not math.isfinite(end) or end <= start:
++            return None, 'nonfinite'
++        cursor, integral = start, 0.0
++        for seg in self.segments:
++            if seg.end <= cursor:
++                continue
++            if seg.start > cursor + self.EPS:
++                return None, 'history'
++            right = min(end, seg.end)
++            if right <= cursor:
++                continue
++            if seg.reason:
++                return None, seg.reason
++            width = seg.end - seg.start
++            lo = max(cursor, seg.start)
++            gl = seg.left + (seg.right - seg.left) * (lo - seg.start) / width
++            gr = seg.left + (seg.right - seg.left) * (right - seg.start) / width
++            integral += 0.5 * (gl + gr) * (right - lo)
++            cursor = right
++            if cursor >= end:
++                value = integral / (end - start)
++                return (value, '') if math.isfinite(value) else (None, 'nonfinite')
++        return None, 'history'
++
++    def target(self, start, end, measured_a, endpoint_target, current_g, d_before):
++        self.counts['eligible'] += 1
++        mean_g, reason = self.mean(start, end)
++        desired = None if mean_g is None else measured_a - mean_g
++        self.last = dict(start=start, end=end, measured_a=measured_a,
++                         current_pre_g=current_g, current_post_g=measured_a-endpoint_target,
++                         mean_g=mean_g, original_target=endpoint_target,
++                         interval_target=desired, disturbance_before=d_before,
++                         reason=reason)
++        if desired is None:
++            self.counts['skipped'] += 1
++            self.counts[reason] += 1
++            return None
++        self.counts['applied'] += 1
++        self.counts['changed'] += int(abs(desired-endpoint_target) > 1e-6)
++        return endpoint_target if self.endpoint_control else desired
+--- /dev/null
++++ b/src/reserve_odometry/reserve_odometry/interval_readout.py
+@@ -0,0 +1,16 @@
++"""Explicit H13 activation, preserving canonical Config and guarded readout."""
++from .guarded_readout import GuardedReadoutObserver
++
++
++class IntervalReadoutObserver(GuardedReadoutObserver):
++    def __init__(self, config=None, *, readout=None, enabled=True, endpoint_control=False):
++        if type(enabled) is not bool or type(endpoint_control) is not bool:
++            raise ValueError('H13 enable/control switches must be bool')
++        self._interval_enabled = enabled
++        self._interval_endpoint_control = endpoint_control
++        super().__init__(config, readout=readout)
++
++    def reset(self, *, velocity=None, position=0.0):
++        super().reset(velocity=velocity, position=position)
++        if self._interval_history is not None:
++            self._interval_history.endpoint_control = self._interval_endpoint_control

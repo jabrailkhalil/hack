@@ -1,0 +1,102 @@
+name: R2 H13 interval disturbance research
+on:
+  push:
+    branches: [research/round2-H13]
+    paths: [research/R2/H13/READY.json]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  measure:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 25
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - name: Initialize fresh evidence and pinned baseline
+        run: |
+          set -eu
+          git fetch --depth=1 origin 65bba39ed05c781f3f69a65c02f69931152cbfd9
+          OUT="$RUNNER_TEMP/H13-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          mkdir "$OUT"
+          echo "OUT=$OUT" >> "$GITHUB_ENV"
+          echo "DEST=reports/research_R2/H13/$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT" >> "$GITHUB_ENV"
+          echo "H13_SOURCE_COMMIT=$GITHUB_SHA" >> "$GITHUB_ENV"
+          git show 65bba39ed05c781f3f69a65c02f69931152cbfd9:src/reserve_odometry/reserve_odometry/core.py > "$RUNNER_TEMP/H13-original-core.py"
+          echo "H13_BASELINE_CORE=$RUNNER_TEMP/H13-original-core.py" >> "$GITHUB_ENV"
+          cp -a research/R2/H13 "$OUT/source"
+          git status --short > "$OUT/initial-git-status.txt"
+      - name: Install pinned offline research dependencies
+        run: python -m pip install -r requirements-research.txt 2>&1 | tee "$OUT/dependencies.log"
+      - name: Apply actual candidate and run all legacy and H13 checks
+        run: |
+          set -euo pipefail
+          git apply --check research/R2/H13/algorithm.patch
+          git apply research/R2/H13/algorithm.patch
+          cp src/reserve_odometry/reserve_odometry/core.py "$OUT/source/applied-core.py"
+          cp src/reserve_odometry/reserve_odometry/interval_*.py "$OUT/source/"
+          python -m compileall -q src research/R2/H13
+          PYTHONPATH=src/reserve_odometry python -m unittest discover -s tests -v 2>&1 | tee "$OUT/legacy-tests.log"
+          python -m unittest discover -s research/tests -v 2>&1 | tee "$OUT/research-integrity.log"
+          python -m unittest discover -s research/R2/H13 -p test_h13.py -v 2>&1 | tee "$OUT/h13-tests.log"
+      - name: Extract only train and true development roles
+        run: python research/R2/H13/prepare_data.py --roles train development --journal "$OUT/extraction-prevalidation.json" 2>&1 | tee "$OUT/dataset.log"
+      - name: Train vehicle-only replay, no parameter fitting
+        run: python research/R2/H13/run.py train --output "$OUT/train" --workers 2 2>&1 | tee "$OUT/train.log"
+      - name: All development groups, safety, mechanism and AB BA cost
+        run: python research/R2/H13/run.py development --output "$OUT/development" --workers 2 2>&1 | tee "$OUT/development.log"
+      - name: Publish separate freeze commit BEFORE validation IO, only if eligible
+        id: freeze
+        run: |
+          set -euo pipefail
+          eligible=$(python -c "import json,os;print(str(json.load(open(os.environ['OUT']+'/development/results.json'))['development_eligible']).lower())")
+          echo "eligible=$eligible" >> "$GITHUB_OUTPUT"
+          if test "$eligible" != true; then
+            echo 'Validation not run: preregistered development coverage/safety barrier.' | tee "$OUT/validation-skipped.txt"
+            exit 0
+          fi
+          python research/R2/H13/run.py freeze --development "$OUT/development" --output "$OUT/FREEZE.json" 2>&1 | tee "$OUT/freeze.log"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          branch="checkpoint/R2-H13-freeze-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          git switch -c "$branch"
+          mkdir -p "$DEST"
+          cp "$OUT/FREEZE.json" "$DEST/FREEZE.json"
+          git add "$DEST/FREEZE.json"
+          git commit -m "research(H13): freeze candidate before validation $GITHUB_RUN_ID"
+          git push origin "HEAD:refs/heads/$branch"
+          freeze_sha=$(git rev-parse HEAD)
+          echo "$freeze_sha" > "$OUT/freeze_commit.txt"
+          echo "H13_FREEZE_COMMIT=$freeze_sha" >> "$GITHUB_ENV"
+      - name: One paired original validation, after published freeze
+        if: steps.freeze.outputs.eligible == 'true'
+        run: |
+          set -euo pipefail
+          python research/R2/H13/prepare_data.py --roles validation --journal "$OUT/extraction-validation.json" 2>&1 | tee "$OUT/validation-data.log"
+          python research/R2/H13/run.py validation --freeze "$OUT/FREEZE.json" --output "$OUT/validation" --workers 2 2>&1 | tee "$OUT/validation.log"
+      - name: Preserve immutable evidence in own new checkpoint branch
+        if: always()
+        run: |
+          set -eu
+          if ! test -d "$OUT"; then exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          branch="checkpoint/R2-H13-result-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          git switch -c "$branch"
+          mkdir -p "$DEST"
+          cp -a "$OUT/." "$DEST/"
+          git add "$DEST"
+          git diff --cached --quiet || git commit -m "research(H13): preserve run $GITHUB_RUN_ID attempt $GITHUB_RUN_ATTEMPT"
+          git push origin "HEAD:refs/heads/$branch"
+          git rev-parse HEAD > "$OUT/result_commit.txt"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: R2-H13-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.OUT }}/
+          retention-days: 30
