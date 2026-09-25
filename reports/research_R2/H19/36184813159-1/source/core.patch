@@ -1,0 +1,48 @@
+--- a/src/reserve_odometry/reserve_odometry/core.py
++++ b/src/reserve_odometry/reserve_odometry/core.py
+@@ -313,12 +313,20 @@
+             for i in range(2):
+                 if i not in accepted:
+                     statuses[i] = 'AMBIGUOUS_PAIR'
++        # H19 hook: no changed hard gates, and exact baseline arithmetic off.
++        weights = [1.0, 1.0]
++        if hasattr(self, '_h19_weights'):
++            weights = self._h19_weights(t, samples, statuses, accepted, predicted,
++                                        p_prior, command_stale)
++        downweighted = any(weights[i] != 1.0 for i in accepted)
+         self.v = predicted
+         self.pv = p_prior
+         mode = 'MODEL_ONLY'
+         if accepted:
+             self._clear_reacquire()
+             z = sum(samples[i].value for i in accepted) / len(accepted)
++            if downweighted:
++                z = sum(weights[i] * samples[i].value for i in accepted) / sum(weights[i] for i in accepted)
+             age = 0.0
+             if c.wheel_time_compensation:
+                 # Correct only samples that already passed the raw rate/model
+@@ -336,12 +344,14 @@
+             # not an exact out-of-sequence Kalman covariance or calibrated CI.
+             r += (c.wheel_time_compensation ** 2 * c.process_noise_v * age
+                   * (4.0 if command_stale else 1.0))
++            if downweighted:
++                r *= len(accepted) / sum(weights[i] for i in accepted)
+             gain = p_prior / (p_prior + r)
+             self.v += gain * residual
+             self.pv = max(1e-8, (1 - gain) ** 2 * p_prior + gain * gain * r)
+             mode = 'FUSED' if len(accepted) == 2 and agree else 'SINGLE_WHEEL'
+             for i in accepted:
+-                statuses[i] = 'ACCEPTED'
++                statuses[i] = 'SEQUENTIAL_DOWNWEIGHTED' if weights[i] < 1.0 else 'ACCEPTED'
+         else:
+             # Prediction ticks at 20 Hz must not reset 10 Hz wheel evidence.
+             hard_failure = any(status not in ('MODEL_DISAGREEMENT', 'DUPLICATE_OR_OLD')
+@@ -365,7 +375,7 @@
+                     mode = 'REACQUIRING'
+                     statuses = ['REACQUIRE_ACCEPTED', 'REACQUIRE_ACCEPTED']
+         # Adapt disturbance only from two new, agreeing and model-consistent wheels.
+-        if mode == 'FUSED' and not command_stale:
++        if mode == 'FUSED' and not command_stale and not downweighted:
+             z = (samples[0].value + samples[1].value) * 0.5
+             tz = (samples[0].t + samples[1].t) * 0.5
+             old = self.adapt_previous
