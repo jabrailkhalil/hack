@@ -1,0 +1,191 @@
+{
+  "stage": "development",
+  "verdict": "SELECTED_FOR_FREEZE",
+  "selected": "H17_L050",
+  "checks": {
+    "H17_L050": {
+      "passed": true,
+      "rejection_reasons": [],
+      "gains": {
+        "clean_rmse": -0.0002803321021433991,
+        "fault_rmse": 0.009965408502421003
+      },
+      "delta": {
+        "clean_rmse": 2.5977855324099686e-05,
+        "fault_rmse": -0.0023672689583241757,
+        "distance_rmse": -0.006328928570192183,
+        "samples": 0,
+        "pooled_rmse": -1.8869143047495207e-06,
+        "false_stops_clean": 0,
+        "false_stops_fault": 0,
+        "unrecovered": 0
+      },
+      "summary": {
+        "clean_rmse": 0.09269412083814917,
+        "fault_rmse": 0.23518134309797661,
+        "distance_rmse": 5.3039660762312515,
+        "samples": 394221,
+        "pooled_rmse": 0.12930380756312865,
+        "false_stops_clean": 0,
+        "false_stops_fault": 0,
+        "unrecovered": 4
+      }
+    },
+    "H17_L100": {
+      "passed": true,
+      "rejection_reasons": [],
+      "gains": {
+        "clean_rmse": -0.0007034263990597367,
+        "fault_rmse": 0.008804118636166591
+      },
+      "delta": {
+        "clean_rmse": 6.5185218125971e-05,
+        "fault_rmse": -0.002091406162400389,
+        "distance_rmse": -0.012305425902420453,
+        "samples": 0,
+        "pooled_rmse": 4.319398662994134e-06,
+        "false_stops_clean": 0,
+        "false_stops_fault": 0,
+        "unrecovered": 0
+      },
+      "summary": {
+        "clean_rmse": 0.09273332820095104,
+        "fault_rmse": 0.2354572058939004,
+        "distance_rmse": 5.297989578899023,
+        "samples": 394221,
+        "pooled_rmse": 0.1293100138760964,
+        "false_stops_clean": 0,
+        "false_stops_fault": 0,
+        "unrecovered": 4
+      }
+    },
+    "H17_L200": {
+      "passed": false,
+      "rejection_reasons": [
+        "aggregate_regression:fault_rmse"
+      ],
+      "gains": {
+        "clean_rmse": -0.0017956881391714141,
+        "fault_rmse": -0.026975221678921413
+      },
+      "delta": {
+        "clean_rmse": 0.00016640308523330205,
+        "fault_rmse": 0.006407926469738812,
+        "distance_rmse": -0.022983176219724122,
+        "samples": 0,
+        "pooled_rmse": 4.1853932472829536e-05,
+        "false_stops_clean": 0,
+        "false_stops_fault": 0,
+        "unrecovered": 0
+      },
+      "summary": {
+        "clean_rmse": 0.09283454606805837,
+        "fault_rmse": 0.2439565385260396,
+        "distance_rmse": 5.2873118285817196,
+        "samples": 394221,
+        "pooled_rmse": 0.12934754840990623,
+        "false_stops_clean": 0,
+        "false_stops_fault": 0,
+        "unrecovered": 4
+      }
+    }
+  },
+  "coverage": {
+    "H17_L050": {
+      "changed_selected_ticks": 21611,
+      "qualifying_transitions": 2835,
+      "transition_groups": 6,
+      "reference_groups": 6,
+      "history_peak": 6,
+      "passed": true
+    },
+    "H17_L100": {
+      "changed_selected_ticks": 40430,
+      "qualifying_transitions": 2835,
+      "transition_groups": 6,
+      "reference_groups": 6,
+      "history_peak": 6,
+      "passed": true
+    },
+    "H17_L200": {
+      "changed_selected_ticks": 70690,
+      "qualifying_transitions": 2835,
+      "transition_groups": 6,
+      "reference_groups": 6,
+      "history_peak": 6,
+      "passed": true
+    }
+  },
+  "group_optima": {
+    "2cd82bc27dbad052": {
+      "rmse": {
+        "R2_v7": 0.01918502773970963,
+        "H17_L050": 0.019413399422791605,
+        "H17_L100": 0.01965164153765741,
+        "H17_L200": 0.020044827368112347
+      },
+      "optima": [
+        "R2_v7"
+      ]
+    },
+    "70bb14d1c90f301f": {
+      "rmse": {
+        "R2_v7": 0.14767057962529004,
+        "H17_L050": 0.14768150791303503,
+        "H17_L100": 0.14770283529137498,
+        "H17_L200": 0.14777743448350328
+      },
+      "optima": [
+        "R2_v7"
+      ]
+    },
+    "711abb923942f9fe": {
+      "rmse": {
+        "R2_v7": 0.10598262720618301,
+        "H17_L050": 0.10598668525292038,
+        "H17_L100": 0.10600120929154182,
+        "H17_L200": 0.10606825398865714
+      },
+      "optima": [
+        "R2_v7"
+      ]
+    },
+    "8269991eafa82c45": {
+      "rmse": {
+        "R2_v7": 0.02467686311810358,
+        "H17_L050": 0.024630154592387068,
+        "H17_L100": 0.024595885329315895,
+        "H17_L200": 0.0245685169300917
+      },
+      "optima": [
+        "H17_L200"
+      ]
+    },
+    "a0c46036cc19092a": {
+      "rmse": {
+        "R2_v7": 0.13814212669565956,
+        "H17_L050": 0.13814473219292026,
+        "H17_L100": 0.13815654085528123,
+        "H17_L200": 0.13821399018392622
+      },
+      "optima": [
+        "R2_v7"
+      ]
+    },
+    "a8a4c11ebcc1dde2": {
+      "rmse": {
+        "R2_v7": 0.12035163351200452,
+        "H17_L050": 0.12030824565484066,
+        "H17_L100": 0.12029185690053484,
+        "H17_L200": 0.12033425345405957
+      },
+      "optima": [
+        "H17_L100"
+      ]
+    }
+  },
+  "ready_to_merge": false,
+  "validation_opened": false,
+  "test_evaluated": false,
+  "qualification": "Group optima are descriptive, not fitted physical delays; reused validation is not independent test."
+}

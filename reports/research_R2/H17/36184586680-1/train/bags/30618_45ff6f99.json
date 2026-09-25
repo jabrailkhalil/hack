@@ -1,0 +1,170 @@
+{
+  "clean": {
+    "bag": "30618_45ff6f99",
+    "group": "5c1be3e9a2189121",
+    "role": "train",
+    "outputs": 261,
+    "expected_ticks": 337,
+    "output_span_s": 13.0,
+    "first_output_s": 3.848703265,
+    "last_output_s": 16.848703265,
+    "sensor_duration_s": 16.849982842,
+    "receivers": {
+      "master": {
+        "front_scaled": {
+          "n": 0,
+          "coverage": 0.0,
+          "rmse": null
+        },
+        "mean_scaled": {
+          "n": 0,
+          "coverage": 0.0,
+          "rmse": null
+        },
+        "R2_v7": {
+          "n": 0,
+          "coverage": 0.0,
+          "rmse": null,
+          "false_stop_samples": 0,
+          "distance_surrogate": {
+            "definition": "s versus integral matched horizontal GNSS speed; NOT xyz",
+            "full_span_terminal_error_m": null,
+            "full_span_reference_distance_m": null,
+            "full_span_terminal_drift_percent": null,
+            "continuous_spans": 0,
+            "reanchored_span_rmse_m": null,
+            "longest_reference_span": null
+          }
+        },
+        "R2_off": {
+          "n": 0,
+          "coverage": 0.0,
+          "rmse": null,
+          "false_stop_samples": 0,
+          "distance_surrogate": {
+            "definition": "s versus integral matched horizontal GNSS speed; NOT xyz",
+            "full_span_terminal_error_m": null,
+            "full_span_reference_distance_m": null,
+            "full_span_terminal_drift_percent": null,
+            "continuous_spans": 0,
+            "reanchored_span_rmse_m": null,
+            "longest_reference_span": null
+          },
+          "common_front_scaled_rmse": null,
+          "common_mean_scaled_rmse": null
+        }
+      },
+      "rover": {
+        "front_scaled": {
+          "n": 0,
+          "coverage": 0.0,
+          "rmse": null
+        },
+        "mean_scaled": {
+          "n": 0,
+          "coverage": 0.0,
+          "rmse": null
+        },
+        "R2_v7": {
+          "n": 0,
+          "coverage": 0.0,
+          "rmse": null,
+          "false_stop_samples": 0,
+          "distance_surrogate": {
+            "definition": "s versus integral matched horizontal GNSS speed; NOT xyz",
+            "full_span_terminal_error_m": null,
+            "full_span_reference_distance_m": null,
+            "full_span_terminal_drift_percent": null,
+            "continuous_spans": 0,
+            "reanchored_span_rmse_m": null,
+            "longest_reference_span": null
+          }
+        },
+        "R2_off": {
+          "n": 0,
+          "coverage": 0.0,
+          "rmse": null,
+          "false_stop_samples": 0,
+          "distance_surrogate": {
+            "definition": "s versus integral matched horizontal GNSS speed; NOT xyz",
+            "full_span_terminal_error_m": null,
+            "full_span_reference_distance_m": null,
+            "full_span_terminal_drift_percent": null,
+            "continuous_spans": 0,
+            "reanchored_span_rmse_m": null,
+            "longest_reference_span": null
+          },
+          "common_front_scaled_rmse": null,
+          "common_mean_scaled_rmse": null
+        }
+      }
+    },
+    "runtime": {
+      "R2_v7": {
+        "resets": 0,
+        "dropped": 0,
+        "catchups": 1,
+        "causal_errors": 0,
+        "mode_counts": {
+          "INITIALIZED": 1,
+          "MODEL_ONLY": 6,
+          "FUSED": 4,
+          "STOPPED": 250
+        }
+      },
+      "R2_off": {
+        "resets": 0,
+        "dropped": 0,
+        "catchups": 1,
+        "causal_errors": 0,
+        "mode_counts": {
+          "INITIALIZED": 1,
+          "MODEL_ONLY": 6,
+          "FUSED": 4,
+          "STOPPED": 250
+        }
+      }
+    },
+    "diagnostics": {
+      "R2_v7": {
+        "counts": {
+          "ticks": 337,
+          "stale_ticks": 67,
+          "OFF": 337,
+          "changed_selected_ticks": 0
+        },
+        "history_peak": 0,
+        "phase": {},
+        "traces": []
+      },
+      "R2_off": {
+        "counts": {
+          "ticks": 337,
+          "stale_ticks": 67,
+          "OFF": 337,
+          "changed_selected_ticks": 0
+        },
+        "history_peak": 0,
+        "phase": {},
+        "traces": []
+      }
+    },
+    "canonical_off_exact": true
+  },
+  "stress": [],
+  "extra": [],
+  "transitions": [],
+  "access": [
+    {
+      "bag": "30618_45ff6f99",
+      "purpose": "train",
+      "sha256": "b6bfa5dd61b7a8b5ea433f9888cc157bdbc7e856b754b0dea09881927a77fe88",
+      "topics": [
+        "/vehicle/driver_position_cmd",
+        "/vehicle/front_bogie_velocity",
+        "/vehicle/rear_bogie_velocity"
+      ],
+      "state": "completed"
+    }
+  ]
+}
