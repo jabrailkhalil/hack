@@ -9,7 +9,7 @@ from launch_ros.parameter_descriptions import ParameterValue
 
 
 def generate_launch_description():
-    config = str(Path(get_package_share_directory('reserve_odometry')) / 'config' / 'guarded_readout_v7.yaml')
+    config = str(Path(get_package_share_directory('reserve_odometry')) / 'config' / 'champion_v8.yaml')
     return LaunchDescription([
         DeclareLaunchArgument('params_file', default_value=config),
         DeclareLaunchArgument('use_sim_time', default_value='false'),
