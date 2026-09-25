@@ -1,0 +1,32 @@
+Service: Wolfram.WolframLanguageEvaluator, 2026-09-25, actual responses.
+
+CALL 1: symbolic boundedness/limits and an erroneous numeric FirstPosition query.
+Messages: Power::infy (1/0), Infinity::indet (0*Infinity), General::messages.
+Out: bounded=True; unclippedFixedPoint=dt*(1+(-1+E^(dt/tau))^(-1))*(-k+q);
+continuousLimit=(-k+q)*tau; zeroElapsedDoesNotAccumulate=x;
+constantInputSequence=dt*(1-(E^(-(dt/tau)))^n)*(1+(-1+E^(dt/tau))^(-1))*(-k+q);
+detectorPole=True; measurementRank=2; unidentifiableNullspace={{-1,1,1}};
+commonModeResidualCancellation=0.
+DISCARDED NUMERIC OUTPUT: detectionSamples {{.3,2},{.6,2}} and recoverySamples {{.3,1},{.6,1}}.
+Those numbers came from an incorrect level-search expression involving FirstPosition,
+not from correct indexing of the generated sequence. They are not used in the design or report.
+
+CALL 2: numeric Module/Select over explicit integer indices, corrected and actually executed.
+Out: riseFirst12={0.,0.075,0.14634220683755356,0.21420501319025054,
+0.27875811142212986,0.34016291790297853,0.3985729766333339,
+0.4541343431844628,0.5069859499133663,0.5572599533660393,
+0.6050820647376722,0.6505718642161197};
+fallFirst5={2.,1.8774588490014281,1.7608941004594014,1.650014281786699,1.5445421356819207};
+detectionSamples={{0.3,5},{0.6,10}};
+recoverySamples={{0.3,30},{0.6,27}};
+fixedPointForEvidence1=1.5378124869799419;
+pole=0.951229424500714.
+
+Assumptions: dt=.1s, tau=2s, k=.25; constant evidence=1 for rise,
+evidence=0 starting at cap=2s for decay, release H/4. Steps are counted after a zero initial
+accumulator, not wall time from a real fault. Periodic epoch reset, time-varying normalization,
+wheel/model correlation and attribution availability limit applicability. These outputs do NOT
+prove accuracy, detector calibration or closed-loop observer stability.
+
+WolframContext was also called; its natural-language searches gave no useful results.
+Scite: actual search failed monthly 25-call quota; no excerpts or full text retrieved in H19.

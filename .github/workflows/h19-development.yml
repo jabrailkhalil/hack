@@ -1,0 +1,88 @@
+name: H19 R2 paired research
+on:
+  push:
+    branches: [research/round2-H19]
+    paths: [.github/workflows/h19-development.yml]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  compare:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 25
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - name: Prepare exact dependencies, verify measured code and audited data
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT="$RUNNER_TEMP/H19-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          mkdir -p "$OUT/logs"
+          echo "OUT=$OUT" >> "$GITHUB_ENV"
+          sha256sum -c research/R2/H19/MEASURED_CODE.sha256 | tee "$OUT/logs/code-hashes.log"
+          python -m pip install -r requirements-research.txt 2>&1 | tee "$OUT/logs/dependencies.log"
+          python tools/get_dataset.py 2>&1 | tee "$OUT/logs/dataset.log"
+      - name: Existing and H19 mechanism integrity tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=src/reserve_odometry python -m unittest discover -s tests -v 2>&1 | tee "$OUT/logs/baseline-tests.log"
+          python -m unittest discover -s research/tests -v 2>&1 | tee "$OUT/logs/research-tests.log"
+          python -m unittest discover -s research/R2/H19 -p 'test_*.py' -v 2>&1 | tee "$OUT/logs/h19-tests.log"
+          python -m compileall -q tools/research_h19 research/R2/H19 src/reserve_odometry/reserve_odometry/sequential_faults.py
+      - name: All train groups, vehicle-only execution and disabled parity
+        shell: bash
+        run: |
+          set -euo pipefail
+          python tools/research_h19/run.py --stage train --output "$OUT/train" 2>&1 | tee "$OUT/logs/train.log"
+      - name: All development groups with original and separate diagnostic suites
+        shell: bash
+        run: |
+          set -euo pipefail
+          python tools/research_h19/run.py --stage development --output "$OUT/development" 2>&1 | tee "$OUT/logs/development.log"
+      - name: Identical development AB BA CPU benchmark, not ROS latency
+        shell: bash
+        run: |
+          set -euo pipefail
+          python tools/research_h19/run.py --stage benchmark --output "$OUT/benchmark" 2>&1 | tee "$OUT/logs/benchmark.log"
+      - name: Preserve source association
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p "$OUT/source"
+          find research/R2/H19 -maxdepth 1 -type f -exec cp '{}' "$OUT/source/" ';'
+          cp src/reserve_odometry/reserve_odometry/sequential_faults.py "$OUT/source/"
+          cp tools/research_h19/*.py "$OUT/source/"
+          git rev-parse HEAD > "$OUT/source/MEASURED_COMMIT.txt"
+          git archive HEAD | gzip > "$OUT/source_snapshot.tar.gz"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: R2-H19-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.OUT }}/
+          retention-days: 30
+      - name: Commit evidence only to a new checkpoint branch
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -d "$OUT" || exit 0
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          branch="checkpoint/R2-H19-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          git switch -c "$branch"
+          dest="reports/research_R2/H19/$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          mkdir -p "$dest"
+          cp -a "$OUT/." "$dest/"
+          rm -f "$dest/source_snapshot.tar.gz"
+          git add -f "$dest"
+          git diff --cached --quiet || git commit -m "research(H19): preserve R2 measured evidence $GITHUB_RUN_ID/$GITHUB_RUN_ATTEMPT"
+          git push origin "HEAD:refs/heads/$branch"
