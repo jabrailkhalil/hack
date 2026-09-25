@@ -1,0 +1,29 @@
+name: H13 source snapshot
+on:
+  push:
+    branches: [research/neutral-common-accel-v10]
+    paths: ['.github/workflows/h13-snapshot.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  snapshot:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - name: Export exact checkout and Git object inventory
+        run: |
+          git rev-parse HEAD > SOURCE_COMMIT.txt
+          git ls-files -s > SOURCE_BLOBS.txt
+          git archive --format=zip HEAD -o h13-source.zip
+          sha256sum h13-source.zip > h13-source.sha256
+      - uses: actions/upload-artifact@v4
+        with:
+          name: H13-source
+          path: |
+            h13-source.zip
+            h13-source.sha256
+            SOURCE_COMMIT.txt
+            SOURCE_BLOBS.txt
+          retention-days: 7
