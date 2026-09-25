@@ -27,10 +27,10 @@ class ActiveProfileTests(unittest.TestCase):
     def test_guarded_profile_preserves_v5_inner_physics(self):
         v5=json.loads((ROOT/'src/reserve_odometry/config/adaptive_v5.json').read_text())['config']
         guarded=json.loads((ROOT/'src/reserve_odometry/config/guarded_readout_v7.json').read_text())
-        self.assertEqual(guarded['config'],dict(v5,wheel_time_compensation=0.0))
+        self.assertEqual(guarded['config'],dict(v5,wheel_time_compensation=0.0,common_mode_quarantine_s=0.0))
         self.assertEqual(guarded['readout'],{'gain':1.0,'holdoff_s':0.5})
         self.assertEqual(self._yaml_model(ROOT/'src/reserve_odometry/config/default.yaml'),v5)
-        self.assertEqual(asdict(Config(**v5)),dict(v5,wheel_time_compensation=0.0))
+        self.assertEqual(asdict(Config(**v5)),dict(v5,wheel_time_compensation=0.0,common_mode_quarantine_s=0.0))
 
     def test_champion_metrics_are_explicitly_qualified(self):
         p=json.loads((ROOT/'reports/champion_v7/PROMOTION.json').read_text())
