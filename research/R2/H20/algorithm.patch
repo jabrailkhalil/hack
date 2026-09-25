@@ -1,0 +1,23 @@
+--- a/src/reserve_odometry/reserve_odometry/core.py
++++ b/src/reserve_odometry/reserve_odometry/core.py
+@@ -264,6 +264,9 @@
+         if u <= c.command_deadband and self.v * predicted < 0:
+             predicted = 0.0
+         p_prior = self.pv + c.process_noise_v * dt * (4.0 if command_stale else 1.0)
++        h20_context = getattr(self, '_h20_context', None)
++        if h20_context is not None:
++            h20_context(t, u, target, a_model, predicted, previous_v, command_stale)
+         samples, statuses = [], []
+         for i, sample in enumerate((front, rear)):
+             candidate, status = self._wheel(i, sample, t)
+@@ -336,6 +339,10 @@
+             # not an exact out-of-sequence Kalman covariance or calibrated CI.
+             r += (c.wheel_time_compensation ** 2 * c.process_noise_v * age
+                   * (4.0 if command_stale else 1.0))
++            h20_weight = getattr(self, '_h20_weight', None)
++            if h20_weight is not None:
++                z, r = h20_weight(samples, accepted, agree, predicted, z, r)
++                residual = z - predicted
+             gain = p_prior / (p_prior + r)
+             self.v += gain * residual
+             self.pv = max(1e-8, (1 - gain) ** 2 * p_prior + gain * gain * r)
