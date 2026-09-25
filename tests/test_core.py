@@ -132,6 +132,29 @@ class ObserverTests(unittest.TestCase):
         self.assertGreater(e.variance_s, 1)
         self.assertEqual(e.mode, 'MODEL_ONLY')
 
+    def test_dropout_duration_matrix_recovers(self):
+        for duration in (0.1, 0.5, 2.0, 5.0, 10.0):
+            for missing in ('front', 'both'):
+                with self.subTest(duration=duration, missing=missing):
+                    o = Observer()
+                    t = 0.0
+                    while t <= 1.0 + 1e-9:
+                        o.step(t, Sample(t, 0), Sample(t, 5), Sample(t, 5))
+                        t += .02
+                    end = t + duration
+                    while t < end - 1e-9:
+                        front = None if missing in ('front', 'both') else Sample(t, 5)
+                        rear = None if missing == 'both' else Sample(t, 5)
+                        e = o.step(t, Sample(t, 0), front, rear)
+                        self.assertTrue(math.isfinite(e.v))
+                        t += .02
+                    recovery_end = t + 3.0
+                    while t < recovery_end - 1e-9:
+                        e = o.step(t, Sample(t, 0), Sample(t, 5), Sample(t, 5))
+                        t += .02
+                    self.assertLess(abs(e.v - 5), .1)
+                    self.assertGreater(e.s, 4.0 * duration)
+
     def test_time_errors_require_reset(self):
         o = Observer(); o.step(5)
         for t in (5, 4, 7, float('nan')):
