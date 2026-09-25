@@ -1,0 +1,22 @@
+name: H13 pinned source preparation
+on:
+  push:
+    branches: [research/round2-H13]
+    paths: [.github/workflows/research-R2-H13-source.yml]
+permissions:
+  contents: read
+jobs:
+  source:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Package source only; no measurement payloads
+        run: |
+          git archive --format=zip --output="$RUNNER_TEMP/H13-source.zip" 65bba39ed05c781f3f69a65c02f69931152cbfd9 src tools tests research docs requirements-research.txt Dockerfile.environment README.md .github/workflows reports/champion_v7 reports/research_v6/REPORT.md
+          sha256sum "$RUNNER_TEMP/H13-source.zip"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: H13-pinned-source
+          path: ${{ runner.temp }}/H13-source.zip
+          retention-days: 7
