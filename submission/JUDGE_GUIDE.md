@@ -1,10 +1,15 @@
-# Запуск активного профиля v5 и воспроизведение архива v4
+# Запуск active champion v7 и воспроизведение предыдущих профилей
 
 ## Выбор версии
 
-Текущий `main` использует **v5**: прежние fitted-коэффициенты и runtime v4, постоянная времени адаптации `0.5 с` вместо `8 с`. Отбор, регрессия скалярной дистанции и проверки приведены в [актуальном отчёте](../reports/research_v6/REPORT.md). Это повторно используемый validation, не новый независимый test.
+Текущий `main` использует **guarded v7**: output-only причинную компенсацию
+возраста wheel measurements поверх неизменного внутреннего v5 и защиту от
+ложной остановки при low-speed common zero. На фиксированном validation:
+0.117138→0.114550 м/с group-macro RMSE скорости, исходный fault RMSE
+0.538434→0.538287 м/с. Это reused validation, не новый independent test.
 
-**Standalone `reserve-odometry-v4.zip` остаётся отдельной исторической версией.** Его `FREEZE.json`, final-test и 24-минутный runtime-прогон не подтверждают активный v5. При передаче архива передаются именно v4 и её инструкция внутри ZIP. При передаче текущего checkout указывать v5 и текущий отчёт, не подставлять старые test-числа.
+Standalone `reserve-odometry-v4.zip` остаётся исторической frozen-версией; её
+final-test и 24-минутный benchmark не приписываются v7.
 
 ## 1. Среда и сборка
 
@@ -17,20 +22,14 @@ bash submission/build.sh
 bash submission/run.sh
 ```
 
-`build.sh` не скачивает данные и не переоценивает final test. Ноду запускать до bag, после независимых bag перезапускать. Стандартный launch загружает `config/default.yaml`, побайтно равный выбранному `adaptive_v5.yaml`. Все его model-параметры проверяются отдельным ROS-процессом через GetParameters, а не только чтением YAML.
-
-Во втором терминале:
+`build.sh` не скачивает данные и не переоценивает final test. Ноду запускать до bag, после независимых bag перезапускать. Стандартный launch запускает `guarded_odometry_node` с
+`config/guarded_readout_v7.yaml`. Внутренний v5 сохранён отдельно и запускается:
 
 ```bash
-source /opt/ros/humble/setup.bash
-source install/setup.bash
-ros2 bag play /absolute/path/to/bag --topics \
-  /vehicle/driver_position_cmd \
-  /vehicle/front_bogie_velocity \
-  /vehicle/rear_bogie_velocity
+ros2 launch reserve_odometry v5_odometry.launch.py
 ```
 
-Голый `ros2 run` без params-file использует базовые `Config()` defaults и не запускает выбранную конфигурацию. Воспроизведение прежнего профиля:
+Воспроизведение прежнего профиля v4:
 
 ```bash
 ros2 launch reserve_odometry odometry.launch.py \
