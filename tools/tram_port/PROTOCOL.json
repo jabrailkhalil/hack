@@ -1,0 +1,19 @@
+{
+ "status": "SYNTHETIC_NATIVE_FIXTURES_ONLY",
+ "upstream_commit": "e3b0c9c039d2953fbfcda51231263d38ef9f1024",
+ "methods": ["mean","A","B","C","H1_10","H2_050","hack_v5","hack_v6","hack_v7","hack_v8"],
+ "model_selection": "none; both parties frozen; no training in this audit",
+ "data": "eventized upstream behavioral fixtures and explicit clean counterpart; no our plant generator",
+ "rate_hz": 20,
+ "alignment_delay_s": 0,
+ "clock": "unmodified hack Timeline.advance() in native input_stamp mode",
+ "metric_functions": "unchanged replay and distance_surrogate from evaluate.py, match and metrics from experiment.py",
+ "matching": "native nearest reference within 50ms, native tie convention",
+ "aggregation": "each case; optional group macro is not an independent statistical estimate",
+ "initialization": "native WAITING outputs excluded; also report paired common-time masks and coverage",
+ "fault_metric": "native mask [start,end+10), separate [start,end) event RMSE",
+ "path": "native continuous-span distance_surrogate, NOT ENU; no retroactive output rewrite",
+ "time_resources": "step+adapter Python calls only; no ROS latency or memory limit verification",
+ "real_data": "not obtained: Yandex DNS/web access failed",
+ "out_of_scope": ["H3-H12 unpushed code","real GNSS accuracy","retraining","ROS launch","official scoring"]
+}
