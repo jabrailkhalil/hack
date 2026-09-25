@@ -1,0 +1,34 @@
+{
+  "active_profile": "guarded_readout_v7_plus_zero_lock_guard",
+  "integration_commit_parent": "f2ce094c7e961745a32f4bcb04e5b41e50577756",
+  "standard_launch": "ros2 launch reserve_odometry odometry.launch.py",
+  "clean_validation": {
+    "group_macro_rmse_mps": 0.114549861,
+    "baseline_v5_mps": 0.117138274,
+    "gain_fraction": 0.022097
+  },
+  "fault_validation": {
+    "group_macro_event_rmse_mps": 0.538286783,
+    "baseline_v5_mps": 0.538434411,
+    "gain_fraction": 0.000274
+  },
+  "scalar_distance_validation": {
+    "group_macro_rmse_m": 4.595480653,
+    "baseline_v5_m": 4.630977808,
+    "gain_fraction": 0.007665
+  },
+  "low_speed_lock_extension": {
+    "event_group_macro_rmse_mps": 0.3165860574326788,
+    "baseline_v5_mps": 2.68877,
+    "gain_fraction": 0.8822561834247229,
+    "false_stop_samples_after": 0,
+    "unrecovered_after": 0
+  },
+  "evidence": {
+    "guarded_pr": 14,
+    "zero_lock_pr": 13,
+    "guarded_ci": "https://github.com/jabrailkhalil/hack/actions/runs/36174105585",
+    "zero_lock_ci": "https://github.com/jabrailkhalil/hack/actions/runs/36173217491"
+  },
+  "qualification": "Reused validation plus a separately defined injected low-speed lock suite. Not an independent final test and not a claim of official score. Combined integration still requires its own CI."
+}
