@@ -1,0 +1,35 @@
+name: Paired wheel-fault validation
+on:
+  workflow_dispatch:
+  push:
+    branches: [research/wheel-faults]
+    paths:
+      - 'src/reserve_odometry/reserve_odometry/core.py'
+      - 'tools/research_lock/**'
+      - '.github/workflows/research-wheel-faults.yml'
+permissions:
+  contents: read
+jobs:
+  paired:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - run: python -m pip install -r requirements-research.txt
+      - run: python tools/get_dataset.py
+      - run: python tools/research_lock/runner.py --output "$RUNNER_TEMP/original-suite"
+      - run: python tools/research_lock/low_speed.py --output "$RUNNER_TEMP/low-speed-suite"
+      - run: python tools/research_lock/verify.py --original "$RUNNER_TEMP/original-suite/results.json" --extension "$RUNNER_TEMP/low-speed-suite/results.json"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: paired-wheel-faults
+          path: |
+            ${{ runner.temp }}/original-suite/
+            ${{ runner.temp }}/low-speed-suite/

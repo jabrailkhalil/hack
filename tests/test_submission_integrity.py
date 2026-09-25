@@ -8,7 +8,7 @@ ROOT=Path(__file__).resolve().parents[1]
 
 
 class SubmissionIntegrityTests(unittest.TestCase):
-    def test_frozen_source_and_report_are_identical(self):
+    def test_published_archive_and_report_are_identical(self):
         path=ROOT/'submission/FREEZE.json'
         frozen=json.loads(path.read_text())
         final=json.loads((ROOT/'reports/final/test/results.json').read_text())
