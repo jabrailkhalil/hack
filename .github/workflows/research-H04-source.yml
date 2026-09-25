@@ -1,0 +1,24 @@
+name: H04 pinned source snapshot
+on:
+  push:
+    branches: [research/parallel-H04]
+    paths: ['.github/workflows/research-H04-source.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  snapshot:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 984fdf2fc4faf05325249215d6b8541c0e68209a
+      - name: Export source and research metadata; exclude final-test results
+        run: |
+          git archive --format=zip --output="$RUNNER_TEMP/H04-baseline-source.zip" HEAD src tools tests research requirements-dev.txt requirements-research.txt Dockerfile.environment .github/workflows/ci.yml
+      - uses: actions/upload-artifact@v4
+        with:
+          name: H04-baseline-source-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/H04-baseline-source.zip
+          retention-days: 7
