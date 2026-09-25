@@ -90,6 +90,66 @@ class ObserverTests(unittest.TestCase):
         self.assertLess(abs(e.v - 5), .2)
         self.assertNotEqual(e.mode, 'REACQUIRING')
 
+    def test_slow_common_mode_slew_guard_blocks_ramp_reacquire(self):
+        c=Config(common_mode_slew_threshold_mps2=1.25,
+                 common_mode_slew_quarantine_s=1.5)
+        o=Observer(c); modes=[]
+        for i in range(401):
+            t=i*.02
+            if t < 2:
+                z=5
+            elif t < 5:
+                z=5+(t-2)*(5/3)
+            elif t < 6:
+                z=10
+            else:
+                z=5
+            e=o.step(t,Sample(t,0),Sample(t,z),Sample(t,z))
+            modes.append(e.mode)
+        self.assertNotIn('REACQUIRING',modes[100:300])
+        self.assertGreater(o.reacquire_blocked_until,3.0)
+
+    def test_slew_guard_does_not_delay_long_dropout_return(self):
+        base=Observer(Config())
+        guarded=Observer(Config(common_mode_slew_threshold_mps2=1.25,
+                                common_mode_slew_quarantine_s=1.5))
+        first={}
+        for i in range(301):
+            t=i*.02
+            if t < 1:
+                front=rear=Sample(t,5)
+            elif t < 2:
+                front=rear=None
+            else:
+                front=rear=Sample(t,8)
+            for name,o in (('base',base),('guarded',guarded)):
+                e=o.step(t,Sample(t,0),front,rear)
+                if e.mode=='REACQUIRING' and name not in first:
+                    first[name]=t
+        self.assertIn('base',first)
+        self.assertIn('guarded',first)
+        self.assertAlmostEqual(first['guarded'],first['base'],places=8)
+
+    def test_slew_guard_disabled_keeps_no_active_history(self):
+        o=Observer(Config())
+        for i in range(101):
+            t=i*.02
+            z=5 if t<1 else 7
+            o.step(t,Sample(t,0),Sample(t,z),Sample(t,z))
+        self.assertIsNone(o.slow_common_previous)
+        self.assertEqual(o.slow_common_suspicious_pairs,0)
+
+    def test_slew_guard_requires_stable_command(self):
+        o=Observer(Config(common_mode_slew_threshold_mps2=1.25,
+                          common_mode_slew_quarantine_s=1.5))
+        o.reset(velocity=5)
+        for i in range(100):
+            t=i*.05
+            u=0 if i%2==0 else .2
+            z=5+min(4,t*1.5)
+            o.step(t,Sample(t,u),Sample(t,z),Sample(t,z))
+        self.assertEqual(o.slow_common_suspicious_pairs,0)
+
     def test_common_mode_jump_quarantine_blocks_short_false_pair(self):
         o=Observer(Config(common_mode_quarantine_s=1.5))
         modes=[]; errors=[]
