@@ -1,0 +1,50 @@
+name: R2 H20 isolated research
+on:
+  push:
+    branches: [research/round2-H20]
+    paths:
+      - .github/workflows/research-r2-h20.yml
+      - research/R2/H20/RUN
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: research-r2-h20
+  cancel-in-progress: false
+jobs:
+  research:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      NUMEXPR_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Source handoff without measurement data
+        run: |
+          mkdir -p /tmp/h20-source
+          git archive --format=zip 65bba39ed05c781f3f69a65c02f69931152cbfd9 -o /tmp/h20-source/baseline.zip
+          git rev-parse HEAD > /tmp/h20-source/source-commit.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: H20-source-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/h20-source/
+          retention-days: 7
+      - uses: actions/setup-python@v5
+        if: hashFiles('research/R2/H20/RUN') != ''
+        with:
+          python-version: '3.13'
+      - name: Preregistered experiment
+        if: hashFiles('research/R2/H20/RUN') != ''
+        run: bash research/R2/H20/execute.sh
+      - uses: actions/upload-artifact@v4
+        if: always() && hashFiles('research/R2/H20/RUN') != ''
+        with:
+          name: H20-evidence-${{ github.run_id }}-${{ github.run_attempt }}
+          path: reports/research_R2/H20/${{ github.run_id }}-${{ github.run_attempt }}/
+          if-no-files-found: error
+          retention-days: 30
