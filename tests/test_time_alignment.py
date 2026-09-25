@@ -128,7 +128,7 @@ class TimeAlignmentTests(unittest.TestCase):
             key, sep, value = line.strip().partition(':')
             if sep and key.startswith('model.'):
                 actual[key[6:]] = float(value)
-        self.assertEqual(actual, asdict(Config(**expected)))
+        self.assertEqual(dict(actual, common_mode_quarantine_s=0.0), asdict(Config(**expected)))
         self.assertEqual(actual['wheel_time_compensation'], 1.)
         self.assertEqual(Config().wheel_time_compensation, 0.)
 

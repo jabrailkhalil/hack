@@ -59,6 +59,9 @@ class Config:
     reacquire_step_mps: float = 0.15
     reacquire_min_speed_mps: float = 0.4
     reacquire_accel_margin_mps2: float = 0.8
+    # Opt-in H11: after near-simultaneous implausible jumps on both wheels,
+    # block only common-mode reacquisition for this source-time interval.
+    common_mode_quarantine_s: float = 0.0
 
     def __post_init__(self):
         for key, value in asdict(self).items():
@@ -86,7 +89,8 @@ class Config:
             raise ValueError('Innovation cap must be >= floor')
         for key in ('rolling_force_n', 'quadratic_drag_n_s2_m2', 'disagreement_mps',
                     'rate_noise_margin_mps', 'stop_speed_mps', 'stop_model_speed_mps',
-                    'disturbance_limit_mps2', 'reacquire_min_speed_mps'):
+                    'disturbance_limit_mps2', 'reacquire_min_speed_mps',
+                    'common_mode_quarantine_s'):
             if getattr(self, key) < 0:
                 raise ValueError(f'{key} must be nonnegative')
 
@@ -131,6 +135,8 @@ class Observer:
         self.reacquire_since = None
         self.reacquire_previous = None
         self.pair_pending = [None, None]
+        self.rate_anomaly_times = [None, None]
+        self.reacquire_blocked_until = -math.inf
         self.last_estimate = None
 
     def drive_target(self, u, v):
@@ -167,6 +173,13 @@ class Observer:
             dt = sample.t - previous.t
             if dt <= self.c.max_age_s and abs(sample.value - previous.value) > (
                     self.c.wheel_rate_limit_mps2 * dt + self.c.rate_noise_margin_mps):
+                if self.c.common_mode_quarantine_s > 0:
+                    self.rate_anomaly_times[index] = sample.t
+                    other = self.rate_anomaly_times[1 - index]
+                    if other is not None and abs(sample.t - other) <= self.c.pair_skew_s + 1e-9:
+                        self.reacquire_blocked_until = max(
+                            self.reacquire_blocked_until,
+                            max(sample.t, other) + self.c.common_mode_quarantine_s)
                 return None, 'RATE_ANOMALY'
         return sample, 'CANDIDATE'
 
@@ -353,17 +366,24 @@ class Observer:
                     self.pair_pending[i] = sample
             recovery_pair = self._take_pending_pair(t)
             if recovery_pair is not None:
-                old_pair = self.reacquire_previous
-                target_v = self._reacquire_pair(recovery_pair, predicted)
-                if target_v is not None:
-                    pair_dt = self.reacquire_previous.t - old_pair.t if old_pair else 0.0
-                    # Config limit is per nominal 0.1 s pair, not per output tick.
-                    limit = c.reacquire_step_mps * min(1.0, max(0.0, pair_dt) / .1)
-                    correction = clip(target_v - predicted, -limit, limit)
-                    self.v = clip(predicted + correction, -c.max_speed_mps, c.max_speed_mps)
-                    self.pv = max(self.pv, 4 * c.wheel_sigma_mps ** 2)
-                    mode = 'REACQUIRING'
-                    statuses = ['REACQUIRE_ACCEPTED', 'REACQUIRE_ACCEPTED']
+                pair_time = max(recovery_pair[0].t, recovery_pair[1].t)
+                if pair_time < self.reacquire_blocked_until - 1e-9:
+                    # Do not let a pair that just made an implausible common jump
+                    # become the new anchor. Ordinary fusion remains untouched.
+                    self._clear_reacquire()
+                    statuses = ['COMMON_MODE_QUARANTINE', 'COMMON_MODE_QUARANTINE']
+                else:
+                    old_pair = self.reacquire_previous
+                    target_v = self._reacquire_pair(recovery_pair, predicted)
+                    if target_v is not None:
+                        pair_dt = self.reacquire_previous.t - old_pair.t if old_pair else 0.0
+                        # Config limit is per nominal 0.1 s pair, not per output tick.
+                        limit = c.reacquire_step_mps * min(1.0, max(0.0, pair_dt) / .1)
+                        correction = clip(target_v - predicted, -limit, limit)
+                        self.v = clip(predicted + correction, -c.max_speed_mps, c.max_speed_mps)
+                        self.pv = max(self.pv, 4 * c.wheel_sigma_mps ** 2)
+                        mode = 'REACQUIRING'
+                        statuses = ['REACQUIRE_ACCEPTED', 'REACQUIRE_ACCEPTED']
         # Adapt disturbance only from two new, agreeing and model-consistent wheels.
         if mode == 'FUSED' and not command_stale:
             z = (samples[0].value + samples[1].value) * 0.5

@@ -1,0 +1,46 @@
+name: H11 common-mode quarantine
+on:
+  push:
+    branches: [research/common-mode-quarantine-v8]
+    paths:
+      - 'research/H11_COMMON_MODE_PLAN.md'
+      - 'src/reserve_odometry/reserve_odometry/core.py'
+      - 'tests/test_core.py'
+      - 'tools/research_h11/**'
+      - '.github/workflows/research-h11.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  evaluate:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - run: python -m pip install -r requirements-research.txt
+      - run: python tools/get_dataset.py
+      - name: Unit and mechanism tests before measurements
+        run: PYTHONPATH=src/reserve_odometry python -m unittest discover -s tests -p test_core.py -v
+      - name: Fixed validation and common-mode suite
+        run: python tools/research_h11/compare.py --output reports/research_H11/current --workers 2
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: H11-common-mode
+          path: reports/research_H11/current/
+          retention-days: 30
+      - name: Preserve every outcome
+        if: always()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git switch -c "checkpoint/H11-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          git add reports/research_H11/current
+          git diff --cached --quiet || git commit -m "research: preserve H11 measurements $GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          git push origin "HEAD:refs/heads/checkpoint/H11-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"

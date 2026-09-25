@@ -14,7 +14,7 @@ def main():
     a=p.parse_args()
     if (a.params_file is None)!=(a.expected_json is None):p.error('params and expected must be paired')
     root=Path(__file__).resolve().parents[1]
-    expected_path=a.expected_json or root/'src/reserve_odometry/config/guarded_readout_v7.json'
+    expected_path=a.expected_json or root/'src/reserve_odometry/config/champion_v8.json'
     profile=json.loads(expected_path.read_text()); selected=profile.get('name',expected_path.stem)
     expected={'model.'+k:v for k,v in profile['config'].items()}
     expected.update({'readout.'+k:v for k,v in profile.get('readout',{}).items()})

@@ -1,11 +1,13 @@
-# Резервная одометрия трамвая — активный champion v7
+# Резервная одометрия трамвая — активный champion v8
 
-**Стандартный запуск теперь использует guarded v7**: внутренний observer остаётся
+**Стандартный запуск теперь использует champion v8**: внутренний observer остаётся
 проверенным v5, а опубликованная скорость получает причинную output-only
-компенсацию возраста свежих колёсных измерений. Дополнительно в общем ядре
-включена защита от ложной остановки при общей блокировке колёс на малой скорости.
+компенсацию возраста свежих колёсных измерений. Дополнительно в общем ядре включены защита от ложной остановки при общей
+блокировке колёс на малой скорости и 1.5-секундный запрет common-mode
+reacquisition после почти одновременного физически неправдоподобного скачка
+обеих тележек.
 
-| Одинаковый validation-набор | Inner v5 | Champion v7 | Изменение |
+| Одинаковый validation-набор | Inner v5 | Champion v8 | Изменение |
 |---|---:|---:|---:|
 | Group-macro RMSE скорости, м/с | 0.117138 | **0.114550** | **−2.21%** |
 | Group-macro RMSE в исходных fault-окнах, м/с | 0.538434 | **0.538287** | −0.03% |
@@ -20,7 +22,7 @@
 false-stop samples 200→0 и unrecovered 1→0. Число 88.23% относится только к этой
 инъекции, не ко всему датасету.
 
-**[Champion evidence](reports/champion_v7/README.md)** ·
+**[Champion v7 evidence](reports/champion_v7/README.md)** · **[H11/v8](reports/research_H11/REPORT.md)** ·
 **[Promotion record](reports/champion_v7/PROMOTION.json)** ·
 **[Инструкция запуска](submission/JUDGE_GUIDE.md)**.
 
@@ -42,7 +44,7 @@ ros2 launch reserve_odometry odometry.launch.py
 ```
 
 Канонический `odometry.launch.py` запускает `guarded_odometry_node` с
-`guarded_readout_v7.yaml`. Для A/B-воспроизведения внутреннего v5:
+`champion_v8.yaml`. Для A/B-воспроизведения внутреннего v5:
 
 ```bash
 ros2 launch reserve_odometry v5_odometry.launch.py

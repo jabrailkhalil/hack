@@ -1,15 +1,15 @@
-# Запуск active champion v7 и воспроизведение предыдущих профилей
+# Запуск active champion v8 и воспроизведение предыдущих профилей
 
 ## Выбор версии
 
-Текущий `main` использует **guarded v7**: output-only причинную компенсацию
+Текущий `main` использует **champion v8**: output-only причинную компенсацию
 возраста wheel measurements поверх неизменного внутреннего v5 и защиту от
-ложной остановки при low-speed common zero. На фиксированном validation:
+ложной остановки при low-speed common zero и блокировку common-mode reacquisition на 1.5 с после одновременного rate-anomaly скачка обеих тележек. На фиксированном validation:
 0.117138→0.114550 м/с group-macro RMSE скорости, исходный fault RMSE
 0.538434→0.538287 м/с. Это reused validation, не новый independent test.
 
 Standalone `reserve-odometry-v4.zip` остаётся исторической frozen-версией; её
-final-test и 24-минутный benchmark не приписываются v7.
+final-test и 24-минутный benchmark не приписываются v8.
 
 ## 1. Среда и сборка
 
@@ -23,7 +23,7 @@ bash submission/run.sh
 ```
 
 `build.sh` не скачивает данные и не переоценивает final test. Ноду запускать до bag, после независимых bag перезапускать. Стандартный launch запускает `guarded_odometry_node` с
-`config/guarded_readout_v7.yaml`. Внутренний v5 сохранён отдельно и запускается:
+`config/guarded_readout_v8.yaml`. Внутренний v5 сохранён отдельно и запускается:
 
 ```bash
 ros2 launch reserve_odometry v5_odometry.launch.py

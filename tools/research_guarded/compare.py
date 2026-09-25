@@ -69,7 +69,7 @@ def models(check_inner=False):
         key, sep, value = line.strip().partition(':')
         if sep and key.startswith('model.'):
             active[key[6:]] = float(value)
-    expected_profile = dict(base, wheel_time_compensation=0.0)
+    expected_profile = dict(base, wheel_time_compensation=0.0, common_mode_quarantine_s=0.0)
     if active != base or profile['config'] != expected_profile:
         raise ValueError('Physical parameters differ from the integrated v5 inner baseline')
     if profile['readout'] != {'gain': 1.0, 'holdoff_s': 0.5}:

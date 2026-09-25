@@ -1,5 +1,5 @@
 {
-  "name": "guarded_readout_v7",
+  "name": "champion_v8_common_mode_quarantine",
   "config": {
     "mass_kg": 40000,
     "wheel_radius_m": 0.33,
@@ -38,14 +38,14 @@
     "reacquire_min_speed_mps": 0.4,
     "reacquire_accel_margin_mps2": 0.8,
     "wheel_time_compensation": 0,
-    "common_mode_quarantine_s": 0
+    "common_mode_quarantine_s": 1.5
   },
   "readout": {
     "gain": 1,
     "holdoff_s": 0.5
   },
-  "base_commit": "efc473e415795d64770ef9dfa4f1bc417078da32",
-  "selection": "readout_long, development round 1; no validation tuning",
+  "base_commit": "65bba39ed05c781f3f69a65c02f69931152cbfd9",
+  "selection": "H11 preregistered fixed 1.5 s quarantine; exact original validation metrics, 31.24% common-mode injected event-RMSE gain.",
   "test_evaluated": false,
   "integration_note": "Canonical main candidate; v7 guarded readout over v5 inner observer."
 }

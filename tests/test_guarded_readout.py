@@ -157,13 +157,13 @@ class GuardedReadoutTests(unittest.TestCase):
 
     def test_profile_preserves_main_physics(self):
         main=json.loads((ROOT/'src/reserve_odometry/config/adaptive_v5.json').read_text())['config']
-        self.assertEqual(PROFILE['config'],dict(main,wheel_time_compensation=0.0))
+        self.assertEqual(PROFILE['config'],dict(main,wheel_time_compensation=0.0,common_mode_quarantine_s=0.0))
         self.assertEqual(PROFILE['readout'],asdict(ReadoutConfig()))
         self.assertFalse(PROFILE['test_evaluated'])
         actual={}
         for line in (ROOT/'src/reserve_odometry/config/guarded_readout_v7.yaml').read_text().splitlines():
             key,sep,value=line.strip().partition(':')
             if sep and key.startswith(('model.','readout.')):actual[key]=float(value)
-        expected={'model.'+k:v for k,v in dict(main,wheel_time_compensation=0.0).items()}
+        expected={'model.'+k:v for k,v in dict(main,wheel_time_compensation=0.0,common_mode_quarantine_s=0.0).items()}
         expected.update({'readout.'+k:v for k,v in PROFILE['readout'].items()})
         self.assertEqual(actual,expected)
