@@ -62,6 +62,11 @@ class Config:
     # Opt-in H11: after near-simultaneous implausible jumps on both wheels,
     # block only common-mode reacquisition for this source-time interval.
     common_mode_quarantine_s: float = 0.0
+    # Opt-in H12: detect a slow common-mode residual ramp that stays below
+    # the raw wheel rate gate; only common-mode reacquisition is blocked.
+    common_mode_slew_threshold_mps2: float = 0.0
+    common_mode_slew_quarantine_s: float = 0.0
+    common_mode_stable_command_delta: float = 0.05
 
     def __post_init__(self):
         for key, value in asdict(self).items():
@@ -90,7 +95,8 @@ class Config:
         for key in ('rolling_force_n', 'quadratic_drag_n_s2_m2', 'disagreement_mps',
                     'rate_noise_margin_mps', 'stop_speed_mps', 'stop_model_speed_mps',
                     'disturbance_limit_mps2', 'reacquire_min_speed_mps',
-                    'common_mode_quarantine_s'):
+                    'common_mode_quarantine_s', 'common_mode_slew_threshold_mps2',
+                    'common_mode_slew_quarantine_s', 'common_mode_stable_command_delta'):
             if getattr(self, key) < 0:
                 raise ValueError(f'{key} must be nonnegative')
 
@@ -137,6 +143,8 @@ class Observer:
         self.pair_pending = [None, None]
         self.rate_anomaly_times = [None, None]
         self.reacquire_blocked_until = -math.inf
+        self.slow_common_previous = None
+        self.slow_common_suspicious_pairs = 0
         self.last_estimate = None
 
     def drive_target(self, u, v):
@@ -331,6 +339,8 @@ class Observer:
         mode = 'MODEL_ONLY'
         if accepted:
             self._clear_reacquire()
+            self.slow_common_previous = None
+            self.slow_common_suspicious_pairs = 0
             z = sum(samples[i].value for i in accepted) / len(accepted)
             age = 0.0
             if c.wheel_time_compensation:
@@ -361,12 +371,36 @@ class Observer:
                                for status in statuses)
             if hard_failure:
                 self._clear_reacquire()
+                self.slow_common_previous = None
+                self.slow_common_suspicious_pairs = 0
             for i, sample in enumerate(samples):
                 if sample is not None and statuses[i] == 'MODEL_DISAGREEMENT':
                     self.pair_pending[i] = sample
             recovery_pair = self._take_pending_pair(t)
             if recovery_pair is not None:
                 pair_time = max(recovery_pair[0].t, recovery_pair[1].t)
+                if c.common_mode_slew_threshold_mps2 > 0 and c.common_mode_slew_quarantine_s > 0:
+                    z_pair = 0.5 * (recovery_pair[0].value + recovery_pair[1].value)
+                    residual_pair = z_pair - predicted
+                    previous_common = self.slow_common_previous
+                    suspicious = False
+                    if (previous_common is not None and not command_stale and
+                            abs(residual_pair) >= c.innovation_floor_mps):
+                        dt_common = pair_time - previous_common[0]
+                        stable_command = abs(u - previous_common[2]) <= c.common_mode_stable_command_delta
+                        if 0.05 <= dt_common <= c.max_age_s and stable_command:
+                            slew = abs(residual_pair - previous_common[1]) / dt_common
+                            suspicious = slew > c.common_mode_slew_threshold_mps2
+                    if suspicious:
+                        self.slow_common_suspicious_pairs += 1
+                    else:
+                        self.slow_common_suspicious_pairs = 0
+                    self.slow_common_previous = (pair_time, residual_pair, u)
+                    if self.slow_common_suspicious_pairs >= 2:
+                        self.reacquire_blocked_until = max(
+                            self.reacquire_blocked_until,
+                            pair_time + c.common_mode_slew_quarantine_s)
+                        self.slow_common_suspicious_pairs = 0
                 if pair_time < self.reacquire_blocked_until - 1e-9:
                     # Do not let a pair that just made an implausible common jump
                     # become the new anchor. Ordinary fusion remains untouched.
