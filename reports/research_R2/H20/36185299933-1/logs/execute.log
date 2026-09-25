@@ -1,0 +1,117 @@
++ python -m pip install -r requirements-research.txt
+Collecting numpy==2.3.5 (from -r requirements-research.txt (line 2))
+  Downloading numpy-2.3.5-cp313-cp313-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (62 kB)
+Collecting scipy==1.17.0 (from -r requirements-research.txt (line 3))
+  Downloading scipy-1.17.0-cp313-cp313-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (62 kB)
+Downloading numpy-2.3.5-cp313-cp313-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (16.6 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 16.6/16.6 MB 201.1 MB/s  0:00:00
+Downloading scipy-1.17.0-cp313-cp313-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (35.0 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 35.0/35.0 MB 227.7 MB/s  0:00:00
+Installing collected packages: numpy, scipy
+
+Successfully installed numpy-2.3.5 scipy-1.17.0
++ python -m compileall -q research/R2/H20 src/reserve_odometry/reserve_odometry
++ set +e
++ PYTHONPATH=src/reserve_odometry
++ python -m unittest discover -s tests -v
++ FULL_RC=0
++ python -m unittest discover -s research/tests -v
++ INTEGRITY_RC=0
++ set -e
++ printf '{"full_unit_exit_code":%s,"research_integrity_exit_code":%s}\n' 0 0
++ python -m unittest discover -s research/R2/H20/tests -v
++ for MODULE in test_core.py test_timeline.py test_guarded_readout.py
++ PYTHONPATH=src/reserve_odometry
++ python -m unittest discover -s tests -p test_core.py -v
++ for MODULE in test_core.py test_timeline.py test_guarded_readout.py
++ PYTHONPATH=src/reserve_odometry
++ python -m unittest discover -s tests -p test_timeline.py -v
++ for MODULE in test_core.py test_timeline.py test_guarded_readout.py
++ PYTHONPATH=src/reserve_odometry
++ python -m unittest discover -s tests -p test_guarded_readout.py -v
++ python research/R2/H20/stage_data.py --stage development --journal reports/research_R2/H20/36185299933-1/development-staging.json
+Staged only development 17 bags
++ python research/R2/H20/run.py --stage development --output reports/research_R2/H20/36185299933-1/experiment --workers 2
++ git config user.name 'H20 research checkpoint'
++ git config user.email h20-research@users.noreply.github.com
++ git switch -c checkpoint/R2-H20-36185299933-1 130c96421931e307a9aedc207f4c835d54e4ac9c
+Switched to a new branch 'checkpoint/R2-H20-36185299933-1'
++ [[ -f reports/research_R2/H20/36185299933-1/experiment/FREEZE.json ]]
++ git add -f -- reports/research_R2/H20/36185299933-1 ':!reports/research_R2/H20/36185299933-1/logs/execute.log'
++ git commit -m 'research(H20): freeze selected development candidate before validation [36185299933-1]'
+[checkpoint/R2-H20-36185299933-1 17b9033] research(H20): freeze selected development candidate before validation [36185299933-1]
+ 56 files changed, 3960542 insertions(+)
+ create mode 100644 reports/research_R2/H20/36185299933-1/PLAN.md
+ create mode 100644 reports/research_R2/H20/36185299933-1/algorithm.patch
+ create mode 100644 reports/research_R2/H20/36185299933-1/development-staging.json
+ create mode 100644 reports/research_R2/H20/36185299933-1/experiment/FREEZE.json
+ create mode 100644 reports/research_R2/H20/36185299933-1/experiment/development/OUTCOME.json
+ create mode 100644 reports/research_R2/H20/36185299933-1/experiment/development/access.json
+ create mode 100644 reports/research_R2/H20/36185299933-1/experiment/development/access/30618_0652866c.json
+ create mode 100644 reports/research_R2/H20/36185299933-1/experiment/development/access/30618_073f08d1.json
+ create mode 100644 reports/research_R2/H20/36185299933-1/experiment/development/access/30618_117c2d02.json
+ create mode 100644 reports/research_R2/H20/36185299933-1/experiment/development/access/30618_1551d0a9.json
+ create mode 100644 reports/research_R2/H20/36185299933-1/experiment/development/access/30618_27e994fc.json
+ create mode 100644 reports/research_R2/H20/36185299933-1/experiment/development/access/30618_3e012faf.json
+ create mode 100644 reports/research_R2/H20/36185299933-1/experiment/development/access/30618_46e21b9b.json
+ create mode 100644 reports/research_R2/H20/36185299933-1/experiment/development/access/30618_5036aa78.json
+ create mode 100644 reports/research_R2/H20/36185299933-1/experiment/development/access/30618_74559c73.json
+ create mode 100644 reports/research_R2/H20/36185299933-1/experiment/development/access/30618_88548b02.json
+ create mode 100644 reports/research_R2/H20/36185299933-1/experiment/development/access/30618_bcc9e7a2.json
+ create mode 100644 reports/research_R2/H20/36185299933-1/experiment/development/access/30618_e151d6e4.json
+ create mode 100644 reports/research_R2/H20/36185299933-1/experiment/development/access/30639_0ab96c59.json
+ create mode 100644 reports/research_R2/H20/36185299933-1/experiment/development/access/30639_9c362687.json
+ create mode 100644 reports/research_R2/H20/36185299933-1/experiment/development/access/30639_c31df386.json
+ create mode 100644 reports/research_R2/H20/36185299933-1/experiment/development/access/30639_dce52be4.json
+ create mode 100644 reports/research_R2/H20/36185299933-1/experiment/development/access/30639_e4379d7f.json
+ create mode 100644 reports/research_R2/H20/36185299933-1/experiment/development/bags/30618_0652866c.json
+ create mode 100644 reports/research_R2/H20/36185299933-1/experiment/development/bags/30618_073f08d1.json
+ create mode 100644 reports/research_R2/H20/36185299933-1/experiment/development/bags/30618_117c2d02.json
+ create mode 100644 reports/research_R2/H20/36185299933-1/experiment/development/bags/30618_1551d0a9.json
+ create mode 100644 reports/research_R2/H20/36185299933-1/experiment/development/bags/30618_27e994fc.json
+ create mode 100644 reports/research_R2/H20/36185299933-1/experiment/development/bags/30618_3e012faf.json
+ create mode 100644 reports/research_R2/H20/36185299933-1/experiment/development/bags/30618_46e21b9b.json
+ create mode 100644 reports/research_R2/H20/36185299933-1/experiment/development/bags/30618_5036aa78.json
+ create mode 100644 reports/research_R2/H20/36185299933-1/experiment/development/bags/30618_74559c73.json
+ create mode 100644 reports/research_R2/H20/36185299933-1/experiment/development/bags/30618_88548b02.json
+ create mode 100644 reports/research_R2/H20/36185299933-1/experiment/development/bags/30618_bcc9e7a2.json
+ create mode 100644 reports/research_R2/H20/36185299933-1/experiment/development/bags/30618_e151d6e4.json
+ create mode 100644 reports/research_R2/H20/36185299933-1/experiment/development/bags/30639_0ab96c59.json
+ create mode 100644 reports/research_R2/H20/36185299933-1/experiment/development/bags/30639_9c362687.json
+ create mode 100644 reports/research_R2/H20/36185299933-1/experiment/development/bags/30639_c31df386.json
+ create mode 100644 reports/research_R2/H20/36185299933-1/experiment/development/bags/30639_dce52be4.json
+ create mode 100644 reports/research_R2/H20/36185299933-1/experiment/development/bags/30639_e4379d7f.json
+ create mode 100644 reports/research_R2/H20/36185299933-1/experiment/development/cost.json
+ create mode 100644 reports/research_R2/H20/36185299933-1/experiment/development/cost_access.json
+ create mode 100644 reports/research_R2/H20/36185299933-1/experiment/development/per_bag.csv
+ create mode 100644 reports/research_R2/H20/36185299933-1/experiment/development/results.json
+ create mode 100644 reports/research_R2/H20/36185299933-1/experiment/development/started.json
+ create mode 100644 reports/research_R2/H20/36185299933-1/experiment/development/summary.json
+ create mode 100644 reports/research_R2/H20/36185299933-1/historical-test-status.json
+ create mode 100644 reports/research_R2/H20/36185299933-1/logs/H20-unit.log
+ create mode 100644 reports/research_R2/H20/36185299933-1/logs/development.log
+ create mode 100644 reports/research_R2/H20/36185299933-1/logs/full-unit.log
+ create mode 100644 reports/research_R2/H20/36185299933-1/logs/research-integrity.log
+ create mode 100644 reports/research_R2/H20/36185299933-1/logs/test_core.py.log
+ create mode 100644 reports/research_R2/H20/36185299933-1/logs/test_guarded_readout.py.log
+ create mode 100644 reports/research_R2/H20/36185299933-1/logs/test_timeline.py.log
+ create mode 100644 reports/research_R2/H20/36185299933-1/measured-source-sha.txt
+ create mode 100644 reports/research_R2/H20/36185299933-1/reproduction-source.tar.gz
++ git push origin HEAD:refs/heads/checkpoint/R2-H20-36185299933-1
+remote: warning: See https://gh.io/lfs for more information.        
+remote: warning: File reports/research_R2/H20/36185299933-1/experiment/development/results.json is 68.39 MB; this is larger than GitHub's recommended maximum file size of 50.00 MB        
+remote: warning: GH001: Large files detected. You may want to try Git Large File Storage - https://git-lfs.github.com.        
+remote: 
+remote: Create a pull request for 'checkpoint/R2-H20-36185299933-1' on GitHub by visiting:        
+remote:      https://github.com/jabrailkhalil/hack/pull/new/checkpoint/R2-H20-36185299933-1        
+remote: 
+To https://github.com/jabrailkhalil/hack
+ * [new branch]      HEAD -> checkpoint/R2-H20-36185299933-1
+++ git rev-parse HEAD
++ FREEZE_SHA=17b9033cb7becd71008b99cf660ab133253a2f7c
++ printf '{"commit_sha":"%s","branch":"%s","published_before_validation":true}\n' 17b9033cb7becd71008b99cf660ab133253a2f7c checkpoint/R2-H20-36185299933-1
++ python research/R2/H20/stage_data.py --stage validation --journal reports/research_R2/H20/36185299933-1/validation-staging.json
+Staged only validation 19 bags
++ python research/R2/H20/run.py --stage validation --output reports/research_R2/H20/36185299933-1/experiment --workers 2
++ python - reports/research_R2/H20/36185299933-1
++ git add -f reports/research_R2/H20/36185299933-1
