@@ -125,6 +125,7 @@ class Observer:
         self.adapt_previous = None
         self.reacquire_since = None
         self.reacquire_previous = None
+        self.pair_pending = [None, None]
         self.last_estimate = None
 
     def drive_target(self, u, v):
@@ -167,6 +168,26 @@ class Observer:
     def _clear_reacquire(self):
         self.reacquire_since = None
         self.reacquire_previous = None
+        self.pair_pending = [None, None]
+
+    def _take_pending_pair(self, t):
+        """Consume two distinct, fresh candidates, even from different ticks.
+
+        This buffer does NOT feed the Kalman correction. It is only evidence
+        for bootstrap or recovery after both channels failed the model gate.
+        Each pair is consumed once, and prediction-only ticks cannot erase it.
+        """
+        for i, sample in enumerate(self.pair_pending):
+            if sample is not None and not self._valid(sample, t, self.c.max_age_s):
+                self.pair_pending[i] = None
+        if any(sample is None for sample in self.pair_pending):
+            return None
+        front, rear = self.pair_pending
+        if abs(front.t - rear.t) > self.c.pair_skew_s + 1e-9:
+            self.pair_pending[0 if front.t < rear.t else 1] = None
+            return None
+        self.pair_pending = [None, None]
+        return front, rear
 
     def _reacquire_pair(self, samples, predicted):
         """Return a sustained agreeing pair target after model/odometry divergence.
@@ -246,12 +267,17 @@ class Observer:
         pair = (all(x is not None for x in samples) and
                 abs(samples[0].t - samples[1].t) <= c.pair_skew_s)
         agree = pair and abs(samples[0].value - samples[1].value) <= c.disagreement_mps
-        # Conservative bootstrap needs two agreeing wheels unless reset(v=...) was used.
+        # Bootstrap must also work when front/rear arrive on alternating ticks.
         if not self.initialized:
-            if agree:
-                self.v = (samples[0].value + samples[1].value) * 0.5
+            for i, sample in enumerate(samples):
+                if sample is not None:
+                    self.pair_pending[i] = sample
+            initial_pair = self._take_pending_pair(t)
+            if initial_pair and abs(initial_pair[0].value - initial_pair[1].value) <= c.disagreement_mps:
+                self.v = sum(sample.value for sample in initial_pair) * .5
                 self.initialized = True
                 self.pv = c.wheel_sigma_mps ** 2
+                self.drive_a = 0.0
                 self.t = t
                 return self._output(t, 0.0, 'INITIALIZED', ['ACCEPTED'] * 2, command_stale)
             self.t = t
@@ -290,17 +316,28 @@ class Observer:
             mode = 'FUSED' if len(accepted) == 2 and agree else 'SINGLE_WHEEL'
             for i in accepted:
                 statuses[i] = 'ACCEPTED'
-        elif pair and agree:
-            target_v = self._reacquire_pair(samples, predicted)
-            if target_v is not None:
-                correction = clip(target_v - predicted,
-                                  -c.reacquire_step_mps, c.reacquire_step_mps)
-                self.v = clip(predicted + correction, -c.max_speed_mps, c.max_speed_mps)
-                self.pv = max(self.pv, 4 * c.wheel_sigma_mps ** 2)
-                mode = 'REACQUIRING'
-                statuses = ['REACQUIRE_ACCEPTED', 'REACQUIRE_ACCEPTED']
         else:
-            self._clear_reacquire()
+            # Prediction ticks at 20 Hz must not reset 10 Hz wheel evidence.
+            hard_failure = any(status not in ('MODEL_DISAGREEMENT', 'DUPLICATE_OR_OLD')
+                               for status in statuses)
+            if hard_failure:
+                self._clear_reacquire()
+            for i, sample in enumerate(samples):
+                if sample is not None and statuses[i] == 'MODEL_DISAGREEMENT':
+                    self.pair_pending[i] = sample
+            recovery_pair = self._take_pending_pair(t)
+            if recovery_pair is not None:
+                old_pair = self.reacquire_previous
+                target_v = self._reacquire_pair(recovery_pair, predicted)
+                if target_v is not None:
+                    pair_dt = self.reacquire_previous.t - old_pair.t if old_pair else 0.0
+                    # Config limit is per nominal 0.1 s pair, not per output tick.
+                    limit = c.reacquire_step_mps * min(1.0, max(0.0, pair_dt) / .1)
+                    correction = clip(target_v - predicted, -limit, limit)
+                    self.v = clip(predicted + correction, -c.max_speed_mps, c.max_speed_mps)
+                    self.pv = max(self.pv, 4 * c.wheel_sigma_mps ** 2)
+                    mode = 'REACQUIRING'
+                    statuses = ['REACQUIRE_ACCEPTED', 'REACQUIRE_ACCEPTED']
         # Adapt disturbance only from two new, agreeing and model-consistent wheels.
         if mode == 'FUSED' and not command_stale:
             z = (samples[0].value + samples[1].value) * 0.5

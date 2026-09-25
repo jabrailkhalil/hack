@@ -12,6 +12,8 @@ class Timeline:
         if not math.isfinite(delay_s) or not 0 <= delay_s <= .1:
             raise ValueError('delay_s must be between 0 and 0.1')
         self.dt = 1 / rate_hz
+        if self.dt > self.observer.c.max_step_s + 1e-9:
+            raise ValueError('Output interval exceeds observer max_step_s')
         self.delay = delay_s
         self.reset()
 
@@ -21,6 +23,8 @@ class Timeline:
         self.held = [None, None, None]
         self.latest = None
         self.next_tick = None
+        self.grid_origin = None
+        self.tick_index = 0
         self.dropped = 0
         self.resets = 0
         self.catchup_events = 0
@@ -32,11 +36,10 @@ class Timeline:
         if not math.isfinite(sample.t) or not math.isfinite(sample.value):
             self.dropped += 1
             return False
-        if self.latest is None:
-            self.next_tick = sample.t
-            self.latest = sample.t
-        else:
-            self.latest = max(self.latest, sample.t)
+        limit = 1.000001 if channel == 0 else self.observer.c.max_speed_mps
+        if abs(sample.value) > limit:
+            self.dropped += 1
+            return False
         held = self.held[channel]
         if held is not None and sample.t <= held.t:
             self.dropped += 1
@@ -51,6 +54,10 @@ class Timeline:
         if len(q) > 128:
             q.pop(0)
             self.dropped += 1
+        if self.latest is None:
+            self.grid_origin = sample.t
+            self.next_tick = sample.t
+        self.latest = sample.t if self.latest is None else max(self.latest, sample.t)
         return True
 
     def advance(self, now=None):
@@ -88,5 +95,6 @@ class Timeline:
                     self.held[i] = q.pop(0)
             estimate = self.observer.step(t, *self.held)
             yield estimate, tuple(self.held)
-            self.next_tick += self.dt
+            self.tick_index += 1
+            self.next_tick = self.grid_origin + self.tick_index * self.dt
             steps += 1
