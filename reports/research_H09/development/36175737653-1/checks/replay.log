@@ -1,0 +1,79 @@
+completed 30618_0652866c
+completed 30618_073f08d1
+completed 30618_117c2d02
+completed 30618_1551d0a9
+completed 30618_27e994fc
+completed 30618_3e012faf
+completed 30618_46e21b9b
+completed 30618_5036aa78
+completed 30618_74559c73
+completed 30618_88548b02
+completed 30618_bcc9e7a2
+completed 30618_e151d6e4
+completed 30639_0ab96c59
+completed 30639_9c362687
+completed 30639_c31df386
+completed 30639_dce52be4
+completed 30639_e4379d7f
+{
+  "common": {
+    "baseline_v2": {
+      "clean_rmse": 0.09591722758761219,
+      "fault_rmse": 0.26776396727564045,
+      "distance_rmse": 5.298327606042677,
+      "samples": 394221,
+      "pooled_rmse": 0.13172643745145862,
+      "false_stops_clean": 0,
+      "false_stops_fault": 46,
+      "unrecovered": 4
+    },
+    "balanced_physics": {
+      "clean_rmse": 0.095876923231622,
+      "fault_rmse": 0.26773737563795263,
+      "distance_rmse": 5.307132890688125,
+      "samples": 394221,
+      "pooled_rmse": 0.13171823319238574,
+      "false_stops_clean": 0,
+      "false_stops_fault": 52,
+      "unrecovered": 4,
+      "clean_rmse_change": -0.00042019934274450943,
+      "fault_rmse_change": -9.930999289553544e-05,
+      "pooled_rmse_change": -6.228255490403622e-05,
+      "distance_rmse_change": 0.0016618988669945267
+    }
+  },
+  "h09": {
+    "baseline_v2": {
+      "low_reference_odometry_abs_m": 27.656120099372615,
+      "low_reference_span_seconds": 5193.800000000005,
+      "slow_reference_stop_samples": 230,
+      "medium_reference_stop_samples": 4,
+      "low_reference_spans": 840
+    },
+    "balanced_physics": {
+      "low_reference_odometry_abs_m": 27.12918131607222,
+      "low_reference_span_seconds": 5193.800000000005,
+      "slow_reference_stop_samples": 239,
+      "medium_reference_stop_samples": 4,
+      "low_reference_spans": 840
+    }
+  },
+  "rejection_reasons": [
+    "false_stops:30618_0652866c/master",
+    "false_stops:30618_0652866c/rover",
+    "insufficient_common_gain",
+    "slow_reference_stop_samples:30618_27e994fc/master",
+    "slow_reference_stop_samples:30639_dce52be4/master",
+    "slow_reference_stop_samples:30639_dce52be4/rover"
+  ],
+  "missing_evidence": [],
+  "development_safety_passed": false,
+  "eligible_by_measured_gates": false,
+  "independent_true_stop_labels": false,
+  "independent_final_test": false,
+  "stage": "development",
+  "bags": 17,
+  "groups": 7,
+  "fault_scenarios": 56,
+  "results_sha256": "d05a4b5a5b52d0cf557cf10f6240e8e0038dacaf9089bd2037b7c4f0f18d6a7c"
+}

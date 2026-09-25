@@ -1,0 +1,770 @@
+{
+  "clean": {
+    "outputs": 28764,
+    "expected_ticks": 28765,
+    "output_span_s": 1438.15,
+    "first_output_s": 0.05,
+    "last_output_s": 1438.2,
+    "sensor_duration_s": 1438.211624775,
+    "receivers": {
+      "master": {
+        "baseline_v2": {
+          "n": 0,
+          "coverage": 0.0,
+          "rmse": null,
+          "false_stop_samples": 0,
+          "distance_surrogate": {
+            "definition": "s versus integral matched horizontal GNSS speed; NOT xyz",
+            "full_span_terminal_error_m": null,
+            "full_span_reference_distance_m": null,
+            "full_span_terminal_drift_percent": null,
+            "continuous_spans": 0,
+            "reanchored_span_rmse_m": null,
+            "longest_reference_span": null
+          }
+        },
+        "balanced_physics": {
+          "n": 0,
+          "coverage": 0.0,
+          "rmse": null,
+          "false_stop_samples": 0,
+          "distance_surrogate": {
+            "definition": "s versus integral matched horizontal GNSS speed; NOT xyz",
+            "full_span_terminal_error_m": null,
+            "full_span_reference_distance_m": null,
+            "full_span_terminal_drift_percent": null,
+            "continuous_spans": 0,
+            "reanchored_span_rmse_m": null,
+            "longest_reference_span": null
+          },
+          "common_front_scaled_rmse": null,
+          "common_mean_scaled_rmse": null
+        },
+        "front_scaled": {
+          "n": 0,
+          "coverage": 0.0,
+          "rmse": null
+        },
+        "mean_scaled": {
+          "n": 0,
+          "coverage": 0.0,
+          "rmse": null
+        }
+      },
+      "rover": {
+        "baseline_v2": {
+          "n": 11410,
+          "coverage": 0.3966764010568766,
+          "rmse": 0.14060892778960515,
+          "mae": 0.05046723423042446,
+          "bias": 0.019748880000639884,
+          "p95": 0.13051666549585553,
+          "integrated_error_m_not_xyz": 6.140097195513989,
+          "false_stop_samples": 0,
+          "distance_surrogate": {
+            "definition": "s versus integral matched horizontal GNSS speed; NOT xyz",
+            "full_span_terminal_error_m": null,
+            "full_span_reference_distance_m": null,
+            "full_span_terminal_drift_percent": null,
+            "continuous_spans": 4,
+            "reanchored_span_rmse_m": 0.040189530827878274,
+            "longest_reference_span": {
+              "start_s": 1255.9,
+              "duration_s": 5.75,
+              "reference_distance_m": 1.8199249999999958,
+              "terminal_error_m": -0.005552655448111343
+            }
+          }
+        },
+        "balanced_physics": {
+          "n": 11410,
+          "coverage": 0.3966764010568766,
+          "rmse": 0.14066154325691926,
+          "mae": 0.05051154248241398,
+          "bias": 0.019704571748650354,
+          "p95": 0.13064731994162457,
+          "integrated_error_m_not_xyz": 6.13613233399391,
+          "false_stop_samples": 0,
+          "distance_surrogate": {
+            "definition": "s versus integral matched horizontal GNSS speed; NOT xyz",
+            "full_span_terminal_error_m": null,
+            "full_span_reference_distance_m": null,
+            "full_span_terminal_drift_percent": null,
+            "continuous_spans": 4,
+            "reanchored_span_rmse_m": 0.04166521275474583,
+            "longest_reference_span": {
+              "start_s": 1255.9,
+              "duration_s": 5.75,
+              "reference_distance_m": 1.8199249999999958,
+              "terminal_error_m": -0.00034910442103153194
+            }
+          },
+          "common_front_scaled_rmse": 0.14069092953327525,
+          "common_mean_scaled_rmse": 0.14069092953327525
+        },
+        "front_scaled": {
+          "n": 11405,
+          "coverage": 0.3965025726602698,
+          "rmse": 0.14418283002219515,
+          "mae": 0.05586959627259398,
+          "bias": 0.019998515192876605,
+          "p95": 0.1446274108886718,
+          "integrated_error_m_not_xyz": 6.292014642482108
+        },
+        "mean_scaled": {
+          "n": 11405,
+          "coverage": 0.3965025726602698,
+          "rmse": 0.143930373675765,
+          "mae": 0.05575808318471746,
+          "bias": 0.020165197067252182,
+          "p95": 0.14483505520290785,
+          "integrated_error_m_not_xyz": 6.352893807685213
+        }
+      }
+    },
+    "runtime": {
+      "baseline_v2": {
+        "resets": 0,
+        "dropped": 0,
+        "catchups": 1,
+        "causal_errors": 0,
+        "mode_counts": {
+          "INITIALIZED": 1,
+          "MODEL_ONLY": 11256,
+          "FUSED": 9918,
+          "STOPPED": 7587,
+          "SINGLE_WHEEL": 2
+        }
+      },
+      "balanced_physics": {
+        "resets": 0,
+        "dropped": 0,
+        "catchups": 1,
+        "causal_errors": 0,
+        "mode_counts": {
+          "INITIALIZED": 1,
+          "MODEL_ONLY": 11240,
+          "FUSED": 9885,
+          "STOPPED": 7636,
+          "SINGLE_WHEEL": 2
+        }
+      }
+    },
+    "h09_diagnostics": {
+      "master": {
+        "baseline_v2": {
+          "slow_reference_samples": 0,
+          "slow_reference_stop_samples": 0,
+          "medium_reference_stop_samples": 0,
+          "low_reference_spans": [],
+          "low_reference_span_seconds": 0.0,
+          "low_reference_odometry_abs_m": 0.0
+        },
+        "balanced_physics": {
+          "slow_reference_samples": 0,
+          "slow_reference_stop_samples": 0,
+          "medium_reference_stop_samples": 0,
+          "low_reference_spans": [],
+          "low_reference_span_seconds": 0.0,
+          "low_reference_odometry_abs_m": 0.0
+        }
+      },
+      "rover": {
+        "baseline_v2": {
+          "slow_reference_samples": 396,
+          "slow_reference_stop_samples": 26,
+          "medium_reference_stop_samples": 0,
+          "low_reference_spans": [
+            {
+              "start_s": 1258.5,
+              "end_s": 1260.0500000000002,
+              "duration_s": 1.550000000000182,
+              "odometry_abs_m": 0.0017063747327483725,
+              "departure_stop_release_s": null
+            }
+          ],
+          "low_reference_span_seconds": 1.550000000000182,
+          "low_reference_odometry_abs_m": 0.0017063747327483725
+        },
+        "balanced_physics": {
+          "slow_reference_samples": 396,
+          "slow_reference_stop_samples": 24,
+          "medium_reference_stop_samples": 0,
+          "low_reference_spans": [
+            {
+              "start_s": 1258.5,
+              "end_s": 1260.0500000000002,
+              "duration_s": 1.550000000000182,
+              "odometry_abs_m": 0.0,
+              "departure_stop_release_s": null
+            }
+          ],
+          "low_reference_span_seconds": 1.550000000000182,
+          "low_reference_odometry_abs_m": 0.0
+        }
+      }
+    },
+    "offline_cost": {
+      "baseline_v2": {
+        "offline_replay_s": 0.9525091849999967,
+        "outputs": 28764
+      },
+      "balanced_physics": {
+        "offline_replay_s": 1.0615686450000226,
+        "outputs": 28764
+      }
+    },
+    "trace_sha256": "79d944d7ea3a78a014215124583a9ca129b6b96176f8d17ec88650d537f73f5c",
+    "bag": "30639_e4379d7f",
+    "group": "a0c46036cc19092a",
+    "input_array_sha256": "8a317d7dfc7db00edb96c53c1535d23ccffab9907cdad1905f20be658560dc05"
+  },
+  "stress": [
+    {
+      "outputs": 700,
+      "expected_ticks": 702,
+      "output_span_s": 34.95000000000002,
+      "first_output_s": 145.611615933,
+      "last_output_s": 180.561615933,
+      "sensor_duration_s": 35.057509562999996,
+      "receivers": {
+        "master": {
+          "baseline_v2": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null,
+            "false_stop_samples": 0,
+            "event_rmse": null,
+            "recovery_s": null
+          },
+          "balanced_physics": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null,
+            "false_stop_samples": 0,
+            "event_rmse": null,
+            "recovery_s": null
+          }
+        },
+        "rover": {
+          "baseline_v2": {
+            "n": 116,
+            "coverage": 0.1657142857142857,
+            "rmse": 0.07062599748734782,
+            "mae": 0.05786266451243677,
+            "bias": 0.019646813578216023,
+            "p95": 0.10948289731688332,
+            "integrated_error_m_not_xyz": 0.056975759376817536,
+            "false_stop_samples": 0,
+            "event_rmse": 0.07437063789617557,
+            "recovery_s": null
+          },
+          "balanced_physics": {
+            "n": 116,
+            "coverage": 0.1657142857142857,
+            "rmse": 0.07062599748734782,
+            "mae": 0.05786266451243677,
+            "bias": 0.019646813578216023,
+            "p95": 0.10948289731688332,
+            "integrated_error_m_not_xyz": 0.056975759376817536,
+            "false_stop_samples": 0,
+            "event_rmse": 0.07437063789617557,
+            "recovery_s": null
+          }
+        }
+      },
+      "runtime": {
+        "baseline_v2": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 0,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 258,
+            "FUSED": 195,
+            "STOPPED": 195,
+            "SINGLE_WHEEL": 51
+          }
+        },
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 0,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 252,
+            "FUSED": 190,
+            "STOPPED": 206,
+            "SINGLE_WHEEL": 51
+          }
+        }
+      },
+      "h09_diagnostics": {
+        "master": {
+          "baseline_v2": {
+            "slow_reference_samples": 0,
+            "slow_reference_stop_samples": 0,
+            "medium_reference_stop_samples": 0,
+            "low_reference_spans": [],
+            "low_reference_span_seconds": 0.0,
+            "low_reference_odometry_abs_m": 0.0
+          },
+          "balanced_physics": {
+            "slow_reference_samples": 0,
+            "slow_reference_stop_samples": 0,
+            "medium_reference_stop_samples": 0,
+            "low_reference_spans": [],
+            "low_reference_span_seconds": 0.0,
+            "low_reference_odometry_abs_m": 0.0
+          }
+        },
+        "rover": {
+          "baseline_v2": {
+            "slow_reference_samples": 0,
+            "slow_reference_stop_samples": 0,
+            "medium_reference_stop_samples": 0,
+            "low_reference_spans": [],
+            "low_reference_span_seconds": 0.0,
+            "low_reference_odometry_abs_m": 0.0
+          },
+          "balanced_physics": {
+            "slow_reference_samples": 0,
+            "slow_reference_stop_samples": 0,
+            "medium_reference_stop_samples": 0,
+            "low_reference_spans": [],
+            "low_reference_span_seconds": 0.0,
+            "low_reference_odometry_abs_m": 0.0
+          }
+        }
+      },
+      "offline_cost": {
+        "baseline_v2": {
+          "offline_replay_s": 0.023505884000002197,
+          "outputs": 700
+        },
+        "balanced_physics": {
+          "offline_replay_s": 0.024842808000016703,
+          "outputs": 700
+        }
+      },
+      "trace_sha256": "ff1c1c57a12725e8487175401b89c28e61c1d0a9fbcc8a5dd920016477055b79",
+      "bag": "30639_e4379d7f",
+      "group": "a0c46036cc19092a",
+      "fault": {
+        "kind": "bias",
+        "start": 165.5,
+        "end": 170.5
+      }
+    },
+    {
+      "outputs": 700,
+      "expected_ticks": 702,
+      "output_span_s": 34.95000000000002,
+      "first_output_s": 145.611615933,
+      "last_output_s": 180.561615933,
+      "sensor_duration_s": 35.057509562999996,
+      "receivers": {
+        "master": {
+          "baseline_v2": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null,
+            "false_stop_samples": 0,
+            "event_rmse": null,
+            "recovery_s": null
+          },
+          "balanced_physics": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null,
+            "false_stop_samples": 0,
+            "event_rmse": null,
+            "recovery_s": null
+          }
+        },
+        "rover": {
+          "baseline_v2": {
+            "n": 116,
+            "coverage": 0.1657142857142857,
+            "rmse": 0.2026652119726252,
+            "mae": 0.13129204993121082,
+            "bias": 0.10948368645602752,
+            "p95": 0.5083867434338583,
+            "integrated_error_m_not_xyz": 0.31750269072245224,
+            "false_stop_samples": 0,
+            "event_rmse": 0.34011946552944894,
+            "recovery_s": null
+          },
+          "balanced_physics": {
+            "n": 116,
+            "coverage": 0.1657142857142857,
+            "rmse": 0.2026652119726252,
+            "mae": 0.13129204993121082,
+            "bias": 0.10948368645602752,
+            "p95": 0.5083867434338583,
+            "integrated_error_m_not_xyz": 0.31750269072245224,
+            "false_stop_samples": 0,
+            "event_rmse": 0.34011946552944894,
+            "recovery_s": null
+          }
+        }
+      },
+      "runtime": {
+        "baseline_v2": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 0,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 308,
+            "FUSED": 196,
+            "STOPPED": 195
+          }
+        },
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 0,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 302,
+            "FUSED": 191,
+            "STOPPED": 206
+          }
+        }
+      },
+      "h09_diagnostics": {
+        "master": {
+          "baseline_v2": {
+            "slow_reference_samples": 0,
+            "slow_reference_stop_samples": 0,
+            "medium_reference_stop_samples": 0,
+            "low_reference_spans": [],
+            "low_reference_span_seconds": 0.0,
+            "low_reference_odometry_abs_m": 0.0
+          },
+          "balanced_physics": {
+            "slow_reference_samples": 0,
+            "slow_reference_stop_samples": 0,
+            "medium_reference_stop_samples": 0,
+            "low_reference_spans": [],
+            "low_reference_span_seconds": 0.0,
+            "low_reference_odometry_abs_m": 0.0
+          }
+        },
+        "rover": {
+          "baseline_v2": {
+            "slow_reference_samples": 0,
+            "slow_reference_stop_samples": 0,
+            "medium_reference_stop_samples": 0,
+            "low_reference_spans": [],
+            "low_reference_span_seconds": 0.0,
+            "low_reference_odometry_abs_m": 0.0
+          },
+          "balanced_physics": {
+            "slow_reference_samples": 0,
+            "slow_reference_stop_samples": 0,
+            "medium_reference_stop_samples": 0,
+            "low_reference_spans": [],
+            "low_reference_span_seconds": 0.0,
+            "low_reference_odometry_abs_m": 0.0
+          }
+        }
+      },
+      "offline_cost": {
+        "baseline_v2": {
+          "offline_replay_s": 0.023242532000011806,
+          "outputs": 700
+        },
+        "balanced_physics": {
+          "offline_replay_s": 0.02455761400000256,
+          "outputs": 700
+        }
+      },
+      "trace_sha256": "2cfd17dc073dcb5c1b5d5bd233265e0732775153bf5c77c3bd89334dcc1d56d4",
+      "bag": "30639_e4379d7f",
+      "group": "a0c46036cc19092a",
+      "fault": {
+        "kind": "dropout",
+        "start": 165.5,
+        "end": 170.5
+      }
+    },
+    {
+      "outputs": 800,
+      "expected_ticks": 802,
+      "output_span_s": 39.95000000000002,
+      "first_output_s": 145.611615933,
+      "last_output_s": 185.561615933,
+      "sensor_duration_s": 40.05751128599999,
+      "receivers": {
+        "master": {
+          "baseline_v2": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null,
+            "false_stop_samples": 0,
+            "event_rmse": null,
+            "recovery_s": null
+          },
+          "balanced_physics": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null,
+            "false_stop_samples": 0,
+            "event_rmse": null,
+            "recovery_s": null
+          }
+        },
+        "rover": {
+          "baseline_v2": {
+            "n": 154,
+            "coverage": 0.1925,
+            "rmse": 0.25919250187306825,
+            "mae": 0.20689055856807306,
+            "bias": 0.20067302729799488,
+            "p95": 0.5051663280522861,
+            "integrated_error_m_not_xyz": 0.7725911550972754,
+            "false_stop_samples": 0,
+            "event_rmse": 0.3504594682056353,
+            "recovery_s": null
+          },
+          "balanced_physics": {
+            "n": 154,
+            "coverage": 0.1925,
+            "rmse": 0.25919250187306825,
+            "mae": 0.20689055856807306,
+            "bias": 0.20067302729799488,
+            "p95": 0.5051663280522861,
+            "integrated_error_m_not_xyz": 0.7725911550972754,
+            "false_stop_samples": 0,
+            "event_rmse": 0.3504594682056353,
+            "recovery_s": null
+          }
+        }
+      },
+      "runtime": {
+        "baseline_v2": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 0,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 407,
+            "FUSED": 197,
+            "STOPPED": 195
+          }
+        },
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 0,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 401,
+            "FUSED": 192,
+            "STOPPED": 206
+          }
+        }
+      },
+      "h09_diagnostics": {
+        "master": {
+          "baseline_v2": {
+            "slow_reference_samples": 0,
+            "slow_reference_stop_samples": 0,
+            "medium_reference_stop_samples": 0,
+            "low_reference_spans": [],
+            "low_reference_span_seconds": 0.0,
+            "low_reference_odometry_abs_m": 0.0
+          },
+          "balanced_physics": {
+            "slow_reference_samples": 0,
+            "slow_reference_stop_samples": 0,
+            "medium_reference_stop_samples": 0,
+            "low_reference_spans": [],
+            "low_reference_span_seconds": 0.0,
+            "low_reference_odometry_abs_m": 0.0
+          }
+        },
+        "rover": {
+          "baseline_v2": {
+            "slow_reference_samples": 0,
+            "slow_reference_stop_samples": 0,
+            "medium_reference_stop_samples": 0,
+            "low_reference_spans": [],
+            "low_reference_span_seconds": 0.0,
+            "low_reference_odometry_abs_m": 0.0
+          },
+          "balanced_physics": {
+            "slow_reference_samples": 0,
+            "slow_reference_stop_samples": 0,
+            "medium_reference_stop_samples": 0,
+            "low_reference_spans": [],
+            "low_reference_span_seconds": 0.0,
+            "low_reference_odometry_abs_m": 0.0
+          }
+        }
+      },
+      "offline_cost": {
+        "baseline_v2": {
+          "offline_replay_s": 0.025491723999977012,
+          "outputs": 800
+        },
+        "balanced_physics": {
+          "offline_replay_s": 0.026786848999989843,
+          "outputs": 800
+        }
+      },
+      "trace_sha256": "33a89ee5a09c50553c939069679c0db57a06628af062de8652eb3913b45df2ca",
+      "bag": "30639_e4379d7f",
+      "group": "a0c46036cc19092a",
+      "fault": {
+        "kind": "dropout",
+        "start": 165.5,
+        "end": 175.5
+      }
+    },
+    {
+      "outputs": 660,
+      "expected_ticks": 662,
+      "output_span_s": 32.95000000000002,
+      "first_output_s": 145.611615933,
+      "last_output_s": 178.561615933,
+      "sensor_duration_s": 33.057450222,
+      "receivers": {
+        "master": {
+          "baseline_v2": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null,
+            "false_stop_samples": 0,
+            "event_rmse": null,
+            "recovery_s": null
+          },
+          "balanced_physics": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null,
+            "false_stop_samples": 0,
+            "event_rmse": null,
+            "recovery_s": null
+          }
+        },
+        "rover": {
+          "baseline_v2": {
+            "n": 100,
+            "coverage": 0.15151515151515152,
+            "rmse": 0.10371417105563477,
+            "mae": 0.07312447305229189,
+            "bias": 0.038455587831472016,
+            "p95": 0.24437122371621567,
+            "integrated_error_m_not_xyz": 0.09613896957866648,
+            "false_stop_samples": 0,
+            "event_rmse": 0.15777796614564962,
+            "recovery_s": null
+          },
+          "balanced_physics": {
+            "n": 100,
+            "coverage": 0.15151515151515152,
+            "rmse": 0.10371417105563477,
+            "mae": 0.07312447305229189,
+            "bias": 0.038455587831472016,
+            "p95": 0.24437122371621567,
+            "integrated_error_m_not_xyz": 0.09613896957866648,
+            "false_stop_samples": 0,
+            "event_rmse": 0.15777796614564962,
+            "recovery_s": null
+          }
+        }
+      },
+      "runtime": {
+        "baseline_v2": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 0,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 269,
+            "FUSED": 195,
+            "STOPPED": 195
+          }
+        },
+        "balanced_physics": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 0,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 263,
+            "FUSED": 190,
+            "STOPPED": 206
+          }
+        }
+      },
+      "h09_diagnostics": {
+        "master": {
+          "baseline_v2": {
+            "slow_reference_samples": 0,
+            "slow_reference_stop_samples": 0,
+            "medium_reference_stop_samples": 0,
+            "low_reference_spans": [],
+            "low_reference_span_seconds": 0.0,
+            "low_reference_odometry_abs_m": 0.0
+          },
+          "balanced_physics": {
+            "slow_reference_samples": 0,
+            "slow_reference_stop_samples": 0,
+            "medium_reference_stop_samples": 0,
+            "low_reference_spans": [],
+            "low_reference_span_seconds": 0.0,
+            "low_reference_odometry_abs_m": 0.0
+          }
+        },
+        "rover": {
+          "baseline_v2": {
+            "slow_reference_samples": 0,
+            "slow_reference_stop_samples": 0,
+            "medium_reference_stop_samples": 0,
+            "low_reference_spans": [],
+            "low_reference_span_seconds": 0.0,
+            "low_reference_odometry_abs_m": 0.0
+          },
+          "balanced_physics": {
+            "slow_reference_samples": 0,
+            "slow_reference_stop_samples": 0,
+            "medium_reference_stop_samples": 0,
+            "low_reference_spans": [],
+            "low_reference_span_seconds": 0.0,
+            "low_reference_odometry_abs_m": 0.0
+          }
+        }
+      },
+      "offline_cost": {
+        "baseline_v2": {
+          "offline_replay_s": 0.022362184000002117,
+          "outputs": 660
+        },
+        "balanced_physics": {
+          "offline_replay_s": 0.023708585000008497,
+          "outputs": 660
+        }
+      },
+      "trace_sha256": "c125a9c0a789ffb3fac615b7806995cc3ad8bc5d8926e70edc93c9f9b81e14d5",
+      "bag": "30639_e4379d7f",
+      "group": "a0c46036cc19092a",
+      "fault": {
+        "kind": "lock",
+        "start": 165.5,
+        "end": 168.5
+      }
+    }
+  ]
+}
