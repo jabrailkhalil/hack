@@ -1,0 +1,4342 @@
+{
+  "hypothesis": "H03",
+  "baseline": "984fdf2fc4faf05325249215d6b8541c0e68209a",
+  "source_ref": "b803b41e3ea6fb709eeb6dd63f0856f9111ab6bd",
+  "run_id": "36174944020",
+  "run_attempt": "1",
+  "utc": "2026-09-25T18:41:39.884312+00:00",
+  "source_sha256": {
+    "Dockerfile.environment": "89a20ba9783557cba82623f7b81fda48bbdc963f30df3f15c726b9bbeba88b94",
+    "research/plan_v3.json": "ddbc1130e214c3d338b3d292232391d3a329a0fd5f13a090027452ae070271b3",
+    "research/split_v3.json": "20928a29daad2b4178ddb92e2a4d9ddb347952f6c03845802a8d82fff7da5ae0",
+    "src/reserve_odometry/config/adaptive_v5.yaml": "dae5f5c80cd87e968b1e838c5b0d25cc531f816949b1fd2a59dd65e8e93efaec",
+    "src/reserve_odometry/config/calibrated_v3.yaml": "a34faa159b8e9436c58e957376f4dd4207395ad63f5b8391ed2a3737c339dbf5",
+    "src/reserve_odometry/config/candidates_v3/balanced_physics.json": "68b81682f9ac48d11bf7d8e67418a45de546ab35526954c5f6fc3eda2d7ec425",
+    "src/reserve_odometry/config/candidates_v3/balanced_physics.yaml": "d1f8fd9d96911ba0f1381a6d1b6837f50fa9f6a2c518cb38421e9c229d3f0a14",
+    "src/reserve_odometry/config/candidates_v3/baseline_v2.yaml": "3aa6c2105bdaf437956bd7e8479d9e97d888dcd7d81d7e39b0ca6278add1075a",
+    "src/reserve_odometry/config/candidates_v3/gain_only.yaml": "e4aa198fb8835335327180e91f42ab3c45efb537cc2bcbb9b7661f5fef761f2b",
+    "src/reserve_odometry/config/candidates_v3/nonlinear_physics.yaml": "68100c74c31ddeac2a634d66b521156991d526dceca38bed37c47ddab7ed7115",
+    "src/reserve_odometry/config/default.yaml": "dae5f5c80cd87e968b1e838c5b0d25cc531f816949b1fd2a59dd65e8e93efaec",
+    "src/reserve_odometry/config/frozen_v4.yaml": "a29d075cbcca235a1cf5ab1f79a0a992f70ba788e729b452f732c273932eeb0e",
+    "src/reserve_odometry/launch/odometry.launch.py": "bafb889e78964fdba892960a47e31d449fb89bc91195d8a573f33e2ed229e42f",
+    "src/reserve_odometry/package.xml": "a0a24f3f7ba564188ee0f223e2afe5378019a58fba1d296f62726263822ec883",
+    "src/reserve_odometry/reserve_odometry/__init__.py": "e1f572a23a3af0453ee58954e1ac155057c09f538f30cf660aa84e9dadba6b74",
+    "src/reserve_odometry/reserve_odometry/core.py": "a8f80d4e6bb54163dcf5e2c9f1828ebaac8a8010cf6c4691677bf24bbcc02489",
+    "src/reserve_odometry/reserve_odometry/node.py": "a63b6cf915d0621eda4a99f4a9a91c8b21a3d2209420e2fc9f4f21084a6dbdd4",
+    "src/reserve_odometry/reserve_odometry/route.py": "631c9be75cc8bcf9770deb3e79aa3fad7c40d01bfaf446015a3566325df47739",
+    "src/reserve_odometry/reserve_odometry/timeline.py": "ed63b44dede078cb3cde501bd1e5559260763c56ac9b832f39924c1d97b0bdbf",
+    "src/reserve_odometry/setup.cfg": "504ebb3ed9db6bc2727b1b3396daf6f5334ea6b7f6eda26672ba2c415f400b71",
+    "src/reserve_odometry/setup.py": "591329e89a9e6cfa324585cc3ec2f2a96129689afc8f6fa51b1d85f96d94a962",
+    "src/tram_vehicle_msgs/CMakeLists.txt": "f220119ed18c68585208da7689733bf38a1a6a5a76973371b6ba18a1086636a6",
+    "src/tram_vehicle_msgs/msg/DriverControllerCommand.msg": "fe294e3cd4132ed8dd732d677e78196ae882d2be5468e76d029ea785615517fb",
+    "src/tram_vehicle_msgs/msg/VelocitySensor.msg": "4fae2e24132e779ae396773fe3df0f54584c8e54323f6f36d249e45449d7e8fd",
+    "src/tram_vehicle_msgs/package.xml": "0fff58dd63afcc03627c11b9968e817043499f438467d90520f59fc5af54127d",
+    "tools/export_bags.py": "696f6bdbf853dac4d4fe6286f6a7f4742f4aea5b1bc508efda52f5bc179c3b66",
+    "tools/finalization/evaluate.py": "f6a19a1727274ca88e1fe1a9fb76d31dbc8ce4e9bbabf669c488f053d76caec7",
+    "tools/research_v3/experiment.py": "95a398003530454457bacb2096fb6bc9d0d5ee32520420c43a9ebeb406376aa0",
+    "tools/research_v3/manifest.py": "51f24a2b9486938ac935d0b648f0612c76df075f7372caf6cc5bd457a8e53abb",
+    "research/H03/PLAN.md": "ef161760e6146d96070fb23d54ece07674b49382a73e1ebdebb412641e609f56",
+    "research/H03/run.py": "fca3d6e91efa787f0729011b872b9d170abb5250fe4298116496b0c4ce5f1302",
+    "research/H03/test_h03.py": "8d257e76c70b52d74531eaeee6ec44abcb7e793646a853f54fdfe01f017df9be",
+    "research/H03/algorithm.patch": "5120f1b57f8a922e209310834bdda0ec285a78d7fca701bb92b744abc5afefc6",
+    ".github/workflows/research-H03.yml": "e7d179991fe8f921d56b99a66c1d40fdbcb7f901e1768da9919b984c0bedce25"
+  },
+  "immutable": {
+    "passed": true,
+    "baseline": "984fdf2fc4faf05325249215d6b8541c0e68209a",
+    "unchanged_sha256": {
+      "tools/finalization/evaluate.py": "f6a19a1727274ca88e1fe1a9fb76d31dbc8ce4e9bbabf669c488f053d76caec7",
+      "tools/research_v3/experiment.py": "95a398003530454457bacb2096fb6bc9d0d5ee32520420c43a9ebeb406376aa0",
+      "tools/research_v3/manifest.py": "51f24a2b9486938ac935d0b648f0612c76df075f7372caf6cc5bd457a8e53abb",
+      "tools/export_bags.py": "696f6bdbf853dac4d4fe6286f6a7f4742f4aea5b1bc508efda52f5bc179c3b66",
+      "research/split_v3.json": "20928a29daad2b4178ddb92e2a4d9ddb347952f6c03845802a8d82fff7da5ae0",
+      "research/plan_v3.json": "ddbc1130e214c3d338b3d292232391d3a329a0fd5f13a090027452ae070271b3",
+      "tools/research_v6/compare.py": "70276a0a633cd443d44af870fde73649519be2aaf55944c2a4473c82d7b241b5",
+      "src/reserve_odometry/reserve_odometry/timeline.py": "ed63b44dede078cb3cde501bd1e5559260763c56ac9b832f39924c1d97b0bdbf",
+      "src/reserve_odometry/reserve_odometry/node.py": "a63b6cf915d0621eda4a99f4a9a91c8b21a3d2209420e2fc9f4f21084a6dbdd4",
+      "src/reserve_odometry/reserve_odometry/route.py": "631c9be75cc8bcf9770deb3e79aa3fad7c40d01bfaf446015a3566325df47739",
+      "src/reserve_odometry/config/default.yaml": "dae5f5c80cd87e968b1e838c5b0d25cc531f816949b1fd2a59dd65e8e93efaec",
+      "src/reserve_odometry/config/adaptive_v5.yaml": "dae5f5c80cd87e968b1e838c5b0d25cc531f816949b1fd2a59dd65e8e93efaec",
+      "src/reserve_odometry/config/candidates_v3/balanced_physics.json": "68b81682f9ac48d11bf7d8e67418a45de546ab35526954c5f6fc3eda2d7ec425"
+    }
+  },
+  "plan_sha256": "ef161760e6146d96070fb23d54ece07674b49382a73e1ebdebb412641e609f56",
+  "python": "3.13.5",
+  "numpy": "2.3.5",
+  "test_evaluated": false,
+  "operational": {
+    "rate_hz": 20.0,
+    "alignment_delay_s": 0.0
+  },
+  "stage": "train",
+  "rows": [
+    {
+      "bag": "30618_0259fe53",
+      "group": "95a748306e6cbf16",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": 0.1909770189835322,
+          "roughness": 0.058742726042300596,
+          "lag_rmse_0": 0.1909770189835322,
+          "lag_rmse_1": 0.19083722627751587,
+          "lag_rmse_2": 0.19463991777012915
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": 0.1503704381960822,
+          "roughness": 0.043810473278601235,
+          "lag_rmse_0": 0.1503704381960822,
+          "lag_rmse_1": 0.148976132233212,
+          "lag_rmse_2": 0.15272432228913285
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": 0.09232865924527354,
+          "roughness": 0.02270689313409733,
+          "lag_rmse_0": 0.09232865924527354,
+          "lag_rmse_1": 0.0861931642451794,
+          "lag_rmse_2": 0.0882196746623546
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": 0.07608101563983066,
+          "roughness": 0.014258068900795576,
+          "lag_rmse_0": 0.07608101563983066,
+          "lag_rmse_1": 0.06298142719389893,
+          "lag_rmse_2": 0.05956471426812753
+        }
+      },
+      "wheel_mask_samples": 7971,
+      "common_samples": 7787,
+      "continuous_triples": 7414,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 7965
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 7787
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 7965
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 7965
+        }
+      },
+      "common_mask_sha256": "2d5b527714e2584179fdb4b74d2bf0d2bbf0d990524052c084729238443121ac",
+      "events_sha256": "5ffb1c12b4aeb5a5ab95b06e69bd0a53b664bbf35a4ef14ff2b088c1ffff27d1",
+      "target_sha256": "44742e13cbb98973821c6e147c76b389d4665911a120e2a49ab2672b986b6e5b"
+    },
+    {
+      "bag": "30618_082f1d65",
+      "group": "1e811c142a49aa16",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": null,
+          "roughness": null,
+          "lag_rmse_0": null,
+          "lag_rmse_1": null,
+          "lag_rmse_2": null
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": null,
+          "roughness": null,
+          "lag_rmse_0": null,
+          "lag_rmse_1": null,
+          "lag_rmse_2": null
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": null,
+          "roughness": null,
+          "lag_rmse_0": null,
+          "lag_rmse_1": null,
+          "lag_rmse_2": null
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": null,
+          "roughness": null,
+          "lag_rmse_0": null,
+          "lag_rmse_1": null,
+          "lag_rmse_2": null
+        }
+      },
+      "wheel_mask_samples": 0,
+      "common_samples": 0,
+      "continuous_triples": 0,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 0
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 0
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 0
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 0
+        }
+      },
+      "common_mask_sha256": "5e46d3f35181e3fa1ab70a34f86981c049989c239e34c65a010c3b0282c3abf8",
+      "events_sha256": "cd288ad2c300c5f6db8ab7d878659cfedac47caacb01cecaddc6def2639fc3f5",
+      "target_sha256": "11b830ab67dc6af6407b17205dd7e3084be78209e7ba5a7e656db14140956db7"
+    },
+    {
+      "bag": "30618_095a115b",
+      "group": "e894436afa9dd9f1",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": 0.17089344389990124,
+          "roughness": 0.055880612529206015,
+          "lag_rmse_0": 0.17089344389990124,
+          "lag_rmse_1": 0.17048027503876464,
+          "lag_rmse_2": 0.17359040253714852
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": 0.13801635961595424,
+          "roughness": 0.042031189084523406,
+          "lag_rmse_0": 0.13801635961595424,
+          "lag_rmse_1": 0.13620127127264864,
+          "lag_rmse_2": 0.13876775589890614
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": 0.0861289491125549,
+          "roughness": 0.02074281881108302,
+          "lag_rmse_0": 0.0861289491125549,
+          "lag_rmse_1": 0.080059348900703,
+          "lag_rmse_2": 0.0812318672150855
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": 0.07128181731851825,
+          "roughness": 0.013776808781276892,
+          "lag_rmse_0": 0.07128181731851825,
+          "lag_rmse_1": 0.05920486324922973,
+          "lag_rmse_2": 0.05599050188524539
+        }
+      },
+      "wheel_mask_samples": 8361,
+      "common_samples": 8160,
+      "continuous_triples": 7735,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 8357
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 8160
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 8357
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 8357
+        }
+      },
+      "common_mask_sha256": "e3f59d09ff07d0b040ed63210787e803ca2556f8a05c11bacb3b37d46ac59ff7",
+      "events_sha256": "22b4000f87dd86dab081d649e41a2ef3d1f7dc2efefff344a40bd511b6f6ccc7",
+      "target_sha256": "333e3542b729d49d3ccb3a3aa2645302e04c1caf944aeac8d46e270ec0eb727a"
+    },
+    {
+      "bag": "30618_0a83c933",
+      "group": "86c32e441a296aaa",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": 0.19508414681863176,
+          "roughness": 0.05850924975206197,
+          "lag_rmse_0": 0.19508414681863176,
+          "lag_rmse_1": 0.1927536619790187,
+          "lag_rmse_2": 0.19397646125637577
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": 0.1602657830878987,
+          "roughness": 0.04443255099108156,
+          "lag_rmse_0": 0.1602657830878987,
+          "lag_rmse_1": 0.15659524287604928,
+          "lag_rmse_2": 0.15711623394191124
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": 0.10140977926439214,
+          "roughness": 0.0226820881429669,
+          "lag_rmse_0": 0.10140977926439214,
+          "lag_rmse_1": 0.09147141163072577,
+          "lag_rmse_2": 0.08838920877507352
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": 0.08941407677536331,
+          "roughness": 0.01511971324619436,
+          "lag_rmse_0": 0.08941407677536331,
+          "lag_rmse_1": 0.07306758571537862,
+          "lag_rmse_2": 0.06370666663331026
+        }
+      },
+      "wheel_mask_samples": 7785,
+      "common_samples": 7632,
+      "continuous_triples": 7307,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 7778
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 7632
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 7778
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 7778
+        }
+      },
+      "common_mask_sha256": "36291a5600119b427dfabec0ac18fc52111e6da78c8057e1c8a8078035970979",
+      "events_sha256": "f191bdd8b0876d682602281d9889aad70669528690b345714ab577b40922850e",
+      "target_sha256": "cce5e126df1fe2bbc88c1f88d9f15918ecf79b8dfc422ba1c1d829349894e511"
+    },
+    {
+      "bag": "30618_0d865417",
+      "group": "96d0ec5b7ee50e7e",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": 0.40672563503774434,
+          "roughness": 0.10635020144502037,
+          "lag_rmse_0": 0.40672563503774434,
+          "lag_rmse_1": 0.4098334080361726,
+          "lag_rmse_2": 0.4555651693185286
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": 0.4382218293339911,
+          "roughness": 0.12027618706378658,
+          "lag_rmse_0": 0.4382218293339911,
+          "lag_rmse_1": 0.43234339908890673,
+          "lag_rmse_2": 0.469677923156553
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": 0.3233548989093325,
+          "roughness": 0.07974197557342455,
+          "lag_rmse_0": 0.3233548989093325,
+          "lag_rmse_1": 0.2711887109766815,
+          "lag_rmse_2": 0.2841858019256072
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": 0.3459585964327481,
+          "roughness": 0.05337841607694452,
+          "lag_rmse_0": 0.3459585964327481,
+          "lag_rmse_1": 0.24312201140385992,
+          "lag_rmse_2": 0.19638488999163808
+        }
+      },
+      "wheel_mask_samples": 8,
+      "common_samples": 8,
+      "continuous_triples": 6,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 8
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 8
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 8
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 8
+        }
+      },
+      "common_mask_sha256": "c3c8d22d1fa1410014e452376d1c2b72d832bb900f5378abfacafd80f3c64804",
+      "events_sha256": "3fb94a7716103dccd9aabc54447b4695bef32ec1316d4545573e1f2e1ff61b6e",
+      "target_sha256": "55419d3a233b3c52494358fea23df11dc64fca076138d9b4f395c1ddd077beb4"
+    },
+    {
+      "bag": "30618_1cc230fa",
+      "group": "0f36b619fba02a9b",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": 0.17803945159166218,
+          "roughness": 0.058077336537774936,
+          "lag_rmse_0": 0.17803945159166218,
+          "lag_rmse_1": 0.21625501637249053,
+          "lag_rmse_2": 0.24883720955334737
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": 0.15286590905160025,
+          "roughness": 0.04644695373392401,
+          "lag_rmse_0": 0.15286590905160025,
+          "lag_rmse_1": 0.1953157829339201,
+          "lag_rmse_2": 0.23019671935164215
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": 0.1012895499363871,
+          "roughness": 0.02511911142132275,
+          "lag_rmse_0": 0.1012895499363871,
+          "lag_rmse_1": 0.15694953864262312,
+          "lag_rmse_2": 0.1970772919493481
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": 0.08717865284201613,
+          "roughness": 0.01647912985010911,
+          "lag_rmse_0": 0.08717865284201613,
+          "lag_rmse_1": 0.14635818763213962,
+          "lag_rmse_2": 0.1864785129756114
+        }
+      },
+      "wheel_mask_samples": 8468,
+      "common_samples": 8100,
+      "continuous_triples": 7527,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 8385
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 8100
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 8385
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 8385
+        }
+      },
+      "common_mask_sha256": "6e059d7982dd5a478626fe1741278d71b3a62bde4a70cf0ea0ce211f7860a0e3",
+      "events_sha256": "ad30d513f72ea0ac13a92d037d01511285fc2421d5ef614c5b57efab41bdca86",
+      "target_sha256": "44495581013f45bbd940d98c0186ed0372ffd5a58fd063e68787a5b97d5669e0"
+    },
+    {
+      "bag": "30618_20096314",
+      "group": "c8a1e61d1b0710e9",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": 0.18936718403926855,
+          "roughness": 0.05771506853763497,
+          "lag_rmse_0": 0.18936718403926855,
+          "lag_rmse_1": 0.19151014099128275,
+          "lag_rmse_2": 0.1959250480371723
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": 0.1540059933297406,
+          "roughness": 0.044214795677066286,
+          "lag_rmse_0": 0.1540059933297406,
+          "lag_rmse_1": 0.1564284034974878,
+          "lag_rmse_2": 0.16130526527869538
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": 0.09036575922130607,
+          "roughness": 0.022014198996402536,
+          "lag_rmse_0": 0.09036575922130607,
+          "lag_rmse_1": 0.09126946852761747,
+          "lag_rmse_2": 0.09573459072590215
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": 0.07221761864667124,
+          "roughness": 0.014612360036642106,
+          "lag_rmse_0": 0.07221761864667124,
+          "lag_rmse_1": 0.06910062279680018,
+          "lag_rmse_2": 0.07094396500488859
+        }
+      },
+      "wheel_mask_samples": 7796,
+      "common_samples": 7648,
+      "continuous_triples": 7334,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 7790
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 7648
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 7790
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 7790
+        }
+      },
+      "common_mask_sha256": "c91cd89735fd9c2005602f88d0f7761a6a71613396afce2770057c65c45faf6f",
+      "events_sha256": "cce427b126187b716210156bbe8f1aaf355b8c701eb7fb75935e3f582e1ed40a",
+      "target_sha256": "ecdd3066aafdd8b3dd1deb0bad6b22edae2ac7b70d36f054aab811b820afc6e1"
+    },
+    {
+      "bag": "30618_2050d396",
+      "group": "4a5f0d46327316bb",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": 0.1798981302854824,
+          "roughness": 0.05412602515443744,
+          "lag_rmse_0": 0.1798981302854824,
+          "lag_rmse_1": 0.18296890736706398,
+          "lag_rmse_2": 0.1889597680209576
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": 0.15346283367668284,
+          "roughness": 0.04669080228347247,
+          "lag_rmse_0": 0.15346283367668284,
+          "lag_rmse_1": 0.15621510383935955,
+          "lag_rmse_2": 0.16243680603107302
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": 0.10258386572896451,
+          "roughness": 0.02910089517484908,
+          "lag_rmse_0": 0.10258386572896451,
+          "lag_rmse_1": 0.10354082348352651,
+          "lag_rmse_2": 0.10970533644538914
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": 0.08415338853457206,
+          "roughness": 0.020707036334114776,
+          "lag_rmse_0": 0.08415338853457206,
+          "lag_rmse_1": 0.08012729403173154,
+          "lag_rmse_2": 0.08221522179465607
+        }
+      },
+      "wheel_mask_samples": 8276,
+      "common_samples": 7856,
+      "continuous_triples": 7197,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 8183
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 7856
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 8183
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 8183
+        }
+      },
+      "common_mask_sha256": "fe027a046d41fa4d75fbe4ad55bd23994ac897de42ebdc587ed8fba966421165",
+      "events_sha256": "4dfbc3297772a636b58f2c5b3b969b4f7e80b53a18823b6a2832a0eb8672436b",
+      "target_sha256": "948689b25f8a8b8f23d7b39cb94ac3077fa019a9af4c3455aa2af592b14b70f6"
+    },
+    {
+      "bag": "30618_2161b58b",
+      "group": "8ff91290187a9769",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": 0.17274210314334815,
+          "roughness": 0.05830874245168675,
+          "lag_rmse_0": 0.17274210314334815,
+          "lag_rmse_1": 0.20232864321864394,
+          "lag_rmse_2": 0.22599793803916116
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": 0.1445448296308485,
+          "roughness": 0.04724345520193976,
+          "lag_rmse_0": 0.1445448296308485,
+          "lag_rmse_1": 0.17821526499522525,
+          "lag_rmse_2": 0.20352654660471034
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": 0.097679850358223,
+          "roughness": 0.02630934558360693,
+          "lag_rmse_0": 0.097679850358223,
+          "lag_rmse_1": 0.14217010653018844,
+          "lag_rmse_2": 0.16964890158899146
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": 0.08082681880359964,
+          "roughness": 0.01767485590868214,
+          "lag_rmse_0": 0.08082681880359964,
+          "lag_rmse_1": 0.12916472287669853,
+          "lag_rmse_2": 0.1569434251695946
+        }
+      },
+      "wheel_mask_samples": 7937,
+      "common_samples": 7575,
+      "continuous_triples": 6914,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 7910
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 7575
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 7910
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 7910
+        }
+      },
+      "common_mask_sha256": "bb7a38129ad8c23f81a63a7b9ac0e716cd5547c8fc6b66c328f99e679b6a6b0b",
+      "events_sha256": "e41d0a49342b01c1eba13e39ac34ca7442e72eff6e92e8cd969d370d67d60cc5",
+      "target_sha256": "e8f444b9b8a7e7e518b8191ea79779e0d7e64974239b682ebb626b91f738cdcc"
+    },
+    {
+      "bag": "30618_21dd3af3",
+      "group": "bc403256f12f9710",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": 0.1935142110635962,
+          "roughness": 0.059931224161146504,
+          "lag_rmse_0": 0.1935142110635962,
+          "lag_rmse_1": 0.20920646362498055,
+          "lag_rmse_2": 0.2243253725690342
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": 0.16458078280386773,
+          "roughness": 0.049010796010415324,
+          "lag_rmse_0": 0.16458078280386773,
+          "lag_rmse_1": 0.18232906288118486,
+          "lag_rmse_2": 0.19882192177753796
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": 0.1071227720217543,
+          "roughness": 0.025827803919809652,
+          "lag_rmse_0": 0.1071227720217543,
+          "lag_rmse_1": 0.13008543131765926,
+          "lag_rmse_2": 0.1490654049112612
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": 0.09336490189654024,
+          "roughness": 0.01733035975286129,
+          "lag_rmse_0": 0.09336490189654024,
+          "lag_rmse_1": 0.11631043029915665,
+          "lag_rmse_2": 0.13135930972899001
+        }
+      },
+      "wheel_mask_samples": 7937,
+      "common_samples": 7674,
+      "continuous_triples": 7234,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 7901
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 7674
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 7901
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 7901
+        }
+      },
+      "common_mask_sha256": "e834fcce48ffed6abeda4b00e99f864c148765ca516125a02f735e9628cf8716",
+      "events_sha256": "f1a02a44dc98503a35651ee787081dcf1631db80c919f173f5c252cba3c09bcb",
+      "target_sha256": "8fad3b1c527dd73bff9023640df63e6873154d23fad4b7ce8fc1d33d40457b31"
+    },
+    {
+      "bag": "30618_22c1c589",
+      "group": "dc785decbed3d7ce",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": 0.1806791081833812,
+          "roughness": 0.05804736372730578,
+          "lag_rmse_0": 0.1806791081833812,
+          "lag_rmse_1": 0.20153606488683878,
+          "lag_rmse_2": 0.21652161473595138
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": 0.14631338855934814,
+          "roughness": 0.044188186037998615,
+          "lag_rmse_0": 0.14631338855934814,
+          "lag_rmse_1": 0.17012153599056948,
+          "lag_rmse_2": 0.18672571093057028
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": 0.09131738049951478,
+          "roughness": 0.02293770450362866,
+          "lag_rmse_0": 0.09131738049951478,
+          "lag_rmse_1": 0.12367834474139662,
+          "lag_rmse_2": 0.14362555441542316
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": 0.07572236873828897,
+          "roughness": 0.014929127587935898,
+          "lag_rmse_0": 0.07572236873828897,
+          "lag_rmse_1": 0.11013662828881447,
+          "lag_rmse_2": 0.12922053651482432
+        }
+      },
+      "wheel_mask_samples": 7747,
+      "common_samples": 7491,
+      "continuous_triples": 6998,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 7737
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 7491
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 7737
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 7737
+        }
+      },
+      "common_mask_sha256": "1c332e112e8be68ef1b524a537b4b17dec523acd307405870521d78aaa42a72f",
+      "events_sha256": "8cbb838f67b6c24adc1f4362236826b2ad33a64aca72b4ce435a1e8faeaaa193",
+      "target_sha256": "507e80381c45092a073525bf8ea4fc6997d018f37d5338affd0e32d2370f6247"
+    },
+    {
+      "bag": "30618_2366c74a",
+      "group": "58dd5f96d4201195",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": 0.17933522277956246,
+          "roughness": 0.05617063606252941,
+          "lag_rmse_0": 0.17933522277956246,
+          "lag_rmse_1": 0.20202889152357828,
+          "lag_rmse_2": 0.22471385618051634
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": 0.14224925653078938,
+          "roughness": 0.04194786921075857,
+          "lag_rmse_0": 0.14224925653078938,
+          "lag_rmse_1": 0.1694737181335737,
+          "lag_rmse_2": 0.19518859005586464
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": 0.0894263763489298,
+          "roughness": 0.020956566425755236,
+          "lag_rmse_0": 0.0894263763489298,
+          "lag_rmse_1": 0.12590365324690353,
+          "lag_rmse_2": 0.15763788085145983
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": 0.07607233193960027,
+          "roughness": 0.013958068700023597,
+          "lag_rmse_0": 0.07607233193960027,
+          "lag_rmse_1": 0.11358397007344477,
+          "lag_rmse_2": 0.1462244556741133
+        }
+      },
+      "wheel_mask_samples": 6519,
+      "common_samples": 6372,
+      "continuous_triples": 6060,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 6516
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 6372
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 6516
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 6516
+        }
+      },
+      "common_mask_sha256": "b65c9609e00407b1f96b892136abe71362c7d63bfc809fda6e8aeb53de137a28",
+      "events_sha256": "ffc24cc96481b17a241db7c2c255c493029d294dffe61bdb01c7a7155deb6034",
+      "target_sha256": "9980d00c87aaaef9b80a6966a4ba0501cb16a38f0f83816db947379e8b2d4270"
+    },
+    {
+      "bag": "30618_2d2fa7be",
+      "group": "bf69dbfe85be52b0",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": 0.18312710360195814,
+          "roughness": 0.05844663369788994,
+          "lag_rmse_0": 0.18312710360195814,
+          "lag_rmse_1": 0.20412740127066706,
+          "lag_rmse_2": 0.21025315591138208
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": 0.15231290096242955,
+          "roughness": 0.04531849321723868,
+          "lag_rmse_0": 0.15231290096242955,
+          "lag_rmse_1": 0.17619781455045605,
+          "lag_rmse_2": 0.1825892133256872
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": 0.10218106251449909,
+          "roughness": 0.02381506366959802,
+          "lag_rmse_0": 0.10218106251449909,
+          "lag_rmse_1": 0.13184655827844177,
+          "lag_rmse_2": 0.13810179864911531
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": 0.09010312878220929,
+          "roughness": 0.016096032297003304,
+          "lag_rmse_0": 0.09010312878220929,
+          "lag_rmse_1": 0.1207034423027963,
+          "lag_rmse_2": 0.1250950222782341
+        }
+      },
+      "wheel_mask_samples": 7972,
+      "common_samples": 7553,
+      "continuous_triples": 6916,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 7844
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 7553
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 7844
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 7844
+        }
+      },
+      "common_mask_sha256": "27380cba4e16474ee23ed2b1fd235d64138c5a8a4f9a68a89e47d0f6a3d6a624",
+      "events_sha256": "75dc95006a29b9db2fb615ec7d3d89b4a2f4350eb5e4a410949592fd6701f406",
+      "target_sha256": "4b2fb67027c1ed78e95b25dfba2ab747326132664ef3a148e863118f7c61ec5c"
+    },
+    {
+      "bag": "30618_2f2f1175",
+      "group": "bf69dbfe85be52b0",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": 0.17544895297763197,
+          "roughness": 0.05683690001714078,
+          "lag_rmse_0": 0.17544895297763197,
+          "lag_rmse_1": 0.2183238626879626,
+          "lag_rmse_2": 0.2424756247378244
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": 0.1447954980509792,
+          "roughness": 0.04458385056543238,
+          "lag_rmse_0": 0.1447954980509792,
+          "lag_rmse_1": 0.19451592274859086,
+          "lag_rmse_2": 0.22063430946439685
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": 0.0929608841749843,
+          "roughness": 0.023306729880673557,
+          "lag_rmse_0": 0.0929608841749843,
+          "lag_rmse_1": 0.15754841365803837,
+          "lag_rmse_2": 0.18885450289138964
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": 0.07575760470626527,
+          "roughness": 0.015386290808611229,
+          "lag_rmse_0": 0.07575760470626527,
+          "lag_rmse_1": 0.14540591585897975,
+          "lag_rmse_2": 0.1775074045931392
+        }
+      },
+      "wheel_mask_samples": 7739,
+      "common_samples": 7497,
+      "continuous_triples": 7012,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 7739
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 7497
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 7739
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 7739
+        }
+      },
+      "common_mask_sha256": "e6a79dd9ef0bb72b4e567691d1791a4dd4d984768ad23b40f3819c6d7e4a0865",
+      "events_sha256": "2860d2e7b90656a16295c58e5c4c63339bd74ba8de9e3ad4ea3786db1dd43e80",
+      "target_sha256": "32d0422db91298ba7aba297be2aa6a23da268ad6b04b9a5896a2ad6dd36edb2f"
+    },
+    {
+      "bag": "30618_3e9f4952",
+      "group": "b8fda5f0647666fb",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": 0.1876237782501243,
+          "roughness": 0.05217395343966582,
+          "lag_rmse_0": 0.1876237782501243,
+          "lag_rmse_1": 0.184740796807926,
+          "lag_rmse_2": 0.186446246257664
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": 0.15439836666904458,
+          "roughness": 0.044880215276197524,
+          "lag_rmse_0": 0.15439836666904458,
+          "lag_rmse_1": 0.15003372560820186,
+          "lag_rmse_2": 0.1511535388286918
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": 0.10368488625662234,
+          "roughness": 0.028559088179303468,
+          "lag_rmse_0": 0.10368488625662234,
+          "lag_rmse_1": 0.09309389714887284,
+          "lag_rmse_2": 0.09051280122342947
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": 0.09277000332260177,
+          "roughness": 0.02197966835205564,
+          "lag_rmse_0": 0.09277000332260177,
+          "lag_rmse_1": 0.07547969521023948,
+          "lag_rmse_2": 0.06633272213534926
+        }
+      },
+      "wheel_mask_samples": 8462,
+      "common_samples": 7778,
+      "continuous_triples": 6953,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 8161
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 7778
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 8161
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 8161
+        }
+      },
+      "common_mask_sha256": "c9442ad4b227abb83045d4ea84478524fbf3c8f45307af4b3a66ddc2bcb08ae4",
+      "events_sha256": "ef44fdaee2163a692f5dfaece5694b32364df1e962573b6a28dc5d2278ab49a5",
+      "target_sha256": "c218e69a68aa463bfcb4023fe11e087c711f3eabe41a3dadfe81163e6def6646"
+    },
+    {
+      "bag": "30618_40ffd323",
+      "group": "58dd5f96d4201195",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": 0.17976271957239198,
+          "roughness": 0.05599193620825419,
+          "lag_rmse_0": 0.17976271957239198,
+          "lag_rmse_1": 0.179022792361868,
+          "lag_rmse_2": 0.18219578333797237
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": 0.15048381994302945,
+          "roughness": 0.04390867770837404,
+          "lag_rmse_0": 0.15048381994302945,
+          "lag_rmse_1": 0.14845048750949438,
+          "lag_rmse_2": 0.1511993582139955
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": 0.09796852911376633,
+          "roughness": 0.023848397693514566,
+          "lag_rmse_0": 0.09796852911376633,
+          "lag_rmse_1": 0.09110400805124297,
+          "lag_rmse_2": 0.09224438914716188
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": 0.08260578743224671,
+          "roughness": 0.015408707499144495,
+          "lag_rmse_0": 0.08260578743224671,
+          "lag_rmse_1": 0.06958672835392841,
+          "lag_rmse_2": 0.0655700235635824
+        }
+      },
+      "wheel_mask_samples": 8919,
+      "common_samples": 8652,
+      "continuous_triples": 8214,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 33,
+          "max_history": 0,
+          "individual_proxy_samples": 8893
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 33,
+          "max_history": 3,
+          "individual_proxy_samples": 8652
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 33,
+          "max_history": 4,
+          "individual_proxy_samples": 8893
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 33,
+          "max_history": 5,
+          "individual_proxy_samples": 8893
+        }
+      },
+      "common_mask_sha256": "7898eb3f8de62b599fab4b75f7d5065e2a67184c32c4f46bd98f2795d1e5353c",
+      "events_sha256": "d8eade7ba6a23f310f85b21243521a61516388221539cd20867b53725f939da2",
+      "target_sha256": "51771ccfd01b00d2872211c923abf12e1eddfa32ff232ecacdc3af7c6be6e685"
+    },
+    {
+      "bag": "30618_45ff6f99",
+      "group": "5c1be3e9a2189121",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": null,
+          "roughness": null,
+          "lag_rmse_0": null,
+          "lag_rmse_1": null,
+          "lag_rmse_2": null
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": null,
+          "roughness": null,
+          "lag_rmse_0": null,
+          "lag_rmse_1": null,
+          "lag_rmse_2": null
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": null,
+          "roughness": null,
+          "lag_rmse_0": null,
+          "lag_rmse_1": null,
+          "lag_rmse_2": null
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": null,
+          "roughness": null,
+          "lag_rmse_0": null,
+          "lag_rmse_1": null,
+          "lag_rmse_2": null
+        }
+      },
+      "wheel_mask_samples": 0,
+      "common_samples": 0,
+      "continuous_triples": 0,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 0
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 0
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 0
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 0
+        }
+      },
+      "common_mask_sha256": "605d47a6802a6ba6675ce2970606011e1d53eebdd846effd6f47bd0903d7ed13",
+      "events_sha256": "7756609a8abdd247f91873d8ccc2aae98097b5c03d978d2e3cb79443c6cbec32",
+      "target_sha256": "eb3db1453c0dac39bee30c72831d2c6b32faf64b3132fc519e1dc25fc1fea05a"
+    },
+    {
+      "bag": "30618_4d487b0d",
+      "group": "bc403256f12f9710",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": 0.19235104309589157,
+          "roughness": 0.059452030370390936,
+          "lag_rmse_0": 0.19235104309589157,
+          "lag_rmse_1": 0.242454162242124,
+          "lag_rmse_2": 0.2627294149470431
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": 0.15899360389835496,
+          "roughness": 0.04891615770546624,
+          "lag_rmse_0": 0.15899360389835496,
+          "lag_rmse_1": 0.21569536232947878,
+          "lag_rmse_2": 0.23898318393007292
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": 0.10635237281341768,
+          "roughness": 0.02819644046820653,
+          "lag_rmse_0": 0.10635237281341768,
+          "lag_rmse_1": 0.17635778926264473,
+          "lag_rmse_2": 0.20194133239378562
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": 0.08716538242809635,
+          "roughness": 0.018340835872894742,
+          "lag_rmse_0": 0.08716538242809635,
+          "lag_rmse_1": 0.16227485230171668,
+          "lag_rmse_2": 0.1884163991556454
+        }
+      },
+      "wheel_mask_samples": 8467,
+      "common_samples": 8095,
+      "continuous_triples": 7401,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 8454
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 8095
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 8454
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 8454
+        }
+      },
+      "common_mask_sha256": "72fdb3917e71f5040c93ed0f30a86bdc876aa544a85e81ba6951932a68542744",
+      "events_sha256": "33c370d2743dbbe40ac7bb2c551c6133cb877f8132375c806e89354235abfc62",
+      "target_sha256": "fb1cfa2ff1376c6537e83a255609a6242e7be79b9f65935d235ab0849c61cba4"
+    },
+    {
+      "bag": "30618_616ec56b",
+      "group": "6090ff2c1bc8dee6",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": 0.1925481150354916,
+          "roughness": 0.05784911689176657,
+          "lag_rmse_0": 0.1925481150354916,
+          "lag_rmse_1": 0.22896566160742296,
+          "lag_rmse_2": 0.2544342558283745
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": 0.17031720628423405,
+          "roughness": 0.04756511594951739,
+          "lag_rmse_0": 0.17031720628423405,
+          "lag_rmse_1": 0.20978015944416836,
+          "lag_rmse_2": 0.2358361846113297
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": 0.11788838093145307,
+          "roughness": 0.024888519505677165,
+          "lag_rmse_0": 0.11788838093145307,
+          "lag_rmse_1": 0.16769490174545948,
+          "lag_rmse_2": 0.19555499681853827
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": 0.11082203934034678,
+          "roughness": 0.017085248692293484,
+          "lag_rmse_0": 0.11082203934034678,
+          "lag_rmse_1": 0.15898980007595442,
+          "lag_rmse_2": 0.18544323843042806
+        }
+      },
+      "wheel_mask_samples": 7851,
+      "common_samples": 7569,
+      "continuous_triples": 7055,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 7839
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 7569
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 7839
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 7839
+        }
+      },
+      "common_mask_sha256": "8be438053848af3e76f2760d590aff964bf96086f43dc2e15e98368fb8d2bebe",
+      "events_sha256": "35729a3c0a5fc400751e87f5552677d31244f0d7224c031d12303e4f32463170",
+      "target_sha256": "40e06334e16d5ee200881e4f1e81e393de864d56c3609b4144183753ab8cc1d9"
+    },
+    {
+      "bag": "30618_67b89902",
+      "group": "b8fda5f0647666fb",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": 0.1786286348554607,
+          "roughness": 0.05324973540092097,
+          "lag_rmse_0": 0.1786286348554607,
+          "lag_rmse_1": 0.17822103060981345,
+          "lag_rmse_2": 0.18148883462741855
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": 0.14673777066687338,
+          "roughness": 0.043131072824374915,
+          "lag_rmse_0": 0.14673777066687338,
+          "lag_rmse_1": 0.14513169037943457,
+          "lag_rmse_2": 0.14791396649553992
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": 0.09376561831473446,
+          "roughness": 0.025731624867599452,
+          "lag_rmse_0": 0.09376561831473446,
+          "lag_rmse_1": 0.08822489329794664,
+          "lag_rmse_2": 0.08951908923275136
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": 0.0757765398160268,
+          "roughness": 0.018375109656254492,
+          "lag_rmse_0": 0.0757765398160268,
+          "lag_rmse_1": 0.06411534999011409,
+          "lag_rmse_2": 0.06084831584954433
+        }
+      },
+      "wheel_mask_samples": 7240,
+      "common_samples": 7018,
+      "continuous_triples": 6662,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 7183
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 7018
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 7183
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 7183
+        }
+      },
+      "common_mask_sha256": "28daed86b3d1e9fbb86e55e7fa8452502cf2f4c2aa691ec44f75b103709d0c2c",
+      "events_sha256": "3be494b9ea32cbf38bd9b4f7bbaec53a82df230a06974764a67c574aafc2327a",
+      "target_sha256": "c0005af3a6bfcc96abea15b478058c35cfe617802ebf2082ce46e965472b1f21"
+    },
+    {
+      "bag": "30618_748832b9",
+      "group": "0f36b619fba02a9b",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": 0.18973645361634975,
+          "roughness": 0.05949896885997218,
+          "lag_rmse_0": 0.18973645361634975,
+          "lag_rmse_1": 0.1896699112055355,
+          "lag_rmse_2": 0.19325888581226855
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": 0.15070226964916272,
+          "roughness": 0.04385768396267991,
+          "lag_rmse_0": 0.15070226964916272,
+          "lag_rmse_1": 0.1494377334970806,
+          "lag_rmse_2": 0.15282665355813074
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": 0.09170946374806338,
+          "roughness": 0.021847864871787036,
+          "lag_rmse_0": 0.09170946374806338,
+          "lag_rmse_1": 0.08629483073770784,
+          "lag_rmse_2": 0.08864095572172967
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": 0.07496937808994182,
+          "roughness": 0.01423548273944933,
+          "lag_rmse_0": 0.07496937808994182,
+          "lag_rmse_1": 0.06183295574810553,
+          "lag_rmse_2": 0.058440449275670915
+        }
+      },
+      "wheel_mask_samples": 7796,
+      "common_samples": 7620,
+      "continuous_triples": 7276,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 7791
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 7620
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 7791
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 7791
+        }
+      },
+      "common_mask_sha256": "8246c24ede11316f9a41c2f86ee81aeb26ade6143bac759dd779b418a70f0d83",
+      "events_sha256": "1d5836c87cdb05dcd99841621bf2ff73a27c7fb85cefaf7dde2bd40249293dce",
+      "target_sha256": "d0bbe34db4a697fc847b9ce15517f2b81c9a3e72469a22f9561bcadada9a2098"
+    },
+    {
+      "bag": "30618_7849303f",
+      "group": "0f36b619fba02a9b",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": 0.18973645361634975,
+          "roughness": 0.05949896885997218,
+          "lag_rmse_0": 0.18973645361634975,
+          "lag_rmse_1": 0.1896699112055355,
+          "lag_rmse_2": 0.19325888581226855
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": 0.15070226964916272,
+          "roughness": 0.04385768396267991,
+          "lag_rmse_0": 0.15070226964916272,
+          "lag_rmse_1": 0.1494377334970806,
+          "lag_rmse_2": 0.15282665355813074
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": 0.09170946374806338,
+          "roughness": 0.021847864871787036,
+          "lag_rmse_0": 0.09170946374806338,
+          "lag_rmse_1": 0.08629483073770784,
+          "lag_rmse_2": 0.08864095572172967
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": 0.07496937808994182,
+          "roughness": 0.01423548273944933,
+          "lag_rmse_0": 0.07496937808994182,
+          "lag_rmse_1": 0.06183295574810553,
+          "lag_rmse_2": 0.058440449275670915
+        }
+      },
+      "wheel_mask_samples": 7796,
+      "common_samples": 7620,
+      "continuous_triples": 7276,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 7791
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 7620
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 7791
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 7791
+        }
+      },
+      "common_mask_sha256": "8246c24ede11316f9a41c2f86ee81aeb26ade6143bac759dd779b418a70f0d83",
+      "events_sha256": "1d5836c87cdb05dcd99841621bf2ff73a27c7fb85cefaf7dde2bd40249293dce",
+      "target_sha256": "d0bbe34db4a697fc847b9ce15517f2b81c9a3e72469a22f9561bcadada9a2098"
+    },
+    {
+      "bag": "30618_79b204dc",
+      "group": "8ff91290187a9769",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": 0.19212490766946716,
+          "roughness": 0.06065884185210545,
+          "lag_rmse_0": 0.19212490766946716,
+          "lag_rmse_1": 0.19166100528331054,
+          "lag_rmse_2": 0.19606356391153654
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": 0.15977212718251313,
+          "roughness": 0.04699215562377964,
+          "lag_rmse_0": 0.15977212718251313,
+          "lag_rmse_1": 0.15760455819285887,
+          "lag_rmse_2": 0.1612801960315444
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": 0.10262503755483648,
+          "roughness": 0.024257417722726958,
+          "lag_rmse_0": 0.10262503755483648,
+          "lag_rmse_1": 0.09403506231510478,
+          "lag_rmse_2": 0.09555181274047614
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": 0.08625593158482996,
+          "roughness": 0.01618800993196993,
+          "lag_rmse_0": 0.08625593158482996,
+          "lag_rmse_1": 0.06942356093821248,
+          "lag_rmse_2": 0.06475578726609925
+        }
+      },
+      "wheel_mask_samples": 7740,
+      "common_samples": 7494,
+      "continuous_triples": 7076,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 7701
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 7494
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 7701
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 7701
+        }
+      },
+      "common_mask_sha256": "c4a3d41ce4b502ec8c23f282590ebd930d4fdae00c9a37a94a6b8b4abe42f9e7",
+      "events_sha256": "42123813021ec4ba2021447c3c4a968526ac1b61653294528bb717e1ac75e01a",
+      "target_sha256": "99d55f50299d1dccb376982b72c4f188aa755df7c268b2909f5d9fd3aef00197"
+    },
+    {
+      "bag": "30618_7a152380",
+      "group": "c8a1e61d1b0710e9",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": 0.18858764099757952,
+          "roughness": 0.06014098053215355,
+          "lag_rmse_0": 0.18858764099757952,
+          "lag_rmse_1": 0.21830448051383788,
+          "lag_rmse_2": 0.23454462935988835
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": 0.15750806557381028,
+          "roughness": 0.047046808351180185,
+          "lag_rmse_0": 0.15750806557381028,
+          "lag_rmse_1": 0.1917066258525557,
+          "lag_rmse_2": 0.2094108337853438
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": 0.10097515929749826,
+          "roughness": 0.02472968390964513,
+          "lag_rmse_0": 0.10097515929749826,
+          "lag_rmse_1": 0.1486471253735509,
+          "lag_rmse_2": 0.16941878989671058
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": 0.08798884808050408,
+          "roughness": 0.01633729868890073,
+          "lag_rmse_0": 0.08798884808050408,
+          "lag_rmse_1": 0.13708954325652922,
+          "lag_rmse_2": 0.15763088898028527
+        }
+      },
+      "wheel_mask_samples": 8323,
+      "common_samples": 7950,
+      "continuous_triples": 7451,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 8180
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 7950
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 8180
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 8180
+        }
+      },
+      "common_mask_sha256": "c3f567f0cc380206e97431c6f950c6a25a4a21c3905281e67acc6f06840597cb",
+      "events_sha256": "58b364dfbc98b446ef992fa9af55fa6e85779ba8e750e5dac7689a352518b309",
+      "target_sha256": "6b75f05c8f1871a706757cc5853465152fe572460d7f4ffd5fb72e38d7ddb97a"
+    },
+    {
+      "bag": "30618_7b4d83f4",
+      "group": "2b1581126a480c0f",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": 0.19067134242460532,
+          "roughness": 0.06002662672420394,
+          "lag_rmse_0": 0.19067134242460532,
+          "lag_rmse_1": 0.19475705103158664,
+          "lag_rmse_2": 0.2005590635476336
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": 0.1509427543981789,
+          "roughness": 0.04376007267721655,
+          "lag_rmse_0": 0.1509427543981789,
+          "lag_rmse_1": 0.15603792460096402,
+          "lag_rmse_2": 0.16178020382667552
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": 0.09273844147030823,
+          "roughness": 0.021328961715267544,
+          "lag_rmse_0": 0.09273844147030823,
+          "lag_rmse_1": 0.09748182499161721,
+          "lag_rmse_2": 0.10252998316386656
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": 0.0798994838974686,
+          "roughness": 0.013977642335880872,
+          "lag_rmse_0": 0.0798994838974686,
+          "lag_rmse_1": 0.08067691675302954,
+          "lag_rmse_2": 0.0821848882023565
+        }
+      },
+      "wheel_mask_samples": 7836,
+      "common_samples": 7671,
+      "continuous_triples": 7313,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 7834
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 7671
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 7834
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 7834
+        }
+      },
+      "common_mask_sha256": "55ad4b2e5f167b5bb08ff0e8a39ed0412497bde0aa56d15ee6e1b2ffc3ba4986",
+      "events_sha256": "bfd956ed7cbf0ae047870e7bad6c19ca9ff3ccedfdb5b1fd31c154416ea42d98",
+      "target_sha256": "585da2c6172f1f17844fd9db60e39d81050a4d55c200e82c81ae701e01f5f363"
+    },
+    {
+      "bag": "30618_8158f0b0",
+      "group": "6090ff2c1bc8dee6",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": 0.17268490681985066,
+          "roughness": 0.05571595397253916,
+          "lag_rmse_0": 0.17268490681985066,
+          "lag_rmse_1": 0.19292050866246613,
+          "lag_rmse_2": 0.20405330697131616
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": 0.14153473472744815,
+          "roughness": 0.04308413626685772,
+          "lag_rmse_0": 0.14153473472744815,
+          "lag_rmse_1": 0.16449372128362288,
+          "lag_rmse_2": 0.17646900483911362
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": 0.09214622266100612,
+          "roughness": 0.023079407688831415,
+          "lag_rmse_0": 0.09214622266100612,
+          "lag_rmse_1": 0.12181529616419885,
+          "lag_rmse_2": 0.13568236206053577
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": 0.07513155928247484,
+          "roughness": 0.01502915489124332,
+          "lag_rmse_0": 0.07513155928247484,
+          "lag_rmse_1": 0.10630730783367648,
+          "lag_rmse_2": 0.11973415015933431
+        }
+      },
+      "wheel_mask_samples": 8367,
+      "common_samples": 8048,
+      "continuous_triples": 7429,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 8353
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 8048
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 8353
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 8353
+        }
+      },
+      "common_mask_sha256": "5421d194853f97b289d34330a5b6178ce447074a9f6084517fb789aa6704bb25",
+      "events_sha256": "f9e709cb4cd7c74480d0f8d78a1e677d69bdbc072f44c30dacb6408585e1e962",
+      "target_sha256": "e0e363a0596740e7ea71bd314374191e74a04e2b436bf207c0c13a9e9f0a5d78"
+    },
+    {
+      "bag": "30618_81c22fee",
+      "group": "86c32e441a296aaa",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": 0.18032460075237858,
+          "roughness": 0.059307663571150894,
+          "lag_rmse_0": 0.18032460075237858,
+          "lag_rmse_1": 0.224042294371505,
+          "lag_rmse_2": 0.24925759438848066
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": 0.14983076317948751,
+          "roughness": 0.04682655709888944,
+          "lag_rmse_0": 0.14983076317948751,
+          "lag_rmse_1": 0.19941997726801663,
+          "lag_rmse_2": 0.22662706077166173
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": 0.0948825664639438,
+          "roughness": 0.025587271661918723,
+          "lag_rmse_0": 0.0948825664639438,
+          "lag_rmse_1": 0.16107500581600823,
+          "lag_rmse_2": 0.1929320468052001
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": 0.07987679988160346,
+          "roughness": 0.017226561270872538,
+          "lag_rmse_0": 0.07987679988160346,
+          "lag_rmse_1": 0.15080328675882765,
+          "lag_rmse_2": 0.18321674524185916
+        }
+      },
+      "wheel_mask_samples": 7886,
+      "common_samples": 7574,
+      "continuous_triples": 7008,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 7870
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 7574
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 7870
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 7870
+        }
+      },
+      "common_mask_sha256": "c70e04b6601aee8da184c965b4573da9950a2a740ddf0c2478a3c17a955e2abe",
+      "events_sha256": "0712d5f504fb8b4fdf8377c9529b32170da001363ea3628335e4bd717485c142",
+      "target_sha256": "6abb8c9984a0788bec9cdf337a5d3373746b14f27b251be015f7a6f96702dffe"
+    },
+    {
+      "bag": "30618_87afe526",
+      "group": "2b1581126a480c0f",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": 0.18855799042473576,
+          "roughness": 0.059467185047583276,
+          "lag_rmse_0": 0.18855799042473576,
+          "lag_rmse_1": 0.19467849652749836,
+          "lag_rmse_2": 0.19978105962108178
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": 0.15558586505724142,
+          "roughness": 0.04617922931399724,
+          "lag_rmse_0": 0.15558586505724142,
+          "lag_rmse_1": 0.16206077734988944,
+          "lag_rmse_2": 0.1677536223926842
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": 0.09494109379134859,
+          "roughness": 0.025115606340678807,
+          "lag_rmse_0": 0.09494109379134859,
+          "lag_rmse_1": 0.10130780395741114,
+          "lag_rmse_2": 0.10877032650474998
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": 0.07286391894710172,
+          "roughness": 0.01656538231084123,
+          "lag_rmse_0": 0.07286391894710172,
+          "lag_rmse_1": 0.07791028159402014,
+          "lag_rmse_2": 0.08438326385214633
+        }
+      },
+      "wheel_mask_samples": 8475,
+      "common_samples": 8269,
+      "continuous_triples": 7867,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 8475
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 8269
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 8475
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 8475
+        }
+      },
+      "common_mask_sha256": "372a5eff499b84e94e35f7f581b8a384a07ab1bcd72f5d58fcb07206b24b5eba",
+      "events_sha256": "ec7d42d99c0be7145bb695fa985b09c637d85654ef44fee2a0bf31ae947845dd",
+      "target_sha256": "4729ee229b65f32952cfc285efc7261c34276edd6131c29a07820e67eb99c5e4"
+    },
+    {
+      "bag": "30618_887a2b9a",
+      "group": "8ff91290187a9769",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": 0.19212490766946716,
+          "roughness": 0.06065884185210545,
+          "lag_rmse_0": 0.19212490766946716,
+          "lag_rmse_1": 0.19166100528331054,
+          "lag_rmse_2": 0.19606356391153654
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": 0.15977212718251313,
+          "roughness": 0.04699215562377964,
+          "lag_rmse_0": 0.15977212718251313,
+          "lag_rmse_1": 0.15760455819285887,
+          "lag_rmse_2": 0.1612801960315444
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": 0.10262503755483648,
+          "roughness": 0.024257417722726958,
+          "lag_rmse_0": 0.10262503755483648,
+          "lag_rmse_1": 0.09403506231510478,
+          "lag_rmse_2": 0.09555181274047614
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": 0.08625593158482996,
+          "roughness": 0.01618800993196993,
+          "lag_rmse_0": 0.08625593158482996,
+          "lag_rmse_1": 0.06942356093821248,
+          "lag_rmse_2": 0.06475578726609925
+        }
+      },
+      "wheel_mask_samples": 7740,
+      "common_samples": 7494,
+      "continuous_triples": 7076,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 7701
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 7494
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 7701
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 7701
+        }
+      },
+      "common_mask_sha256": "c4a3d41ce4b502ec8c23f282590ebd930d4fdae00c9a37a94a6b8b4abe42f9e7",
+      "events_sha256": "42123813021ec4ba2021447c3c4a968526ac1b61653294528bb717e1ac75e01a",
+      "target_sha256": "99d55f50299d1dccb376982b72c4f188aa755df7c268b2909f5d9fd3aef00197"
+    },
+    {
+      "bag": "30618_8eb8615c",
+      "group": "bf69dbfe85be52b0",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": 0.18312710360195814,
+          "roughness": 0.05844663369788994,
+          "lag_rmse_0": 0.18312710360195814,
+          "lag_rmse_1": 0.20412740127066706,
+          "lag_rmse_2": 0.21025315591138208
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": 0.15231290096242955,
+          "roughness": 0.04531849321723868,
+          "lag_rmse_0": 0.15231290096242955,
+          "lag_rmse_1": 0.17619781455045605,
+          "lag_rmse_2": 0.1825892133256872
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": 0.10218106251449909,
+          "roughness": 0.02381506366959802,
+          "lag_rmse_0": 0.10218106251449909,
+          "lag_rmse_1": 0.13184655827844177,
+          "lag_rmse_2": 0.13810179864911531
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": 0.09010312878220929,
+          "roughness": 0.016096032297003304,
+          "lag_rmse_0": 0.09010312878220929,
+          "lag_rmse_1": 0.1207034423027963,
+          "lag_rmse_2": 0.1250950222782341
+        }
+      },
+      "wheel_mask_samples": 7972,
+      "common_samples": 7553,
+      "continuous_triples": 6916,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 7844
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 7553
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 7844
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 7844
+        }
+      },
+      "common_mask_sha256": "27380cba4e16474ee23ed2b1fd235d64138c5a8a4f9a68a89e47d0f6a3d6a624",
+      "events_sha256": "75dc95006a29b9db2fb615ec7d3d89b4a2f4350eb5e4a410949592fd6701f406",
+      "target_sha256": "4b2fb67027c1ed78e95b25dfba2ab747326132664ef3a148e863118f7c61ec5c"
+    },
+    {
+      "bag": "30618_8f08df08",
+      "group": "c8a1e61d1b0710e9",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": 0.18858764099757952,
+          "roughness": 0.06014098053215355,
+          "lag_rmse_0": 0.18858764099757952,
+          "lag_rmse_1": 0.21830448051383788,
+          "lag_rmse_2": 0.23454462935988835
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": 0.15750806557381028,
+          "roughness": 0.047046808351180185,
+          "lag_rmse_0": 0.15750806557381028,
+          "lag_rmse_1": 0.1917066258525557,
+          "lag_rmse_2": 0.2094108337853438
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": 0.10097515929749826,
+          "roughness": 0.02472968390964513,
+          "lag_rmse_0": 0.10097515929749826,
+          "lag_rmse_1": 0.1486471253735509,
+          "lag_rmse_2": 0.16941878989671058
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": 0.08798884808050408,
+          "roughness": 0.01633729868890073,
+          "lag_rmse_0": 0.08798884808050408,
+          "lag_rmse_1": 0.13708954325652922,
+          "lag_rmse_2": 0.15763088898028527
+        }
+      },
+      "wheel_mask_samples": 8323,
+      "common_samples": 7950,
+      "continuous_triples": 7451,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 8180
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 7950
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 8180
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 8180
+        }
+      },
+      "common_mask_sha256": "c3f567f0cc380206e97431c6f950c6a25a4a21c3905281e67acc6f06840597cb",
+      "events_sha256": "58b364dfbc98b446ef992fa9af55fa6e85779ba8e750e5dac7689a352518b309",
+      "target_sha256": "6b75f05c8f1871a706757cc5853465152fe572460d7f4ffd5fb72e38d7ddb97a"
+    },
+    {
+      "bag": "30618_92b1b453",
+      "group": "86c32e441a296aaa",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": 0.18032460075237858,
+          "roughness": 0.059307663571150894,
+          "lag_rmse_0": 0.18032460075237858,
+          "lag_rmse_1": 0.224042294371505,
+          "lag_rmse_2": 0.24925759438848066
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": 0.14983076317948751,
+          "roughness": 0.04682655709888944,
+          "lag_rmse_0": 0.14983076317948751,
+          "lag_rmse_1": 0.19941997726801663,
+          "lag_rmse_2": 0.22662706077166173
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": 0.0948825664639438,
+          "roughness": 0.025587271661918723,
+          "lag_rmse_0": 0.0948825664639438,
+          "lag_rmse_1": 0.16107500581600823,
+          "lag_rmse_2": 0.1929320468052001
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": 0.07987679988160346,
+          "roughness": 0.017226561270872538,
+          "lag_rmse_0": 0.07987679988160346,
+          "lag_rmse_1": 0.15080328675882765,
+          "lag_rmse_2": 0.18321674524185916
+        }
+      },
+      "wheel_mask_samples": 7886,
+      "common_samples": 7574,
+      "continuous_triples": 7008,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 7870
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 7574
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 7870
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 7870
+        }
+      },
+      "common_mask_sha256": "c70e04b6601aee8da184c965b4573da9950a2a740ddf0c2478a3c17a955e2abe",
+      "events_sha256": "0712d5f504fb8b4fdf8377c9529b32170da001363ea3628335e4bd717485c142",
+      "target_sha256": "6abb8c9984a0788bec9cdf337a5d3373746b14f27b251be015f7a6f96702dffe"
+    },
+    {
+      "bag": "30618_93dc866e",
+      "group": "58dd5f96d4201195",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": 0.17933522277956246,
+          "roughness": 0.05617063606252941,
+          "lag_rmse_0": 0.17933522277956246,
+          "lag_rmse_1": 0.20202889152357828,
+          "lag_rmse_2": 0.22471385618051634
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": 0.14224925653078938,
+          "roughness": 0.04194786921075857,
+          "lag_rmse_0": 0.14224925653078938,
+          "lag_rmse_1": 0.1694737181335737,
+          "lag_rmse_2": 0.19518859005586464
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": 0.0894263763489298,
+          "roughness": 0.020956566425755236,
+          "lag_rmse_0": 0.0894263763489298,
+          "lag_rmse_1": 0.12590365324690353,
+          "lag_rmse_2": 0.15763788085145983
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": 0.07607233193960027,
+          "roughness": 0.013958068700023597,
+          "lag_rmse_0": 0.07607233193960027,
+          "lag_rmse_1": 0.11358397007344477,
+          "lag_rmse_2": 0.1462244556741133
+        }
+      },
+      "wheel_mask_samples": 6519,
+      "common_samples": 6372,
+      "continuous_triples": 6060,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 6516
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 6372
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 6516
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 6516
+        }
+      },
+      "common_mask_sha256": "b65c9609e00407b1f96b892136abe71362c7d63bfc809fda6e8aeb53de137a28",
+      "events_sha256": "ffc24cc96481b17a241db7c2c255c493029d294dffe61bdb01c7a7155deb6034",
+      "target_sha256": "9980d00c87aaaef9b80a6966a4ba0501cb16a38f0f83816db947379e8b2d4270"
+    },
+    {
+      "bag": "30618_98161270",
+      "group": "5c1be3e9a2189121",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": null,
+          "roughness": null,
+          "lag_rmse_0": null,
+          "lag_rmse_1": null,
+          "lag_rmse_2": null
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": null,
+          "roughness": null,
+          "lag_rmse_0": null,
+          "lag_rmse_1": null,
+          "lag_rmse_2": null
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": null,
+          "roughness": null,
+          "lag_rmse_0": null,
+          "lag_rmse_1": null,
+          "lag_rmse_2": null
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": null,
+          "roughness": null,
+          "lag_rmse_0": null,
+          "lag_rmse_1": null,
+          "lag_rmse_2": null
+        }
+      },
+      "wheel_mask_samples": 0,
+      "common_samples": 0,
+      "continuous_triples": 0,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 0
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 0
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 0
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 0
+        }
+      },
+      "common_mask_sha256": "0b1d5d8b8690880509421a5e8de258305ff7ff5ae8ed2fe9a7d8b8ed2c1b84d9",
+      "events_sha256": "17043640762cf5178150a68067fcc40eb6b3f94c73e38a1e16a0f133e4b08927",
+      "target_sha256": "0f0e9d91e155e6f2ccc00419cbcdd7ba79bfbc32b975aac0ed734dc265b08b65"
+    },
+    {
+      "bag": "30618_9bbe6faa",
+      "group": "95a748306e6cbf16",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": 0.18168172566074026,
+          "roughness": 0.05926068554007742,
+          "lag_rmse_0": 0.18168172566074026,
+          "lag_rmse_1": 0.23635330416479122,
+          "lag_rmse_2": 0.2669498929693552
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": 0.15104019334726415,
+          "roughness": 0.047000637754903055,
+          "lag_rmse_0": 0.15104019334726415,
+          "lag_rmse_1": 0.2137054949590155,
+          "lag_rmse_2": 0.2475468509623876
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": 0.09874835715296272,
+          "roughness": 0.026330419346591628,
+          "lag_rmse_0": 0.09874835715296272,
+          "lag_rmse_1": 0.1789573911552803,
+          "lag_rmse_2": 0.21663148307714342
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": 0.07910354480085048,
+          "roughness": 0.016477694514381677,
+          "lag_rmse_0": 0.07910354480085048,
+          "lag_rmse_1": 0.16618499663872532,
+          "lag_rmse_2": 0.20414695361807
+        }
+      },
+      "wheel_mask_samples": 7519,
+      "common_samples": 7162,
+      "continuous_triples": 6493,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 7514
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 7162
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 7514
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 7514
+        }
+      },
+      "common_mask_sha256": "fd4ccb18a23bbc8b2225c2d2cd4661efb0dc97b131913e79ad806d55813c3937",
+      "events_sha256": "5e992c3091d0c64490b71b9f00b5b2deb688a4543db6abf899a9cc8bc6a9fb5f",
+      "target_sha256": "3c103c9db640fed70ad5d0e3d3055ee5e0ef2018e06d5fa0e067a8b1b8b02472"
+    },
+    {
+      "bag": "30618_9c09b081",
+      "group": "dc785decbed3d7ce",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": 0.17790200675664813,
+          "roughness": 0.056319516911646425,
+          "lag_rmse_0": 0.17790200675664813,
+          "lag_rmse_1": 0.17767562667125963,
+          "lag_rmse_2": 0.18085519362604024
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": 0.14627239137709785,
+          "roughness": 0.043493328156875344,
+          "lag_rmse_0": 0.14627239137709785,
+          "lag_rmse_1": 0.1448304828033186,
+          "lag_rmse_2": 0.1475805223667377
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": 0.08875653594085314,
+          "roughness": 0.02273334233111347,
+          "lag_rmse_0": 0.08875653594085314,
+          "lag_rmse_1": 0.08330616216867662,
+          "lag_rmse_2": 0.08452581064555167
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": 0.07181416098274072,
+          "roughness": 0.014902797078992577,
+          "lag_rmse_0": 0.07181416098274072,
+          "lag_rmse_1": 0.06066328022645688,
+          "lag_rmse_2": 0.057914490556108436
+        }
+      },
+      "wheel_mask_samples": 8885,
+      "common_samples": 8702,
+      "continuous_triples": 8324,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 8885
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 8702
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 8885
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 8885
+        }
+      },
+      "common_mask_sha256": "7eb38d79d679d2ba2afdc9182e2076a70b3d5c3ee6d580a477cf55453702d064",
+      "events_sha256": "e89082e5d2073a19b74d4f5aafbf9e841c9df3d992b70f09126667fb232d3d95",
+      "target_sha256": "44a2bd839bc640c110b8779f544aa700cb57bd4a4aa1efaf180612882ba220a7"
+    },
+    {
+      "bag": "30618_9c10cd0d",
+      "group": "95a748306e6cbf16",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": 0.18168172566074026,
+          "roughness": 0.05926068554007742,
+          "lag_rmse_0": 0.18168172566074026,
+          "lag_rmse_1": 0.23635330416479122,
+          "lag_rmse_2": 0.2669498929693552
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": 0.15104019334726415,
+          "roughness": 0.047000637754903055,
+          "lag_rmse_0": 0.15104019334726415,
+          "lag_rmse_1": 0.2137054949590155,
+          "lag_rmse_2": 0.2475468509623876
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": 0.09874835715296272,
+          "roughness": 0.026330419346591628,
+          "lag_rmse_0": 0.09874835715296272,
+          "lag_rmse_1": 0.1789573911552803,
+          "lag_rmse_2": 0.21663148307714342
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": 0.07910354480085048,
+          "roughness": 0.016477694514381677,
+          "lag_rmse_0": 0.07910354480085048,
+          "lag_rmse_1": 0.16618499663872532,
+          "lag_rmse_2": 0.20414695361807
+        }
+      },
+      "wheel_mask_samples": 7519,
+      "common_samples": 7162,
+      "continuous_triples": 6493,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 7514
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 7162
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 7514
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 7514
+        }
+      },
+      "common_mask_sha256": "fd4ccb18a23bbc8b2225c2d2cd4661efb0dc97b131913e79ad806d55813c3937",
+      "events_sha256": "5e992c3091d0c64490b71b9f00b5b2deb688a4543db6abf899a9cc8bc6a9fb5f",
+      "target_sha256": "3c103c9db640fed70ad5d0e3d3055ee5e0ef2018e06d5fa0e067a8b1b8b02472"
+    },
+    {
+      "bag": "30618_a395846d",
+      "group": "0f36b619fba02a9b",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": 0.17803945159166218,
+          "roughness": 0.058077336537774936,
+          "lag_rmse_0": 0.17803945159166218,
+          "lag_rmse_1": 0.21625501637249053,
+          "lag_rmse_2": 0.24883720955334737
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": 0.15286590905160025,
+          "roughness": 0.04644695373392401,
+          "lag_rmse_0": 0.15286590905160025,
+          "lag_rmse_1": 0.1953157829339201,
+          "lag_rmse_2": 0.23019671935164215
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": 0.1012895499363871,
+          "roughness": 0.02511911142132275,
+          "lag_rmse_0": 0.1012895499363871,
+          "lag_rmse_1": 0.15694953864262312,
+          "lag_rmse_2": 0.1970772919493481
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": 0.08717865284201613,
+          "roughness": 0.01647912985010911,
+          "lag_rmse_0": 0.08717865284201613,
+          "lag_rmse_1": 0.14635818763213962,
+          "lag_rmse_2": 0.1864785129756114
+        }
+      },
+      "wheel_mask_samples": 8468,
+      "common_samples": 8100,
+      "continuous_triples": 7527,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 8385
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 8100
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 8385
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 8385
+        }
+      },
+      "common_mask_sha256": "6e059d7982dd5a478626fe1741278d71b3a62bde4a70cf0ea0ce211f7860a0e3",
+      "events_sha256": "ad30d513f72ea0ac13a92d037d01511285fc2421d5ef614c5b57efab41bdca86",
+      "target_sha256": "44495581013f45bbd940d98c0186ed0372ffd5a58fd063e68787a5b97d5669e0"
+    },
+    {
+      "bag": "30618_a53d5f6f",
+      "group": "4a5f0d46327316bb",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": 0.17008098699446025,
+          "roughness": 0.055516077210757665,
+          "lag_rmse_0": 0.17008098699446025,
+          "lag_rmse_1": 0.16960314850578131,
+          "lag_rmse_2": 0.17297237854441916
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": 0.1448894536199941,
+          "roughness": 0.04532120302982972,
+          "lag_rmse_0": 0.1448894536199941,
+          "lag_rmse_1": 0.14336701703438565,
+          "lag_rmse_2": 0.14657937356230963
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": 0.09335990579142277,
+          "roughness": 0.024918354911383986,
+          "lag_rmse_0": 0.09335990579142277,
+          "lag_rmse_1": 0.08786126032910084,
+          "lag_rmse_2": 0.08972920090797541
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": 0.07614255266760347,
+          "roughness": 0.016641272678228153,
+          "lag_rmse_0": 0.07614255266760347,
+          "lag_rmse_1": 0.06384547099432204,
+          "lag_rmse_2": 0.06077612864727274
+        }
+      },
+      "wheel_mask_samples": 8547,
+      "common_samples": 8149,
+      "continuous_triples": 7455,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 8486
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 8149
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 8486
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 8486
+        }
+      },
+      "common_mask_sha256": "335da97d492a96025468643ec9efd7e1a3163597643b9913a90150593ec51cdc",
+      "events_sha256": "7697166e1ebdae83b452962bad9d6119d10e941d3001143fc8073746fa6a324d",
+      "target_sha256": "1598386b5a980fc69d5c02ca9a42232e8f6ff520e76c667cf43290c250ec36d4"
+    },
+    {
+      "bag": "30618_ab5921a4",
+      "group": "1cff0aebccb39ff5",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": 0.19406856691645402,
+          "roughness": 0.06199258026526713,
+          "lag_rmse_0": 0.19406856691645402,
+          "lag_rmse_1": 0.2127361087175688,
+          "lag_rmse_2": 0.22666642390189878
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": 0.16162596120830544,
+          "roughness": 0.048830087623783235,
+          "lag_rmse_0": 0.16162596120830544,
+          "lag_rmse_1": 0.18226828205891663,
+          "lag_rmse_2": 0.1972744112945087
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": 0.09880320633343945,
+          "roughness": 0.02679906234420733,
+          "lag_rmse_0": 0.09880320633343945,
+          "lag_rmse_1": 0.12741679995603086,
+          "lag_rmse_2": 0.14600369728066603
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": 0.07982966904770115,
+          "roughness": 0.018319068066541554,
+          "lag_rmse_0": 0.07982966904770115,
+          "lag_rmse_1": 0.11010240697185815,
+          "lag_rmse_2": 0.12808982976228034
+        }
+      },
+      "wheel_mask_samples": 8982,
+      "common_samples": 8762,
+      "continuous_triples": 8341,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 8978
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 8762
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 8978
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 8978
+        }
+      },
+      "common_mask_sha256": "5c6aa29ad821a41a1fb0b091bfefb03b74907ecb0fa36d126737df285bd1da32",
+      "events_sha256": "2031602dc259b665a4863aeceb82d3499a0f3932dad24f5ba12bca1aa383c0d0",
+      "target_sha256": "d4f913e3fec315e49caac02fbc44ca57ae8bbe4dccd39e104f1987334608569b"
+    },
+    {
+      "bag": "30618_b3042f78",
+      "group": "bc403256f12f9710",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": 0.19235104309589157,
+          "roughness": 0.059452030370390936,
+          "lag_rmse_0": 0.19235104309589157,
+          "lag_rmse_1": 0.242454162242124,
+          "lag_rmse_2": 0.2627294149470431
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": 0.15899360389835496,
+          "roughness": 0.04891615770546624,
+          "lag_rmse_0": 0.15899360389835496,
+          "lag_rmse_1": 0.21569536232947878,
+          "lag_rmse_2": 0.23898318393007292
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": 0.10635237281341768,
+          "roughness": 0.02819644046820653,
+          "lag_rmse_0": 0.10635237281341768,
+          "lag_rmse_1": 0.17635778926264473,
+          "lag_rmse_2": 0.20194133239378562
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": 0.08716538242809635,
+          "roughness": 0.018340835872894742,
+          "lag_rmse_0": 0.08716538242809635,
+          "lag_rmse_1": 0.16227485230171668,
+          "lag_rmse_2": 0.1884163991556454
+        }
+      },
+      "wheel_mask_samples": 8467,
+      "common_samples": 8095,
+      "continuous_triples": 7401,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 8454
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 8095
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 8454
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 8454
+        }
+      },
+      "common_mask_sha256": "72fdb3917e71f5040c93ed0f30a86bdc876aa544a85e81ba6951932a68542744",
+      "events_sha256": "33c370d2743dbbe40ac7bb2c551c6133cb877f8132375c806e89354235abfc62",
+      "target_sha256": "fb1cfa2ff1376c6537e83a255609a6242e7be79b9f65935d235ab0849c61cba4"
+    },
+    {
+      "bag": "30618_b83d854d",
+      "group": "eeabf7d118bbcdac",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": 0.19068803014752722,
+          "roughness": 0.06088199733555817,
+          "lag_rmse_0": 0.19068803014752722,
+          "lag_rmse_1": 0.19954046141731277,
+          "lag_rmse_2": 0.2081251536177314
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": 0.15571172235175465,
+          "roughness": 0.04532236104131254,
+          "lag_rmse_0": 0.15571172235175465,
+          "lag_rmse_1": 0.16514872830133448,
+          "lag_rmse_2": 0.17477297671881295
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": 0.09635223247367168,
+          "roughness": 0.023164252721289264,
+          "lag_rmse_0": 0.09635223247367168,
+          "lag_rmse_1": 0.10740778176062082,
+          "lag_rmse_2": 0.11870791026497843
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": 0.08201558752183073,
+          "roughness": 0.015105164507278333,
+          "lag_rmse_0": 0.08201558752183073,
+          "lag_rmse_1": 0.08978208117133696,
+          "lag_rmse_2": 0.09843351202007625
+        }
+      },
+      "wheel_mask_samples": 8656,
+      "common_samples": 8459,
+      "continuous_triples": 8087,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 8644
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 8459
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 8644
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 8644
+        }
+      },
+      "common_mask_sha256": "18e621448e9ae45dded9c23afb024257984585d99a2c0ac274bd3d30c726d476",
+      "events_sha256": "8c6e2708333ad3757f848018d82ace6b44edf09c3a8147b6ea1b0f430a434e38",
+      "target_sha256": "0b49ffe0dad08a4f6adb5007f4efa4e4eb4f29cf6ce3cbf2e89738e9d1fbabf4"
+    },
+    {
+      "bag": "30618_b95ca60a",
+      "group": "e894436afa9dd9f1",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": 0.18247594954627644,
+          "roughness": 0.059748448443645,
+          "lag_rmse_0": 0.18247594954627644,
+          "lag_rmse_1": 0.20525951959941838,
+          "lag_rmse_2": 0.21962709819380077
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": 0.14951748785877667,
+          "roughness": 0.04669443531968318,
+          "lag_rmse_0": 0.14951748785877667,
+          "lag_rmse_1": 0.17597634922485678,
+          "lag_rmse_2": 0.19163242078320356
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": 0.09567927347160668,
+          "roughness": 0.025708729651629528,
+          "lag_rmse_0": 0.09567927347160668,
+          "lag_rmse_1": 0.13351315082886883,
+          "lag_rmse_2": 0.1527380269347988
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": 0.07672514978330765,
+          "roughness": 0.016471263759897013,
+          "lag_rmse_0": 0.07672514978330765,
+          "lag_rmse_1": 0.11643905469965582,
+          "lag_rmse_2": 0.13664195057775053
+        }
+      },
+      "wheel_mask_samples": 7713,
+      "common_samples": 7352,
+      "continuous_triples": 6720,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 7703
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 7352
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 7703
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 7703
+        }
+      },
+      "common_mask_sha256": "8b357745ba3f2566b7db859c8d60ec09fff81cea106164a5794e9ded36aca108",
+      "events_sha256": "c7ee94f3061049bc69a0df4ca9b992662cb77e00c661385bbf7e5557a7eb4d9c",
+      "target_sha256": "4d36ad3b5a5c75ade98edce169f9090ee0d82358eb5c9fb4e2988ba1dbc7b4d4"
+    },
+    {
+      "bag": "30618_bab2fe58",
+      "group": "5c1be3e9a2189121",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": 0.19460969756257618,
+          "roughness": 0.03419714560289033,
+          "lag_rmse_0": 0.19460969756257618,
+          "lag_rmse_1": 0.1903182975986673,
+          "lag_rmse_2": 0.19481610842041291
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": 0.166024891086778,
+          "roughness": 0.02847425904441787,
+          "lag_rmse_0": 0.166024891086778,
+          "lag_rmse_1": 0.15832628919248484,
+          "lag_rmse_2": 0.16076227007713872
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": 0.11482998127800484,
+          "roughness": 0.011695539710171374,
+          "lag_rmse_0": 0.11482998127800484,
+          "lag_rmse_1": 0.09613933302107254,
+          "lag_rmse_2": 0.0912799229766325
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": 0.1170493024277407,
+          "roughness": 0.007853380324817959,
+          "lag_rmse_0": 0.1170493024277407,
+          "lag_rmse_1": 0.08921642788162211,
+          "lag_rmse_2": 0.07274125174392536
+        }
+      },
+      "wheel_mask_samples": 440,
+      "common_samples": 438,
+      "continuous_triples": 432,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 440
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 438
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 440
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 440
+        }
+      },
+      "common_mask_sha256": "11dc0632716c295f84a605fddec91a4055a88280354eafbba63b3b24f15862b7",
+      "events_sha256": "5504b3b3cc541915d9fc16857c7f231a2af621bd105a398388f9ff9afddae195",
+      "target_sha256": "33f5316c1a33dbea67f3734e5ee141c2b801a1927aeaeedb36b263f6142c23df"
+    },
+    {
+      "bag": "30618_bc5e53c2",
+      "group": "49fc4c6fb44fd0ea",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": null,
+          "roughness": null,
+          "lag_rmse_0": null,
+          "lag_rmse_1": null,
+          "lag_rmse_2": null
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": null,
+          "roughness": null,
+          "lag_rmse_0": null,
+          "lag_rmse_1": null,
+          "lag_rmse_2": null
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": null,
+          "roughness": null,
+          "lag_rmse_0": null,
+          "lag_rmse_1": null,
+          "lag_rmse_2": null
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": null,
+          "roughness": null,
+          "lag_rmse_0": null,
+          "lag_rmse_1": null,
+          "lag_rmse_2": null
+        }
+      },
+      "wheel_mask_samples": 0,
+      "common_samples": 0,
+      "continuous_triples": 0,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 0
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 0
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 0
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 0
+        }
+      },
+      "common_mask_sha256": "2b53421cfdcf9d7f11df93ef20afd24bd88bbc7be17833bccda4ee322ebc529a",
+      "events_sha256": "ee4a148da10e3d61154d3ebd043ae6b5a476afb269da2638050e305539c96061",
+      "target_sha256": "6888f28f568d155c7bf9e7d38265c5283552d4b61ade61e6b79c1a6c48cf7b01"
+    },
+    {
+      "bag": "30618_cfd9fd5a",
+      "group": "95a748306e6cbf16",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": 0.1909770189835322,
+          "roughness": 0.058742726042300596,
+          "lag_rmse_0": 0.1909770189835322,
+          "lag_rmse_1": 0.19083722627751587,
+          "lag_rmse_2": 0.19463991777012915
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": 0.1503704381960822,
+          "roughness": 0.043810473278601235,
+          "lag_rmse_0": 0.1503704381960822,
+          "lag_rmse_1": 0.148976132233212,
+          "lag_rmse_2": 0.15272432228913285
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": 0.09232865924527354,
+          "roughness": 0.02270689313409733,
+          "lag_rmse_0": 0.09232865924527354,
+          "lag_rmse_1": 0.0861931642451794,
+          "lag_rmse_2": 0.0882196746623546
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": 0.07608101563983066,
+          "roughness": 0.014258068900795576,
+          "lag_rmse_0": 0.07608101563983066,
+          "lag_rmse_1": 0.06298142719389893,
+          "lag_rmse_2": 0.05956471426812753
+        }
+      },
+      "wheel_mask_samples": 7971,
+      "common_samples": 7787,
+      "continuous_triples": 7414,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 7965
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 7787
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 7965
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 7965
+        }
+      },
+      "common_mask_sha256": "2d5b527714e2584179fdb4b74d2bf0d2bbf0d990524052c084729238443121ac",
+      "events_sha256": "5ffb1c12b4aeb5a5ab95b06e69bd0a53b664bbf35a4ef14ff2b088c1ffff27d1",
+      "target_sha256": "44742e13cbb98973821c6e147c76b389d4665911a120e2a49ab2672b986b6e5b"
+    },
+    {
+      "bag": "30618_d4ba7005",
+      "group": "0448e10aab8a0e05",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": 0.17918165452191212,
+          "roughness": 0.05229044986516593,
+          "lag_rmse_0": 0.17918165452191212,
+          "lag_rmse_1": 0.19155017912936523,
+          "lag_rmse_2": 0.203579137530324
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": 0.1496603926134221,
+          "roughness": 0.04438204378823099,
+          "lag_rmse_0": 0.1496603926134221,
+          "lag_rmse_1": 0.16323742670185842,
+          "lag_rmse_2": 0.17636692268634604
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": 0.10257269597515332,
+          "roughness": 0.029343979297551743,
+          "lag_rmse_0": 0.10257269597515332,
+          "lag_rmse_1": 0.11867432013514921,
+          "lag_rmse_2": 0.1317649692082294
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": 0.08760992486569551,
+          "roughness": 0.022076355985115557,
+          "lag_rmse_0": 0.08760992486569551,
+          "lag_rmse_1": 0.10348432467557128,
+          "lag_rmse_2": 0.1149407966240551
+        }
+      },
+      "wheel_mask_samples": 7445,
+      "common_samples": 7094,
+      "continuous_triples": 6556,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 7375
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 7094
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 7375
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 7375
+        }
+      },
+      "common_mask_sha256": "6b7b9c64ec0f2fa8bc6a36f5355f5413ed2ea453523555d81ef6a95d992ce607",
+      "events_sha256": "80deb76dfdffb69beb27bcbc0fa9c1da6e05c3418fabb24524a5ff2e513eaf2a",
+      "target_sha256": "65e3e6e216faf21c38ab3d5e50c75e961759a05efe9b67f6f84c7b9f65a58e12"
+    },
+    {
+      "bag": "30618_dd8e6395",
+      "group": "0448e10aab8a0e05",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": 0.1779885626977424,
+          "roughness": 0.050203866661223805,
+          "lag_rmse_0": 0.1779885626977424,
+          "lag_rmse_1": 0.17489046927032345,
+          "lag_rmse_2": 0.17614228446519145
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": 0.15206897005253386,
+          "roughness": 0.04430494507840899,
+          "lag_rmse_0": 0.15206897005253386,
+          "lag_rmse_1": 0.1478848738449313,
+          "lag_rmse_2": 0.1487471266686279
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": 0.10394026650327699,
+          "roughness": 0.029750091273798993,
+          "lag_rmse_0": 0.10394026650327699,
+          "lag_rmse_1": 0.09468426404125428,
+          "lag_rmse_2": 0.09253021750309728
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": 0.08955189724685729,
+          "roughness": 0.022902810321777958,
+          "lag_rmse_0": 0.08955189724685729,
+          "lag_rmse_1": 0.07463140842485194,
+          "lag_rmse_2": 0.06738525501782293
+        }
+      },
+      "wheel_mask_samples": 8165,
+      "common_samples": 7512,
+      "continuous_triples": 6723,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 7915
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 7512
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 7915
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 7915
+        }
+      },
+      "common_mask_sha256": "3f706ca727d9afbf2eb0f2b51cd55e51397a3b2d79a947e683c2aa7a7279a102",
+      "events_sha256": "c3a505635dcaa516bf740b7385c2d0d44edf6819493d879560ac9705eccb7f5c",
+      "target_sha256": "65e2ee9852caac166d7f0c69c79bbbd4f18d3eed993eafb955732b2dac3f46f9"
+    },
+    {
+      "bag": "30618_ddad08d6",
+      "group": "bf69dbfe85be52b0",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": 0.17544895297763197,
+          "roughness": 0.05683690001714078,
+          "lag_rmse_0": 0.17544895297763197,
+          "lag_rmse_1": 0.2183238626879626,
+          "lag_rmse_2": 0.2424756247378244
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": 0.1447954980509792,
+          "roughness": 0.04458385056543238,
+          "lag_rmse_0": 0.1447954980509792,
+          "lag_rmse_1": 0.19451592274859086,
+          "lag_rmse_2": 0.22063430946439685
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": 0.0929608841749843,
+          "roughness": 0.023306729880673557,
+          "lag_rmse_0": 0.0929608841749843,
+          "lag_rmse_1": 0.15754841365803837,
+          "lag_rmse_2": 0.18885450289138964
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": 0.07575760470626527,
+          "roughness": 0.015386290808611229,
+          "lag_rmse_0": 0.07575760470626527,
+          "lag_rmse_1": 0.14540591585897975,
+          "lag_rmse_2": 0.1775074045931392
+        }
+      },
+      "wheel_mask_samples": 7739,
+      "common_samples": 7497,
+      "continuous_triples": 7012,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 7739
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 7497
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 7739
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 7739
+        }
+      },
+      "common_mask_sha256": "e6a79dd9ef0bb72b4e567691d1791a4dd4d984768ad23b40f3819c6d7e4a0865",
+      "events_sha256": "2860d2e7b90656a16295c58e5c4c63339bd74ba8de9e3ad4ea3786db1dd43e80",
+      "target_sha256": "32d0422db91298ba7aba297be2aa6a23da268ad6b04b9a5896a2ad6dd36edb2f"
+    },
+    {
+      "bag": "30618_e2dcf65f",
+      "group": "de891506667c23f9",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": 0.18001243899006925,
+          "roughness": 0.05577096631551734,
+          "lag_rmse_0": 0.18001243899006925,
+          "lag_rmse_1": 0.1799814726375727,
+          "lag_rmse_2": 0.18422287584907168
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": 0.1453337622335629,
+          "roughness": 0.04238021762347559,
+          "lag_rmse_0": 0.1453337622335629,
+          "lag_rmse_1": 0.1434312953151619,
+          "lag_rmse_2": 0.14727921366245952
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": 0.09203219832549911,
+          "roughness": 0.023545947058264318,
+          "lag_rmse_0": 0.09203219832549911,
+          "lag_rmse_1": 0.08586681108977799,
+          "lag_rmse_2": 0.08828407517156144
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": 0.07624048888227605,
+          "roughness": 0.015781864663127608,
+          "lag_rmse_0": 0.07624048888227605,
+          "lag_rmse_1": 0.062320984930921135,
+          "lag_rmse_2": 0.05933585313118951
+        }
+      },
+      "wheel_mask_samples": 7360,
+      "common_samples": 7208,
+      "continuous_triples": 6905,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 7360
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 7208
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 7360
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 7360
+        }
+      },
+      "common_mask_sha256": "ee42ca656db4cf702d906ae4a28d0d409fb06ceb03cf021d470b993355408198",
+      "events_sha256": "45544ae6e48902d625d34eec7ecb9f9df462183cd0684a2a13924692b36d877f",
+      "target_sha256": "171f35246e31ba0222408c8ac6a403113fa0c17cff41c6f23b5065e40559669d"
+    },
+    {
+      "bag": "30618_e392e5bd",
+      "group": "86c32e441a296aaa",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": 0.19508414681863176,
+          "roughness": 0.05850924975206197,
+          "lag_rmse_0": 0.19508414681863176,
+          "lag_rmse_1": 0.1927536619790187,
+          "lag_rmse_2": 0.19397646125637577
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": 0.1602657830878987,
+          "roughness": 0.04443255099108156,
+          "lag_rmse_0": 0.1602657830878987,
+          "lag_rmse_1": 0.15659524287604928,
+          "lag_rmse_2": 0.15711623394191124
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": 0.10140977926439214,
+          "roughness": 0.0226820881429669,
+          "lag_rmse_0": 0.10140977926439214,
+          "lag_rmse_1": 0.09147141163072577,
+          "lag_rmse_2": 0.08838920877507352
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": 0.08941407677536331,
+          "roughness": 0.01511971324619436,
+          "lag_rmse_0": 0.08941407677536331,
+          "lag_rmse_1": 0.07306758571537862,
+          "lag_rmse_2": 0.06370666663331026
+        }
+      },
+      "wheel_mask_samples": 7785,
+      "common_samples": 7632,
+      "continuous_triples": 7307,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 7778
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 7632
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 7778
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 7778
+        }
+      },
+      "common_mask_sha256": "36291a5600119b427dfabec0ac18fc52111e6da78c8057e1c8a8078035970979",
+      "events_sha256": "f191bdd8b0876d682602281d9889aad70669528690b345714ab577b40922850e",
+      "target_sha256": "cce5e126df1fe2bbc88c1f88d9f15918ecf79b8dfc422ba1c1d829349894e511"
+    },
+    {
+      "bag": "30618_e3d94878",
+      "group": "eeabf7d118bbcdac",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": 0.1845225754976224,
+          "roughness": 0.056950975224350435,
+          "lag_rmse_0": 0.1845225754976224,
+          "lag_rmse_1": 0.1975116359321161,
+          "lag_rmse_2": 0.21240914671267616
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": 0.14556516877665146,
+          "roughness": 0.04177233330204991,
+          "lag_rmse_0": 0.14556516877665146,
+          "lag_rmse_1": 0.15990852637826117,
+          "lag_rmse_2": 0.17625389645763986
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": 0.09921425977568554,
+          "roughness": 0.022593856595351746,
+          "lag_rmse_0": 0.09921425977568554,
+          "lag_rmse_1": 0.11377138014558814,
+          "lag_rmse_2": 0.13045620210341538
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": 0.08967466985254485,
+          "roughness": 0.01571148513439687,
+          "lag_rmse_0": 0.08967466985254485,
+          "lag_rmse_1": 0.0996315240933695,
+          "lag_rmse_2": 0.11272137876581821
+        }
+      },
+      "wheel_mask_samples": 7801,
+      "common_samples": 7559,
+      "continuous_triples": 7087,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 7800
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 7559
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 7800
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 7800
+        }
+      },
+      "common_mask_sha256": "23c8d614398b9432ac9659a19e133476d3e77076e8bb6f870a6ab50dbddfbda1",
+      "events_sha256": "63a47014ce2005c174c9d40489a74aa914a3c706b84ac485b2850a73a09352f2",
+      "target_sha256": "0ac381748962b8225ec273617e2c0a17760583601e5e9dd259018d6aa68489b3"
+    },
+    {
+      "bag": "30618_e7dcdab1",
+      "group": "c8a1e61d1b0710e9",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": 0.18936718403926855,
+          "roughness": 0.05771506853763497,
+          "lag_rmse_0": 0.18936718403926855,
+          "lag_rmse_1": 0.19151014099128275,
+          "lag_rmse_2": 0.1959250480371723
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": 0.1540059933297406,
+          "roughness": 0.044214795677066286,
+          "lag_rmse_0": 0.1540059933297406,
+          "lag_rmse_1": 0.1564284034974878,
+          "lag_rmse_2": 0.16130526527869538
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": 0.09036575922130607,
+          "roughness": 0.022014198996402536,
+          "lag_rmse_0": 0.09036575922130607,
+          "lag_rmse_1": 0.09126946852761747,
+          "lag_rmse_2": 0.09573459072590215
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": 0.07221761864667124,
+          "roughness": 0.014612360036642106,
+          "lag_rmse_0": 0.07221761864667124,
+          "lag_rmse_1": 0.06910062279680018,
+          "lag_rmse_2": 0.07094396500488859
+        }
+      },
+      "wheel_mask_samples": 7796,
+      "common_samples": 7648,
+      "continuous_triples": 7334,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 7790
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 7648
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 7790
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 7790
+        }
+      },
+      "common_mask_sha256": "c91cd89735fd9c2005602f88d0f7761a6a71613396afce2770057c65c45faf6f",
+      "events_sha256": "cce427b126187b716210156bbe8f1aaf355b8c701eb7fb75935e3f582e1ed40a",
+      "target_sha256": "ecdd3066aafdd8b3dd1deb0bad6b22edae2ac7b70d36f054aab811b820afc6e1"
+    },
+    {
+      "bag": "30618_efb92709",
+      "group": "58dd5f96d4201195",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": 0.17976271957239198,
+          "roughness": 0.05599193620825419,
+          "lag_rmse_0": 0.17976271957239198,
+          "lag_rmse_1": 0.179022792361868,
+          "lag_rmse_2": 0.18219578333797237
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": 0.15048381994302945,
+          "roughness": 0.04390867770837404,
+          "lag_rmse_0": 0.15048381994302945,
+          "lag_rmse_1": 0.14845048750949438,
+          "lag_rmse_2": 0.1511993582139955
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": 0.09796852911376633,
+          "roughness": 0.023848397693514566,
+          "lag_rmse_0": 0.09796852911376633,
+          "lag_rmse_1": 0.09110400805124297,
+          "lag_rmse_2": 0.09224438914716188
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": 0.08260578743224671,
+          "roughness": 0.015408707499144495,
+          "lag_rmse_0": 0.08260578743224671,
+          "lag_rmse_1": 0.06958672835392841,
+          "lag_rmse_2": 0.0655700235635824
+        }
+      },
+      "wheel_mask_samples": 8919,
+      "common_samples": 8652,
+      "continuous_triples": 8214,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 33,
+          "max_history": 0,
+          "individual_proxy_samples": 8893
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 33,
+          "max_history": 3,
+          "individual_proxy_samples": 8652
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 33,
+          "max_history": 4,
+          "individual_proxy_samples": 8893
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 33,
+          "max_history": 5,
+          "individual_proxy_samples": 8893
+        }
+      },
+      "common_mask_sha256": "7898eb3f8de62b599fab4b75f7d5065e2a67184c32c4f46bd98f2795d1e5353c",
+      "events_sha256": "d8eade7ba6a23f310f85b21243521a61516388221539cd20867b53725f939da2",
+      "target_sha256": "51771ccfd01b00d2872211c923abf12e1eddfa32ff232ecacdc3af7c6be6e685"
+    },
+    {
+      "bag": "30618_f19a4ac3",
+      "group": "1cff0aebccb39ff5",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": 0.1926997137172203,
+          "roughness": 0.06222320866215086,
+          "lag_rmse_0": 0.1926997137172203,
+          "lag_rmse_1": 0.19236987050920795,
+          "lag_rmse_2": 0.197013697269922
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": 0.15375203243961366,
+          "roughness": 0.046114508743306984,
+          "lag_rmse_0": 0.15375203243961366,
+          "lag_rmse_1": 0.15161219898391748,
+          "lag_rmse_2": 0.15599745896960232
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": 0.09529125701758911,
+          "roughness": 0.022742150023089262,
+          "lag_rmse_0": 0.09529125701758911,
+          "lag_rmse_1": 0.0863118662250765,
+          "lag_rmse_2": 0.0884985728891893
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": 0.0833538078813268,
+          "roughness": 0.014898890731594547,
+          "lag_rmse_0": 0.0833538078813268,
+          "lag_rmse_1": 0.06545955293132476,
+          "lag_rmse_2": 0.05993959606574411
+        }
+      },
+      "wheel_mask_samples": 8335,
+      "common_samples": 8126,
+      "continuous_triples": 7690,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 8322
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 8126
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 8322
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 8322
+        }
+      },
+      "common_mask_sha256": "658859fd6afadbb78c0f8a0f0b03a949c0e51def0be70b73fe7fdff3268ce045",
+      "events_sha256": "4ef25d7e9adb9f9517aa9c70f9bf69c96c7c24bec761a67871d80225b58e94e3",
+      "target_sha256": "ec4a330e2d0bd0aa275627fbeff0457b1f811de59a3b311209e2c9b8d5d4e29f"
+    },
+    {
+      "bag": "30618_f28179bb",
+      "group": "8ff91290187a9769",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": 0.17274210314334815,
+          "roughness": 0.05830874245168675,
+          "lag_rmse_0": 0.17274210314334815,
+          "lag_rmse_1": 0.20232864321864394,
+          "lag_rmse_2": 0.22599793803916116
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": 0.1445448296308485,
+          "roughness": 0.04724345520193976,
+          "lag_rmse_0": 0.1445448296308485,
+          "lag_rmse_1": 0.17821526499522525,
+          "lag_rmse_2": 0.20352654660471034
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": 0.097679850358223,
+          "roughness": 0.02630934558360693,
+          "lag_rmse_0": 0.097679850358223,
+          "lag_rmse_1": 0.14217010653018844,
+          "lag_rmse_2": 0.16964890158899146
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": 0.08082681880359964,
+          "roughness": 0.01767485590868214,
+          "lag_rmse_0": 0.08082681880359964,
+          "lag_rmse_1": 0.12916472287669853,
+          "lag_rmse_2": 0.1569434251695946
+        }
+      },
+      "wheel_mask_samples": 7937,
+      "common_samples": 7575,
+      "continuous_triples": 6914,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 7910
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 7575
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 7910
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 7910
+        }
+      },
+      "common_mask_sha256": "bb7a38129ad8c23f81a63a7b9ac0e716cd5547c8fc6b66c328f99e679b6a6b0b",
+      "events_sha256": "e41d0a49342b01c1eba13e39ac34ca7442e72eff6e92e8cd969d370d67d60cc5",
+      "target_sha256": "e8f444b9b8a7e7e518b8191ea79779e0d7e64974239b682ebb626b91f738cdcc"
+    },
+    {
+      "bag": "30618_f3b8c99b",
+      "group": "bc403256f12f9710",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": 0.1935142110635962,
+          "roughness": 0.059931224161146504,
+          "lag_rmse_0": 0.1935142110635962,
+          "lag_rmse_1": 0.20920646362498055,
+          "lag_rmse_2": 0.2243253725690342
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": 0.16458078280386773,
+          "roughness": 0.049010796010415324,
+          "lag_rmse_0": 0.16458078280386773,
+          "lag_rmse_1": 0.18232906288118486,
+          "lag_rmse_2": 0.19882192177753796
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": 0.1071227720217543,
+          "roughness": 0.025827803919809652,
+          "lag_rmse_0": 0.1071227720217543,
+          "lag_rmse_1": 0.13008543131765926,
+          "lag_rmse_2": 0.1490654049112612
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": 0.09336490189654024,
+          "roughness": 0.01733035975286129,
+          "lag_rmse_0": 0.09336490189654024,
+          "lag_rmse_1": 0.11631043029915665,
+          "lag_rmse_2": 0.13135930972899001
+        }
+      },
+      "wheel_mask_samples": 7937,
+      "common_samples": 7674,
+      "continuous_triples": 7234,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 7901
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 7674
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 7901
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 7901
+        }
+      },
+      "common_mask_sha256": "e834fcce48ffed6abeda4b00e99f864c148765ca516125a02f735e9628cf8716",
+      "events_sha256": "f1a02a44dc98503a35651ee787081dcf1631db80c919f173f5c252cba3c09bcb",
+      "target_sha256": "8fad3b1c527dd73bff9023640df63e6873154d23fad4b7ce8fc1d33d40457b31"
+    },
+    {
+      "bag": "30639_0be558e2",
+      "group": "0d4506540f0e7621",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": 0.1697871076814894,
+          "roughness": 0.05033092358475186,
+          "lag_rmse_0": 0.1697871076814894,
+          "lag_rmse_1": 0.16768678984687208,
+          "lag_rmse_2": 0.1712110813634713
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": 0.1388763940275426,
+          "roughness": 0.04046989792196599,
+          "lag_rmse_0": 0.1388763940275426,
+          "lag_rmse_1": 0.13472270041587567,
+          "lag_rmse_2": 0.1375771315568021
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": 0.09211164021515,
+          "roughness": 0.024653119952519405,
+          "lag_rmse_0": 0.09211164021515,
+          "lag_rmse_1": 0.0798859407278045,
+          "lag_rmse_2": 0.07892364537979625
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": 0.08645273943864802,
+          "roughness": 0.018840111712261465,
+          "lag_rmse_0": 0.08645273943864802,
+          "lag_rmse_1": 0.06603032373401721,
+          "lag_rmse_2": 0.05628326606745202
+        }
+      },
+      "wheel_mask_samples": 8590,
+      "common_samples": 8538,
+      "continuous_triples": 8426,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 8589
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 8538
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 8589
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 8589
+        }
+      },
+      "common_mask_sha256": "0495104e26d418e8870c3ece1a8ce123019cf39c575b66db68c534aa5e0a96ea",
+      "events_sha256": "bb7ea756920f3ecd0d5464cefcaadc41257e919898a3646f756e5f49fe431582",
+      "target_sha256": "0b704fb1ae502244fd5d4ece8e4985fd8f861ebbabab3c2b2e4c3fbe89a45cd0"
+    },
+    {
+      "bag": "30639_2b4a6347",
+      "group": "bc1e4cbe924a90ce",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": 0.16607051849197443,
+          "roughness": 0.0535193959254591,
+          "lag_rmse_0": 0.16607051849197443,
+          "lag_rmse_1": 0.16586732790865205,
+          "lag_rmse_2": 0.1718621182410874
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": 0.13015347040355985,
+          "roughness": 0.038674042166795895,
+          "lag_rmse_0": 0.13015347040355985,
+          "lag_rmse_1": 0.1280574306548655,
+          "lag_rmse_2": 0.13412731164433203
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": 0.08447185541469701,
+          "roughness": 0.019445355082816317,
+          "lag_rmse_0": 0.08447185541469701,
+          "lag_rmse_1": 0.07442087066475127,
+          "lag_rmse_2": 0.07770051910758222
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": 0.07756585634806049,
+          "roughness": 0.013080347960486271,
+          "lag_rmse_0": 0.07756585634806049,
+          "lag_rmse_1": 0.0583030554265503,
+          "lag_rmse_2": 0.053540172062972534
+        }
+      },
+      "wheel_mask_samples": 7976,
+      "common_samples": 7902,
+      "continuous_triples": 7736,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 7975
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 7902
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 7975
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 7975
+        }
+      },
+      "common_mask_sha256": "4229deb1f0201cc4379f73b8a58e7bd320e52547522bd43beab894e32371d2f9",
+      "events_sha256": "c74b504353ec9b1b64b17e51458b88503dc2c9c53a74b75d7100bfa8c12b829a",
+      "target_sha256": "47121aebf58326a3173cf63d70fcd2e1a40dfe42a850a560edcfa2c9f8c3027c"
+    },
+    {
+      "bag": "30639_4285f2bc",
+      "group": "bc1e4cbe924a90ce",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": 0.17116527912562823,
+          "roughness": 0.0515869072568463,
+          "lag_rmse_0": 0.17116527912562823,
+          "lag_rmse_1": 0.17050922390124856,
+          "lag_rmse_2": 0.17460309137179356
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": 0.13600218066692982,
+          "roughness": 0.04005545046047465,
+          "lag_rmse_0": 0.13600218066692982,
+          "lag_rmse_1": 0.13354384399288133,
+          "lag_rmse_2": 0.13737001268303461
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": 0.08728251838390341,
+          "roughness": 0.02224718781090689,
+          "lag_rmse_0": 0.08728251838390341,
+          "lag_rmse_1": 0.07926668744974028,
+          "lag_rmse_2": 0.08154477861062913
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": 0.07568560185704079,
+          "roughness": 0.0164727348244179,
+          "lag_rmse_0": 0.07568560185704079,
+          "lag_rmse_1": 0.059659919978277486,
+          "lag_rmse_2": 0.05544541982766418
+        }
+      },
+      "wheel_mask_samples": 8607,
+      "common_samples": 8509,
+      "continuous_triples": 8298,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 8607
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 8509
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 8607
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 8607
+        }
+      },
+      "common_mask_sha256": "ada0979b7d94696fe421095f97c5c18145dea4a9f70103a16707f0d83c96035f",
+      "events_sha256": "544373d7aa6b5372753c68421efcbf661043d21036a0d5db952359665dfb75c6",
+      "target_sha256": "755b87c9e219df1fcb7cc3fcbc6bc5d24864bc8ac1d34609d83d52b24f73b223"
+    },
+    {
+      "bag": "30639_44226bde",
+      "group": "f28fe86416cc8dc2",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": 0.18671894057872704,
+          "roughness": 0.05821895729952535,
+          "lag_rmse_0": 0.18671894057872704,
+          "lag_rmse_1": 0.1932829745352609,
+          "lag_rmse_2": 0.21024375423351155
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": 0.15505594405955278,
+          "roughness": 0.04656350529029985,
+          "lag_rmse_0": 0.15505594405955278,
+          "lag_rmse_1": 0.1615642402301975,
+          "lag_rmse_2": 0.18027845411505722
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": 0.09890204289320738,
+          "roughness": 0.0270807664084111,
+          "lag_rmse_0": 0.09890204289320738,
+          "lag_rmse_1": 0.10426978791894898,
+          "lag_rmse_2": 0.12775825968759263
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": 0.0807350153046296,
+          "roughness": 0.018513288080367483,
+          "lag_rmse_0": 0.0807350153046296,
+          "lag_rmse_1": 0.08203420325266289,
+          "lag_rmse_2": 0.1055026203119064
+        }
+      },
+      "wheel_mask_samples": 8391,
+      "common_samples": 8204,
+      "continuous_triples": 7848,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 8387
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 8204
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 8387
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 8387
+        }
+      },
+      "common_mask_sha256": "8595206c08aaa8b5ad731e135cd2c4a82512a23313539dae50889a1a6b0a2062",
+      "events_sha256": "28b0064a31daf64f0121ea28d98ddaea697a5db76ebcaab4025f4942e022a6f4",
+      "target_sha256": "f9a9b0b73399d6a1ae1f0fb5d7505e13100865e9274c94abc7f5c080036b1949"
+    },
+    {
+      "bag": "30639_92226df0",
+      "group": "4ca08ed0da0cb611",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": 0.16745183186018867,
+          "roughness": 0.05270692393173822,
+          "lag_rmse_0": 0.16745183186018867,
+          "lag_rmse_1": 0.1757999388123578,
+          "lag_rmse_2": 0.2066703274352757
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": 0.13824434240031247,
+          "roughness": 0.04023116794735263,
+          "lag_rmse_0": 0.13824434240031247,
+          "lag_rmse_1": 0.1472173027529046,
+          "lag_rmse_2": 0.1821188362789023
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": 0.09046265920883428,
+          "roughness": 0.020465451185771345,
+          "lag_rmse_0": 0.09046265920883428,
+          "lag_rmse_1": 0.09839441305298141,
+          "lag_rmse_2": 0.142021118008587
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": 0.08138540303094031,
+          "roughness": 0.013984135910134551,
+          "lag_rmse_0": 0.08138540303094031,
+          "lag_rmse_1": 0.08610975028607434,
+          "lag_rmse_2": 0.13067726183888284
+        }
+      },
+      "wheel_mask_samples": 9133,
+      "common_samples": 8903,
+      "continuous_triples": 8435,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 9124
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 8903
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 9124
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 9124
+        }
+      },
+      "common_mask_sha256": "cb37e48c374c3c359cc17e5f3df49778d3b8a65cf1ba3cf2ca84176718c6f3ca",
+      "events_sha256": "8909a589461b0481dc61193cfbbec0ec006648e9685e20157ce7f32438d7090f",
+      "target_sha256": "b7473a21ba73bbc8b4e061b7af136181426ddf6bd84d5dcbdb8a4834ee532bf2"
+    },
+    {
+      "bag": "30639_927002c2",
+      "group": "8232b134be2a5002",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": 0.17319207761919939,
+          "roughness": 0.05620137305058902,
+          "lag_rmse_0": 0.17319207761919939,
+          "lag_rmse_1": 0.17247142790610004,
+          "lag_rmse_2": 0.18491719240972207
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": 0.1399560984088495,
+          "roughness": 0.0411812317891941,
+          "lag_rmse_0": 0.1399560984088495,
+          "lag_rmse_1": 0.1378137790046125,
+          "lag_rmse_2": 0.15162746854731318
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": 0.10314025763004096,
+          "roughness": 0.02274257826032419,
+          "lag_rmse_0": 0.10314025763004096,
+          "lag_rmse_1": 0.0947519858287517,
+          "lag_rmse_2": 0.10836700661388443
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": 0.09916048772625599,
+          "roughness": 0.016561076921199413,
+          "lag_rmse_0": 0.09916048772625599,
+          "lag_rmse_1": 0.08393054058556339,
+          "lag_rmse_2": 0.09308119330045023
+        }
+      },
+      "wheel_mask_samples": 7974,
+      "common_samples": 7730,
+      "continuous_triples": 7386,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 7974
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 7730
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 7974
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 7974
+        }
+      },
+      "common_mask_sha256": "65defe7044ac3a9cbd1b0ef4667e98d919454daeef9deb12ae616dede8093c62",
+      "events_sha256": "6991131af87b0de4852ea0ec0db3a2b26325fdaafa2e53671c0a16946038b448",
+      "target_sha256": "9c9765e48ab3271cc386d83dbe3779345aaef156f12608b2c3fe2a1b5c27943a"
+    },
+    {
+      "bag": "30639_d3c43d69",
+      "group": "f28fe86416cc8dc2",
+      "models": {
+        "adaptive_v5": {
+          "accel_proxy_rmse": 0.17315244474067815,
+          "roughness": 0.054365116203444905,
+          "lag_rmse_0": 0.17315244474067815,
+          "lag_rmse_1": 0.18093504296440763,
+          "lag_rmse_2": 0.18847502761371432
+        },
+        "H03_w020": {
+          "accel_proxy_rmse": 0.14662669227913536,
+          "roughness": 0.043939927049392695,
+          "lag_rmse_0": 0.14662669227913536,
+          "lag_rmse_1": 0.15478155647344558,
+          "lag_rmse_2": 0.16287176531210518
+        },
+        "H03_w030": {
+          "accel_proxy_rmse": 0.09343678757884878,
+          "roughness": 0.024531329856072166,
+          "lag_rmse_0": 0.09343678757884878,
+          "lag_rmse_1": 0.1029771517948626,
+          "lag_rmse_2": 0.11271061904320927
+        },
+        "H03_w040": {
+          "accel_proxy_rmse": 0.0791494519987122,
+          "roughness": 0.016672492111582136,
+          "lag_rmse_0": 0.0791494519987122,
+          "lag_rmse_1": 0.08638881389817778,
+          "lag_rmse_2": 0.09382686976293364
+        }
+      },
+      "wheel_mask_samples": 8339,
+      "common_samples": 7993,
+      "continuous_triples": 7354,
+      "runtime": {
+        "adaptive_v5": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 0,
+          "individual_proxy_samples": 8328
+        },
+        "H03_w020": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 3,
+          "individual_proxy_samples": 7993
+        },
+        "H03_w030": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 4,
+          "individual_proxy_samples": 8328
+        },
+        "H03_w040": {
+          "resets": 0,
+          "dropped": 0,
+          "max_history": 5,
+          "individual_proxy_samples": 8328
+        }
+      },
+      "common_mask_sha256": "924663df28684d7d715bee9c2bf64cb50793babe11ee1654deb5e61351fbf1ec",
+      "events_sha256": "57ffa5bf3d6d509c2f8df9470dd981109316c1d2a6f95ddb48eeb7b6fe2934f8",
+      "target_sha256": "d287906d8042fcf2e12cce7975a6d841da84a085efc1787a78dc7e6cc6c21186"
+    }
+  ],
+  "aggregates": {
+    "adaptive_v5": {
+      "accel_proxy_rmse": 0.19069325487556857,
+      "roughness": 0.05777037524415909,
+      "lag_rmse_0": 0.19069325487556857,
+      "lag_rmse_1": 0.20124124618731798,
+      "lag_rmse_2": 0.2137871783168822,
+      "lag_s": 0.0
+    },
+    "H03_w020": {
+      "accel_proxy_rmse": 0.16123696033524532,
+      "roughness": 0.046691240592734315,
+      "lag_rmse_0": 0.16123696033524532,
+      "lag_rmse_1": 0.17208067964900242,
+      "lag_rmse_2": 0.1849350478603591,
+      "lag_s": 0.0,
+      "proxy_rejection_reasons": [],
+      "proxy_eligible": true
+    },
+    "H03_w030": {
+      "accel_proxy_rmse": 0.10626294253367648,
+      "roughness": 0.025915352108482285,
+      "lag_rmse_0": 0.10626294253367648,
+      "lag_rmse_1": 0.11586283932065715,
+      "lag_rmse_2": 0.1281602861241185,
+      "lag_s": 0.0,
+      "proxy_rejection_reasons": [],
+      "proxy_eligible": true
+    },
+    "H03_w040": {
+      "accel_proxy_rmse": 0.09439500645525678,
+      "roughness": 0.017642411828361602,
+      "lag_rmse_0": 0.09439500645525678,
+      "lag_rmse_1": 0.09877411080321362,
+      "lag_rmse_2": 0.10537038028801174,
+      "lag_s": 0.0,
+      "proxy_rejection_reasons": [],
+      "proxy_eligible": true
+    }
+  },
+  "selected": "H03_w040",
+  "train_proxy_failed": false,
+  "elapsed_s": 185.99312948299996,
+  "interpretation": "Wheel-derived diagnostic proxies, NOT ground-truth accuracy"
+}

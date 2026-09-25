@@ -49,6 +49,7 @@ class Config:
     stop_model_speed_mps: float = 0.25
     stop_dwell_s: float = 0.5
     adaptation_tau_s: float = 8.0
+    adaptation_window_s: float = 0.0  # H03 opt-in; zero preserves the baseline.
     disturbance_limit_mps2: float = 0.6
     max_step_s: float = 0.20
     reacquire_dwell_s: float = 0.8
@@ -73,6 +74,8 @@ class Config:
         for key in positive:
             if getattr(self, key) <= 0:
                 raise ValueError(f'{key} must be positive')
+        if self.adaptation_window_s != 0 and not 0.05 <= self.adaptation_window_s <= 0.4:
+            raise ValueError('adaptation_window_s must be zero or between 0.05 and 0.4')
         if not 0 <= self.command_deadband < 1 or self.efficiency > 1:
             raise ValueError('Invalid deadband or efficiency')
         if self.travel_direction not in (-1.0, 1.0):
@@ -123,6 +126,7 @@ class Observer:
         self.raw_previous = [None, None]
         self.stop_since = None
         self.adapt_previous = None
+        self.adapt_history = []  # At most seven trusted wheel pairs, never raw inputs.
         self.reacquire_since = None
         self.reacquire_previous = None
         self.pair_pending = [None, None]
@@ -228,6 +232,32 @@ class Observer:
         if t_pair - self.reacquire_since + 1e-9 < c.reacquire_dwell_s:
             return None
         return z
+
+    def _wheel_acceleration(self, tz, z, old):
+        """Causal bounded Theil-Sen slope; caller supplies only trusted new pairs.
+
+        No extrapolation, future points, or delay waiting for a full window.
+        With two points this is the original derivative. At most 7 points and
+        21 slopes are retained/computed, regardless of stream duration/rate.
+        Physical rejection and disturbance saturation remain in step().
+        """
+        two_point = (z - old.value) / (tz - old.t)
+        if self.c.adaptation_window_s == 0:
+            return two_point
+        if not self.adapt_history or self.adapt_history[-1] != old:
+            self.adapt_history = [old]
+        self.adapt_history.append(Sample(tz, z))
+        self.adapt_history = [p for p in self.adapt_history
+                              if 0 <= tz - p.t <= self.c.adaptation_window_s + 1e-9][-7:]
+        slopes = sorted((b.value - a.value) / (b.t - a.t)
+                        for i, a in enumerate(self.adapt_history)
+                        for b in self.adapt_history[i + 1:]
+                        if b.t - a.t >= 0.05)
+        if not slopes:
+            return None
+        middle = len(slopes) // 2
+        return (slopes[middle] if len(slopes) % 2 else
+                0.5 * (slopes[middle - 1] + slopes[middle]))
 
     def step(self, t, command=None, front=None, rear=None):
         """Estimate at time t. A Sample can be assimilated at most once.
@@ -344,8 +374,8 @@ class Observer:
             tz = (samples[0].t + samples[1].t) * 0.5
             old = self.adapt_previous
             if old is not None and 0.05 <= tz - old.t <= c.max_age_s:
-                measured_a = (z - old.value) / (tz - old.t)
-                if abs(measured_a) <= c.max_accel_mps2 and abs(z) > 0.5:
+                measured_a = self._wheel_acceleration(tz, z, old)
+                if measured_a is not None and abs(measured_a) <= c.max_accel_mps2 and abs(z) > 0.5:
                     desired = measured_a - self.drive_a + self.resistance(self.v)
                     weight = 1 - math.exp(-(tz - old.t) / c.adaptation_tau_s)
                     self.disturbance = clip(self.disturbance + weight * (desired - self.disturbance),
@@ -353,8 +383,14 @@ class Observer:
                 self.adapt_previous = Sample(tz, z)
             elif old is None or tz - old.t > c.max_age_s:
                 self.adapt_previous = Sample(tz, z)
+                if c.adaptation_window_s > 0:
+                    self.adapt_history = [self.adapt_previous]
         elif any(status not in ('DUPLICATE_OR_OLD', 'ACCEPTED') for status in statuses):
             self.adapt_previous = None
+            self.adapt_history = []
+        if c.adaptation_window_s > 0 and command_stale:
+            self.adapt_previous = None
+            self.adapt_history = []
         # Fresh held zeros may sustain stop evidence, but may NOT be re-assimilated.
         # A zero reading from locked wheels at substantial model speed is not a stop.
         stop_candidate = (not command_stale and u <= c.command_deadband and
