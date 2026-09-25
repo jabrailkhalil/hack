@@ -20,12 +20,12 @@ from nav_msgs.msg import Odometry
 from tram_vehicle_msgs.msg import VelocitySensor, DriverControllerCommand
 
 
-def main():
+def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--params-file', type=Path)
     parser.add_argument('--expected-json', type=Path)
     parser.add_argument('--launch-file', default='odometry.launch.py')
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
     if (args.params_file is None) != (args.expected_json is None):
         parser.error('--params-file and --expected-json must be supplied together')
     root = Path(__file__).resolve().parents[1]
@@ -116,17 +116,20 @@ def main():
         log.seek(0)
         print(log.read())
         log.close()
-    # Keep the active-default check, then separately launch the INSTALLED optional
-    # module. Explicit-profile invocations do not recurse. Existing CI covers both.
-    if args.params_file is None and args.launch_file == 'odometry.launch.py':
-        from ament_index_python.packages import get_package_share_directory
-        share = Path(get_package_share_directory('reserve_odometry'))
-        subprocess.run([sys.executable, str(Path(__file__).resolve()),
-                        '--launch-file', 'guarded_odometry.launch.py',
-                        '--params-file', str(share / 'config/guarded_readout_v7.yaml'),
-                        '--expected-json', str(root / 'src/reserve_odometry/config/guarded_readout_v7.json')],
-                       check=True)
 
 
 if __name__ == '__main__':
     main()
+    if len(sys.argv) == 1:
+        # Exercise the new installed profile in the existing ROS/offline CI jobs.
+        # Explicit v5 invocations retain their original single-profile behavior.
+        from ament_index_python.packages import get_package_share_directory
+        share = Path(get_package_share_directory('reserve_odometry'))
+        expected = Path(__file__).resolve().parents[1] / 'src/reserve_odometry/config/time_aligned_v6.json'
+        main(['--params-file', str(share / 'config/time_aligned_v6.yaml'),
+              '--expected-json', str(expected)])
+        # Preserve both current-main launches and additionally exercise v7.
+        expected = Path(__file__).resolve().parents[1] / 'src/reserve_odometry/config/guarded_readout_v7.json'
+        main(['--launch-file', 'guarded_odometry.launch.py',
+              '--params-file', str(share / 'config/guarded_readout_v7.yaml'),
+              '--expected-json', str(expected)])

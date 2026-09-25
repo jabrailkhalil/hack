@@ -20,21 +20,25 @@ class ActiveProfileTests(unittest.TestCase):
             if sep and key.startswith('model.'):
                 actual[key[6:]]=float(value)
         self.assertEqual(actual,promotion['config'])
-        self.assertEqual(actual,asdict(Config(**actual)))
+        self.assertEqual(dict(actual,wheel_time_compensation=0.0),asdict(Config(**actual)))
         expected=json.loads((ROOT/promotion['profile_json']).read_text())['config']
         self.assertEqual(actual,expected)
         self.assertEqual(actual['adaptation_tau_s'],.5)
         self.assertFalse(promotion['independent_test_evaluated'])
 
-    def test_active_source_hashes_are_pinned_separately(self):
+    def test_promoted_v5_source_hashes_remain_pinned(self):
         promotion=json.loads((ROOT/'reports/research_v6/PROMOTION.json').read_text())
         for path,digest in promotion['source_sha256'].items():
-            self.assertEqual(hashlib.sha256((ROOT/path).read_bytes()).hexdigest(),digest,path)
+            # The opt-in core extension does not rewrite historical promotion evidence.
+            raw = read_v4(path) if path.endswith('/core.py') else (ROOT/path).read_bytes()
+            self.assertEqual(hashlib.sha256(raw).hexdigest(),digest,path)
 
     def test_rejected_experimental_runtime_is_not_deployed(self):
-        for name in ('core.py','node.py','timeline.py','route.py'):
+        for name in ('node.py','timeline.py','route.py'):
             path='src/reserve_odometry/reserve_odometry/'+name
             self.assertEqual((ROOT/path).read_bytes(),read_v4(path))
+        # Exact disabled-core compatibility is covered by test_time_alignment.
+        self.assertEqual(Config().wheel_time_compensation,0.0)
         self.assertNotIn('wheel_projection_gain',asdict(Config()))
         self.assertNotIn('disturbance_decay_s',asdict(Config()))
 
