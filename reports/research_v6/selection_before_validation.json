@@ -1,0 +1,28 @@
+{
+  "base_commit": "2f7851364c6afe9786fad040e0938454d8b0d210",
+  "models": {
+    "main": {},
+    "main_v5": {
+      "adaptation_tau_s": 0.5
+    },
+    "candidate": {
+      "adaptation_tau_s": 0.5,
+      "wheel_time_compensation": 1.0
+    }
+  },
+  "created_unix": 1790356397.4093292,
+  "selection": "v5_age_var selected on development before this validation; no post-validation tuning",
+  "acceptance": "Lower clean macro RMSE than both main profiles; no clean per-bag regression > max(.01 m/s,10%); no coverage loss or false-stop increase; fault and distance macro no worse than 5% and 1% respectively against either main profile",
+  "role": "validation",
+  "test_evaluated": false,
+  "final_test_payload_access": false,
+  "source_sha256": {
+    "main_core.py": "780ca4796d86b4fa4e8c8679abfb73f58f23e003d4ee644ba964ffdeac9f0bfc",
+    "final_core.py": "6e2063666eea57a8065f405e0953797b3036cc0b7204b18bfafe5458bce5b1db",
+    "validate.py": "da6f82ff67b92c3bb8f3f4b6a94b1e7f11b1ef761549e2ce5e329d284b5a2dda",
+    "candidate_experiment.py": "9192929ba09dedc86ca04aed776f934dfac03f1bda9a142b93eead29f09c35ea"
+  },
+  "python": "3.13.5",
+  "numpy": "2.3.5",
+  "split_sha256": "20928a29daad2b4178ddb92e2a4d9ddb347952f6c03845802a8d82fff7da5ae0"
+}

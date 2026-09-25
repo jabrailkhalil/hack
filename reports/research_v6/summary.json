@@ -1,0 +1,105 @@
+{
+  "base_commit": "2f7851364c6afe9786fad040e0938454d8b0d210",
+  "baseline_core_git_blob": "f6fc8ecd0b4e16018d814407b1944ce26ea550b0",
+  "summary": {
+    "main": {
+      "macro_rmse": 0.11806774263082002,
+      "pooled_rmse": 0.21687243076900953,
+      "n": 698891,
+      "distance_macro": 4.62025210189424,
+      "false_stops": 18,
+      "fault_macro": 0.5699729099411979,
+      "fault_false_stops": 0,
+      "fault_missing_recovery": 0,
+      "mean_recovery_s": 0.2940068401333258
+    },
+    "main_v5": {
+      "macro_rmse": 0.11713827416709652,
+      "pooled_rmse": 0.2167236028496654,
+      "n": 698891,
+      "distance_macro": 4.63097780847452,
+      "false_stops": 18,
+      "fault_macro": 0.5384344108523412,
+      "fault_false_stops": 0,
+      "fault_missing_recovery": 0,
+      "mean_recovery_s": 0.23984017346665887
+    },
+    "candidate": {
+      "macro_rmse": 0.11447668417228507,
+      "pooled_rmse": 0.216396650773898,
+      "n": 698891,
+      "distance_macro": 4.577133776921257,
+      "false_stops": 18,
+      "fault_macro": 0.5489794494799797,
+      "fault_false_stops": 0,
+      "fault_missing_recovery": 0,
+      "mean_recovery_s": 0.25650684013332575
+    }
+  },
+  "decision": {
+    "eligible": true,
+    "rejection_reasons": [],
+    "paired": {
+      "main": {
+        "improved": 25,
+        "worse": 5,
+        "tied": 0
+      },
+      "main_v5": {
+        "improved": 25,
+        "worse": 5,
+        "tied": 0
+      }
+    },
+    "qualification": "Previously reused validation; not an independent held-out test"
+  },
+  "counts": {
+    "bags": 19,
+    "groups": 10,
+    "fault_scenarios": 76,
+    "usable_clean_receiver_pairs": 30,
+    "usable_fault_receiver_pairs": 120
+  },
+  "verification": {
+    "aggregate_and_all_per_bag_metrics_reproduced_exactly": true,
+    "disabled_both_profiles_all_validation_bags_exact": true,
+    "unit_tests": 92,
+    "research_tests_locally_available": 25,
+    "ros_ci": "not run locally; see PR checks for actual remote results",
+    "test_evaluated": false
+  },
+  "provenance": {
+    "base_commit": "2f7851364c6afe9786fad040e0938454d8b0d210",
+    "baseline_core_git_blob": "f6fc8ecd0b4e16018d814407b1944ce26ea550b0",
+    "created_utc": "2026-09-25T17:23:57.236699+00:00",
+    "operational": {
+      "rate_hz": 20.0,
+      "alignment_delay_s": 0.0
+    },
+    "source_sha256": {
+      "tools/research_v6/compare.py": "2225b248ca449e3f8908785146608771401c0919453ce8fed9b03f83043fe145",
+      "src/reserve_odometry/reserve_odometry/core.py": "6e2063666eea57a8065f405e0953797b3036cc0b7204b18bfafe5458bce5b1db",
+      "src/reserve_odometry/reserve_odometry/timeline.py": "ed63b44dede078cb3cde501bd1e5559260763c56ac9b832f39924c1d97b0bdbf",
+      "tools/finalization/evaluate.py": "f6a19a1727274ca88e1fe1a9fb76d31dbc8ce4e9bbabf669c488f053d76caec7",
+      "tools/research_v3/experiment.py": "95a398003530454457bacb2096fb6bc9d0d5ee32520420c43a9ebeb406376aa0",
+      "tools/export_bags.py": "696f6bdbf853dac4d4fe6286f6a7f4742f4aea5b1bc508efda52f5bc179c3b66",
+      "research/split_v3.json": "20928a29daad2b4178ddb92e2a4d9ddb347952f6c03845802a8d82fff7da5ae0",
+      "research/plan_v3.json": "ddbc1130e214c3d338b3d292232391d3a329a0fd5f13a090027452ae070271b3",
+      "src/reserve_odometry/config/time_aligned_v6.json": "9467bbf8322636fab4117ab8dbdbaf1386900d5f784488807288116611c4183c",
+      "src/reserve_odometry/config/adaptive_v5.json": "3b84e6eb09262ba7a24771e5a56e0aa3ecb89c67f18e501cd0d0366514e99da1"
+    },
+    "split_sha256": "20928a29daad2b4178ddb92e2a4d9ddb347952f6c03845802a8d82fff7da5ae0",
+    "python": "3.13.5",
+    "numpy": "2.3.5",
+    "workers": 4,
+    "role": "validation",
+    "test_evaluated": false,
+    "check_disabled": true,
+    "selection": "Selected on development, fixed before the original validation; this runner does not select or fit parameters",
+    "model_configs": {
+      "main": "src/reserve_odometry/config/candidates_v3/balanced_physics.json",
+      "main_v5": "src/reserve_odometry/config/adaptive_v5.json",
+      "candidate": "src/reserve_odometry/config/time_aligned_v6.json"
+    }
+  }
+}
