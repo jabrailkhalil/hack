@@ -1,0 +1,63 @@
+name: Champion v7 paired validation
+on:
+  push:
+    branches: [feat/champion-v7-low-speed]
+    paths:
+      - 'src/reserve_odometry/reserve_odometry/core.py'
+      - 'src/reserve_odometry/reserve_odometry/guarded_readout.py'
+      - 'src/reserve_odometry/config/guarded_readout_v7.*'
+      - 'tools/research_guarded/**'
+      - '.github/workflows/champion-v7-validation.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  paired-validation:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 25
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - name: Prepare pinned dataset and research dependencies
+        run: |
+          python -m pip install -r requirements-research.txt
+          python tools/get_dataset.py
+      - name: Replay fixed validation and original fault suite
+        run: |
+          python tools/research_guarded/compare.py \
+            --output reports/champion_v7/paired_current \
+            --workers 2 --check-disabled --check-inner
+      - name: Enforce unchanged promotion gates
+        run: |
+          python - <<'PY'
+          import json
+          p='reports/champion_v7/paired_current/results.json'
+          d=json.load(open(p))
+          assert d['decision']['eligible'], d['decision']
+          b=d['summary']['main']; c=d['summary']['candidate']
+          assert c['macro_rmse'] <= b['macro_rmse']*.98, (b['macro_rmse'],c['macro_rmse'])
+          assert c['fault_macro'] <= b['fault_macro']*1.005, (b['fault_macro'],c['fault_macro'])
+          assert c['distance_macro'] <= b['distance_macro']*1.01
+          assert c['false_stops'] <= b['false_stops']
+          assert c['fault_false_stops'] <= b['fault_false_stops']
+          assert c['fault_missing_recovery'] <= b['fault_missing_recovery']
+          print('CHAMPION_V7_GATE_PASS',json.dumps({'main':b,'candidate':c},sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: champion-v7-paired-validation
+          path: reports/champion_v7/paired_current/
+          retention-days: 30
+      - name: Preserve intermediate measured evidence on checkpoint branch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git switch -c "checkpoint/champion-v7-$GITHUB_RUN_ID"
+          git add reports/champion_v7/paired_current
+          git commit -m "research: preserve combined champion v7 validation $GITHUB_RUN_ID"
+          git push origin "HEAD:refs/heads/checkpoint/champion-v7-$GITHUB_RUN_ID"

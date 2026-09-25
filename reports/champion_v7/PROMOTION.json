@@ -1,0 +1,55 @@
+{
+  "active_profile": "guarded_readout_v7_plus_zero_lock_guard",
+  "integration_commit_parent": "f2ce094c7e961745a32f4bcb04e5b41e50577756",
+  "standard_launch": "ros2 launch reserve_odometry odometry.launch.py",
+  "clean_validation": {
+    "group_macro_rmse_mps": 0.114549861,
+    "baseline_v5_mps": 0.117138274,
+    "gain_fraction": 0.022097
+  },
+  "fault_validation": {
+    "group_macro_event_rmse_mps": 0.538286783,
+    "baseline_v5_mps": 0.538434411,
+    "gain_fraction": 0.000274
+  },
+  "scalar_distance_validation": {
+    "group_macro_rmse_m": 4.595480653,
+    "baseline_v5_m": 4.630977808,
+    "gain_fraction": 0.007665
+  },
+  "low_speed_lock_extension": {
+    "event_group_macro_rmse_mps": 0.3165860574326788,
+    "baseline_v5_mps": 2.68877,
+    "gain_fraction": 0.8822561834247229,
+    "false_stop_samples_after": 0,
+    "unrecovered_after": 0
+  },
+  "evidence": {
+    "guarded_pr": 14,
+    "zero_lock_pr": 13,
+    "guarded_ci": "https://github.com/jabrailkhalil/hack/actions/runs/36174105585",
+    "zero_lock_ci": "https://github.com/jabrailkhalil/hack/actions/runs/36173217491"
+  },
+  "qualification": "Combined v7 + zero-lock core passed the original fixed validation/fault gates on reused validation. Low-speed extension remains a separately injected suite. Not an independent final test or official score.",
+  "combined_validation": {
+    "run_id": 36176052867,
+    "checkpoint_branch": "checkpoint/champion-v7-36176052867",
+    "decision": "eligible",
+    "matched_speed_samples": 698891,
+    "paired_clean": {
+      "improved": 25,
+      "worse": 5,
+      "tied": 0
+    },
+    "main_v5": {
+      "clean_macro_rmse_mps": 0.11713827416709652,
+      "fault_macro_rmse_mps": 0.5384344108523412,
+      "distance_macro_rm": 4.63097780847452
+    },
+    "champion_v7": {
+      "clean_macro_rmse_mps": 0.1145498613174081,
+      "fault_macro_rmse_mps": 0.5382867826008657,
+      "distance_macro_rm": 4.595480653017927
+    }
+  }
+}

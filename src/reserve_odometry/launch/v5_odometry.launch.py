@@ -1,4 +1,4 @@
-"""Canonical launch: guarded v7 readout over the verified v5 inner observer."""
+"""Explicit inner-v5 launch retained for A/B reproduction."""
 from pathlib import Path
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
@@ -9,11 +9,11 @@ from launch_ros.parameter_descriptions import ParameterValue
 
 
 def generate_launch_description():
-    config = str(Path(get_package_share_directory('reserve_odometry')) / 'config' / 'guarded_readout_v7.yaml')
+    config = str(Path(get_package_share_directory('reserve_odometry')) / 'config' / 'default.yaml')
     return LaunchDescription([
         DeclareLaunchArgument('params_file', default_value=config),
         DeclareLaunchArgument('use_sim_time', default_value='false'),
-        Node(package='reserve_odometry', executable='guarded_odometry_node', output='screen',
+        Node(package='reserve_odometry', executable='odometry_node', output='screen',
              parameters=[LaunchConfiguration('params_file'),
                          {'use_sim_time': ParameterValue(LaunchConfiguration('use_sim_time'), value_type=bool)}]),
     ])

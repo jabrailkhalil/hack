@@ -1,0 +1,34 @@
+{
+  "iteration": "guarded-time-alignment-v7",
+  "base_main": "984fdf2fc4faf05325249215d6b8541c0e68209a",
+  "previous_candidate": "PR11/9d9bbf53ffe02520b98eaf78ae974e0864d75508",
+  "goal": "Reduce ordinary-motion velocity and scalar-distance errors without the fault regression of PR11. Do not relax current-main promotion criteria.",
+  "data_policy": "Diagnose and select using all 17 development bags, including the established synthetic faults. Confirm a fixed candidate on all 19 existing validation bags. No final-test database access; no training GNSS or physical refitting. Validation has already been reused and is not an independent test.",
+  "development_round1": [
+    "main_v5 (current operational default)",
+    "pr11 (previous unconditional in-filter compensation)",
+    "pair_guard: PR11 correction only with two accepted agreeing wheels; 0.5 s fault holdoff",
+    "readout: unmodified inner v5, recursive output-only correction; 0.5 s holdoff, 0.15 s age limit",
+    "readout_long: same output correction, 0.25 s age limit",
+    "readout_fast: same output correction, 0.25 s holdoff and 0.15 s age limit",
+    "readout_direct: output-only model-acceleration times mean held age instead of recursion"
+  ],
+  "invariants": [
+    "Same input timestamps, arrival order, output grid, reference masks and fault placement",
+    "No future inputs, repeated wheel assimilation, GNSS runtime access or fault metadata",
+    "Unchanged wheel units, physical calibration and main v5 parameters",
+    "Bounded memory and explicit reset behavior",
+    "Keep main, PR11, historical freeze, reports and release archive unchanged"
+  ],
+  "acceptance_vs_main_v5": {
+    "required_gain": "at least 2% clean group-macro RMSE OR 5% fault-event group-macro RMSE",
+    "max_clean_and_fault_aggregate_regression_fraction": 0.005,
+    "max_scalar_span_distance_regression_fraction": 0.01,
+    "max_per_bag_receiver_clean_regression": "max(0.005 m/s, 5% of main v5 RMSE)",
+    "coverage_loss": 0,
+    "false_stop_increase": 0,
+    "unrecovered_fault_increase": 0,
+    "tests": "unit, research-integrity and actual installed ROS/offline checks must pass before claiming a merge-ready candidate"
+  },
+  "reporting": "Preserve all attempted variants and failures. Commit selected code and configuration before validation. Report all regressions, exact base/head SHAs and commands in a Russian PR. No claim of statistical significance from bag/receiver win counts. Do not merge or switch the operational default automatically."
+}

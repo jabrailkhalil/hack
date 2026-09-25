@@ -1,27 +1,39 @@
-# Резервная одометрия трамвая — активный профиль v5
+# Резервная одометрия трамвая — активный champion v7
 
-**Стандартный запуск использует `adaptive_v5`: `adaptation_tau_s=0.5`.** Это профиль из объединённого PR #10, повторно проверенный при отборе v6. Пять новых гипотез v6 отклонены: они уменьшали часть ошибок, но ухудшали устойчивость больше заранее разрешённого порога. Их экспериментальные патчи не включены в runtime.
+**Стандартный запуск теперь использует guarded v7**: внутренний observer остаётся
+проверенным v5, а опубликованная скорость получает причинную output-only
+компенсацию возраста свежих колёсных измерений. Дополнительно в общем ядре
+включена защита от ложной остановки при общей блокировке колёс на малой скорости.
 
-| Одинаковый validation-набор | Прежний default v4 | Активный v5 | Изменение |
+| Одинаковый validation-набор | Inner v5 | Champion v7 | Изменение |
 |---|---:|---:|---:|
-| Group-macro RMSE скорости, м/с | 0.118068 | 0.117138 | −0.79% |
-| Group-macro RMSE в fault-окнах, м/с | 0.569973 | 0.538434 | −5.53% |
-| Скалярная RMSE дистанции по непрерывным отрезкам, м | 4.620252 | 4.630978 | **+0.23%** |
+| Group-macro RMSE скорости, м/с | 0.117138 | **0.114550** | **−2.21%** |
+| Group-macro RMSE в исходных fault-окнах, м/с | 0.538434 | **0.538287** | −0.03% |
+| Скалярная RMSE дистанции по непрерывным отрезкам, м | 4.630978 | **4.595481** | −0.77% |
 
-Выбор сделан по точности и устойчивости с ограничением регрессий; это не улучшение каждой метрики. 19 validation-bag, 698891 сопоставленная точка, оба GNSS-приёмника, одинаковые timestamps и маски. Validation используется повторно, поэтому эти результаты **не являются новым независимым final test**.
+698891 сопоставленная точка; clean улучшился в 25 из 30 bag/receiver-пар.
+Это повторно используемый validation, **не новый независимый final test** и не
+официальный балл.
 
-**[Полный отбор и все пять отклонений](reports/research_v6/REPORT.md)** · **[Конфигурация и её контрольные суммы](reports/research_v6/PROMOTION.json)** · **[Таблица сравнения](reports/research_v6/comparison.csv)** · **[Инструкция запуска](submission/JUDGE_GUIDE.md)**.
+Отдельная low-speed wheel-lock suite проверяет другой отказ: при блокировке обеих
+тележек на скорости 1–2 м/с event RMSE v5 снижен с 2.68877 до **0.316586 м/с**,
+false-stop samples 200→0 и unrecovered 1→0. Число 88.23% относится только к этой
+инъекции, не ко всему датасету.
 
-## Запуск текущего лучшего проверенного профиля
+**[Champion evidence](reports/champion_v7/README.md)** ·
+**[Promotion record](reports/champion_v7/PROMOTION.json)** ·
+**[Инструкция запуска](submission/JUDGE_GUIDE.md)**.
 
-В подготовленной Ubuntu 22.04 / ROS 2 Humble из корня checkout:
+## Запуск текущего champion
+
+В подготовленной Ubuntu 22.04 / ROS 2 Humble:
 
 ```bash
 bash submission/build.sh
 bash submission/run.sh
 ```
 
-Или после сборки и подключения окружения:
+или:
 
 ```bash
 source /opt/ros/humble/setup.bash
@@ -29,14 +41,17 @@ source install/setup.bash
 ros2 launch reserve_odometry odometry.launch.py
 ```
 
-Больше не нужно отдельно передавать `adaptive_v5.yaml`: `default.yaml` ему побайтно соответствует. Голый `ros2 run` **без** `--params-file` по-прежнему использует прежние `Config()` defaults, а не выбранный профиль. Для воспроизведения старой v4:
+Канонический `odometry.launch.py` запускает `guarded_odometry_node` с
+`guarded_readout_v7.yaml`. Для A/B-воспроизведения внутреннего v5:
 
 ```bash
-ros2 launch reserve_odometry odometry.launch.py \
-  params_file:="$PWD/src/reserve_odometry/config/frozen_v4.yaml"
+ros2 launch reserve_odometry v5_odometry.launch.py
 ```
 
-Основной контур использует только controller/front/rear vehicle-топики, без GNSS, IMU, LLM, numpy или SciPy. Выходы: VelocitySensor на `/result/velocity`, Odometry на `/result/position`, диагностика. 20 Гц, `alignment_delay_s=0`. Физические коэффициенты v3 не переобучались, ядро и ROS-адаптер v4 сохранены.
+Исторический v4 остаётся в `frozen_v4.yaml` и в неизменном standalone ZIP.
+Основной runtime использует только controller/front/rear vehicle-топики, без
+GNSS, IMU, LLM, numpy или SciPy. Выходы: VelocitySensor, Odometry и diagnostics,
+20 Гц, deliberate alignment delay = 0.
 
 ## Две разные версии доказательств
 

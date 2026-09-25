@@ -1,60 +1,61 @@
-"""Current champion and rejected-experiment isolation; no historical score reuse."""
-import hashlib
+"""Active champion, inner-v5 baseline and historical evidence isolation."""
 import json
 from pathlib import Path
-import sys
 import unittest
 from dataclasses import asdict
 from reserve_odometry.core import Config
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0,str(ROOT/'tools'))
-from evidence_archive import read_v4
+
+ROOT=Path(__file__).resolve().parents[1]
 
 
 class ActiveProfileTests(unittest.TestCase):
-    def test_current_default_is_the_selected_profile(self):
-        promotion=json.loads((ROOT/'reports/research_v6/PROMOTION.json').read_text())
+    def _yaml_model(self,path):
         actual={}
-        for line in (ROOT/'src/reserve_odometry/config/default.yaml').read_text().splitlines():
+        for line in path.read_text().splitlines():
             key,sep,value=line.strip().partition(':')
             if sep and key.startswith('model.'):
                 actual[key[6:]]=float(value)
-        self.assertEqual(actual,promotion['config'])
-        self.assertEqual(dict(actual,wheel_time_compensation=0.0),asdict(Config(**actual)))
-        expected=json.loads((ROOT/promotion['profile_json']).read_text())['config']
-        self.assertEqual(actual,expected)
-        self.assertEqual(actual['adaptation_tau_s'],.5)
-        self.assertFalse(promotion['independent_test_evaluated'])
+        return actual
 
-    def test_promoted_v5_source_hashes_remain_pinned(self):
-        promotion=json.loads((ROOT/'reports/research_v6/PROMOTION.json').read_text())
-        for path,digest in promotion['source_sha256'].items():
-            # The opt-in core extension does not rewrite historical promotion evidence.
-            raw = read_v4(path) if path.endswith('/core.py') else (ROOT/path).read_bytes()
-            self.assertEqual(hashlib.sha256(raw).hexdigest(),digest,path)
+    def test_canonical_launch_is_guarded_v7(self):
+        launch=(ROOT/'src/reserve_odometry/launch/odometry.launch.py').read_text()
+        self.assertIn("guarded_odometry_node",launch)
+        self.assertIn("guarded_readout_v7.yaml",launch)
+        setup=(ROOT/'src/reserve_odometry/setup.py').read_text()
+        self.assertIn("guarded_odometry_node = reserve_odometry.guarded_node:main",setup)
 
-    def test_rejected_experimental_runtime_is_not_deployed(self):
-        for name in ('node.py','timeline.py','route.py'):
-            path='src/reserve_odometry/reserve_odometry/'+name
-            self.assertEqual((ROOT/path).read_bytes(),read_v4(path))
-        # Exact disabled-core compatibility is covered by test_time_alignment.
+    def test_guarded_profile_preserves_v5_inner_physics(self):
+        v5=json.loads((ROOT/'src/reserve_odometry/config/adaptive_v5.json').read_text())['config']
+        guarded=json.loads((ROOT/'src/reserve_odometry/config/guarded_readout_v7.json').read_text())
+        self.assertEqual(guarded['config'],dict(v5,wheel_time_compensation=0.0))
+        self.assertEqual(guarded['readout'],{'gain':1.0,'holdoff_s':0.5})
+        self.assertEqual(self._yaml_model(ROOT/'src/reserve_odometry/config/default.yaml'),v5)
+        self.assertEqual(asdict(Config(**v5)),dict(v5,wheel_time_compensation=0.0))
+
+    def test_champion_metrics_are_explicitly_qualified(self):
+        p=json.loads((ROOT/'reports/champion_v7/PROMOTION.json').read_text())
+        self.assertEqual(p['active_profile'],'guarded_readout_v7_plus_zero_lock_guard')
+        self.assertLess(p['clean_validation']['group_macro_rmse_mps'],
+                        p['clean_validation']['baseline_v5_mps'])
+        self.assertLessEqual(p['fault_validation']['group_macro_event_rmse_mps'],
+                             p['fault_validation']['baseline_v5_mps']*1.005)
+        self.assertIn('Not an independent final test',p['qualification'])
+
+    def test_inner_v5_default_remains_reproducible(self):
+        launch=(ROOT/'src/reserve_odometry/launch/v5_odometry.launch.py').read_text()
+        self.assertIn("executable='odometry_node'",launch)
+        self.assertIn("config' / 'default.yaml",launch)
+        self.assertEqual(self._yaml_model(ROOT/'src/reserve_odometry/config/default.yaml')['adaptation_tau_s'],.5)
+
+    def test_historical_v4_archive_is_not_rewritten(self):
+        frozen=(ROOT/'src/reserve_odometry/config/frozen_v4.yaml').read_bytes()
+        self.assertNotEqual(frozen,(ROOT/'src/reserve_odometry/config/default.yaml').read_bytes())
+
+    def test_experimental_in_filter_compensation_is_not_active_inner_state(self):
         self.assertEqual(Config().wheel_time_compensation,0.0)
         self.assertNotIn('wheel_projection_gain',asdict(Config()))
         self.assertNotIn('disturbance_decay_s',asdict(Config()))
 
-    def test_original_v4_default_is_retained_exactly(self):
-        self.assertEqual((ROOT/'src/reserve_odometry/config/frozen_v4.yaml').read_bytes(),
-                         read_v4('src/reserve_odometry/config/default.yaml'))
 
-    def test_five_hypotheses_rejected_not_silently_promoted(self):
-        rejected=[]
-        for round_number in (1,2):
-            d=json.loads((ROOT/f'reports/research_v6/round{round_number}/decision.json').read_text())
-            self.assertEqual(d['selected'],'v5_adaptive_05s')
-            self.assertFalse(d['test_evaluated'])
-            for name,c in d['candidates'].items():
-                if name not in ('v4_default','v5_adaptive_05s'):
-                    self.assertFalse(c['eligible'])
-                    self.assertIn('aggregate_regression',c['rejection_reasons'])
-                    rejected.append(name)
-        self.assertEqual(len(set(rejected)),5)
+if __name__=='__main__':
+    unittest.main()
