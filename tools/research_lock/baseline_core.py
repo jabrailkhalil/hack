@@ -284,18 +284,10 @@ class Observer:
             return self._output(t, 0.0, 'WAITING_FOR_INITIALIZATION', statuses, command_stale)
         gate = min(c.innovation_cap_mps,
                    c.innovation_floor_mps + 3 * math.sqrt(p_prior + c.wheel_sigma_mps ** 2))
-        # Held fresh zeros may corroborate a new zero from the other wheel.
-        # This protects alternating sensor callbacks without re-assimilating data.
-        zero_pair = (all(self._valid(x, t, c.max_age_s) and abs(x.value) < c.stop_speed_mps
-                         for x in (front, rear)) and
-                     abs(front.t - rear.t) <= c.pair_skew_s and
-                     abs(predicted) > c.stop_model_speed_mps)
         accepted = []
         for i, sample in enumerate(samples):
             if sample is not None:
-                if zero_pair:
-                    statuses[i] = 'ZERO_LOCK_SUSPECT'
-                elif abs(sample.value - predicted) <= gate:
+                if abs(sample.value - predicted) <= gate:
                     accepted.append(i)
                 else:
                     statuses[i] = 'MODEL_DISAGREEMENT'

@@ -103,7 +103,8 @@ class Estimate:
 
 class Observer:
     """One bounded state and two bounded sensor histories; constant memory."""
-    def __init__(self, config: Optional[Config] = None):
+    def __init__(self, config: Optional[Config] = None, decay_tau_s=2.0):
+        self.decay_tau_s = decay_tau_s
         self.c = config or Config()
         self.reset()
 
@@ -248,6 +249,9 @@ class Observer:
         if not command_stale and abs(command.value) > 1.000001:
             command_stale = True
         u = 0.0 if command_stale else clip(command.value, -1, 1)
+        # Hypothesis: forget stale disturbance only when BOTH wheels are unavailable.
+        if not any(self._valid(x, t, c.max_age_s) for x in (front, rear)):
+            self.disturbance *= math.exp(-dt / self.decay_tau_s)
         previous_v = self.v
         target = self.drive_target(u, self.v)
         alpha = 1.0 - math.exp(-dt / c.actuator_tau_s)
@@ -284,18 +288,10 @@ class Observer:
             return self._output(t, 0.0, 'WAITING_FOR_INITIALIZATION', statuses, command_stale)
         gate = min(c.innovation_cap_mps,
                    c.innovation_floor_mps + 3 * math.sqrt(p_prior + c.wheel_sigma_mps ** 2))
-        # Held fresh zeros may corroborate a new zero from the other wheel.
-        # This protects alternating sensor callbacks without re-assimilating data.
-        zero_pair = (all(self._valid(x, t, c.max_age_s) and abs(x.value) < c.stop_speed_mps
-                         for x in (front, rear)) and
-                     abs(front.t - rear.t) <= c.pair_skew_s and
-                     abs(predicted) > c.stop_model_speed_mps)
         accepted = []
         for i, sample in enumerate(samples):
             if sample is not None:
-                if zero_pair:
-                    statuses[i] = 'ZERO_LOCK_SUSPECT'
-                elif abs(sample.value - predicted) <= gate:
+                if abs(sample.value - predicted) <= gate:
                     accepted.append(i)
                 else:
                     statuses[i] = 'MODEL_DISAGREEMENT'

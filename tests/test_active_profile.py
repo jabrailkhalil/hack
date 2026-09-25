@@ -13,7 +13,7 @@ from evidence_archive import read_v4
 
 class ActiveProfileTests(unittest.TestCase):
     def test_current_default_is_the_selected_profile(self):
-        promotion=json.loads((ROOT/'reports/research_v6/PROMOTION.json').read_text())
+        promotion=json.loads((ROOT/'reports/research_lock/PROMOTION.json').read_text())
         actual={}
         for line in (ROOT/'src/reserve_odometry/config/default.yaml').read_text().splitlines():
             key,sep,value=line.strip().partition(':')
@@ -27,12 +27,14 @@ class ActiveProfileTests(unittest.TestCase):
         self.assertFalse(promotion['independent_test_evaluated'])
 
     def test_active_source_hashes_are_pinned_separately(self):
-        promotion=json.loads((ROOT/'reports/research_v6/PROMOTION.json').read_text())
+        promotion=json.loads((ROOT/'reports/research_lock/PROMOTION.json').read_text())
         for path,digest in promotion['source_sha256'].items():
             self.assertEqual(hashlib.sha256((ROOT/path).read_bytes()).hexdigest(),digest,path)
 
     def test_rejected_experimental_runtime_is_not_deployed(self):
-        for name in ('core.py','node.py','timeline.py','route.py'):
+        self.assertEqual((ROOT/'src/reserve_odometry/reserve_odometry/core.py').read_bytes(),
+                         (ROOT/'tools/research_lock/prototype_core.py').read_bytes())
+        for name in ('node.py','timeline.py','route.py'):
             path='src/reserve_odometry/reserve_odometry/'+name
             self.assertEqual((ROOT/path).read_bytes(),read_v4(path))
         self.assertNotIn('wheel_projection_gain',asdict(Config()))

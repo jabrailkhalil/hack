@@ -49,6 +49,7 @@ jobs:
           python3 tests/ros_calibrated_smoke.py
           python3 tests/ros_calibrated_smoke.py --params-file install/reserve_odometry/share/reserve_odometry/config/adaptive_v5.yaml --expected-json src/reserve_odometry/config/adaptive_v5.json
           python3 tests/ros_fault_smoke.py
+          python3 tests/ros_low_speed_lock_smoke.py
   offline-limited:
     runs-on: ubuntu-22.04
     timeout-minutes: 15
@@ -69,5 +70,6 @@ jobs:
               python3 tests/ros_calibrated_smoke.py
               python3 tests/ros_calibrated_smoke.py --params-file install_offline/reserve_odometry/share/reserve_odometry/config/adaptive_v5.yaml --expected-json src/reserve_odometry/config/adaptive_v5.json
               python3 tests/ros_fault_smoke.py
+              python3 tests/ros_low_speed_lock_smoke.py
               python3 tests/cdr_roundtrip.py
             '
