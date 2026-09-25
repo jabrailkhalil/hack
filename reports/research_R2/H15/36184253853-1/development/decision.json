@@ -1,0 +1,155 @@
+{
+  "verdict": "READY_FOR_FROZEN_VALIDATION",
+  "selected": "h15_l004",
+  "safety": {
+    "h15_l001": [],
+    "h15_l004": []
+  },
+  "coverage": {
+    "h15_l001": {
+      "fits": 41250,
+      "fit_bags": [
+        "30618_0652866c",
+        "30618_073f08d1",
+        "30618_117c2d02",
+        "30618_27e994fc",
+        "30618_3e012faf",
+        "30618_46e21b9b",
+        "30618_5036aa78",
+        "30618_74559c73",
+        "30618_88548b02",
+        "30618_bcc9e7a2",
+        "30639_9c362687",
+        "30639_c31df386",
+        "30639_dce52be4",
+        "30639_e4379d7f"
+      ],
+      "effective_ticks": 2949,
+      "loss_bags": [
+        "30618_0652866c",
+        "30618_073f08d1",
+        "30618_117c2d02",
+        "30618_27e994fc",
+        "30618_46e21b9b",
+        "30618_5036aa78",
+        "30618_88548b02",
+        "30639_9c362687",
+        "30639_c31df386",
+        "30639_dce52be4",
+        "30639_e4379d7f"
+      ],
+      "sufficient": true
+    },
+    "h15_l004": {
+      "fits": 41248,
+      "fit_bags": [
+        "30618_0652866c",
+        "30618_073f08d1",
+        "30618_117c2d02",
+        "30618_27e994fc",
+        "30618_3e012faf",
+        "30618_46e21b9b",
+        "30618_5036aa78",
+        "30618_74559c73",
+        "30618_88548b02",
+        "30618_bcc9e7a2",
+        "30639_9c362687",
+        "30639_c31df386",
+        "30639_dce52be4",
+        "30639_e4379d7f"
+      ],
+      "effective_ticks": 2942,
+      "loss_bags": [
+        "30618_0652866c",
+        "30618_073f08d1",
+        "30618_117c2d02",
+        "30618_27e994fc",
+        "30618_46e21b9b",
+        "30618_5036aa78",
+        "30618_88548b02",
+        "30639_9c362687",
+        "30639_c31df386",
+        "30639_dce52be4",
+        "30639_e4379d7f"
+      ],
+      "sufficient": true
+    }
+  },
+  "summary": {
+    "baseline_v2": {
+      "clean_rmse": 0.09266814298282507,
+      "fault_rmse": 0.2375486120563008,
+      "distance_rmse": 5.310295004801444,
+      "samples": 394221,
+      "pooled_rmse": 0.1293056944774334,
+      "false_stops_clean": 0,
+      "false_stops_fault": 0,
+      "unrecovered": 4,
+      "clean_mae": 0.03493335290464455,
+      "clean_signed_bias": 0.0063906774202189785,
+      "fault_mae": 0.15379652933081722,
+      "fault_signed_bias": 0.01117030785164182,
+      "recovery_group_macro_s": 0.7243582848749885
+    },
+    "h15_l001": {
+      "clean_rmse": 0.09266686134750342,
+      "fault_rmse": 0.2536207360794013,
+      "distance_rmse": 5.310301959600789,
+      "samples": 394221,
+      "pooled_rmse": 0.12930484279901228,
+      "false_stops_clean": 0,
+      "false_stops_fault": 0,
+      "unrecovered": 4,
+      "clean_mae": 0.03493303251841049,
+      "clean_signed_bias": 0.006390357757111709,
+      "fault_mae": 0.15866744488829077,
+      "fault_signed_bias": 0.01425896812088405,
+      "recovery_group_macro_s": 0.7368582848749887
+    },
+    "h15_l004": {
+      "clean_rmse": 0.09266707019253544,
+      "fault_rmse": 0.2458872634275083,
+      "distance_rmse": 5.31029813177856,
+      "samples": 394221,
+      "pooled_rmse": 0.12930498152646844,
+      "false_stops_clean": 0,
+      "false_stops_fault": 0,
+      "unrecovered": 4,
+      "clean_mae": 0.03493308119940517,
+      "clean_signed_bias": 0.006390406314469532,
+      "fault_mae": 0.15630328413590117,
+      "fault_signed_bias": 0.014581639371858707,
+      "recovery_group_macro_s": 0.7290457848749883
+    }
+  },
+  "candidates": {
+    "h15_l001": {
+      "eligible": false,
+      "reasons": [
+        "aggregate_regression:fault_rmse",
+        "insufficient_gain"
+      ],
+      "relative_change": {
+        "clean_rmse": -1.3830376658030552e-05,
+        "fault_rmse": 0.06765825270025694,
+        "pooled_rmse": -6.586549993525814e-06,
+        "distance_rmse": 1.3096822943925446e-06
+      }
+    },
+    "h15_l004": {
+      "eligible": false,
+      "reasons": [
+        "aggregate_regression:fault_rmse",
+        "insufficient_gain"
+      ],
+      "relative_change": {
+        "clean_rmse": -1.1576689195380574e-05,
+        "fault_rmse": 0.035102926087529296,
+        "pooled_rmse": -5.513685749414243e-06,
+        "distance_rmse": 5.888518648244911e-07
+      }
+    }
+  },
+  "validation_opened": false,
+  "merge_ready": false
+}
