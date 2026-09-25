@@ -1,0 +1,35 @@
+--- a/src/reserve_odometry/reserve_odometry/core.py
++++ b/src/reserve_odometry/reserve_odometry/core.py
+@@ -189,6 +189,14 @@
+         self.pair_pending = [None, None]
+         return front, rear
+ 
++    def _reacquire_dwell(self, samples, previous):
++        """Policy hook; the default keeps the original fixed dwell."""
++        return self.c.reacquire_dwell_s
++
++    def _reacquire_limit(self, pair_dt):
++        """Policy hook; limit is per nominal fresh pair, not output tick."""
++        return self.c.reacquire_step_mps * min(1.0, max(0.0, pair_dt) / .1)
++
+     def _reacquire_pair(self, samples, predicted):
+         """Return a sustained agreeing pair target after model/odometry divergence.
+ 
+@@ -225,7 +233,7 @@
+         if self.reacquire_since is None:
+             self.reacquire_since = t_pair
+         self.reacquire_previous = Sample(t_pair, z)
+-        if t_pair - self.reacquire_since + 1e-9 < c.reacquire_dwell_s:
++        if t_pair - self.reacquire_since + 1e-9 < self._reacquire_dwell(samples, previous):
+             return None
+         return z
+ 
+@@ -332,7 +340,7 @@
+                 if target_v is not None:
+                     pair_dt = self.reacquire_previous.t - old_pair.t if old_pair else 0.0
+                     # Config limit is per nominal 0.1 s pair, not per output tick.
+-                    limit = c.reacquire_step_mps * min(1.0, max(0.0, pair_dt) / .1)
++                    limit = self._reacquire_limit(pair_dt)
+                     correction = clip(target_v - predicted, -limit, limit)
+                     self.v = clip(predicted + correction, -c.max_speed_mps, c.max_speed_mps)
+                     self.pv = max(self.pv, 4 * c.wheel_sigma_mps ** 2)

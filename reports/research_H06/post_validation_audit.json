@@ -1,0 +1,56 @@
+{
+  "source_commit": "3ab24fbeb87c8622f06e52dd19d29abe5ee12191",
+  "raw_results_sha256": "2618bdc2daebfd1cb38ed150dd63ac633bf1916adec328571c7f03a4d1935741",
+  "freeze_matches_started": true,
+  "baseline_reproduction": {
+    "compared_numeric_fields": 468,
+    "max_absolute_delta": 0.0,
+    "passed": true
+  },
+  "scopes": {
+    "clean": {
+      "bags_or_scenarios": 19,
+      "comparisons_with_reference": 30,
+      "numeric_top_level_fields_compared": 264,
+      "modes": {
+        "v5_adaptive_05s": {
+          "INITIALIZED": 19,
+          "FUSED": 157116,
+          "MODEL_ONLY": 183565,
+          "STOPPED": 118579,
+          "SINGLE_WHEEL": 2007
+        },
+        "H06_evidence_04s_15x": {
+          "INITIALIZED": 19,
+          "FUSED": 157116,
+          "MODEL_ONLY": 183565,
+          "STOPPED": 118579,
+          "SINGLE_WHEEL": 2007
+        }
+      }
+    },
+    "stress": {
+      "bags_or_scenarios": 76,
+      "comparisons_with_reference": 120,
+      "numeric_top_level_fields_compared": 1296,
+      "modes": {
+        "v5_adaptive_05s": {
+          "INITIALIZED": 76,
+          "MODEL_ONLY": 26531,
+          "FUSED": 16564,
+          "STOPPED": 10132,
+          "SINGLE_WHEEL": 1051
+        },
+        "H06_evidence_04s_15x": {
+          "INITIALIZED": 76,
+          "MODEL_ONLY": 26531,
+          "FUSED": 16564,
+          "STOPPED": 10132,
+          "SINGLE_WHEEL": 1051
+        }
+      }
+    }
+  },
+  "differences": [],
+  "interpretation": "No REACQUIRING output in either model; efficacy of recovery policy was not exercised by this fixed suite. No parameter tuning or new measurement IO."
+}

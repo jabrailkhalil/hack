@@ -1,0 +1,80 @@
+name: H06 evidence reacquisition research
+on:
+  push:
+    branches: ['research/parallel-H06']
+    paths: ['research/H06/RUN']
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: research-H06
+  cancel-in-progress: false
+jobs:
+  compare:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 25
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - name: Create unique evidence directory
+        run: |
+          set -eu
+          out="$RUNNER_TEMP/H06-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          mkdir "$out"
+          echo "H06_OUT=$out" >> "$GITHUB_ENV"
+      - name: Install research dependencies
+        run: python -m pip install -r requirements-research.txt
+      - name: Baseline and evaluator invariant checks
+        run: |
+          set -euo pipefail
+          PYTHONPATH=src/reserve_odometry python -m unittest discover -s tests -v 2>&1 | tee "$H06_OUT/unit-baseline.log"
+          python -m unittest discover -s research/tests -v 2>&1 | tee "$H06_OUT/research-integrity.log"
+      - name: Apply isolated experimental core hooks and test H06
+        run: |
+          set -euo pipefail
+          git apply --check research/H06/core-hooks.patch
+          git apply research/H06/core-hooks.patch
+          PYTHONPATH=src/reserve_odometry python -m unittest discover -s tests -p test_core.py -v 2>&1 | tee "$H06_OUT/unit-core-hooks.log"
+          PYTHONPATH=src/reserve_odometry python -m unittest discover -s research/H06/tests -v 2>&1 | tee "$H06_OUT/unit-h06.log"
+          PYTHONPATH=src/reserve_odometry:tests python -c 'import unittest, test_core; from reserve_odometry.recovery import RecoveryObserver; test_core.Observer = RecoveryObserver; result = unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.loadTestsFromTestCase(test_core.ObserverTests)); raise SystemExit(not result.wasSuccessful())' 2>&1 | tee "$H06_OUT/unit-legacy-on-h06.log"
+      - name: Fetch exact audited data
+        run: |
+          set -euo pipefail
+          python tools/get_dataset.py 2>&1 | tee "$H06_OUT/dataset.log"
+      - name: Train-only execution checks and candidate freeze
+        run: |
+          set -euo pipefail
+          python tools/research_H06/run.py --stage train-freeze --output "$H06_OUT" 2>&1 | tee "$H06_OUT/train.log"
+      - name: One paired reused-validation comparison
+        run: |
+          set -euo pipefail
+          python tools/research_H06/run.py --stage validation --output "$H06_OUT" --workers 2 2>&1 | tee "$H06_OUT/validation.log"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: H06-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.H06_OUT }}/
+          retention-days: 30
+      - name: Preserve new checkpoint without updating research branch or published reports
+        if: always()
+        run: |
+          set -eu
+          if [ -z "${H06_OUT:-}" ] || [ ! -d "$H06_OUT" ]; then exit 0; fi
+          git restore src/reserve_odometry/reserve_odometry/core.py
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          branch="checkpoint/H06-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          git switch -c "$branch"
+          destination="reports/research_H06/runs/$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          mkdir -p "$destination"
+          cp -a "$H06_OUT/." "$destination/"
+          git add "$destination"
+          git diff --cached --quiet || git commit -m "research(H06): preserve measured evidence $GITHUB_RUN_ID/$GITHUB_RUN_ATTEMPT"
+          git push origin "HEAD:refs/heads/$branch"
