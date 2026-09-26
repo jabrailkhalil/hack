@@ -1,0 +1,59 @@
+name: Strict single-main adjudication
+on:
+  push:
+    branches: [review/single-main-20260926]
+    paths: ['.github/workflows/adjudication.yml','research/adjudication/bench.py','research/adjudication/prepare.py']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  compare:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 45
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - name: Verify pinned implementations and publish exact experiment sources
+        run: |
+          python research/adjudication/prepare.py
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git switch -c "checkpoint/adjudication-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          git add research/adjudication
+          git diff --cached --quiet || git commit -m "review: persist frozen comparison inputs before measurements"
+          git push origin HEAD
+      - run: python -m pip install -r requirements-research.txt
+      - name: Extract only existing validation bags
+        run: python research/adjudication/prepare.py --data
+      - name: Nine-model replay without fitting or test-data access
+        run: |
+          mkdir -p reports/adjudication
+          export TRAM_OURS="$PWD/.adjudication/ours"
+          export TRAM_PEER_PORT="$PWD/.adjudication/peer/tools/tram_port"
+          export TRAM_DATA="$PWD/.adjudication/validation"
+          python research/adjudication/bench.py --output "reports/adjudication/run-$GITHUB_RUN_ID" --workers 2 | tee reports/adjudication/replay.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: strict-adjudication-evidence
+          path: |
+            reports/adjudication/
+            research/adjudication/
+          retention-days: 30
+      - name: Persist all outcomes without changing main
+        if: always()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          if git branch --show-current | grep -q '^checkpoint/adjudication-'; then
+            git add -f reports/adjudication research/adjudication
+            git diff --cached --quiet || git commit -m "review: preserve complete adjudication outcome $GITHUB_RUN_ID"
+            git push origin HEAD
+          fi
