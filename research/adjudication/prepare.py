@@ -41,8 +41,8 @@ def source():
     save(HERE/'peer_source_hashes.json',manifests['A'])
     plan=json.loads((WORK/'ours/research/plan_v3.json').read_text());known=git('ls-tree','-r','--name-only',SCENARIOS).decode().splitlines();scenarios={}
     for bag in sorted(plan['splits']['validation']):
-        matches=[p for p in known if p.endswith('/validation/bags/'+bag+'.json')]
-        if len(matches)!=1:raise ValueError('ambiguous frozen evidence path '+bag)
+        matches=[p for p in known if p.startswith('reports/research_H13/runs/') and p.endswith('/validation/bags/'+bag+'.json')]
+        if len(matches)!=1:raise ValueError('ambiguous H13 frozen evidence path '+bag)
         prior=json.loads(git('show',SCENARIOS+':'+matches[0]))
         scenarios[bag]={suite:[row['fault'] for row in prior[suite]] for suite in ('stress','abrupt','slow')}
     save(HERE/'scenarios.json',scenarios)
