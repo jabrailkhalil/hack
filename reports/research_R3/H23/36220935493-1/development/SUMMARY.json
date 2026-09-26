@@ -1,0 +1,145 @@
+{
+  "baseline": "e3b0c9c039d2953fbfcda51231263d38ef9f1024",
+  "candidate": "H23_B_outage_5s_v1",
+  "summary": {
+    "baseline_v2": {
+      "clean_rmse": 0.09266814298282507,
+      "fault_rmse": 0.2375486120563008,
+      "distance_rmse": 5.310295004801444,
+      "samples": 394221,
+      "pooled_rmse": 0.1293056944774334,
+      "false_stops_clean": 0,
+      "false_stops_fault": 0,
+      "unrecovered": 4,
+      "clean_mae": 0.03493335290464455,
+      "clean_signed_bias": 0.0063906774202189785,
+      "fault_recovery_mae": 0.15379652933081722,
+      "fault_recovery_signed_bias": 0.01117030785164182,
+      "recovery_macro_s": 0.7243582848749885
+    },
+    "balanced_physics": {
+      "clean_rmse": 0.0926682002253989,
+      "fault_rmse": 0.24373341046003424,
+      "distance_rmse": 5.310299050673187,
+      "samples": 394221,
+      "pooled_rmse": 0.12930573121385364,
+      "false_stops_clean": 0,
+      "false_stops_fault": 0,
+      "unrecovered": 4,
+      "clean_mae": 0.034933377624014626,
+      "clean_signed_bias": 0.00639070477031662,
+      "fault_recovery_mae": 0.15558916123189476,
+      "fault_recovery_signed_bias": 0.02818854864784111,
+      "recovery_macro_s": 0.7368582848749896
+    }
+  },
+  "relative_change": {
+    "clean_rmse": 6.177157758635587e-07,
+    "fault_rmse": 0.02603592734217952,
+    "pooled_rmse": 2.8410520047650323e-07,
+    "distance_rmse": 7.618920869756352e-07
+  },
+  "full_fault_distance": {
+    "baseline_v2": 6.269376947281123,
+    "balanced_physics": 6.317935063601191
+  },
+  "suites": {
+    "low_speed": {
+      "baseline_v2": {
+        "event_rmse": 0.3685456733063761,
+        "mae": 0.2864578234628004,
+        "false_stops": 0,
+        "unrecovered": 6,
+        "recovery_s": 0.3024757251249923
+      },
+      "balanced_physics": {
+        "event_rmse": 0.37519090638945585,
+        "mae": 0.28819211502282155,
+        "false_stops": 0,
+        "unrecovered": 6,
+        "recovery_s": 0.3071632251249925
+      }
+    },
+    "common": {
+      "baseline_v2": {
+        "event_rmse": 0.10063227230134311,
+        "mae": 0.08740958401041173,
+        "false_stops": 0,
+        "unrecovered": 2,
+        "recovery_s": 0.10092078487500089
+      },
+      "balanced_physics": {
+        "event_rmse": 0.10063227230134311,
+        "mae": 0.08740958401041173,
+        "false_stops": 0,
+        "unrecovered": 2,
+        "recovery_s": 0.10092078487500089
+      }
+    },
+    "false_pair": {
+      "baseline_v2": {
+        "event_rmse": 0.8372551573275174,
+        "mae": 0.463138836696355,
+        "false_stops": 0,
+        "unrecovered": 1,
+        "recovery_s": 2.5431082848749877
+      },
+      "balanced_physics": {
+        "event_rmse": 0.8329388655458239,
+        "mae": 0.46676190021065345,
+        "false_stops": 0,
+        "unrecovered": 1,
+        "recovery_s": 2.5431082848749877
+      }
+    }
+  },
+  "coverage": {
+    "passed": true,
+    "counts": {
+      "outputs": 359956,
+      "inner_checks": 359956,
+      "phase_DORMANT": 354745,
+      "starts": 238,
+      "phase_ACTIVE": 3386,
+      "changed_outputs": 3215,
+      "phase_RELEASE": 124,
+      "offset_fallbacks": 2,
+      "phase_FALLBACK_OFFSET": 6,
+      "active_command_changes": 33,
+      "phase_BLOCKED": 1695
+    },
+    "groups": [
+      "664cca45aeb0db23",
+      "70bb14d1c90f301f",
+      "711abb923942f9fe",
+      "8269991eafa82c45",
+      "a0c46036cc19092a",
+      "a8a4c11ebcc1dde2"
+    ]
+  },
+  "mechanism_status": "ACTIVE",
+  "coverage_status": "SUFFICIENT",
+  "scientific_verdict": "REJECTED",
+  "accuracy_contract_passed": false,
+  "runtime_verified": false,
+  "ready_to_merge": false,
+  "rejection_reasons": [
+    "aggregate_regression:fault_rmse",
+    "insufficient_gain",
+    "low_speed:event_regression"
+  ],
+  "test_evaluated": false,
+  "stage": "development",
+  "validation_evaluated": false,
+  "baseline_reproduction_fingerprint": "bb02a7fb46bdc2a01b3cd106ba3f9b1cd2c5f8e507c01e22a80d533867b19d2d",
+  "counts": {
+    "clean": 17,
+    "stress": 56,
+    "full": 56,
+    "low": 26,
+    "common": 28,
+    "false_pair": 14
+  },
+  "elapsed_s": 368.63189644499994,
+  "enabled_ros": "NOT_RUN_AFTER_REJECTION"
+}
