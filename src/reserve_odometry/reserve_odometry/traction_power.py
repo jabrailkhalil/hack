@@ -6,10 +6,11 @@ no new history, labels, measurement timing, or feedback/adaptation rules.
 """
 from .guarded_readout import GuardedReadoutObserver
 
+
 class TractionPowerObserver(GuardedReadoutObserver):
     def __init__(self, config=None, *, readout=None, enabled=False):
         if not isinstance(enabled, bool):
-            raise ValueError('enabled must be bool')
+            raise ValueError('enabled must be bool'):
         self._h37_enabled = enabled
         super().__init__(config, readout=readout)
 
