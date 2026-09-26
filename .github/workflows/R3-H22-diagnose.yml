@@ -1,0 +1,57 @@
+name: R3-H22 baseline diagnosis
+on:
+  push:
+    branches: [research/R3-H22]
+    paths: [.github/workflows/R3-H22-diagnose.yml]
+permissions:
+  contents: write
+jobs:
+  diagnosis:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - name: Prepare pinned environment and unique output
+        run: |
+          set -euo pipefail
+          export OUT="$RUNNER_TEMP/H22-diagnosis"
+          mkdir -p "$OUT/logs"
+          echo "OUT=$OUT" >> "$GITHUB_ENV"
+          python -m pip install -r requirements-research.txt 2>&1 | tee "$OUT/logs/install.txt"
+          python tools/get_dataset.py 2>&1 | tee "$OUT/logs/dataset.txt"
+      - name: Only train vehicle signals; no fit or validation
+        run: |
+          set -euo pipefail
+          python research/R3/H22/diagnose.py --output "$OUT/experiment" 2>&1 | tee "$OUT/logs/diagnosis.txt"
+      - name: Preserve exact source and compact premise evidence
+        if: always()
+        run: |
+          set -eu
+          git archive --format=tar.gz "$GITHUB_SHA" research/R3/H22 > "$OUT/measured-source.tar.gz"
+          if test -f research/R3/H22/manifest.json; then cp research/R3/H22/manifest.json "$OUT/"; fi
+          if test -f "$OUT/experiment/diagnosis.json"; then
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            branch="checkpoint/R3-H22-diagnosis-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+            git switch -c "$branch"
+            dest="reports/research_R3/H22/diagnosis-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+            mkdir -p "$dest"
+            cp "$OUT/experiment/diagnosis.json" "$OUT/experiment/access.json" "$OUT/experiment/train_groups.json" "$dest/"
+            git add "$dest"
+            git commit -m "research(R3-H22): preserve baseline-only bias probe $GITHUB_RUN_ID"
+            git push origin "HEAD:refs/heads/$branch"
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: R3-H22-diagnosis-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.OUT }}/
+          retention-days: 30
