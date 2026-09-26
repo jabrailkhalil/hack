@@ -1,0 +1,94 @@
+name: R2 H17 train development and cost
+on:
+  push:
+    branches: [research/round2-H17]
+    paths:
+      - .github/workflows/research-R2-H17.yml
+      - research/R2/H17/driver.py
+      - research/R2/H17/tests/**
+      - src/reserve_odometry/reserve_odometry/command_deadtime.py
+  workflow_dispatch:
+permissions:
+  contents: write
+defaults:
+  run:
+    shell: bash
+jobs:
+  experiment:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - name: Prepare isolated evidence and pinned dependencies
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/H17/logs"
+          python -m pip install -r requirements-research.txt 2>&1 | tee "$RUNNER_TEMP/H17/logs/dependencies.log"
+          git rev-parse HEAD > "$RUNNER_TEMP/H17/MEASURED_SOURCE_SHA.txt"
+          git diff 65bba39ed05c781f3f69a65c02f69931152cbfd9 HEAD -- src/reserve_odometry/reserve_odometry/command_deadtime.py > "$RUNNER_TEMP/H17/H17-command-deadtime.patch"
+          git archive HEAD research/R2/H17 src/reserve_odometry/reserve_odometry/command_deadtime.py > "$RUNNER_TEMP/H17/source.tar"
+      - name: Core Timeline guarded readout and H17 tests, no raw test payloads
+        run: |
+          set -euo pipefail
+          export PYTHONPATH=src/reserve_odometry
+          for pattern in test_core.py test_timeline.py test_guarded_readout.py; do
+            python -m unittest discover -s tests -p "$pattern" -v 2>&1 | tee "$RUNNER_TEMP/H17/logs/$pattern.log"
+          done
+          python -m unittest discover -s research/R2/H17/tests -v 2>&1 | tee "$RUNNER_TEMP/H17/logs/H17-tests.log"
+          python -m compileall -q src/reserve_odometry research/R2/H17
+          python -c "import runpy; m=runpy.run_path('research/R2/H17/driver.py'); print(m['preflight']())" | tee "$RUNNER_TEMP/H17/logs/preflight.log"
+      - name: Existing research-integrity checks, preserve their actual exit status
+        id: legacy
+        continue-on-error: true
+        run: |
+          set +e
+          python -m unittest discover -s research/tests -v > "$RUNNER_TEMP/H17/logs/research-integrity.log" 2>&1
+          code=$?
+          cat "$RUNNER_TEMP/H17/logs/research-integrity.log"
+          echo "$code" > "$RUNNER_TEMP/H17/logs/research-integrity.exit"
+          exit "$code"
+      - name: Obtain checksum-pinned dataset, no final-test evaluation
+        run: |
+          set -euo pipefail
+          python tools/get_dataset.py 2>&1 | tee "$RUNNER_TEMP/H17/logs/dataset.log"
+      - name: All train bags, vehicle topics only, exact canonical off check
+        run: |
+          set -euo pipefail
+          python research/R2/H17/driver.py --stage train --output "$RUNNER_TEMP/H17/train" --workers 2 2>&1 | tee "$RUNNER_TEMP/H17/logs/train.log"
+      - name: All development groups and three preregistered delays
+        run: |
+          set -euo pipefail
+          python research/R2/H17/driver.py --stage development --output "$RUNNER_TEMP/H17/development" --workers 2 2>&1 | tee "$RUNNER_TEMP/H17/logs/development.log"
+      - name: Paired AB BA post-warmup offline cost, not ROS latency
+        run: |
+          set -euo pipefail
+          python research/R2/H17/driver.py --stage cost --output "$RUNNER_TEMP/H17/cost" 2>&1 | tee "$RUNNER_TEMP/H17/logs/cost.log"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: R2-H17-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/H17/
+          retention-days: 30
+      - name: Append-only checkpoint; no source or main branch updates
+        if: always()
+        run: |
+          set -euo pipefail
+          test -d "$RUNNER_TEMP/H17" || exit 0
+          branch="checkpoint/R2-H17-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          destination="reports/research_R2/H17/$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git switch -c "$branch"
+          mkdir -p "$destination"
+          cp -a "$RUNNER_TEMP/H17/." "$destination/"
+          git add "$destination"
+          git commit -m "research(H17): preserve train/development/cost evidence $GITHUB_RUN_ID attempt $GITHUB_RUN_ATTEMPT"
+          git push origin "HEAD:refs/heads/$branch"

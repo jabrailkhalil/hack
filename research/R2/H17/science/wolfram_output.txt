@@ -1,0 +1,22 @@
+Actual service output, 2026-09-25; not a local symbolic simulation.
+The submitted worksheet used natural-language macros for the three quantities:
+qtau=\[FreeformPrompt]["0.3927619145850434 seconds"];
+qdt=\[FreeformPrompt]["0.05 seconds"];
+qfreq=\[FreeformPrompt]["2 radians per second"];
+
+Symbol::undefined2: Warning: Global symbols "L, L, L, L, L, L, L, L, L, L, L, L, L" are undefined.
+During evaluation of In[1]:= [INFO] Interpreted "0.3927619145850434 seconds" as: Quantity[0.3927619145850434, AmbiguityList[{"Seconds", "Arcseconds", "SiderealSeconds", "SecondsOfRightAscension"}, "seconds"]]
+During evaluation of In[1]:= [INFO] Interpreted "0.05 seconds" as: Quantity[0.05, AmbiguityList[{"Seconds", "Arcseconds", "SiderealSeconds", "SecondsOfRightAscension"}, "seconds"]]
+During evaluation of In[1]:= [INFO] Interpreted "2 radians per second" as: Quantity[2, "Radians"/"Seconds"]
+General::messages: Messages were generated which may indicate errors.
+
+Out[1]= <|"step_transform_residual" -> 0, "unit_step_response" -> (1 - E^((L - t)/tau))*k*UnitStep[-L + t], "frequency_magnitude" -> k/Sqrt[1 + tau^2*w^2], "unwrapped_phase" -> -(L*w) - ArcTan[tau*w], "low_frequency_phase" -> SeriesData[w, 0, {-L - tau, 0, tau^3/3}, 1, 4, 1], "two_frequency_phase_sensitivity_determinant" -> (tau^2*w1*(w1 - w2)*w2*(w1 + w2))/((1 + tau^2*w1^2)*(1 + tau^2*w2^2)), "stable_actuator_pole" -> {{s -> -tau^(-1)}}, "discrete_pole_bound" -> True, "L_zero_limit" -> k/(1 + s*tau), "tau_zero_limit" -> k/E^(L*s), "dt_over_tau_units" -> 0.12730358556487195, "delay_phase_units" -> Quantity[0.1, "Radians"], "alpha_20Hz" -> 0.11953366485039196, "additional_delay_phases_at_2_rad_s" -> {-0.1, -0.2, -0.4}|>
+
+Interpretation: delay only shifts onset/phase; lag also changes magnitude. At low
+frequency only L+tau appears to first order, so rich transient excitation is
+necessary. Ideal two-frequency phase Jacobian is nonzero for distinct positive
+frequencies, but unknown wheel/sensor lag and slip still confound physical L.
+Input u is dimensionless, K and a have m/s^2 units; L,t,tau are seconds. The
+feedforward actuator pole and discrete recurrence are stable, not a proof about
+Kalman gates, nonlinear feedback or reference accuracy. Numeric L is not fitted
+from this worksheet.

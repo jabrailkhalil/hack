@@ -1,0 +1,23 @@
+name: H17 fixed source snapshot
+on:
+  push:
+    branches: [research/round2-H17]
+    paths: [.github/workflows/r2-h17-source.yml]
+permissions:
+  contents: read
+jobs:
+  sources:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Source only, no dataset or final-test artifacts
+        run: |
+          git archive --format=tar 65bba39ed05c781f3f69a65c02f69931152cbfd9 src tools tests research docs requirements-research.txt requirements-dev.txt Dockerfile.environment .github > "$RUNNER_TEMP/H17-fixed-v7-source.tar"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: H17-fixed-source-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/H17-fixed-v7-source.tar
+          retention-days: 7

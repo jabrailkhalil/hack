@@ -1,0 +1,70 @@
+name: R2 H17 one frozen validation
+on:
+  push:
+    branches: [research/round2-H17]
+    paths: [.github/workflows/validation-R2-H17.yml]
+  workflow_dispatch:
+permissions:
+  contents: write
+defaults:
+  run:
+    shell: bash
+jobs:
+  validation:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+      H17_FREEZE: ed62dc651937b9bcc49ad2a445c20630883aac1f
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ed62dc651937b9bcc49ad2a445c20630883aac1f
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - name: Frozen source and explicit evidence of the executed checkout
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/H17-validation/logs"
+          test "$(git rev-parse HEAD)" = "$H17_FREEZE"
+          git rev-parse HEAD > "$RUNNER_TEMP/H17-validation/MEASURED_SOURCE_SHA.txt"
+          cp research/R2/H17/FREEZE.json "$RUNNER_TEMP/H17-validation/FREEZE.json"
+          git diff 65bba39ed05c781f3f69a65c02f69931152cbfd9 HEAD -- src/reserve_odometry/reserve_odometry/command_deadtime.py > "$RUNNER_TEMP/H17-validation/H17-command-deadtime.patch"
+          git archive HEAD research/R2/H17 src/reserve_odometry/reserve_odometry/command_deadtime.py > "$RUNNER_TEMP/H17-validation/source.tar"
+          python -m pip install -r requirements-research.txt 2>&1 | tee "$RUNNER_TEMP/H17-validation/logs/dependencies.log"
+          PYTHONPATH=src/reserve_odometry python -m unittest discover -s research/R2/H17/tests -v 2>&1 | tee "$RUNNER_TEMP/H17-validation/logs/H17-tests.log"
+      - name: Pinned archive only, final test loader remains locked
+        run: |
+          set -euo pipefail
+          python tools/get_dataset.py 2>&1 | tee "$RUNNER_TEMP/H17-validation/logs/dataset.log"
+      - name: One frozen L=50ms, both receivers and all validation bags
+        run: |
+          set -euo pipefail
+          python research/R2/H17/driver.py --stage validation \
+            --freeze research/R2/H17/FREEZE.json --freeze-commit "$H17_FREEZE" \
+            --output "$RUNNER_TEMP/H17-validation/validation" --workers 2 \
+            2>&1 | tee "$RUNNER_TEMP/H17-validation/logs/validation.log"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: R2-H17-validation-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/H17-validation/
+          retention-days: 30
+      - name: New validation checkpoint, no source/main updates
+        if: always()
+        run: |
+          set -euo pipefail
+          test -d "$RUNNER_TEMP/H17-validation" || exit 0
+          branch="checkpoint/R2-H17-validation-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          destination="reports/research_R2/H17/$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git switch -c "$branch"
+          mkdir -p "$destination"
+          cp -a "$RUNNER_TEMP/H17-validation/." "$destination/"
+          git add "$destination"
+          git commit -m "research(H17): preserve one frozen validation $GITHUB_RUN_ID attempt $GITHUB_RUN_ATTEMPT"
+          git push origin "HEAD:refs/heads/$branch"
