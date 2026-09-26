@@ -1,0 +1,119 @@
+{
+  "summary": {
+    "baseline_v8": {
+      "clean_rmse": 0.09266814298282507,
+      "fault_rmse": 0.2375486120563008,
+      "distance_rmse": 5.310295004801444,
+      "samples": 394221,
+      "pooled_rmse": 0.1293056944774334,
+      "false_stops_clean": 0,
+      "false_stops_fault": 0,
+      "unrecovered": 4
+    },
+    "H30_joint_native": {
+      "clean_rmse": 0.09262447210906662,
+      "fault_rmse": 0.2445656575143603,
+      "distance_rmse": 5.313445070127148,
+      "samples": 394221,
+      "pooled_rmse": 0.12926994493480837,
+      "false_stops_clean": 0,
+      "false_stops_fault": 0,
+      "unrecovered": 4
+    }
+  },
+  "additional_suites": {
+    "low_speed": {
+      "baseline_v8": {
+        "event_rmse": 0.3685456733063761,
+        "window_rmse": 0.31713734456030435,
+        "false_stops": 0,
+        "unrecovered": 6
+      },
+      "H30_joint_native": {
+        "event_rmse": 0.36101998236998883,
+        "window_rmse": 0.31873705164504923,
+        "false_stops": 0,
+        "unrecovered": 6
+      }
+    },
+    "common_mode": {
+      "baseline_v8": {
+        "event_rmse": 0.10063227230134311,
+        "window_rmse": 0.10668786537863206,
+        "false_stops": 0,
+        "unrecovered": 2
+      },
+      "H30_joint_native": {
+        "event_rmse": 0.10322603444492302,
+        "window_rmse": 0.10618490073071044,
+        "false_stops": 0,
+        "unrecovered": 2
+      }
+    }
+  },
+  "legacy_candidate_decision": {
+    "clean_rmse": 0.09262447210906662,
+    "fault_rmse": 0.2445656575143603,
+    "distance_rmse": 5.313445070127148,
+    "samples": 394221,
+    "pooled_rmse": 0.12926994493480837,
+    "false_stops_clean": 0,
+    "false_stops_fault": 0,
+    "unrecovered": 4,
+    "clean_gain_vs_v5": 0.00047126091397498016,
+    "fault_gain_vs_v5": -0.02953940836495561,
+    "distance_change_vs_v5": 0.0005931996853012489,
+    "eligible": false,
+    "rejection_reasons": [
+      "aggregate_regression",
+      "insufficient_gain"
+    ]
+  },
+  "contract_reasons": [
+    "aggregate_regression",
+    "common_mode:event_regression",
+    "insufficient_gain"
+  ],
+  "individual_violations": [],
+  "activation": {
+    "ticks": 319835,
+    "native_updates": 95878,
+    "material_updates": 95878,
+    "past_tick_updates": 47005,
+    "fallback_updates": 52358,
+    "duplicate_veto": 0,
+    "hard_resets": 98604,
+    "max_states": 9,
+    "max_events": 3,
+    "max_input_events": 11
+  },
+  "material_updates_by_group": {
+    "8269991eafa82c45": 16727,
+    "664cca45aeb0db23": 28191,
+    "711abb923942f9fe": 16090,
+    "2cd82bc27dbad052": 24,
+    "a8a4c11ebcc1dde2": 8846,
+    "70bb14d1c90f301f": 16662,
+    "a0c46036cc19092a": 9338
+  },
+  "mechanism_status": "IMPLEMENTED_AND_SANITY_TESTED",
+  "coverage_status": "SUFFICIENT",
+  "scientific_verdict": "REJECTED",
+  "accuracy_contract_passed": false,
+  "development_admitted": false,
+  "validation_status": "NOT_RUN_AFTER_REJECTION",
+  "validation_opened": false,
+  "freeze_sha": null,
+  "final_test_opened": false,
+  "runtime_verified": false,
+  "enabled_ros_status": "NOT_RUN_AFTER_REJECTION",
+  "ready_to_merge": false,
+  "counts": {
+    "bags": 17,
+    "groups": 7,
+    "original_faults": 56,
+    "low_speed_faults": 26,
+    "common_mode_faults": 28,
+    "feature_off_checked_ticks": 395043
+  }
+}

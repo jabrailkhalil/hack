@@ -1,0 +1,41 @@
+--- a/src/reserve_odometry/reserve_odometry/core.py
++++ b/src/reserve_odometry/reserve_odometry/core.py
+@@ -277,6 +277,9 @@
+         if u <= c.command_deadband and self.v * predicted < 0:
+             predicted = 0.0
+         p_prior = self.pv + c.process_noise_v * dt * (4.0 if command_stale else 1.0)
++        hook = getattr(self, '_h30_begin', None)
++        if hook is not None:
++            hook(t, predicted, p_prior, a_model, command_stale, previous_v, dt)
+         samples, statuses = [], []
+         for i, sample in enumerate((front, rear)):
+             candidate, status = self._wheel(i, sample, t)
+@@ -349,9 +352,14 @@
+             # not an exact out-of-sequence Kalman covariance or calibrated CI.
+             r += (c.wheel_time_compensation ** 2 * c.process_noise_v * age
+                   * (4.0 if command_stale else 1.0))
+-            gain = p_prior / (p_prior + r)
+-            self.v += gain * residual
+-            self.pv = max(1e-8, (1 - gain) ** 2 * p_prior + gain * gain * r)
++            hook = getattr(self, '_h30_update', None)
++            native = hook(t, samples, accepted, agree, predicted, z, r) if hook is not None else None
++            if native is None:
++                gain = p_prior / (p_prior + r)
++                self.v += gain * residual
++                self.pv = max(1e-8, (1 - gain) ** 2 * p_prior + gain * gain * r)
++            else:
++                self.v, self.pv = native
+             mode = 'FUSED' if len(accepted) == 2 and agree else 'SINGLE_WHEEL'
+             for i in accepted:
+                 statuses[i] = 'ACCEPTED'
+--- a/src/reserve_odometry/reserve_odometry/guarded_readout.py
++++ b/src/reserve_odometry/reserve_odometry/guarded_readout.py
+@@ -66,7 +66,7 @@
+                    and estimate.mode not in ('REACQUIRING', 'STOPPED'))
+         if not healthy:
+             self._blocked_until = t + self.readout.holdoff_s
+-        if not healthy or t < self._blocked_until:
++        if not healthy or t < self._blocked_until or getattr(self, '_h30_skip_readout', False):
+             self._velocity_correction = 0.0
+         else:
+             accepted = [sample for sample, status in zip((front, rear), statuses)
