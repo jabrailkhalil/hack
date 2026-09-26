@@ -42,6 +42,9 @@ def initial_anchor(events,start_ns,value):
         held[key]=event
         m=held.get(('master','vel'));r=held.get(('rover','vel'));f=held.get(('master','fix'))
         if not all(v is not None for v in (m,r,f)):continue
+        # Freshness must advance with arrivals, not freeze at the last velocity.
+        if any(not 0<=record-v['record_ns']<=250_000_000 for v in (m,r)):
+            reason='STALE_VELOCITY_ARRIVAL';continue
         now=max(m['stamp_ns'],r['stamp_ns'])
         if not all(0<=now-v['stamp_ns']<=250_000_000 for v in (m,r)):reason='STALE_VELOCITY';continue
         if abs(m['stamp_ns']-r['stamp_ns'])>50_000_000:reason='VELOCITY_SKEW';continue
