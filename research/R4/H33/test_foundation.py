@@ -117,6 +117,21 @@ class FoundationTests(unittest.TestCase):
             bag=s.plan['splits']['test'][0]
             with self.assertRaises(PermissionError):s.load(bag,role)
 
+    def test_receipt_integrity_without_git(self):
+        import os
+        from common import integrity
+        path=os.environ.get('H33_SOURCE_RECEIPT')
+        if not path:self.skipTest('Local ZIP receipt test; Actions uses Git tree')
+        data=integrity();self.assertEqual(data['count'],301)
+        self.assertEqual(data['baseline_tree'],'eae49a504bc59b5c9b408445150bef32e111956f')
+
+    def test_receipt_rejects_incomplete_manifest(self):
+        import json,tempfile
+        from common import receipt_integrity
+        with tempfile.TemporaryDirectory() as tmp:
+            p=Path(tmp)/'receipt.json';p.write_text(json.dumps({'files':[]}))
+            with self.assertRaises(ValueError):receipt_integrity(p)
+
     def test_gate_requires_negative_structure(self):
         groups={}
         for k in range(3):

@@ -35,7 +35,46 @@ def profile():
     assert c.common_mode_quarantine_s==1.5 and c.wheel_time_compensation==0 and c.adaptation_tau_s==.5
     return c,ReadoutConfig(**rd)
 def baseline(c=None):return GuardedReadoutObserver(c or profile()[0],readout=profile()[1])
+def receipt_integrity(path):
+    """Verify all original files/modes and Git tree without requiring .git.
+
+    The receipt comes from the card's ZIP verifier. Its claims alone are not
+    trusted: the current bytes are re-hashed and the full tree is rebuilt.
+    """
+    from pathlib import PurePosixPath
+    receipt=json.loads(Path(path).read_text());entries=receipt.get('files',[])
+    if len(entries)!=301:raise ValueError('Full 301-file receipt required')
+    tree={};pins={}
+    def obj(kind,raw):return hashlib.sha1(f'{kind} {len(raw)}\0'.encode()+raw).digest()
+    for entry in entries:
+        f=entry['path'];parts=PurePosixPath(f).parts
+        if not parts or '..' in parts or PurePosixPath(f).is_absolute() or str(PurePosixPath(f))!=f or f in pins:
+            raise ValueError('Invalid receipt path')
+        mode=entry['mode']
+        if mode not in ('100644','100755'):raise ValueError('Invalid receipt mode')
+        file=ROOT/f
+        if file.is_symlink():raise ValueError('Unexpected symlink')
+        raw=file.read_bytes();pins[f]=hashlib.sha256(raw).hexdigest()
+        if pins[f]!=entry['sha256'] or bool(file.stat().st_mode&0o111)!=(mode=='100755'):
+            raise ValueError('Receipt file changed: '+f)
+        node=tree
+        for part in parts[:-1]:node=node.setdefault(part,{})
+        node[parts[-1]]=(mode,obj('blob',raw))
+    def digest(node):
+        rows=[]
+        for name,value in node.items():
+            key=name.encode()
+            if isinstance(value,dict):mode,blob,sort='40000',digest(value),key+b'/'
+            else:mode,blob=value;sort=key
+            rows.append((sort,mode.encode()+b' '+key+b'\0'+blob))
+        return obj('tree',b''.join(row for _,row in sorted(rows)))
+    actual=digest(tree).hex()
+    if actual!='eae49a504bc59b5c9b408445150bef32e111956f':raise ValueError('Receipt tree mismatch')
+    return dict(baseline_sha=BASE,baseline_tree=actual,count=len(pins),pins=pins,
+                source_identity='receipt bytes/modes/tree; not Git ancestry',receipt_sha256=sha(path))
+
 def integrity():
+    if os.environ.get('H33_SOURCE_RECEIPT'):return receipt_integrity(os.environ['H33_SOURCE_RECEIPT'])
     tree=subprocess.check_output(['git','rev-parse',BASE+'^{tree}'],cwd=ROOT,text=True).strip()
     assert tree=='eae49a504bc59b5c9b408445150bef32e111956f'
     listing=subprocess.check_output(['git','ls-tree','-r','-z',BASE],cwd=ROOT).split(b'\0')
