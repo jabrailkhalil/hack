@@ -7,7 +7,7 @@
   "source_status": "VERIFIED",
   "data_status": "UNAVAILABLE",
   "execution_status": "BLOCKED",
-  "publication_status": "CHECKPOINT_PUBLISHED",
+  "publication_status": "DRAFT_PR_CREATED",
   "mechanism_status": "PASSIVE_FOUNDATION_PROBE_IMPLEMENTED; JOINT_OBSERVER_NOT_IMPLEMENTED",
   "coverage_status": "NOT_MEASURED",
   "scientific_verdict": "NOT_EVALUATED",
@@ -16,8 +16,8 @@
   "candidate_implemented": false,
   "measured_source_sha": null,
   "candidate_sha": null,
-  "report_sha": null,
-  "checkpoint_sha": null,
+  "report_sha": "083f3ee9386fa0a3560a2fc105cb6ff5d3287316",
+  "checkpoint_sha": "083f3ee9386fa0a3560a2fc105cb6ff5d3287316",
   "freeze_sha": null,
   "plan_sha": "40acde8b32ecceac5cb4b9099ef6ba22ff5740d1",
   "attempted_diagnostic_source_sha": "d9b41ab16a44db9793408faabf9b33479141e861",
@@ -81,5 +81,9 @@
     "conditional enabled installed ROS runtime"
   ],
   "next_resume_step": "Provide pinned train/development measurements or restore runner availability, then execute the existing preregistered train-only foundation. Implement the single joint candidate only if the unchanged foundation gate passes. No validation now.",
-  "publication_note": "The report_sha and PR binding are completed in later metadata, not used as a measured candidate SHA."
+  "publication_note": "Late metadata binds the already published report and actually created PR. No new code, fitting, foundation measurement or validation; [skip ci] applies only to this metadata-only commit.",
+  "pr_number": 53,
+  "pr_url": "https://github.com/jabrailkhalil/hack/pull/53",
+  "pr_draft_at_creation": true,
+  "report_commit_is_measured_candidate": false
 }
