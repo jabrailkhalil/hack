@@ -1,0 +1,102 @@
+name: R4 H37 one fixed development candidate
+on:
+  push:
+    branches: [research/R4-H37]
+    paths:
+      - src/reserve_odometry/reserve_odometry/traction_power.py
+      - research/R4/H37/development.py
+      - .github/workflows/r4-h37-development.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  development:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 40
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+      PYTHONPATH: src/reserve_odometry
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - name: Original 301-file identity and exact locally tested candidate
+        run: |
+          set -euo pipefail
+          OUT="$RUNNER_TEMP/H37-development"
+          mkdir -p "$OUT"
+          echo "OUT=$OUT" >> "$GITHUB_ENV"
+          echo "H37_MEASURED_SHA=$GITHUB_SHA" >> "$GITHUB_ENV"
+          python research/R4/H37/bootstrap.py | tee "$OUT/bootstrap.log"
+          python - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          for p,h in json.loads(Path('research/R4/H37/CANDIDATE_PINS.json').read_text()).items():
+              assert hashlib.sha256(Path(p).read_bytes()).hexdigest()==h,p
+          print('Four exact locally tested candidate/runner source hashes verified')
+          PY
+          git show eeb33182e0e2942f7e35fcb6dd55ed9577e01d53:reports/research_R4/H37/foundation-36230785305-1/train/SUMMARY.json > "$OUT/FOUNDATION.json"
+          echo 'b45b188bcfd2e321fe107759de78b8935993b6c69371d02edf49a417bc520591  '"$OUT/FOUNDATION.json" | sha256sum -c -
+          python -m pip install -r requirements-research.txt
+      - name: Unchanged original tests and enabled H37 tests
+        run: |
+          set -euo pipefail
+          python -m compileall -q src research/R4/H37
+          python -m unittest discover -s tests -v 2>&1 | tee "$OUT/legacy-tests.log"
+          python -m unittest discover -s research/tests -v 2>&1 | tee "$OUT/integrity-tests.log"
+          python -m unittest discover -s research/R4/H37/tests -v 2>&1 | tee "$OUT/h37-tests.log"
+      - name: Extract only train and development, not validation or final test
+        run: |
+          set -euo pipefail
+          python research/R4/H37/prepare.py --output "$OUT/preparation" 2>&1 | tee "$OUT/preparation.log"
+      - name: One candidate on all development, full-faulted-bag distance and v8 vetoes
+        run: |
+          set -euo pipefail
+          python research/R4/H37/development.py --foundation "$OUT/FOUNDATION.json" --output "$OUT/development" --workers 2 2>&1 | tee "$OUT/development.log"
+      - name: Fixed post-warmup AB BA CPU, no validation under any outcome
+        run: |
+          set -euo pipefail
+          python research/R4/H37/cost.py --development "$OUT/development" --output "$OUT/cost" 2>&1 | tee "$OUT/cost.log"
+      - name: Exact source, runtime patch and artifact hashes
+        if: always()
+        run: |
+          mkdir -p "$OUT/source"
+          cp -a research/R4/H37/. "$OUT/source/"
+          cp src/reserve_odometry/reserve_odometry/traction_power.py "$OUT/source/traction_power.py"
+          cp src/reserve_odometry/config/champion_v8.yaml "$OUT/source/champion_v8.yaml"
+          cp .github/workflows/r4-h37-development.yml "$OUT/source/executed-workflow.yml"
+          find "$OUT/source" -type d -name __pycache__ -exec rm -rf {} +
+          git rev-parse HEAD > "$OUT/MEASURED_SOURCE_SHA.txt"
+          git diff e3b0c9c039d2953fbfcda51231263d38ef9f1024 HEAD -- src/reserve_odometry/reserve_odometry/traction_power.py > "$OUT/algorithm.patch"
+          python - <<'PY'
+          import os,json,hashlib
+          from pathlib import Path
+          out=Path(os.environ['OUT'])
+          hashes={str(p.relative_to(out)):hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(out.rglob('*')) if p.is_file()}
+          (out/'ARTIFACT_SHA256.json').write_text(json.dumps(hashes,indent=2)+'\n')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: R4-H37-development-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/H37-development/
+          retention-days: 30
+      - name: Compact append-only checkpoint, compressed traces remain in artifact
+        if: always()
+        run: |
+          set -eu
+          test -d "$OUT" || exit 0
+          branch="checkpoint/R4-H37-development-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          git switch -c "$branch"
+          destination="reports/research_R4/H37/$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          mkdir -p "$destination"
+          tar -C "$OUT" --exclude='./development/traces' -cf - . | tar -C "$destination" -xf -
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add "$destination"
+          git diff --cached --quiet || git commit -m "research(R4-H37): preserve fixed development $GITHUB_RUN_ID/$GITHUB_RUN_ATTEMPT"
+          git push origin "HEAD:refs/heads/$branch"
