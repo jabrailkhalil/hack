@@ -1,0 +1,56 @@
+# R3-H29 / R3-v8-fixed — PLAN до первого сравнения кандидата
+
+Baseline e3b0c9c039d2953fbfcda51231263d38ef9f1024; GuardedReadoutObserver + champion_v8.yaml, включая common_mode_quarantine_s=1.5, readout gain=1/holdoff=.5, adaptation_tau=.5, wheel_time_compensation=0, output20Hz/delay0. Все физические параметры из этого YAML. Ветка research/R3-H29 проверена на отсутствие дубликатов и создана от BASE. Не менять main/чужие ветки/старые отчёты; merge/auto-merge запрещены.
+
+## Проверка основания до большого патча
+
+26.09.2026 выполнен baseline-only replay всех 17 development bags /7 групп через неизменный evaluate.score. Baseline и повторный baseline получают одинаковые события; их записанные состояния совпадают точно. Clean macro=0.09266814298282507, original fault macro=0.2375486120563008, pooled=0.1293056944774334, scalar distance=5.310295004801444, matched394221, false stops0/0, unrecovered4. Это новые исполнения v8, не подставленные цифры R2.
+
+На vehicle-only original anchors выполнено168 отдельных слабых инъекций: gradual +/-0.4m/s ramp4s+hold4s; intermittent +/-0.2m/s period.5/duty.5, duration8s; front/rear/common. В112 single-channel cases есть8332 accepted output opportunities с двумя свежими held колёсами, из них3452 имеют меньший residual к инъецированному колесу, чем к неинъецированному. Все6 исходных групп с anchors содержат такие точки. По model acceleration:4644 разгонных,3366 замедляющих,322 близких к нулю opportunities. Медиана RMS изменения output.v относительно clean twin=0.11078149607742376m/s; максимум абсолютного изменения=0.21874722656714582m/s. Это влияние искусственного сигнала/прокси contamination, НЕ независимая truth-label исправности другого колеса. Foundation source/полные результаты будут сохранены вместе с evidence, без validation IO.
+
+Прочитаны указанные H19/H20 отчёты, PR16 (это H06, не H16), v6, baseline runtime/launch/profile/Timeline/evaluator/split и v8 guards. H19 ошибался в attribution по загрязнённому main; H20 показал межзнаковый tradeoff; H06 ускорял ложный common recovery. H29 не ускоряет recovery и не добавляет предпочтение знака.
+
+## Один дизайн, один обучаемый scale, без перебора
+
+Основной observer плюс два shadow core Observer (ровно3 observer states). Shadow F получает только controller/front; shadow R только controller/rear. Оба — тот же core v8 и та же физика; отсутствующее колесо передаётся None, а не дублируется. На первом такте ПОСЛЕ штатного INITIALIZED основного фильтра однократно копируются его предшествующие causal v,t,drive_a,d,pv в оба shadow через reset(velocity=...). Далее main никогда их не переякоривает и не обучает: excluded channel отсутствует во всех последующих updates. Shadow с одним колесом не выполняет FUSED disturbance adaptation; d сохраняет первоначальный anchor. Это ограничение на load changes; ненадёжный anchor приводит к abstention. Initial shared error не считается независимым noise.
+
+Перед assimilation текущего sample для каждого shadow вычисляется точно тот же v_minus/a_minus из его предыдущего состояния и разрешённой команды. Diagnostic prediction к stamp sample: v_minus-a_minus*max(0,t-stamp). Это только residual, исходные samples/скоростная коррекция main не переносятся.
+
+Для нового принятого shadow sample i:
+- own_i=z_i-(v_minus_i-a_minus_i*age_i);
+- cross_i=z_i-(v_minus_j-a_minus_j*age_i).
+По каждому каналу deque(maxlen=32), timestamp TTL<=2s, пары значений own/cross. Только новые прошедшие hard gates samples; duplicates/held не добавляют entries; gap>max_age очищает signature. Текущий sample оценивается ДО собственного update, не post-update residual. На каждый output история удаляет старые entries; никаких накопителей за пределами2s.
+
+Train scale S: по всем64 train bags, только vehicle topics, первые t<=180 source seconds. Исходные связанные train groups сортируются lexicographically; чётные индексы списка — fitting, нечётные — check. Состав не меняется. Собрать own residual после2s causal bootstrap при свежей команде/двух свежих колёсах, |wheel|>.5, accepted собственным shadow. Для каждой fitting group вычислить median(abs(own)) по обоим симметричным каналам; S=max(0.02, median(group medians)/0.6744897501960817) m/s. Это robust predictive error scale, НЕ доказанная Gaussian sigma. Нужны>=3 fitting groups с>=100 residuals и>=2 check groups с>=100, иначе INCONCLUSIVE. Check-distribution записать, параметры по ней не менять. После вычисления S опубликовать calibration JSON/hash до development сравнения. Не добавлять варианты scale/порогов.
+
+При обоих shadow anchors healthy и обоих main каналах eligible (accepted либо идентичный fresh held DUPLICATE), обеих histories>=6entries, span>=.5s, после2s initial warmup: A_i=RMS(own_i), B_i=mean(cross_i), M_i=mean(own_i) на последней истории. Подозрение i только если |B_i|>2S, A_i>A_j+0.25S, A_j<=2S, M_i*B_i>0 и текущий cross_i*B_i>0. Скоры не вероятности; likelihood не перемножаются. Ровно одно такое подозрение; иначе fallback. Нет дополнительного latch вне signature; свежая валидность проверяется каждый такт. Тяга/торможение/знак скорости не дают направленного предпочтения; |v|<=.5 или rejected/stale/future/ambiguous peers — baseline fallback.
+
+В основном фильтре hook только ПОСЛЕ оригинальных hard gates. Понизить q_i=.25 лишь если i сейчас accepted и peer также accepted или допустимый held. z=sum(q*z)/sum(q); R>=R_original, с множителем len(accepted)/sum(q), без R/N. Сохранить исходный residual-dependent R floor и никогда его не уменьшать. При q=(1,1) вернуть исходную арифметику точно. Статус BANK_DOWNWEIGHTED естественно блокирует штатный guarded readout. При active action запретить FUSED d update и очистить adapt_previous. Других изменений stop/bootstrap/zero-lock/quarantine/reacquisition/Timeline не делать. Main s интегрируется исходным core/readout без переякоривания. Shadow estimates не заменяют опубликованный выход.
+
+## Suites и prospective gates
+
+Development — все17 bags/7 исходных групп. Train GNSS не читать. Экспорт H09 development разрешён только после проверки ZIP SHA256, membership, group/bag/payload hashes; обязательный remote повтор прямо из SQLite. Baseline/выключенный кандидат/pristine v8 сравнить потактово по Estimate и всем исходным state fields на clean/original. Scorer evaluate.py, match/metrics, v6 summary и original fault anchor/formулы неизменны. Snapshot source/profile/split/data hashes фиксировать.
+
+Original faults: front+5m/s5s, both dropout5/10s, both lock3s. Anchor первый vehicle grid valid,mean wheel>2,t>max(25,.1*t_end),t<t_end-25. Окно20s warmup и10s recovery.
+
+Отдельная diagnostic suite: те же168 gradual/intermittent cases, оба знака, оба отдельных канала и common. Записать injection attribution отдельно от reference error; detection, abstention, action counts/groups, before/event/after, d-clean-twin proxy, worst cases. Real injection into one wheel не объявляет другое естественно исправным. Safety-veto: wrong-channel action вместе с ростом receiver event RMSE >max(.005m/s,5%baseline); все меньшие регрессии тоже показать.
+
+V8 extra suites: low-speed first vehicle anchor mean1..2, |front-rear|<.15, command>=0, t>max(25,.1*t_end), t<t_end-25, both lock3/5s; abrupt common-mode exact H11 anchors (mean>2,abs diff<.15,t<t_end-35), both+5 for.7/1.2s. Их event-macro regression<=.5%, no new false stops/individual unrecovered; выигрыш не заменяет original admission.
+
+Controlled synthetic truth: фиксированный forward simulator физики v8 с шагом.01s, wheel10Hz/output20Hz; начальная скорость5m/s, controller=.3; сценарии30s, fault[10,18): gradual +/- .4 ramp4s и intermittent +/-.2; front/rear/common; genuine physical disturbance +/-.2m/s2 без fault; startup anchor errors0,+.5,-.5 с чистыми дальнейшими wheels; отдельные near-stop/zero-lock, dropout recovery и abruptcommon. Independent truth не передаётся observer. Wrong-channel action в single-fault synthetic — жёсткий veto. Любой action в synthetic no-fault load-change/initial-error или common-mode также veto; никаких post-result tweaks.
+
+Coverage: >=100 реально downweighted accepted updates, >=3 исходных development groups, >=10 single diagnostic cases с correct-channel action, оба знака и оба канала представлены. Число рассчитанных signatures без action не считается покрытием. Если safety veto наблюдён — конкретный вариант REJECTED; если safety нет, но action coverage недостаточно — INCONCLUSIVE независимо от одинаковых метрик.
+
+Clean false-alarm proxy: weighted output duty<=.5% aggregate и<=1% каждой группы; onsets<=2/min aggregate; никаких новых STOPPED при reference .07...5m/s. Естественные alarms не доказанные natural faults.
+
+Validation только при coverage+ALL gates: clean group-macro gain>=2% ИЛИ ORIGINAL fault gain>=5%; clean/fault/pooled regression<=.5%, scalar span distance<=1%; per-bag/receiver clean<=base+max(.005,5%base); no coverage/mask loss, extra false stops, new INDIVIDUAL unrecovered, causal/reset errors; все synthetic/real/v8 safety veto PASS. baseline0: допускается только абсолютная nonpositive delta. Missing!=0. Перед validation отдельный опубликованный FREEZE commit с source/config/evaluator/data hashes; один paired validation. При провале STOP; final/test payloads никогда не открывать. Старый validation не independent test.
+
+## Проверки, цена, публикация
+
+Unit/build/integrity: exact feature-off canonical v8, monitor-only не меняет main; all input/prefix/duplicate/future/stale/reset, histories bounds/time TTL, pre-update residual, excluded-sensor perturbation after common bootstrap не меняет соответствующий shadow, bootstrap/common anchor sensitivity; force mechanism tests weighted z/R/d freeze; настоящий REACQUIRING не ускорен, H11 quarantine и low-speed guards сохраняются.
+
+CPU: первые180s первого development bag, step после10s warmup,3 AB/BA пары, одинаковые collectors, threads1; отдельно step CPU, whole replay CPU/wall, process RSS (не RSS ROS-ноды). Если accuracy rejected/inconclusive, enabled ROS stage NOT_RUN_AFTER_REJECTION/INCONCLUSIVE; иначе обязательный свежий installed enabled ROS replay обоих clock modes offline2CPU/500000000bytes с import/parameter hashes.
+
+Наука: Wang et al. DOI10.1080/21642583.2016.1278410 — прочитаны доступные HTML abstract и sections I-II о subset observability, transient anchors, one-fault assumption; это не перенос гарантий linear bounded-noise system на наш нелинейный observer. Consensus/Scite известная quota из карточки — не повторять/не обходить. Wolfram выполнен: rank([v,d] one unbiased sensor)=2 при dt!=0; absolute position rank2/3; two wheel bias matrix rank2/null[-1,1,1]; Joseph positive, R не уменьшается (q=.25 ->1.6x for pair), constant gain shared error (1-K)^n. Worksheet/actual output сохранить; это не global switched stability proof.
+
+Файлы исследования только research/R3/H29, tools/research_h29, новый модуль и отдельные workflows. Активный core не заменять: core.patch применяется в изолированной factory. Git: компактные REPORT/SUMMARY/CSV/manifests; крупные traces только compressed Actions artifact30days, no raw bags Git. Различать plan/calibration/measured/freeze/report SHA. Один draft PR R3-H29 с механизмом, метриками, regression/coverage и статусами mechanism_status,coverage_status,scientific_verdict,accuracy_contract_passed,runtime_verified,ready_to_merge. Не готовый кандидат — исследовательский артефакт, не готов к merge.
