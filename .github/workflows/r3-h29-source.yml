@@ -1,0 +1,29 @@
+name: R3-H29 pinned source export
+on:
+  push:
+    branches: [research/R3-H29]
+    paths: [.github/workflows/r3-h29-source.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  export:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Export exact baseline source without reading measurements
+        run: |
+          set -eu
+          mkdir -p "$RUNNER_TEMP/h29-source"
+          git archive e3b0c9c039d2953fbfcda51231263d38ef9f1024 | gzip -n > "$RUNNER_TEMP/h29-source/source.tar.gz"
+          git bundle create "$RUNNER_TEMP/h29-source/history.bundle" HEAD
+          cd "$RUNNER_TEMP/h29-source"
+          sha256sum source.tar.gz history.bundle > SHA256SUMS
+      - uses: actions/upload-artifact@v4
+        with:
+          name: R3-H29-source-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/h29-source/
+          retention-days: 7
