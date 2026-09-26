@@ -1,0 +1,80 @@
+name: R4-H32 single command-event candidate development
+on:
+  push:
+    branches: [research/R4-H32]
+    paths:
+      - research/R4/H32/event_time.py
+      - research/R4/H32/factory.py
+      - research/R4/H32/run.py
+      - research/R4/H32/test_h32.py
+      - .github/workflows/R4-H32-development.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  development:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 25
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - name: Verify foundation, source and preregistration
+        run: |
+          set -euo pipefail
+          export E="$RUNNER_TEMP/H32"
+          mkdir -p "$E/logs"
+          git diff --exit-code e3b0c9c039d2953fbfcda51231263d38ef9f1024 -- src tools research/plan_v3.json research/split_v3.json
+          test "$(git rev-parse e3b0c9c039d2953fbfcda51231263d38ef9f1024^{tree})" = eae49a504bc59b5c9b408445150bef32e111956f
+          git merge-base --is-ancestor abacda82c1856e921a940894a1c8265b249c06e9 "$GITHUB_SHA"
+          git diff --exit-code abacda82c1856e921a940894a1c8265b249c06e9 -- research/R4/H32/PLAN.md
+          git fetch origin checkpoint/R4-H32-foundation-36230458244-1
+          git show 5c6a80ff12227dacc259da52a35b1399b22075fa:reports/research_R4/H32/foundation-36230458244-1/SUMMARY.json > "$E/foundation.json"
+          python -c 'import json,os; x=json.load(open(os.environ["E"]+"/foundation.json")); assert x["coverage_passed"] and x["material_steps"]==93833 and x["train_bags"]==64'
+          git archive --format=zip "$GITHUB_SHA" > "$E/measured-source.zip"
+          echo "$GITHUB_SHA" > "$E/MEASURED_SOURCE_SHA.txt"
+      - name: Original and enabled-candidate tests
+        run: |
+          set -euo pipefail
+          python -m pip install -r requirements-research.txt > "$RUNNER_TEMP/H32/logs/install.txt" 2>&1
+          PYTHONPATH=src/reserve_odometry python -m unittest discover -s tests -v > "$RUNNER_TEMP/H32/logs/unit.txt" 2>&1
+          python -m unittest discover -s research/tests -v > "$RUNNER_TEMP/H32/logs/integrity.txt" 2>&1
+          python research/R4/H32/test_h32.py > "$RUNNER_TEMP/H32/logs/h32-tests.txt" 2>&1
+          python -m compileall -q research/R4/H32
+      - name: All genuine development, no validation
+        run: |
+          set -euo pipefail
+          python research/R4/H32/stage_data.py --role development | tee "$RUNNER_TEMP/H32/logs/data.txt"
+          python research/R4/H32/run.py --output "$RUNNER_TEMP/H32/development" --workers 2 | tee "$RUNNER_TEMP/H32/logs/development.txt"
+      - name: Compact terminal or partial checkpoint
+        if: always()
+        run: |
+          set -eu
+          test -d "$RUNNER_TEMP/H32" || exit 0
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          branch="checkpoint/R4-H32-development-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          git switch -c "$branch"
+          dst="reports/research_R4/H32/$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          mkdir -p "$dst"
+          for file in SUMMARY.json started.json per_bag.csv per_group.json PHASE.json COST.json candidate.json; do
+            test ! -f "$RUNNER_TEMP/H32/development/$file" || cp "$RUNNER_TEMP/H32/development/$file" "$dst/"
+          done
+          cp -a "$RUNNER_TEMP/H32/logs" "$dst/"
+          cp "$RUNNER_TEMP/H32/MEASURED_SOURCE_SHA.txt" "$dst/"
+          git add -f "$dst"
+          git diff --cached --quiet || git commit -m "research(R4-H32): preserve paired development $GITHUB_RUN_ID"
+          git push origin "HEAD:refs/heads/$branch"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: R4-H32-development-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/H32/
+          retention-days: 30
