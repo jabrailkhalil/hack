@@ -1,0 +1,4352 @@
+{
+  "stage": "baseline_diagnosis_complete",
+  "round": "R3-v8-fixed",
+  "hypothesis": "R3-H22",
+  "baseline": "e3b0c9c039d2953fbfcda51231263d38ef9f1024",
+  "source_ref": "9d469305eb7c1fa4f00fbbf9357eb3486aeb3430",
+  "utc": "2026-09-26T05:12:37.240044+00:00",
+  "source_sha256": {
+    "Dockerfile.environment": "89a20ba9783557cba82623f7b81fda48bbdc963f30df3f15c726b9bbeba88b94",
+    "reports/champion_v7/LOW_SPEED_REPORT.md": "298d8404f4efd91931e5c71c13ba45a1a392ff6d24f748c5443a69cac644c923",
+    "requirements-research.txt": "d73bd55eb03f248de3404b41d67976a04cdd6326fe00316389d91fb1f4725c8b",
+    "research/H11_COMMON_MODE_PLAN.md": "4696d27470ddd0c698e87daf244de1aafe8d0128c802f6f7a7e1d46bcdabc37e",
+    "research/plan_v3.json": "ddbc1130e214c3d338b3d292232391d3a329a0fd5f13a090027452ae070271b3",
+    "research/split_v3.json": "20928a29daad2b4178ddb92e2a4d9ddb347952f6c03845802a8d82fff7da5ae0",
+    "research/tests/test_final_evaluator.py": "a415e649e4d70d307f79978c58be6c83af270e31b75f29112a5f882849905853",
+    "research/tests/test_guarded_readout_gates.py": "8ef9f0bcbc00b46774280cc8eca826519abaa12b6fc0715f7b644ca4692e129f",
+    "research/tests/test_research.py": "93f1263c971968a7655914bdbe8954a9f9079cec280e5cf7f293f7c82dac99c7",
+    "research/tests/test_time_alignment_evaluator.py": "2650e3c6fdc4236ba8a163baee9e1fe648841eb0dc8c81d1f577bb446709b803",
+    "research/tests/test_v5_gates.py": "8331e941821f223269ba56b9a9d00b0f53b40eb22f9b42dc9ed68dd60f72cb6a",
+    "research/tests/test_v6_gates.py": "ea9790766f7d7254b16db68e6ba953c1962a80231348559a47140a11341eb0d7",
+    "src/reserve_odometry/config/adaptive_v5.json": "3b84e6eb09262ba7a24771e5a56e0aa3ecb89c67f18e501cd0d0366514e99da1",
+    "src/reserve_odometry/config/adaptive_v5.yaml": "dae5f5c80cd87e968b1e838c5b0d25cc531f816949b1fd2a59dd65e8e93efaec",
+    "src/reserve_odometry/config/calibrated_v3.yaml": "a34faa159b8e9436c58e957376f4dd4207395ad63f5b8391ed2a3737c339dbf5",
+    "src/reserve_odometry/config/candidates_v3/balanced_physics.json": "68b81682f9ac48d11bf7d8e67418a45de546ab35526954c5f6fc3eda2d7ec425",
+    "src/reserve_odometry/config/candidates_v3/balanced_physics.yaml": "d1f8fd9d96911ba0f1381a6d1b6837f50fa9f6a2c518cb38421e9c229d3f0a14",
+    "src/reserve_odometry/config/candidates_v3/baseline_v2.json": "92b2a8a371ab890e0087c173c0560b31949c2ac8235141beeaeb55f70c07ac91",
+    "src/reserve_odometry/config/candidates_v3/baseline_v2.yaml": "3aa6c2105bdaf437956bd7e8479d9e97d888dcd7d81d7e39b0ca6278add1075a",
+    "src/reserve_odometry/config/candidates_v3/gain_only.json": "d0cff828b4b74cc121e44977ba52391290c81b63a1ff24788182f62dc46b2b83",
+    "src/reserve_odometry/config/candidates_v3/gain_only.yaml": "e4aa198fb8835335327180e91f42ab3c45efb537cc2bcbb9b7661f5fef761f2b",
+    "src/reserve_odometry/config/candidates_v3/nonlinear_physics.json": "275c2b2ef4eed2206fac7ede40c4dd26045315d94223f0cd07e67e918f751567",
+    "src/reserve_odometry/config/candidates_v3/nonlinear_physics.yaml": "68100c74c31ddeac2a634d66b521156991d526dceca38bed37c47ddab7ed7115",
+    "src/reserve_odometry/config/champion_v8.json": "358c595ac4bacc70e962e4ee93c10a8632776465718e21675cfda380c676309e",
+    "src/reserve_odometry/config/champion_v8.yaml": "a6319d8e75615ee63b05bedccd1f79a27287666f084c8f14dd33ad993e7f067e",
+    "src/reserve_odometry/config/default.yaml": "dae5f5c80cd87e968b1e838c5b0d25cc531f816949b1fd2a59dd65e8e93efaec",
+    "src/reserve_odometry/config/frozen_v4.yaml": "a29d075cbcca235a1cf5ab1f79a0a992f70ba788e729b452f732c273932eeb0e",
+    "src/reserve_odometry/config/guarded_readout_v7.json": "295a0ad77172798ad2bdaa2b5c375f48cbe8f533e54b7f38b2a3cb53f8f3ecd1",
+    "src/reserve_odometry/config/guarded_readout_v7.yaml": "e1f71a7cacd43d099bdc4f5aef59734906625716c871a78843584e0ea06e431e",
+    "src/reserve_odometry/config/time_aligned_v6.json": "9467bbf8322636fab4117ab8dbdbaf1386900d5f784488807288116611c4183c",
+    "src/reserve_odometry/config/time_aligned_v6.yaml": "bfe7114691b6d64428235286f9e5bcf94906bd4cdd22b17c623f19795f8e5556",
+    "src/reserve_odometry/launch/odometry.launch.py": "5f91860ab56c5c025b03d895fbc3646dbd07a3ff47948bac80279e639aa439af",
+    "src/reserve_odometry/launch/v5_odometry.launch.py": "3853c6189c9b633af32044381c5995a19ade8cdc7f8efe29046b15225467ca29",
+    "src/reserve_odometry/package.xml": "a0a24f3f7ba564188ee0f223e2afe5378019a58fba1d296f62726263822ec883",
+    "src/reserve_odometry/reserve_odometry/__init__.py": "e1f572a23a3af0453ee58954e1ac155057c09f538f30cf660aa84e9dadba6b74",
+    "src/reserve_odometry/reserve_odometry/core.py": "67ee39edeb80f31876f5c45cb3efec26eb73844a106f7b4c876a944b6f7cc5dc",
+    "src/reserve_odometry/reserve_odometry/guarded_node.py": "ba2bd304ccafd35160e2c2d60c14a170bde2f0480cc04e8279a04d3c752c542f",
+    "src/reserve_odometry/reserve_odometry/guarded_readout.py": "6303c1230ff800e370875f7238912e47a0564da1b21d42ccf8f417f75b2e05e0",
+    "src/reserve_odometry/reserve_odometry/node.py": "a63b6cf915d0621eda4a99f4a9a91c8b21a3d2209420e2fc9f4f21084a6dbdd4",
+    "src/reserve_odometry/reserve_odometry/route.py": "631c9be75cc8bcf9770deb3e79aa3fad7c40d01bfaf446015a3566325df47739",
+    "src/reserve_odometry/reserve_odometry/timeline.py": "ed63b44dede078cb3cde501bd1e5559260763c56ac9b832f39924c1d97b0bdbf",
+    "src/reserve_odometry/resource/reserve_odometry": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/reserve_odometry/setup.cfg": "504ebb3ed9db6bc2727b1b3396daf6f5334ea6b7f6eda26672ba2c415f400b71",
+    "src/reserve_odometry/setup.py": "ed034076ca9623fba93c995fa9626920c1c4b2ed3425bd8196a612f1131d52f9",
+    "src/tram_vehicle_msgs/CMakeLists.txt": "f220119ed18c68585208da7689733bf38a1a6a5a76973371b6ba18a1086636a6",
+    "src/tram_vehicle_msgs/msg/DriverControllerCommand.msg": "fe294e3cd4132ed8dd732d677e78196ae882d2be5468e76d029ea785615517fb",
+    "src/tram_vehicle_msgs/msg/VelocitySensor.msg": "4fae2e24132e779ae396773fe3df0f54584c8e54323f6f36d249e45449d7e8fd",
+    "src/tram_vehicle_msgs/package.xml": "0fff58dd63afcc03627c11b9968e817043499f438467d90520f59fc5af54127d",
+    "tests/cdr_roundtrip.py": "ba831b86762ae121249a03b10d4047dce707d03e75df773a87d399e0403bda38",
+    "tests/ros_calibrated_smoke.py": "329ef1019bf6c6000ace866c6d0aef196c6897e64be80bc84bf42884168aa29f",
+    "tests/ros_fault_smoke.py": "42c0c4dcb42dbde4563f4e65743064114c13719ecafe04432c43efaacdbb1560",
+    "tests/ros_low_speed_lock_smoke.py": "e5c1375498359b07e8b0a91faa7237f7ece8c673127eeb413054c9249680045a",
+    "tests/ros_smoke.py": "1bd207d9c9828b7019e588fb5c658322770ff33a27c7746437c8c32f66828588",
+    "tests/test_active_profile.py": "bb4761146272d13ba923c947dc725b60dce5489cfb60f12dcd9817c1cc50375a",
+    "tests/test_adaptive_profile.py": "28f59423cbf75574891abb53379bf16a5aacf14720c29e98cb39c6e56fe95a0c",
+    "tests/test_candidate_configs.py": "ab918b878c990e6d3bd2285a61337ed6d043747152917b917090dfa301b6c071",
+    "tests/test_core.py": "c2688cfb12273ea49af59f1b943426a4c270e122fb10041e35fc97be9f44e9d6",
+    "tests/test_final_runtime.py": "83529f043c9a196440d71d07fc2eca95db835258014b345d0991435c7e0b2859",
+    "tests/test_guarded_readout.py": "7a505c717e1daf686042aac448a1298d394c7fc2ff8a862cc60fb4f74d3b4b19",
+    "tests/test_submission_integrity.py": "973f43a1d9c6a5014b8fda7e6e02f2771e7689886df9302c7e261efeffd72084",
+    "tests/test_time_alignment.py": "a6be36ac761fcf30c708e4ca96d3569a5cd440da4082754f2dd8b51f991d1800",
+    "tests/test_timeline.py": "ec6dfab8e9693fccebdc6f47d87a37dfb761f15a0b0acb5a78fc98f7661ae58d",
+    "tools/audit_units.py": "4adff147b7eba5de3ba782cee201f6cae868ce3e6038cbcda39081dbcdd49cec",
+    "tools/evidence_archive.py": "4a0279ac4044e351cfa2af78dca62d95fab8a70538c9252022a6722916bfd341",
+    "tools/export_bags.py": "696f6bdbf853dac4d4fe6286f6a7f4742f4aea5b1bc508efda52f5bc179c3b66",
+    "tools/finalization/evaluate.py": "f6a19a1727274ca88e1fe1a9fb76d31dbc8ce4e9bbabf669c488f053d76caec7",
+    "tools/finalization/package.py": "5b0d301fe40c43d03d06a3bff441e0e9ac59ef1dff13232725828ec7f20f64c4",
+    "tools/finalization/report.py": "86e4661f9bde880080a84ddc8a59111b1682e8e7c1bd8a732ac6864b97ee7ba3",
+    "tools/finalization/ros_benchmark.py": "1c9770cbf6c143336313b6e380f9257158c2c50b2cf1416e15e60e0fe169be9d",
+    "tools/get_dataset.py": "a9604c96b437cf07271597f6c68fd166ea1d5cee5bacba200f39057e79d22c59",
+    "tools/replay_csv.py": "412a530919ece90bd7508b7ea7e7631b066fe0b45568d2b3ca73685290355b6f",
+    "tools/research_guarded/compare.py": "c2478eb77b5c50af7023e654829933937a264f839d77ef53ec24552ba4166baf",
+    "tools/research_h11/compare.py": "1c65d17b5008e183b02d6d44bb626c7161dec1ee0210b62e63371310fcf4d995",
+    "tools/research_time_alignment/compare.py": "d8be8581d5609da94731148126f304d9766717c9d020972986fe12459d4e7338",
+    "tools/research_v3/experiment.py": "95a398003530454457bacb2096fb6bc9d0d5ee32520420c43a9ebeb406376aa0",
+    "tools/research_v3/manifest.py": "51f24a2b9486938ac935d0b648f0612c76df075f7372caf6cc5bd457a8e53abb",
+    "tools/research_v3/report.py": "add71c07037454fd26a3e36f4dd7cdde0a40b1bb39baf9dcad1120937eece3a2",
+    "tools/research_v5/compare.py": "b24dfcf6433e44cf7a4fddd74ea4febe0d726e73acadf8698e9d736ffc8561ad",
+    "tools/research_v5/report.py": "10052d02dd7f842f0db49d6848e32c11375502739596bd4c8bb54dc69c06c55c",
+    "tools/research_v6/compare.py": "70276a0a633cd443d44af870fde73649519be2aaf55944c2a4473c82d7b241b5",
+    "research/R3/H22/DIAGNOSIS_PLAN.md": "f7a0c2f0b3126e8bfb7e0e0216a8643c8109f1f26f759352096332ec10175141",
+    "research/R3/H22/data.py": "a8d961720c019c9e875595e77a11b27625f7673230e551e70ca6b4231c3e7266",
+    "research/R3/H22/diagnose.py": "33bbfc4de813f9931733e321bc72814afb65454c5e578c1d6dfb688f3241a111",
+    "research/R3/H22/manifest.json": "b4d0134b53e56783010b0eb9293f6dd27a208bb1d213cfdb5ea29e14dd1cebd8"
+  },
+  "python": "3.13.5",
+  "numpy": "2.3.5",
+  "scipy": "1.17.0",
+  "operations": {
+    "rate_hz": 20.0,
+    "alignment_delay_s": 0.0
+  },
+  "test_evaluated": false,
+  "coverage": {
+    "fitting_groups": 19,
+    "check_groups": 5,
+    "fitting_windows": 145,
+    "check_windows": 30,
+    "phases": {
+      "traction": 58,
+      "coast": 58,
+      "braking": 59
+    },
+    "prefix_bias_windows_ge_0p1m": 153,
+    "prefix_bias_groups": [
+      "0448e10aab8a0e05",
+      "0d4506540f0e7621",
+      "0f36b619fba02a9b",
+      "1cff0aebccb39ff5",
+      "2b1581126a480c0f",
+      "4a5f0d46327316bb",
+      "4ca08ed0da0cb611",
+      "58dd5f96d4201195",
+      "5c1be3e9a2189121",
+      "6090ff2c1bc8dee6",
+      "8232b134be2a5002",
+      "86c32e441a296aaa",
+      "8ff91290187a9769",
+      "95a748306e6cbf16",
+      "b8fda5f0647666fb",
+      "bc1e4cbe924a90ce",
+      "bc403256f12f9710",
+      "bf69dbfe85be52b0",
+      "c8a1e61d1b0710e9",
+      "dc785decbed3d7ce",
+      "de891506667c23f9",
+      "e894436afa9dd9f1",
+      "eeabf7d118bbcdac",
+      "f28fe86416cc8dc2"
+    ],
+    "hypothetical_prefix_outputs": 17675
+  },
+  "sufficient_premise": true,
+  "full_rollout_parity_max_abs_mps": 1.7763568394002505e-15,
+  "actual_candidate_interventions": 0,
+  "interpretation": "Baseline forecast defect versus wheel proxy; not ground truth or demonstrated candidate benefit",
+  "rows": [
+    {
+      "kind": "all",
+      "value": "all",
+      "windows": 175,
+      "independent_groups": 24,
+      "rmse_mps": [
+        0.08241196700633643,
+        0.30421829670277534,
+        1.01038452004806
+      ],
+      "signed_bias_mps": [
+        -0.023293589688233942,
+        -0.0776996619019567,
+        -0.16871113432594442
+      ],
+      "prefix_rmse_m": [
+        0.024699303920891043,
+        0.3012468024572621,
+        2.1639417718553084
+      ],
+      "signed_integral_bias_m": [
+        -0.0054871860573908315,
+        -0.074697577813345,
+        -0.4560115674849848
+      ]
+    },
+    {
+      "kind": "group",
+      "value": "0448e10aab8a0e05",
+      "windows": 6,
+      "independent_groups": 1,
+      "rmse_mps": [
+        0.06249623235149623,
+        0.2544659612206197,
+        0.47196112187608774
+      ],
+      "signed_bias_mps": [
+        0.020911589432688043,
+        0.08689939794054495,
+        0.28606363259463313
+      ],
+      "prefix_rmse_m": [
+        0.018811197715306618,
+        0.2492041572437051,
+        1.1383801489391725
+      ],
+      "signed_integral_bias_m": [
+        0.0058078987196918215,
+        0.13336526047296543,
+        0.6502382968647957
+      ]
+    },
+    {
+      "kind": "group",
+      "value": "0d4506540f0e7621",
+      "windows": 3,
+      "independent_groups": 1,
+      "rmse_mps": [
+        0.024587535638044285,
+        0.07885067707154401,
+        0.15411081479648076
+      ],
+      "signed_bias_mps": [
+        0.02142085000035217,
+        -0.0670176741404201,
+        -0.010551490792958104
+      ],
+      "prefix_rmse_m": [
+        0.011820328238011681,
+        0.08044543062484041,
+        0.2249867263224485
+      ],
+      "signed_integral_bias_m": [
+        0.005054082932492469,
+        -0.03363384194732174,
+        -0.10929519436074893
+      ]
+    },
+    {
+      "kind": "group",
+      "value": "0f36b619fba02a9b",
+      "windows": 12,
+      "independent_groups": 1,
+      "rmse_mps": [
+        0.03102024598918802,
+        0.14735044331267821,
+        0.3434476697065445
+      ],
+      "signed_bias_mps": [
+        -0.015064775363014574,
+        -0.02518102474890734,
+        -0.05128301936230321
+      ],
+      "prefix_rmse_m": [
+        0.017681581805685236,
+        0.1381094783762067,
+        0.9409797784845892
+      ],
+      "signed_integral_bias_m": [
+        -0.0005587693390183278,
+        -0.02808888196488296,
+        -0.15124188927088003
+      ]
+    },
+    {
+      "kind": "group",
+      "value": "1cff0aebccb39ff5",
+      "windows": 6,
+      "independent_groups": 1,
+      "rmse_mps": [
+        0.05166039521804683,
+        0.13852481277505732,
+        0.39605534486402066
+      ],
+      "signed_bias_mps": [
+        -0.030727718548987443,
+        -0.056700777001102244,
+        -0.2097903481828806
+      ],
+      "prefix_rmse_m": [
+        0.01872262464479823,
+        0.16162220500038796,
+        0.9969259445237172
+      ],
+      "signed_integral_bias_m": [
+        -0.006258211729227951,
+        -0.08804164587002376,
+        -0.5503261019844742
+      ]
+    },
+    {
+      "kind": "group",
+      "value": "2b1581126a480c0f",
+      "windows": 6,
+      "independent_groups": 1,
+      "rmse_mps": [
+        0.032227962168958436,
+        0.14360381413533227,
+        0.43244256060515224
+      ],
+      "signed_bias_mps": [
+        -0.025257418892959738,
+        -0.11002949065139427,
+        -0.16773641188453436
+      ],
+      "prefix_rmse_m": [
+        0.01239719635649813,
+        0.1315482856639596,
+        0.9831184477898779
+      ],
+      "signed_integral_bias_m": [
+        -0.0056527838018980555,
+        -0.09574368494918718,
+        -0.5320895399287627
+      ]
+    },
+    {
+      "kind": "group",
+      "value": "4a5f0d46327316bb",
+      "windows": 6,
+      "independent_groups": 1,
+      "rmse_mps": [
+        0.035021090212300154,
+        0.0984878292857747,
+        0.3922452247142965
+      ],
+      "signed_bias_mps": [
+        -0.0024877284945796774,
+        0.01856145946067933,
+        0.18275255641975097
+      ],
+      "prefix_rmse_m": [
+        0.0136185576730809,
+        0.1168887567674467,
+        0.7158823926648837
+      ],
+      "signed_integral_bias_m": [
+        0.0011068769641985182,
+        0.026296327082987302,
+        0.28124212871971643
+      ]
+    },
+    {
+      "kind": "group",
+      "value": "4ca08ed0da0cb611",
+      "windows": 3,
+      "independent_groups": 1,
+      "rmse_mps": [
+        0.00553586215531764,
+        0.06404910054419653,
+        0.26307561658036477
+      ],
+      "signed_bias_mps": [
+        0.002453935837817056,
+        0.019894290332138038,
+        0.08391964917440069
+      ],
+      "prefix_rmse_m": [
+        0.004641773589856292,
+        0.04941624654288682,
+        0.43450534121428364
+      ],
+      "signed_integral_bias_m": [
+        -0.0011189628530431997,
+        0.021286551849146813,
+        0.25586471198639565
+      ]
+    },
+    {
+      "kind": "group",
+      "value": "58dd5f96d4201195",
+      "windows": 12,
+      "independent_groups": 1,
+      "rmse_mps": [
+        0.04150490249113475,
+        0.1564362749067654,
+        0.36262586413170395
+      ],
+      "signed_bias_mps": [
+        -0.009658775468891564,
+        -0.04567468201125102,
+        -0.10668077433605383
+      ],
+      "prefix_rmse_m": [
+        0.013149774432864199,
+        0.14916397651761126,
+        0.9571093741709644
+      ],
+      "signed_integral_bias_m": [
+        -0.0011378717002840785,
+        -0.03237162740938644,
+        -0.19964670859201386
+      ]
+    },
+    {
+      "kind": "group",
+      "value": "5c1be3e9a2189121",
+      "windows": 1,
+      "independent_groups": 1,
+      "rmse_mps": [
+        0.07117856862079597,
+        0.6382629271190479,
+        1.4863343448970492
+      ],
+      "signed_bias_mps": [
+        0.07117856862079597,
+        -0.6382629271190479,
+        -1.4863343448970492
+      ],
+      "prefix_rmse_m": [
+        0.004766276565566023,
+        0.3772856314164538,
+        3.2383562705276354
+      ],
+      "signed_integral_bias_m": [
+        -0.004766276565566023,
+        -0.3772856314164538,
+        -3.2383562705276354
+      ]
+    },
+    {
+      "kind": "group",
+      "value": "6090ff2c1bc8dee6",
+      "windows": 6,
+      "independent_groups": 1,
+      "rmse_mps": [
+        0.0442167297660237,
+        0.0884659440563208,
+        0.1945897803922028
+      ],
+      "signed_bias_mps": [
+        -0.025602451059119662,
+        -0.0765860050663177,
+        -0.01622018481190383
+      ],
+      "prefix_rmse_m": [
+        0.016401946630970714,
+        0.09794658545413538,
+        0.4260516403104975
+      ],
+      "signed_integral_bias_m": [
+        -0.010106285909978814,
+        -0.0711748437177021,
+        -0.15451333360971078
+      ]
+    },
+    {
+      "kind": "group",
+      "value": "8232b134be2a5002",
+      "windows": 3,
+      "independent_groups": 1,
+      "rmse_mps": [
+        0.054611468654528934,
+        0.2036699463820296,
+        0.4307697731285797
+      ],
+      "signed_bias_mps": [
+        0.00022623206120690278,
+        -0.046288712025134515,
+        0.20130712723494767
+      ],
+      "prefix_rmse_m": [
+        0.01833069004089442,
+        0.2592456666468156,
+        1.075723018717391
+      ],
+      "signed_integral_bias_m": [
+        0.004851721928905804,
+        -0.049051521854844064,
+        0.2817424074157856
+      ]
+    },
+    {
+      "kind": "group",
+      "value": "86c32e441a296aaa",
+      "windows": 12,
+      "independent_groups": 1,
+      "rmse_mps": [
+        0.03530305379740234,
+        0.07399739995185423,
+        0.7571821870807967
+      ],
+      "signed_bias_mps": [
+        -0.02482021738126683,
+        -0.06807258394379796,
+        0.2585372558764658
+      ],
+      "prefix_rmse_m": [
+        0.013730466180843063,
+        0.07105742714833665,
+        0.5150979965080464
+      ],
+      "signed_integral_bias_m": [
+        -0.006712142417099822,
+        -0.0624930571725664,
+        -0.012618407645512105
+      ]
+    },
+    {
+      "kind": "group",
+      "value": "8ff91290187a9769",
+      "windows": 12,
+      "independent_groups": 1,
+      "rmse_mps": [
+        0.03778454759922301,
+        0.05388736190704176,
+        0.229444913967183
+      ],
+      "signed_bias_mps": [
+        -0.014192429180137486,
+        0.02973683267712361,
+        0.0931048595894608
+      ],
+      "prefix_rmse_m": [
+        0.012151388315364378,
+        0.05353834834993589,
+        0.45235628501816616
+      ],
+      "signed_integral_bias_m": [
+        -0.0070080437393258595,
+        0.0065524306040209606,
+        0.2870937571949836
+      ]
+    },
+    {
+      "kind": "group",
+      "value": "95a748306e6cbf16",
+      "windows": 12,
+      "independent_groups": 1,
+      "rmse_mps": [
+        0.07804447855296312,
+        0.17722295659920073,
+        0.9927058041120866
+      ],
+      "signed_bias_mps": [
+        -0.0463838849537459,
+        -0.09984546506739056,
+        -0.3517454834900115
+      ],
+      "prefix_rmse_m": [
+        0.01702282675548561,
+        0.21210487649815823,
+        1.494687455735598
+      ],
+      "signed_integral_bias_m": [
+        -0.008474826109775601,
+        -0.13639581887383842,
+        -0.618132480229388
+      ]
+    },
+    {
+      "kind": "group",
+      "value": "b8fda5f0647666fb",
+      "windows": 6,
+      "independent_groups": 1,
+      "rmse_mps": [
+        0.055630754532244614,
+        0.20634847016267932,
+        0.5021341595520411
+      ],
+      "signed_bias_mps": [
+        -0.0054687610061582665,
+        -0.07216600284181518,
+        -0.12248413884593883
+      ],
+      "prefix_rmse_m": [
+        0.012771595168477597,
+        0.1672494555461643,
+        1.227082615960851
+      ],
+      "signed_integral_bias_m": [
+        0.0004819145310397477,
+        -0.045615960462337984,
+        -0.35958270297846556
+      ]
+    },
+    {
+      "kind": "group",
+      "value": "bc1e4cbe924a90ce",
+      "windows": 6,
+      "independent_groups": 1,
+      "rmse_mps": [
+        0.036608326992386996,
+        0.14043754641461292,
+        0.4199323413784317
+      ],
+      "signed_bias_mps": [
+        -0.00835985982858641,
+        -0.06659370770515179,
+        -0.15120737443171137
+      ],
+      "prefix_rmse_m": [
+        0.013240574690873379,
+        0.13823526643066492,
+        0.7888832471308626
+      ],
+      "signed_integral_bias_m": [
+        0.0007969463031693196,
+        -0.07611498943469536,
+        -0.2941116399838161
+      ]
+    },
+    {
+      "kind": "group",
+      "value": "bc403256f12f9710",
+      "windows": 12,
+      "independent_groups": 1,
+      "rmse_mps": [
+        0.09664955424859421,
+        0.5130485362453477,
+        3.068528184224663
+      ],
+      "signed_bias_mps": [
+        -0.060557025873387106,
+        -0.3756741588883152,
+        -2.0067672361164024
+      ],
+      "prefix_rmse_m": [
+        0.029324020128226765,
+        0.41742608639103423,
+        5.99366238282857
+      ],
+      "signed_integral_bias_m": [
+        -0.016786220850974396,
+        -0.26906647875903,
+        -4.026175830350941
+      ]
+    },
+    {
+      "kind": "group",
+      "value": "bf69dbfe85be52b0",
+      "windows": 12,
+      "independent_groups": 1,
+      "rmse_mps": [
+        0.2390225823878076,
+        0.8231849138427828,
+        1.223737865652781
+      ],
+      "signed_bias_mps": [
+        -0.11493555499889396,
+        -0.40725330832950224,
+        -0.660733563890313
+      ],
+      "prefix_rmse_m": [
+        0.07197446421003562,
+        0.8820130104632699,
+        4.094059313840843
+      ],
+      "signed_integral_bias_m": [
+        -0.029355486111092833,
+        -0.4229883520109809,
+        -2.1504096085206963
+      ]
+    },
+    {
+      "kind": "group",
+      "value": "c8a1e61d1b0710e9",
+      "windows": 12,
+      "independent_groups": 1,
+      "rmse_mps": [
+        0.055418875758878355,
+        0.33359616700886646,
+        0.8528423096553904
+      ],
+      "signed_bias_mps": [
+        0.026813157282715938,
+        0.21654603879882015,
+        0.5849520514868051
+      ],
+      "prefix_rmse_m": [
+        0.013312231523627812,
+        0.29792745156702544,
+        2.023037515394718
+      ],
+      "signed_integral_bias_m": [
+        0.006414544252735225,
+        0.17404998842914798,
+        1.3401543044735398
+      ]
+    },
+    {
+      "kind": "group",
+      "value": "dc785decbed3d7ce",
+      "windows": 6,
+      "independent_groups": 1,
+      "rmse_mps": [
+        0.06833369807813278,
+        0.21059259428936183,
+        0.6366474669664155
+      ],
+      "signed_bias_mps": [
+        0.0280300764557823,
+        0.04498553441805564,
+        0.22787482629914102
+      ],
+      "prefix_rmse_m": [
+        0.017959534818251206,
+        0.20288991077507243,
+        1.4186854405369023
+      ],
+      "signed_integral_bias_m": [
+        0.0037202243481387295,
+        0.045453622599882275,
+        0.45802495045129255
+      ]
+    },
+    {
+      "kind": "group",
+      "value": "de891506667c23f9",
+      "windows": 3,
+      "independent_groups": 1,
+      "rmse_mps": [
+        0.09660575028414511,
+        0.21895168747812896,
+        0.6177286079846112
+      ],
+      "signed_bias_mps": [
+        -0.07981807616698215,
+        -0.16321724369549973,
+        -0.012030657098440164
+      ],
+      "prefix_rmse_m": [
+        0.02485205863760216,
+        0.2683446958309919,
+        1.3501316801699812
+      ],
+      "signed_integral_bias_m": [
+        -0.019873158475347853,
+        -0.20939959359598073,
+        -0.47452816975769285
+      ]
+    },
+    {
+      "kind": "group",
+      "value": "e894436afa9dd9f1",
+      "windows": 6,
+      "independent_groups": 1,
+      "rmse_mps": [
+        0.060833619518942124,
+        0.10416216000657047,
+        0.20396735352376286
+      ],
+      "signed_bias_mps": [
+        -0.04630167426130575,
+        -0.06062818338411365,
+        -0.13404931822192104
+      ],
+      "prefix_rmse_m": [
+        0.014428265517797616,
+        0.11168303175379983,
+        0.5987512843090809
+      ],
+      "signed_integral_bias_m": [
+        -0.0118183685682527,
+        -0.08289156163314203,
+        -0.35818455260096177
+      ]
+    },
+    {
+      "kind": "group",
+      "value": "eeabf7d118bbcdac",
+      "windows": 6,
+      "independent_groups": 1,
+      "rmse_mps": [
+        0.04511381596078814,
+        0.12722612402658526,
+        0.38154863716025517
+      ],
+      "signed_bias_mps": [
+        -0.02255900839344512,
+        -0.045535603664382286,
+        -0.07521194296841809
+      ],
+      "prefix_rmse_m": [
+        0.010491619555877643,
+        0.12203821314144501,
+        0.7408415386336935
+      ],
+      "signed_integral_bias_m": [
+        0.001262460006160228,
+        -0.06721401700502051,
+        -0.24078889809806828
+      ]
+    },
+    {
+      "kind": "group",
+      "value": "f28fe86416cc8dc2",
+      "windows": 6,
+      "independent_groups": 1,
+      "rmse_mps": [
+        0.05611938074630851,
+        0.22264998761357818,
+        0.5429060781955403
+      ],
+      "signed_bias_mps": [
+        -0.02797896507323827,
+        -0.14291823300133233,
+        -0.14310081676436207
+      ],
+      "prefix_rmse_m": [
+        0.016803305271493665,
+        0.1852464271315638,
+        1.2861219156012327
+      ],
+      "signed_integral_bias_m": [
+        -0.005808427846178033,
+        -0.11711412431401408,
+        -0.5754580985023736
+      ]
+    },
+    {
+      "kind": "phase",
+      "value": "braking",
+      "windows": 59,
+      "independent_groups": 24,
+      "rmse_mps": [
+        0.12541293416603494,
+        0.47350359186617985,
+        1.5692436838661628
+      ],
+      "signed_bias_mps": [
+        -0.03947347064399412,
+        -0.11070461601431567,
+        -0.40918291998312606
+      ],
+      "prefix_rmse_m": [
+        0.03850327054877609,
+        0.47091804999864756,
+        3.4645972979829702
+      ],
+      "signed_integral_bias_m": [
+        -0.017838355830841396,
+        -0.11910813478761725,
+        -0.932836931805644
+      ]
+    },
+    {
+      "kind": "phase",
+      "value": "coast",
+      "windows": 58,
+      "independent_groups": 23,
+      "rmse_mps": [
+        0.047691997098473354,
+        0.17380347735293275,
+        0.6427131836313322
+      ],
+      "signed_bias_mps": [
+        -0.023273368075756976,
+        -0.09277758305251736,
+        -0.07014752463650566
+      ],
+      "prefix_rmse_m": [
+        0.0112550674390241,
+        0.17510489384001868,
+        1.0494916672494463
+      ],
+      "signed_integral_bias_m": [
+        -0.004428395228562516,
+        -0.09051133074738996,
+        -0.3238454958828857
+      ]
+    },
+    {
+      "kind": "phase",
+      "value": "traction",
+      "windows": 58,
+      "independent_groups": 23,
+      "rmse_mps": [
+        0.04709761911993875,
+        0.14478628974615396,
+        0.40270168170250975
+      ],
+      "signed_bias_mps": [
+        -0.0068549668801962445,
+        -0.02904773570606534,
+        -0.02265689308825062
+      ],
+      "prefix_rmse_m": [
+        0.014350828553160298,
+        0.13253116329751882,
+        0.9037943650004263
+      ],
+      "signed_integral_bias_m": [
+        0.006018144090221952,
+        -0.013707568646850712,
+        -0.10313114779537763
+      ]
+    }
+  ],
+  "inventory": [
+    {
+      "bag": "30618_0259fe53",
+      "group": "95a748306e6cbf16",
+      "windows": 3,
+      "eligible_by_phase": {
+        "traction": 5463,
+        "coast": 1896,
+        "braking": 4612
+      }
+    },
+    {
+      "bag": "30618_082f1d65",
+      "group": "1e811c142a49aa16",
+      "windows": 0,
+      "eligible_by_phase": {
+        "traction": 0,
+        "coast": 0,
+        "braking": 0
+      }
+    },
+    {
+      "bag": "30618_095a115b",
+      "group": "e894436afa9dd9f1",
+      "windows": 3,
+      "eligible_by_phase": {
+        "traction": 5248,
+        "coast": 2540,
+        "braking": 5031
+      }
+    },
+    {
+      "bag": "30618_0a83c933",
+      "group": "86c32e441a296aaa",
+      "windows": 3,
+      "eligible_by_phase": {
+        "traction": 5317,
+        "coast": 2083,
+        "braking": 4628
+      }
+    },
+    {
+      "bag": "30618_0d865417",
+      "group": "96d0ec5b7ee50e7e",
+      "windows": 0,
+      "eligible_by_phase": {
+        "traction": 0,
+        "coast": 0,
+        "braking": 0
+      }
+    },
+    {
+      "bag": "30618_1cc230fa",
+      "group": "0f36b619fba02a9b",
+      "windows": 3,
+      "eligible_by_phase": {
+        "traction": 3525,
+        "coast": 1685,
+        "braking": 3014
+      }
+    },
+    {
+      "bag": "30618_20096314",
+      "group": "c8a1e61d1b0710e9",
+      "windows": 3,
+      "eligible_by_phase": {
+        "traction": 5455,
+        "coast": 1861,
+        "braking": 4232
+      }
+    },
+    {
+      "bag": "30618_2050d396",
+      "group": "4a5f0d46327316bb",
+      "windows": 3,
+      "eligible_by_phase": {
+        "traction": 1347,
+        "coast": 494,
+        "braking": 1530
+      }
+    },
+    {
+      "bag": "30618_2161b58b",
+      "group": "8ff91290187a9769",
+      "windows": 3,
+      "eligible_by_phase": {
+        "traction": 3715,
+        "coast": 1882,
+        "braking": 3674
+      }
+    },
+    {
+      "bag": "30618_21dd3af3",
+      "group": "bc403256f12f9710",
+      "windows": 3,
+      "eligible_by_phase": {
+        "traction": 4190,
+        "coast": 1284,
+        "braking": 4071
+      }
+    },
+    {
+      "bag": "30618_22c1c589",
+      "group": "dc785decbed3d7ce",
+      "windows": 3,
+      "eligible_by_phase": {
+        "traction": 5339,
+        "coast": 1798,
+        "braking": 4271
+      }
+    },
+    {
+      "bag": "30618_2366c74a",
+      "group": "58dd5f96d4201195",
+      "windows": 3,
+      "eligible_by_phase": {
+        "traction": 4221,
+        "coast": 1327,
+        "braking": 3768
+      }
+    },
+    {
+      "bag": "30618_2d2fa7be",
+      "group": "bf69dbfe85be52b0",
+      "windows": 3,
+      "eligible_by_phase": {
+        "traction": 3309,
+        "coast": 1317,
+        "braking": 1829
+      }
+    },
+    {
+      "bag": "30618_2f2f1175",
+      "group": "bf69dbfe85be52b0",
+      "windows": 3,
+      "eligible_by_phase": {
+        "traction": 4564,
+        "coast": 2024,
+        "braking": 4885
+      }
+    },
+    {
+      "bag": "30618_3e9f4952",
+      "group": "b8fda5f0647666fb",
+      "windows": 3,
+      "eligible_by_phase": {
+        "traction": 270,
+        "coast": 62,
+        "braking": 420
+      }
+    },
+    {
+      "bag": "30618_40ffd323",
+      "group": "58dd5f96d4201195",
+      "windows": 3,
+      "eligible_by_phase": {
+        "traction": 5656,
+        "coast": 1709,
+        "braking": 4844
+      }
+    },
+    {
+      "bag": "30618_45ff6f99",
+      "group": "5c1be3e9a2189121",
+      "windows": 0,
+      "eligible_by_phase": {
+        "traction": 0,
+        "coast": 0,
+        "braking": 0
+      }
+    },
+    {
+      "bag": "30618_4d487b0d",
+      "group": "bc403256f12f9710",
+      "windows": 3,
+      "eligible_by_phase": {
+        "traction": 3800,
+        "coast": 1469,
+        "braking": 4697
+      }
+    },
+    {
+      "bag": "30618_616ec56b",
+      "group": "6090ff2c1bc8dee6",
+      "windows": 3,
+      "eligible_by_phase": {
+        "traction": 4930,
+        "coast": 1547,
+        "braking": 3857
+      }
+    },
+    {
+      "bag": "30618_67b89902",
+      "group": "b8fda5f0647666fb",
+      "windows": 3,
+      "eligible_by_phase": {
+        "traction": 1969,
+        "coast": 818,
+        "braking": 1295
+      }
+    },
+    {
+      "bag": "30618_748832b9",
+      "group": "0f36b619fba02a9b",
+      "windows": 3,
+      "eligible_by_phase": {
+        "traction": 5603,
+        "coast": 1937,
+        "braking": 4363
+      }
+    },
+    {
+      "bag": "30618_7849303f",
+      "group": "0f36b619fba02a9b",
+      "windows": 3,
+      "eligible_by_phase": {
+        "traction": 5603,
+        "coast": 1937,
+        "braking": 4363
+      }
+    },
+    {
+      "bag": "30618_79b204dc",
+      "group": "8ff91290187a9769",
+      "windows": 3,
+      "eligible_by_phase": {
+        "traction": 4977,
+        "coast": 2018,
+        "braking": 3668
+      }
+    },
+    {
+      "bag": "30618_7a152380",
+      "group": "c8a1e61d1b0710e9",
+      "windows": 3,
+      "eligible_by_phase": {
+        "traction": 2063,
+        "coast": 1023,
+        "braking": 2472
+      }
+    },
+    {
+      "bag": "30618_7b4d83f4",
+      "group": "2b1581126a480c0f",
+      "windows": 3,
+      "eligible_by_phase": {
+        "traction": 5772,
+        "coast": 2258,
+        "braking": 4495
+      }
+    },
+    {
+      "bag": "30618_8158f0b0",
+      "group": "6090ff2c1bc8dee6",
+      "windows": 3,
+      "eligible_by_phase": {
+        "traction": 5435,
+        "coast": 2076,
+        "braking": 4843
+      }
+    },
+    {
+      "bag": "30618_81c22fee",
+      "group": "86c32e441a296aaa",
+      "windows": 3,
+      "eligible_by_phase": {
+        "traction": 4389,
+        "coast": 1611,
+        "braking": 3941
+      }
+    },
+    {
+      "bag": "30618_87afe526",
+      "group": "2b1581126a480c0f",
+      "windows": 3,
+      "eligible_by_phase": {
+        "traction": 5750,
+        "coast": 2237,
+        "braking": 5500
+      }
+    },
+    {
+      "bag": "30618_887a2b9a",
+      "group": "8ff91290187a9769",
+      "windows": 3,
+      "eligible_by_phase": {
+        "traction": 4977,
+        "coast": 2018,
+        "braking": 3668
+      }
+    },
+    {
+      "bag": "30618_8eb8615c",
+      "group": "bf69dbfe85be52b0",
+      "windows": 3,
+      "eligible_by_phase": {
+        "traction": 3309,
+        "coast": 1317,
+        "braking": 1829
+      }
+    },
+    {
+      "bag": "30618_8f08df08",
+      "group": "c8a1e61d1b0710e9",
+      "windows": 3,
+      "eligible_by_phase": {
+        "traction": 2063,
+        "coast": 1023,
+        "braking": 2472
+      }
+    },
+    {
+      "bag": "30618_92b1b453",
+      "group": "86c32e441a296aaa",
+      "windows": 3,
+      "eligible_by_phase": {
+        "traction": 4389,
+        "coast": 1611,
+        "braking": 3941
+      }
+    },
+    {
+      "bag": "30618_93dc866e",
+      "group": "58dd5f96d4201195",
+      "windows": 3,
+      "eligible_by_phase": {
+        "traction": 4221,
+        "coast": 1327,
+        "braking": 3768
+      }
+    },
+    {
+      "bag": "30618_98161270",
+      "group": "5c1be3e9a2189121",
+      "windows": 0,
+      "eligible_by_phase": {
+        "traction": 0,
+        "coast": 0,
+        "braking": 0
+      }
+    },
+    {
+      "bag": "30618_9bbe6faa",
+      "group": "95a748306e6cbf16",
+      "windows": 3,
+      "eligible_by_phase": {
+        "traction": 4232,
+        "coast": 1786,
+        "braking": 4046
+      }
+    },
+    {
+      "bag": "30618_9c09b081",
+      "group": "dc785decbed3d7ce",
+      "windows": 3,
+      "eligible_by_phase": {
+        "traction": 6364,
+        "coast": 2246,
+        "braking": 5662
+      }
+    },
+    {
+      "bag": "30618_9c10cd0d",
+      "group": "95a748306e6cbf16",
+      "windows": 3,
+      "eligible_by_phase": {
+        "traction": 4232,
+        "coast": 1786,
+        "braking": 4046
+      }
+    },
+    {
+      "bag": "30618_a395846d",
+      "group": "0f36b619fba02a9b",
+      "windows": 3,
+      "eligible_by_phase": {
+        "traction": 3525,
+        "coast": 1685,
+        "braking": 3014
+      }
+    },
+    {
+      "bag": "30618_a53d5f6f",
+      "group": "4a5f0d46327316bb",
+      "windows": 3,
+      "eligible_by_phase": {
+        "traction": 2073,
+        "coast": 1244,
+        "braking": 2763
+      }
+    },
+    {
+      "bag": "30618_ab5921a4",
+      "group": "1cff0aebccb39ff5",
+      "windows": 3,
+      "eligible_by_phase": {
+        "traction": 6198,
+        "coast": 2229,
+        "braking": 5523
+      }
+    },
+    {
+      "bag": "30618_b3042f78",
+      "group": "bc403256f12f9710",
+      "windows": 3,
+      "eligible_by_phase": {
+        "traction": 3800,
+        "coast": 1469,
+        "braking": 4697
+      }
+    },
+    {
+      "bag": "30618_b83d854d",
+      "group": "eeabf7d118bbcdac",
+      "windows": 3,
+      "eligible_by_phase": {
+        "traction": 5665,
+        "coast": 2526,
+        "braking": 5023
+      }
+    },
+    {
+      "bag": "30618_b95ca60a",
+      "group": "e894436afa9dd9f1",
+      "windows": 3,
+      "eligible_by_phase": {
+        "traction": 5492,
+        "coast": 2132,
+        "braking": 4057
+      }
+    },
+    {
+      "bag": "30618_bab2fe58",
+      "group": "5c1be3e9a2189121",
+      "windows": 1,
+      "eligible_by_phase": {
+        "traction": 0,
+        "coast": 0,
+        "braking": 700
+      }
+    },
+    {
+      "bag": "30618_bc5e53c2",
+      "group": "49fc4c6fb44fd0ea",
+      "windows": 0,
+      "eligible_by_phase": {
+        "traction": 0,
+        "coast": 0,
+        "braking": 0
+      }
+    },
+    {
+      "bag": "30618_cfd9fd5a",
+      "group": "95a748306e6cbf16",
+      "windows": 3,
+      "eligible_by_phase": {
+        "traction": 5463,
+        "coast": 1896,
+        "braking": 4612
+      }
+    },
+    {
+      "bag": "30618_d4ba7005",
+      "group": "0448e10aab8a0e05",
+      "windows": 3,
+      "eligible_by_phase": {
+        "traction": 1080,
+        "coast": 323,
+        "braking": 518
+      }
+    },
+    {
+      "bag": "30618_dd8e6395",
+      "group": "0448e10aab8a0e05",
+      "windows": 3,
+      "eligible_by_phase": {
+        "traction": 244,
+        "coast": 188,
+        "braking": 365
+      }
+    },
+    {
+      "bag": "30618_ddad08d6",
+      "group": "bf69dbfe85be52b0",
+      "windows": 3,
+      "eligible_by_phase": {
+        "traction": 4564,
+        "coast": 2024,
+        "braking": 4885
+      }
+    },
+    {
+      "bag": "30618_e2dcf65f",
+      "group": "de891506667c23f9",
+      "windows": 3,
+      "eligible_by_phase": {
+        "traction": 5894,
+        "coast": 2259,
+        "braking": 4223
+      }
+    },
+    {
+      "bag": "30618_e392e5bd",
+      "group": "86c32e441a296aaa",
+      "windows": 3,
+      "eligible_by_phase": {
+        "traction": 5317,
+        "coast": 2083,
+        "braking": 4628
+      }
+    },
+    {
+      "bag": "30618_e3d94878",
+      "group": "eeabf7d118bbcdac",
+      "windows": 3,
+      "eligible_by_phase": {
+        "traction": 4229,
+        "coast": 2075,
+        "braking": 6309
+      }
+    },
+    {
+      "bag": "30618_e7dcdab1",
+      "group": "c8a1e61d1b0710e9",
+      "windows": 3,
+      "eligible_by_phase": {
+        "traction": 5455,
+        "coast": 1861,
+        "braking": 4232
+      }
+    },
+    {
+      "bag": "30618_efb92709",
+      "group": "58dd5f96d4201195",
+      "windows": 3,
+      "eligible_by_phase": {
+        "traction": 5656,
+        "coast": 1709,
+        "braking": 4844
+      }
+    },
+    {
+      "bag": "30618_f19a4ac3",
+      "group": "1cff0aebccb39ff5",
+      "windows": 3,
+      "eligible_by_phase": {
+        "traction": 5942,
+        "coast": 1982,
+        "braking": 4512
+      }
+    },
+    {
+      "bag": "30618_f28179bb",
+      "group": "8ff91290187a9769",
+      "windows": 3,
+      "eligible_by_phase": {
+        "traction": 3715,
+        "coast": 1882,
+        "braking": 3674
+      }
+    },
+    {
+      "bag": "30618_f3b8c99b",
+      "group": "bc403256f12f9710",
+      "windows": 3,
+      "eligible_by_phase": {
+        "traction": 4190,
+        "coast": 1284,
+        "braking": 4071
+      }
+    },
+    {
+      "bag": "30639_0be558e2",
+      "group": "0d4506540f0e7621",
+      "windows": 3,
+      "eligible_by_phase": {
+        "traction": 5224,
+        "coast": 2243,
+        "braking": 4875
+      }
+    },
+    {
+      "bag": "30639_2b4a6347",
+      "group": "bc1e4cbe924a90ce",
+      "windows": 3,
+      "eligible_by_phase": {
+        "traction": 6050,
+        "coast": 1943,
+        "braking": 5009
+      }
+    },
+    {
+      "bag": "30639_4285f2bc",
+      "group": "bc1e4cbe924a90ce",
+      "windows": 3,
+      "eligible_by_phase": {
+        "traction": 4781,
+        "coast": 1739,
+        "braking": 5447
+      }
+    },
+    {
+      "bag": "30639_44226bde",
+      "group": "f28fe86416cc8dc2",
+      "windows": 3,
+      "eligible_by_phase": {
+        "traction": 5869,
+        "coast": 2841,
+        "braking": 4969
+      }
+    },
+    {
+      "bag": "30639_92226df0",
+      "group": "4ca08ed0da0cb611",
+      "windows": 3,
+      "eligible_by_phase": {
+        "traction": 6207,
+        "coast": 2594,
+        "braking": 4490
+      }
+    },
+    {
+      "bag": "30639_927002c2",
+      "group": "8232b134be2a5002",
+      "windows": 3,
+      "eligible_by_phase": {
+        "traction": 4814,
+        "coast": 1754,
+        "braking": 4494
+      }
+    },
+    {
+      "bag": "30639_d3c43d69",
+      "group": "f28fe86416cc8dc2",
+      "windows": 3,
+      "eligible_by_phase": {
+        "traction": 4960,
+        "coast": 2581,
+        "braking": 4467
+      }
+    }
+  ],
+  "groups": {
+    "fitting": [
+      "0d4506540f0e7621",
+      "0f36b619fba02a9b",
+      "1cff0aebccb39ff5",
+      "2b1581126a480c0f",
+      "49fc4c6fb44fd0ea",
+      "4a5f0d46327316bb",
+      "58dd5f96d4201195",
+      "5c1be3e9a2189121",
+      "6090ff2c1bc8dee6",
+      "86c32e441a296aaa",
+      "8ff91290187a9769",
+      "95a748306e6cbf16",
+      "b8fda5f0647666fb",
+      "bc1e4cbe924a90ce",
+      "bc403256f12f9710",
+      "c8a1e61d1b0710e9",
+      "dc785decbed3d7ce",
+      "de891506667c23f9",
+      "eeabf7d118bbcdac",
+      "f28fe86416cc8dc2"
+    ],
+    "check": [
+      "0448e10aab8a0e05",
+      "1e811c142a49aa16",
+      "4ca08ed0da0cb611",
+      "8232b134be2a5002",
+      "96d0ec5b7ee50e7e",
+      "bf69dbfe85be52b0",
+      "e894436afa9dd9f1"
+    ]
+  },
+  "per_window": [
+    {
+      "bag": "30618_0259fe53",
+      "group": "95a748306e6cbf16",
+      "phase": "traction",
+      "anchor": 649.75,
+      "velocity_error_mps": [
+        0.006795614471569067,
+        0.02139335667225062,
+        0.264980344730704
+      ],
+      "prefix_integral_error_m": [
+        0.01093357284381908,
+        0.01325608284657129,
+        0.3061258729161461
+      ]
+    },
+    {
+      "bag": "30618_0259fe53",
+      "group": "95a748306e6cbf16",
+      "phase": "coast",
+      "anchor": 351.45000000000005,
+      "velocity_error_mps": [
+        -0.00970601791839698,
+        -0.15847996235591744,
+        -0.15529493331153255
+      ],
+      "prefix_integral_error_m": [
+        -0.0017330823954623208,
+        -0.14731271685440803,
+        -0.472942247981626
+      ]
+    },
+    {
+      "bag": "30618_0259fe53",
+      "group": "95a748306e6cbf16",
+      "phase": "braking",
+      "anchor": 490.20000000000005,
+      "velocity_error_mps": [
+        -0.13307570473719998,
+        -0.11740352673228571,
+        0.14639524981115315
+      ],
+      "prefix_integral_error_m": [
+        -0.03498460169614934,
+        -0.3257333289602944,
+        0.008332415531259713
+      ]
+    },
+    {
+      "bag": "30618_095a115b",
+      "group": "e894436afa9dd9f1",
+      "phase": "traction",
+      "anchor": 608.8000000000001,
+      "velocity_error_mps": [
+        -0.05614302136642024,
+        -0.04678373521568524,
+        0.08015847497643769
+      ],
+      "prefix_integral_error_m": [
+        -0.009889266569512351,
+        -0.10898792148309698,
+        -0.16470965578122496
+      ]
+    },
+    {
+      "bag": "30618_095a115b",
+      "group": "e894436afa9dd9f1",
+      "phase": "coast",
+      "anchor": 424.1,
+      "velocity_error_mps": [
+        0.004456800862389976,
+        -0.04407118927511444,
+        0.04124946555713738
+      ],
+      "prefix_integral_error_m": [
+        0.0015063990219997025,
+        -0.0021321320220270986,
+        -0.007680807157471291
+      ]
+    },
+    {
+      "bag": "30618_095a115b",
+      "group": "e894436afa9dd9f1",
+      "phase": "braking",
+      "anchor": 568.15,
+      "velocity_error_mps": [
+        -0.12198573353146713,
+        0.006941002055905976,
+        -0.12057506128157769
+      ],
+      "prefix_integral_error_m": [
+        -0.022301302333377335,
+        -0.005634128316312945,
+        0.0006955261111632619
+      ]
+    },
+    {
+      "bag": "30618_0a83c933",
+      "group": "86c32e441a296aaa",
+      "phase": "traction",
+      "anchor": 757.2506620730001,
+      "velocity_error_mps": [
+        -0.0010664380927742911,
+        -0.03989916862143872,
+        -0.140841178854604
+      ],
+      "prefix_integral_error_m": [
+        0.004198329962521082,
+        -0.003070048620382725,
+        -0.20951511664593944
+      ]
+    },
+    {
+      "bag": "30618_0a83c933",
+      "group": "86c32e441a296aaa",
+      "phase": "coast",
+      "anchor": 684.6006620730001,
+      "velocity_error_mps": [
+        -0.06054010706149704,
+        -0.10147931573688673,
+        1.8178469064755003
+      ],
+      "prefix_integral_error_m": [
+        -0.022110835537018324,
+        -0.09449947801361441,
+        0.9569453320120587
+      ]
+    },
+    {
+      "bag": "30618_0a83c933",
+      "group": "86c32e441a296aaa",
+      "phase": "braking",
+      "anchor": 487.20066207300005,
+      "velocity_error_mps": [
+        -0.03496405172700623,
+        -0.11398317307380967,
+        -0.20877636537226252
+      ],
+      "prefix_integral_error_m": [
+        -0.008654662391799498,
+        -0.09493393637895647,
+        -0.6204898047976762
+      ]
+    },
+    {
+      "bag": "30618_1cc230fa",
+      "group": "0f36b619fba02a9b",
+      "phase": "traction",
+      "anchor": 918.45,
+      "velocity_error_mps": [
+        0.01246895724756314,
+        -0.06683931523990339,
+        -0.15049156756618842
+      ],
+      "prefix_integral_error_m": [
+        0.030766860380788096,
+        0.02812693882845708,
+        -0.3397536247137525
+      ]
+    },
+    {
+      "bag": "30618_1cc230fa",
+      "group": "0f36b619fba02a9b",
+      "phase": "coast",
+      "anchor": 456.20000000000005,
+      "velocity_error_mps": [
+        -0.031095140274260302,
+        -0.1039780380938069,
+        -0.23042054394807465
+      ],
+      "prefix_integral_error_m": [
+        -0.006838532345242799,
+        -0.10971734244293142,
+        -0.6378066960920631
+      ]
+    },
+    {
+      "bag": "30618_1cc230fa",
+      "group": "0f36b619fba02a9b",
+      "phase": "braking",
+      "anchor": 725.2,
+      "velocity_error_mps": [
+        -0.029732287223707132,
+        0.04073209839994618,
+        0.19743504697642145
+      ],
+      "prefix_integral_error_m": [
+        -0.015680397902055967,
+        0.02896290715078873,
+        0.48436349346674007
+      ]
+    },
+    {
+      "bag": "30618_20096314",
+      "group": "c8a1e61d1b0710e9",
+      "phase": "traction",
+      "anchor": 710.35,
+      "velocity_error_mps": [
+        -0.003534796495376469,
+        0.16032946403542603,
+        0.39513218609549305
+      ],
+      "prefix_integral_error_m": [
+        0.0007740746600480125,
+        0.07954015608113202,
+        1.0905889352667717
+      ]
+    },
+    {
+      "bag": "30618_20096314",
+      "group": "c8a1e61d1b0710e9",
+      "phase": "coast",
+      "anchor": 675.2,
+      "velocity_error_mps": [
+        -0.008600050548892568,
+        0.18242662546396105,
+        0.7256583949136388
+      ],
+      "prefix_integral_error_m": [
+        -0.00024166639257036464,
+        0.09642975379233656,
+        1.3435444540460446
+      ]
+    },
+    {
+      "bag": "30618_20096314",
+      "group": "c8a1e61d1b0710e9",
+      "phase": "braking",
+      "anchor": 499.8,
+      "velocity_error_mps": [
+        0.05613759302041199,
+        0.29894755929887484,
+        0.9234702308981051
+      ],
+      "prefix_integral_error_m": [
+        0.012971316224737978,
+        0.26776343106819506,
+        1.921947770805783
+      ]
+    },
+    {
+      "bag": "30618_2050d396",
+      "group": "4a5f0d46327316bb",
+      "phase": "traction",
+      "anchor": 344.15000000000003,
+      "velocity_error_mps": [
+        -0.02713309204930603,
+        -0.08350163066651994,
+        -0.3187246231353633
+      ],
+      "prefix_integral_error_m": [
+        0.013652378252234885,
+        -0.028882103800792685,
+        -0.6414002920814862
+      ]
+    },
+    {
+      "bag": "30618_2050d396",
+      "group": "4a5f0d46327316bb",
+      "phase": "coast",
+      "anchor": 269.75,
+      "velocity_error_mps": [
+        -0.04719518610400364,
+        -0.0725884057189834,
+        -0.11545893423468989
+      ],
+      "prefix_integral_error_m": [
+        -0.016959827296148353,
+        -0.11077467874551288,
+        -0.22587730466939937
+      ]
+    },
+    {
+      "bag": "30618_2050d396",
+      "group": "4a5f0d46327316bb",
+      "phase": "braking",
+      "anchor": 359.1,
+      "velocity_error_mps": [
+        -0.02281392117190606,
+        -0.013013044796135631,
+        0.0406330681111875
+      ],
+      "prefix_integral_error_m": [
+        -0.011988525619707225,
+        -0.06353798846168246,
+        0.04559770550500553
+      ]
+    },
+    {
+      "bag": "30618_2161b58b",
+      "group": "8ff91290187a9769",
+      "phase": "traction",
+      "anchor": 405.35,
+      "velocity_error_mps": [
+        -0.07477048938791064,
+        0.0484428806878654,
+        0.1341717214614011
+      ],
+      "prefix_integral_error_m": [
+        -0.023572084115049866,
+        -0.040676839085628975,
+        0.3634929148686071
+      ]
+    },
+    {
+      "bag": "30618_2161b58b",
+      "group": "8ff91290187a9769",
+      "phase": "coast",
+      "anchor": 273.65000000000003,
+      "velocity_error_mps": [
+        0.006195920616613115,
+        0.03000327004684067,
+        0.22877795092558273
+      ],
+      "prefix_integral_error_m": [
+        -0.0002817667670143784,
+        0.0212764753356847,
+        0.4976298434757551
+      ]
+    },
+    {
+      "bag": "30618_2161b58b",
+      "group": "8ff91290187a9769",
+      "phase": "braking",
+      "anchor": 377.40000000000003,
+      "velocity_error_mps": [
+        0.028900224187846213,
+        0.008236949682291161,
+        -0.30056714955438313
+      ],
+      "prefix_integral_error_m": [
+        -0.0004392353648687107,
+        0.015760660780329852,
+        -0.14841711296727472
+      ]
+    },
+    {
+      "bag": "30618_21dd3af3",
+      "group": "bc403256f12f9710",
+      "phase": "traction",
+      "anchor": 513.95,
+      "velocity_error_mps": [
+        -0.08283995270206823,
+        -0.22267761295437616,
+        -0.5581804863826889
+      ],
+      "prefix_integral_error_m": [
+        0.00017783850041101171,
+        -0.1671020680225091,
+        -1.186742374832456
+      ]
+    },
+    {
+      "bag": "30618_21dd3af3",
+      "group": "bc403256f12f9710",
+      "phase": "coast",
+      "anchor": 356.35,
+      "velocity_error_mps": [
+        -0.022999505212595306,
+        0.015182437212622357,
+        -0.35471301149346957
+      ],
+      "prefix_integral_error_m": [
+        -0.004563919113946751,
+        0.05988687256049309,
+        -0.2838228550032629
+      ]
+    },
+    {
+      "bag": "30618_21dd3af3",
+      "group": "bc403256f12f9710",
+      "phase": "braking",
+      "anchor": 398.3,
+      "velocity_error_mps": [
+        -0.19952889353299286,
+        -1.032232823994434,
+        -4.576851783353304
+      ],
+      "prefix_integral_error_m": [
+        -0.066384912253339,
+        -0.9054899621133372,
+        -10.199045192951615
+      ]
+    },
+    {
+      "bag": "30618_22c1c589",
+      "group": "dc785decbed3d7ce",
+      "phase": "traction",
+      "anchor": 770.0,
+      "velocity_error_mps": [
+        0.027662912667514306,
+        -0.06980260445216402,
+        0.34492709782869024
+      ],
+      "prefix_integral_error_m": [
+        -0.0010290490798236676,
+        -0.010212192659772835,
+        0.3099660260331129
+      ]
+    },
+    {
+      "bag": "30618_22c1c589",
+      "group": "dc785decbed3d7ce",
+      "phase": "coast",
+      "anchor": 762.3000000000001,
+      "velocity_error_mps": [
+        0.019177927056103883,
+        0.010796764908223011,
+        0.11412673605706303
+      ],
+      "prefix_integral_error_m": [
+        -0.0006012236543643506,
+        0.02360492716532481,
+        0.32835958307181473
+      ]
+    },
+    {
+      "bag": "30618_22c1c589",
+      "group": "dc785decbed3d7ce",
+      "phase": "braking",
+      "anchor": 483.65000000000003,
+      "velocity_error_mps": [
+        0.13462651375106693,
+        0.4521121571117366,
+        1.3506162155641537
+      ],
+      "prefix_integral_error_m": [
+        0.030962881226351144,
+        0.4250453447363487,
+        3.11205335496303
+      ]
+    },
+    {
+      "bag": "30618_2366c74a",
+      "group": "58dd5f96d4201195",
+      "phase": "traction",
+      "anchor": 580.35,
+      "velocity_error_mps": [
+        0.0074239610027238,
+        0.005602219150643961,
+        -0.06574957454565755
+      ],
+      "prefix_integral_error_m": [
+        0.012472181765980837,
+        0.022436075051408808,
+        -0.061511453324151984
+      ]
+    },
+    {
+      "bag": "30618_2366c74a",
+      "group": "58dd5f96d4201195",
+      "phase": "coast",
+      "anchor": 587.0,
+      "velocity_error_mps": [
+        0.03477444486055781,
+        0.1513684041794381,
+        0.2612273592679344
+      ],
+      "prefix_integral_error_m": [
+        0.014486178845568944,
+        0.15118342372208343,
+        0.8746506048507188
+      ]
+    },
+    {
+      "bag": "30618_2366c74a",
+      "group": "58dd5f96d4201195",
+      "phase": "braking",
+      "anchor": 353.85,
+      "velocity_error_mps": [
+        -0.009190439879393608,
+        0.015319951278319088,
+        -0.1083802321878542
+      ],
+      "prefix_integral_error_m": [
+        -0.011061838007416095,
+        0.006575946708286614,
+        -0.055734789974255634
+      ]
+    },
+    {
+      "bag": "30618_2d2fa7be",
+      "group": "bf69dbfe85be52b0",
+      "phase": "traction",
+      "anchor": 874.95,
+      "velocity_error_mps": [
+        -0.0009662641717671505,
+        -0.0033368176448362874,
+        -0.1783045910029042
+      ],
+      "prefix_integral_error_m": [
+        -0.0007415397411220953,
+        -0.009933399847559985,
+        -0.26257023575847044
+      ]
+    },
+    {
+      "bag": "30618_2d2fa7be",
+      "group": "bf69dbfe85be52b0",
+      "phase": "coast",
+      "anchor": 827.5500000000001,
+      "velocity_error_mps": [
+        0.017911662485500912,
+        -0.05855521802837238,
+        -0.03736507646508258
+      ],
+      "prefix_integral_error_m": [
+        0.0025909335981106887,
+        -0.029752201096459485,
+        -0.4511170930718091
+      ]
+    },
+    {
+      "bag": "30618_2d2fa7be",
+      "group": "bf69dbfe85be52b0",
+      "phase": "braking",
+      "anchor": 480.70000000000005,
+      "velocity_error_mps": [
+        -0.05038723789010646,
+        -0.14714461104092713,
+        -0.5660912347076019
+      ],
+      "prefix_integral_error_m": [
+        -0.008254711577121336,
+        -0.18191838584379313,
+        -1.39476815623486
+      ]
+    },
+    {
+      "bag": "30618_2f2f1175",
+      "group": "bf69dbfe85be52b0",
+      "phase": "traction",
+      "anchor": 511.65000000000003,
+      "velocity_error_mps": [
+        -0.0805609740583293,
+        -0.20187045651304736,
+        -0.4105239371174605
+      ],
+      "prefix_integral_error_m": [
+        0.004788156285287367,
+        -0.16927091112868983,
+        -0.9702899923288661
+      ]
+    },
+    {
+      "bag": "30618_2f2f1175",
+      "group": "bf69dbfe85be52b0",
+      "phase": "coast",
+      "anchor": 310.40000000000003,
+      "velocity_error_mps": [
+        0.0018292791895833105,
+        -0.03289393206058122,
+        0.1339274599857223
+      ],
+      "prefix_integral_error_m": [
+        0.0014994799832513473,
+        -0.0011405847989430307,
+        0.0457632468527801
+      ]
+    },
+    {
+      "bag": "30618_2f2f1175",
+      "group": "bf69dbfe85be52b0",
+      "phase": "braking",
+      "anchor": 471.8,
+      "velocity_error_mps": [
+        -0.5774397955482451,
+        -1.999718814689249,
+        -2.906044004034551
+      ],
+      "prefix_integral_error_m": [
+        -0.17601523521496296,
+        -2.1459146293504396,
+        -9.869475420582953
+      ]
+    },
+    {
+      "bag": "30618_3e9f4952",
+      "group": "b8fda5f0647666fb",
+      "phase": "traction",
+      "anchor": 657.5500000000001,
+      "velocity_error_mps": [
+        0.02619542295936661,
+        0.07831227065003077,
+        0.5274013836630811
+      ],
+      "prefix_integral_error_m": [
+        0.007293747712561852,
+        0.06222614378566986,
+        0.8835933894290144
+      ]
+    },
+    {
+      "bag": "30618_3e9f4952",
+      "group": "b8fda5f0647666fb",
+      "phase": "coast",
+      "anchor": 436.6,
+      "velocity_error_mps": [
+        0.0011572166752955582,
+        -0.21096547680241073,
+        -0.04415754444470643
+      ],
+      "prefix_integral_error_m": [
+        -0.00158626076947803,
+        -0.08396906389072367,
+        -0.3373936048475637
+      ]
+    },
+    {
+      "bag": "30618_3e9f4952",
+      "group": "b8fda5f0647666fb",
+      "phase": "braking",
+      "anchor": 452.05,
+      "velocity_error_mps": [
+        -0.033400428288241635,
+        -0.08544426820274476,
+        0.015191358889220963
+      ],
+      "prefix_integral_error_m": [
+        -0.016721699998363388,
+        -0.07695656310952247,
+        -0.06850001360361672
+      ]
+    },
+    {
+      "bag": "30618_40ffd323",
+      "group": "58dd5f96d4201195",
+      "phase": "traction",
+      "anchor": 757.3000000000001,
+      "velocity_error_mps": [
+        -0.08860356856605645,
+        -0.3399573410228873,
+        -0.8096443192244349
+      ],
+      "prefix_integral_error_m": [
+        -0.016237342405723835,
+        -0.32973546328904674,
+        -2.139803775174962
+      ]
+    },
+    {
+      "bag": "30618_40ffd323",
+      "group": "58dd5f96d4201195",
+      "phase": "coast",
+      "anchor": 393.25,
+      "velocity_error_mps": [
+        0.02263040159004781,
+        -0.0880179664159364,
+        0.19247947385920838
+      ],
+      "prefix_integral_error_m": [
+        0.008268580104998511,
+        -0.008702279767859786,
+        0.3458956999613213
+      ]
+    },
+    {
+      "bag": "30618_40ffd323",
+      "group": "58dd5f96d4201195",
+      "phase": "braking",
+      "anchor": 620.95,
+      "velocity_error_mps": [
+        -0.024987451821228746,
+        -0.018363359237083543,
+        -0.11001735318551908
+      ],
+      "prefix_integral_error_m": [
+        -0.01475499050511283,
+        -0.03598746688119098,
+        -0.16137653789075335
+      ]
+    },
+    {
+      "bag": "30618_4d487b0d",
+      "group": "bc403256f12f9710",
+      "phase": "traction",
+      "anchor": 716.1500000000001,
+      "velocity_error_mps": [
+        0.025070160326468027,
+        -0.07306486278081925,
+        -0.3250378923467716
+      ],
+      "prefix_integral_error_m": [
+        0.0057277113167349195,
+        -0.024506268341371883,
+        -0.6206630697236796
+      ]
+    },
+    {
+      "bag": "30618_4d487b0d",
+      "group": "bc403256f12f9710",
+      "phase": "coast",
+      "anchor": 433.8,
+      "velocity_error_mps": [
+        -0.0903427805649244,
+        -0.38209313848570403,
+        -0.31789994266147126
+      ],
+      "prefix_integral_error_m": [
+        -0.012249266814792631,
+        -0.4045083125686798,
+        -1.5039989849797686
+      ]
+    },
+    {
+      "bag": "30618_4d487b0d",
+      "group": "bc403256f12f9710",
+      "phase": "braking",
+      "anchor": 499.90000000000003,
+      "velocity_error_mps": [
+        0.007298816445790113,
+        -0.55915895232718,
+        -5.907920300460707
+      ],
+      "prefix_integral_error_m": [
+        -0.023424776740913925,
+        -0.17267913406877528,
+        -10.362782504614863
+      ]
+    },
+    {
+      "bag": "30618_616ec56b",
+      "group": "6090ff2c1bc8dee6",
+      "phase": "traction",
+      "anchor": 772.0,
+      "velocity_error_mps": [
+        -0.03489476619848553,
+        -0.06172943360059335,
+        0.3581122553780567
+      ],
+      "prefix_integral_error_m": [
+        -0.008963040843788676,
+        -0.05487712272916672,
+        0.5213293440153006
+      ]
+    },
+    {
+      "bag": "30618_616ec56b",
+      "group": "6090ff2c1bc8dee6",
+      "phase": "coast",
+      "anchor": 709.6500000000001,
+      "velocity_error_mps": [
+        -0.02184778031196899,
+        -0.11220930715739552,
+        -0.09983515017940725
+      ],
+      "prefix_integral_error_m": [
+        -0.007634811995909342,
+        -0.09506488624936363,
+        -0.23015786415659142
+      ]
+    },
+    {
+      "bag": "30618_616ec56b",
+      "group": "6090ff2c1bc8dee6",
+      "phase": "braking",
+      "anchor": 478.5,
+      "velocity_error_mps": [
+        -0.08874509974560763,
+        -0.13136172313233896,
+        -0.24665024776800948
+      ],
+      "prefix_integral_error_m": [
+        -0.028045743949702735,
+        -0.16875075693535568,
+        -0.7273610861042102
+      ]
+    },
+    {
+      "bag": "30618_67b89902",
+      "group": "b8fda5f0647666fb",
+      "phase": "traction",
+      "anchor": 585.7,
+      "velocity_error_mps": [
+        -0.03949483227228612,
+        -0.08795004730564493,
+        -0.4659078828747081
+      ],
+      "prefix_integral_error_m": [
+        0.017060948492924662,
+        -0.035314039392669805,
+        -0.7960088558524421
+      ]
+    },
+    {
+      "bag": "30618_67b89902",
+      "group": "b8fda5f0647666fb",
+      "phase": "coast",
+      "anchor": 608.2,
+      "velocity_error_mps": [
+        -0.08059671192900453,
+        -0.36492491419238426,
+        -0.9841131065730924
+      ],
+      "prefix_integral_error_m": [
+        -0.014755216278371008,
+        -0.3344034260993357,
+        -2.624027746860698
+      ]
+    },
+    {
+      "bag": "30618_67b89902",
+      "group": "b8fda5f0647666fb",
+      "phase": "braking",
+      "anchor": 546.6,
+      "velocity_error_mps": [
+        0.09332676681792051,
+        0.23797641880226283,
+        0.2166809582645719
+      ],
+      "prefix_integral_error_m": [
+        0.011599968026964398,
+        0.1947211859325539,
+        0.7848406138645125
+      ]
+    },
+    {
+      "bag": "30618_748832b9",
+      "group": "0f36b619fba02a9b",
+      "phase": "traction",
+      "anchor": 680.45,
+      "velocity_error_mps": [
+        0.0242282254484234,
+        -0.021554086190883837,
+        -0.1420199737293899
+      ],
+      "prefix_integral_error_m": [
+        0.015431257714468814,
+        -0.00247128000791301,
+        -0.32852262204643434
+      ]
+    },
+    {
+      "bag": "30618_748832b9",
+      "group": "0f36b619fba02a9b",
+      "phase": "coast",
+      "anchor": 461.5,
+      "velocity_error_mps": [
+        -0.055322076844984025,
+        -0.23728408742273244,
+        -0.5262116491223674
+      ],
+      "prefix_integral_error_m": [
+        -0.017584500287058397,
+        -0.27390116168410744,
+        -1.5335398962123696
+      ]
+    },
+    {
+      "bag": "30618_748832b9",
+      "group": "0f36b619fba02a9b",
+      "phase": "braking",
+      "anchor": 457.45000000000005,
+      "velocity_error_mps": [
+        -0.010936330531122529,
+        0.23783728005393634,
+        0.5440105712157797
+      ],
+      "prefix_integral_error_m": [
+        -0.009447303595009712,
+        0.16046664636640826,
+        1.4478080099725992
+      ]
+    },
+    {
+      "bag": "30618_7849303f",
+      "group": "0f36b619fba02a9b",
+      "phase": "traction",
+      "anchor": 680.45,
+      "velocity_error_mps": [
+        0.0242282254484234,
+        -0.021554086190883837,
+        -0.1420199737293899
+      ],
+      "prefix_integral_error_m": [
+        0.015431257714468814,
+        -0.00247128000791301,
+        -0.32852262204643434
+      ]
+    },
+    {
+      "bag": "30618_7849303f",
+      "group": "0f36b619fba02a9b",
+      "phase": "coast",
+      "anchor": 461.5,
+      "velocity_error_mps": [
+        -0.055322076844984025,
+        -0.23728408742273244,
+        -0.5262116491223674
+      ],
+      "prefix_integral_error_m": [
+        -0.017584500287058397,
+        -0.27390116168410744,
+        -1.5335398962123696
+      ]
+    },
+    {
+      "bag": "30618_7849303f",
+      "group": "0f36b619fba02a9b",
+      "phase": "braking",
+      "anchor": 457.45000000000005,
+      "velocity_error_mps": [
+        -0.010936330531122529,
+        0.23783728005393634,
+        0.5440105712157797
+      ],
+      "prefix_integral_error_m": [
+        -0.009447303595009712,
+        0.16046664636640826,
+        1.4478080099725992
+      ]
+    },
+    {
+      "bag": "30618_79b204dc",
+      "group": "8ff91290187a9769",
+      "phase": "traction",
+      "anchor": 711.4000000000001,
+      "velocity_error_mps": [
+        -0.003691373040775048,
+        0.0652914442737007,
+        0.29466015319195193
+      ],
+      "prefix_integral_error_m": [
+        -0.0031502522457095704,
+        0.04491260870316685,
+        0.5997458303670743
+      ]
+    },
+    {
+      "bag": "30618_79b204dc",
+      "group": "8ff91290187a9769",
+      "phase": "coast",
+      "anchor": 688.6,
+      "velocity_error_mps": [
+        0.0037532203611654325,
+        0.08212768964322592,
+        0.25578459143128995
+      ],
+      "prefix_integral_error_m": [
+        0.0030282196925500967,
+        0.07909385706633607,
+        0.6421919237666295
+      ]
+    },
+    {
+      "bag": "30618_79b204dc",
+      "group": "8ff91290187a9769",
+      "phase": "braking",
+      "anchor": 554.25,
+      "velocity_error_mps": [
+        -0.04554207781776398,
+        -0.05568123827118221,
+        -0.05419810991907781
+      ],
+      "prefix_integral_error_m": [
+        -0.01763314363586272,
+        -0.08105217917576273,
+        -0.23208085634088954
+      ]
+    },
+    {
+      "bag": "30618_7a152380",
+      "group": "c8a1e61d1b0710e9",
+      "phase": "traction",
+      "anchor": 496.75,
+      "velocity_error_mps": [
+        -0.004394707685502652,
+        -0.06431273309610575,
+        -0.2202337411588573
+      ],
+      "prefix_integral_error_m": [
+        -0.00535809228347323,
+        -0.06224504743874568,
+        -0.5473868934161591
+      ]
+    },
+    {
+      "bag": "30618_7a152380",
+      "group": "c8a1e61d1b0710e9",
+      "phase": "coast",
+      "anchor": 402.55,
+      "velocity_error_mps": [
+        -0.0018825288378483407,
+        0.004103458920868164,
+        0.018444975034302757
+      ],
+      "prefix_integral_error_m": [
+        0.0009341755261227805,
+        -0.0015415725563585677,
+        0.04100359366406457
+      ]
+    },
+    {
+      "bag": "30618_7a152380",
+      "group": "c8a1e61d1b0710e9",
+      "phase": "braking",
+      "anchor": 515.4,
+      "velocity_error_mps": [
+        0.12315343424350367,
+        0.7177818581698965,
+        1.6672402631381482
+      ],
+      "prefix_integral_error_m": [
+        0.02940745778154618,
+        0.6643532096283287,
+        4.191227966474734
+      ]
+    },
+    {
+      "bag": "30618_7b4d83f4",
+      "group": "2b1581126a480c0f",
+      "phase": "traction",
+      "anchor": 695.7,
+      "velocity_error_mps": [
+        -0.02152075190372038,
+        -0.252458049483673,
+        -0.7962356723203463
+      ],
+      "prefix_integral_error_m": [
+        0.00035911569462399604,
+        -0.21709614472184124,
+        -1.8602117554606574
+      ]
+    },
+    {
+      "bag": "30618_7b4d83f4",
+      "group": "2b1581126a480c0f",
+      "phase": "coast",
+      "anchor": 666.85,
+      "velocity_error_mps": [
+        -0.0307499034136427,
+        -0.1697911902001099,
+        -0.25312855799453615
+      ],
+      "prefix_integral_error_m": [
+        -0.00486430912098188,
+        -0.16013165572638927,
+        -0.8721825437068846
+      ]
+    },
+    {
+      "bag": "30618_7b4d83f4",
+      "group": "2b1581126a480c0f",
+      "phase": "braking",
+      "anchor": 537.7,
+      "velocity_error_mps": [
+        -0.02616070637660961,
+        -0.020006997462567178,
+        0.043436466345444735
+      ],
+      "prefix_integral_error_m": [
+        -0.011213533562252204,
+        -0.004280600516907715,
+        0.13538418343933464
+      ]
+    },
+    {
+      "bag": "30618_8158f0b0",
+      "group": "6090ff2c1bc8dee6",
+      "phase": "traction",
+      "anchor": 527.65,
+      "velocity_error_mps": [
+        0.024190437203342796,
+        -0.04773989010059054,
+        -0.033924870942314556
+      ],
+      "prefix_integral_error_m": [
+        0.007794519893087952,
+        0.018032944881596256,
+        -0.1283942018592175
+      ]
+    },
+    {
+      "bag": "30618_8158f0b0",
+      "group": "6090ff2c1bc8dee6",
+      "phase": "coast",
+      "anchor": 361.3,
+      "velocity_error_mps": [
+        0.006783184982887214,
+        -0.0015060601701266663,
+        0.07243884368836717
+      ],
+      "prefix_integral_error_m": [
+        0.0012443394762721644,
+        0.0028479610579265754,
+        0.09544858560564991
+      ]
+    },
+    {
+      "bag": "30618_8158f0b0",
+      "group": "6090ff2c1bc8dee6",
+      "phase": "braking",
+      "anchor": 496.90000000000003,
+      "velocity_error_mps": [
+        -0.039100682284885835,
+        -0.10496961623686119,
+        -0.14746193904811555
+      ],
+      "prefix_integral_error_m": [
+        -0.025032978039832243,
+        -0.1292372023318493,
+        -0.4579447791591962
+      ]
+    },
+    {
+      "bag": "30618_81c22fee",
+      "group": "86c32e441a296aaa",
+      "phase": "traction",
+      "anchor": 651.6500000000001,
+      "velocity_error_mps": [
+        -0.050789294128071205,
+        -0.044186468432714676,
+        0.01101862694096134
+      ],
+      "prefix_integral_error_m": [
+        0.008008840848698214,
+        -0.05107406242806481,
+        -0.20219626731273443
+      ]
+    },
+    {
+      "bag": "30618_81c22fee",
+      "group": "86c32e441a296aaa",
+      "phase": "coast",
+      "anchor": 355.85,
+      "velocity_error_mps": [
+        0.001260797022542448,
+        -0.061183783865455865,
+        0.22206081387791343
+      ],
+      "prefix_integral_error_m": [
+        0.00031936647959558234,
+        -0.042196798718314964,
+        0.32103871031170184
+      ]
+    },
+    {
+      "bag": "30618_81c22fee",
+      "group": "86c32e441a296aaa",
+      "phase": "braking",
+      "anchor": 662.75,
+      "velocity_error_mps": [
+        -0.0028222103007946586,
+        -0.047703593932482136,
+        -0.15008526780871367
+      ],
+      "prefix_integral_error_m": [
+        -0.022033893864595987,
+        -0.08918401887606497,
+        -0.321493299440483
+      ]
+    },
+    {
+      "bag": "30618_87afe526",
+      "group": "2b1581126a480c0f",
+      "phase": "traction",
+      "anchor": 691.5,
+      "velocity_error_mps": [
+        0.014367659514789466,
+        0.02280324526864419,
+        0.5007941733274599
+      ],
+      "prefix_integral_error_m": [
+        0.012824688061629317,
+        0.04209399526014533,
+        0.6794503444144788
+      ]
+    },
+    {
+      "bag": "30618_87afe526",
+      "group": "2b1581126a480c0f",
+      "phase": "coast",
+      "anchor": 366.95000000000005,
+      "velocity_error_mps": [
+        -0.0364640194448409,
+        -0.14560023173696202,
+        -0.4017207315420537
+      ],
+      "prefix_integral_error_m": [
+        -0.0075447265914124675,
+        -0.14618467887371928,
+        -1.0151630049457463
+      ]
+    },
+    {
+      "bag": "30618_87afe526",
+      "group": "2b1581126a480c0f",
+      "phase": "braking",
+      "anchor": 520.85,
+      "velocity_error_mps": [
+        -0.0510167917337343,
+        -0.09512372029369764,
+        -0.09956414912317468
+      ],
+      "prefix_integral_error_m": [
+        -0.023477937292995094,
+        -0.08886302511641099,
+        -0.2598144633131012
+      ]
+    },
+    {
+      "bag": "30618_887a2b9a",
+      "group": "8ff91290187a9769",
+      "phase": "traction",
+      "anchor": 711.4000000000001,
+      "velocity_error_mps": [
+        -0.003691373040775048,
+        0.0652914442737007,
+        0.29466015319195193
+      ],
+      "prefix_integral_error_m": [
+        -0.0031502522457095704,
+        0.04491260870316685,
+        0.5997458303670743
+      ]
+    },
+    {
+      "bag": "30618_887a2b9a",
+      "group": "8ff91290187a9769",
+      "phase": "coast",
+      "anchor": 688.6,
+      "velocity_error_mps": [
+        0.0037532203611654325,
+        0.08212768964322592,
+        0.25578459143128995
+      ],
+      "prefix_integral_error_m": [
+        0.0030282196925500967,
+        0.07909385706633607,
+        0.6421919237666295
+      ]
+    },
+    {
+      "bag": "30618_887a2b9a",
+      "group": "8ff91290187a9769",
+      "phase": "braking",
+      "anchor": 554.25,
+      "velocity_error_mps": [
+        -0.04554207781776398,
+        -0.05568123827118221,
+        -0.05419810991907781
+      ],
+      "prefix_integral_error_m": [
+        -0.01763314363586272,
+        -0.08105217917576273,
+        -0.23208085634088954
+      ]
+    },
+    {
+      "bag": "30618_8eb8615c",
+      "group": "bf69dbfe85be52b0",
+      "phase": "traction",
+      "anchor": 874.95,
+      "velocity_error_mps": [
+        -0.0009662641717671505,
+        -0.0033368176448362874,
+        -0.1783045910029042
+      ],
+      "prefix_integral_error_m": [
+        -0.0007415397411220953,
+        -0.009933399847559985,
+        -0.26257023575847044
+      ]
+    },
+    {
+      "bag": "30618_8eb8615c",
+      "group": "bf69dbfe85be52b0",
+      "phase": "coast",
+      "anchor": 827.5500000000001,
+      "velocity_error_mps": [
+        0.017911662485500912,
+        -0.05855521802837238,
+        -0.03736507646508258
+      ],
+      "prefix_integral_error_m": [
+        0.0025909335981106887,
+        -0.029752201096459485,
+        -0.4511170930718091
+      ]
+    },
+    {
+      "bag": "30618_8eb8615c",
+      "group": "bf69dbfe85be52b0",
+      "phase": "braking",
+      "anchor": 480.70000000000005,
+      "velocity_error_mps": [
+        -0.05038723789010646,
+        -0.14714461104092713,
+        -0.5660912347076019
+      ],
+      "prefix_integral_error_m": [
+        -0.008254711577121336,
+        -0.18191838584379313,
+        -1.39476815623486
+      ]
+    },
+    {
+      "bag": "30618_8f08df08",
+      "group": "c8a1e61d1b0710e9",
+      "phase": "traction",
+      "anchor": 496.75,
+      "velocity_error_mps": [
+        -0.004394707685502652,
+        -0.06431273309610575,
+        -0.2202337411588573
+      ],
+      "prefix_integral_error_m": [
+        -0.00535809228347323,
+        -0.06224504743874568,
+        -0.5473868934161591
+      ]
+    },
+    {
+      "bag": "30618_8f08df08",
+      "group": "c8a1e61d1b0710e9",
+      "phase": "coast",
+      "anchor": 402.55,
+      "velocity_error_mps": [
+        -0.0018825288378483407,
+        0.004103458920868164,
+        0.018444975034302757
+      ],
+      "prefix_integral_error_m": [
+        0.0009341755261227805,
+        -0.0015415725563585677,
+        0.04100359366406457
+      ]
+    },
+    {
+      "bag": "30618_8f08df08",
+      "group": "c8a1e61d1b0710e9",
+      "phase": "braking",
+      "anchor": 515.4,
+      "velocity_error_mps": [
+        0.12315343424350367,
+        0.7177818581698965,
+        1.6672402631381482
+      ],
+      "prefix_integral_error_m": [
+        0.02940745778154618,
+        0.6643532096283287,
+        4.191227966474734
+      ]
+    },
+    {
+      "bag": "30618_92b1b453",
+      "group": "86c32e441a296aaa",
+      "phase": "traction",
+      "anchor": 651.6500000000001,
+      "velocity_error_mps": [
+        -0.050789294128071205,
+        -0.044186468432714676,
+        0.01101862694096134
+      ],
+      "prefix_integral_error_m": [
+        0.008008840848698214,
+        -0.05107406242806481,
+        -0.20219626731273443
+      ]
+    },
+    {
+      "bag": "30618_92b1b453",
+      "group": "86c32e441a296aaa",
+      "phase": "coast",
+      "anchor": 355.85,
+      "velocity_error_mps": [
+        0.001260797022542448,
+        -0.061183783865455865,
+        0.22206081387791343
+      ],
+      "prefix_integral_error_m": [
+        0.00031936647959558234,
+        -0.042196798718314964,
+        0.32103871031170184
+      ]
+    },
+    {
+      "bag": "30618_92b1b453",
+      "group": "86c32e441a296aaa",
+      "phase": "braking",
+      "anchor": 662.75,
+      "velocity_error_mps": [
+        -0.0028222103007946586,
+        -0.047703593932482136,
+        -0.15008526780871367
+      ],
+      "prefix_integral_error_m": [
+        -0.022033893864595987,
+        -0.08918401887606497,
+        -0.321493299440483
+      ]
+    },
+    {
+      "bag": "30618_93dc866e",
+      "group": "58dd5f96d4201195",
+      "phase": "traction",
+      "anchor": 580.35,
+      "velocity_error_mps": [
+        0.0074239610027238,
+        0.005602219150643961,
+        -0.06574957454565755
+      ],
+      "prefix_integral_error_m": [
+        0.012472181765980837,
+        0.022436075051408808,
+        -0.061511453324151984
+      ]
+    },
+    {
+      "bag": "30618_93dc866e",
+      "group": "58dd5f96d4201195",
+      "phase": "coast",
+      "anchor": 587.0,
+      "velocity_error_mps": [
+        0.03477444486055781,
+        0.1513684041794381,
+        0.2612273592679344
+      ],
+      "prefix_integral_error_m": [
+        0.014486178845568944,
+        0.15118342372208343,
+        0.8746506048507188
+      ]
+    },
+    {
+      "bag": "30618_93dc866e",
+      "group": "58dd5f96d4201195",
+      "phase": "braking",
+      "anchor": 353.85,
+      "velocity_error_mps": [
+        -0.009190439879393608,
+        0.015319951278319088,
+        -0.1083802321878542
+      ],
+      "prefix_integral_error_m": [
+        -0.011061838007416095,
+        0.006575946708286614,
+        -0.055734789974255634
+      ]
+    },
+    {
+      "bag": "30618_9bbe6faa",
+      "group": "95a748306e6cbf16",
+      "phase": "traction",
+      "anchor": 682.0,
+      "velocity_error_mps": [
+        0.032457230871001386,
+        0.06810910357055455,
+        0.20234769964689114
+      ],
+      "prefix_integral_error_m": [
+        0.0021514555683931655,
+        0.06183992670088885,
+        0.3570990845979597
+      ]
+    },
+    {
+      "bag": "30618_9bbe6faa",
+      "group": "95a748306e6cbf16",
+      "phase": "coast",
+      "anchor": 722.25,
+      "velocity_error_mps": [
+        -0.12180807105034575,
+        -0.37852979522687136,
+        -2.392704837870708
+      ],
+      "prefix_integral_error_m": [
+        -0.016540603248448593,
+        -0.36792926512086876,
+        -3.5855200137868377
+      ]
+    },
+    {
+      "bag": "30618_9bbe6faa",
+      "group": "95a748306e6cbf16",
+      "phase": "braking",
+      "anchor": 558.5,
+      "velocity_error_mps": [
+        -0.05296636135910315,
+        -0.03416196633207402,
+        -0.17619642394657653
+      ],
+      "prefix_integral_error_m": [
+        -0.010675697730805593,
+        -0.05249561185491967,
+        -0.32188999265322926
+      ]
+    },
+    {
+      "bag": "30618_9c09b081",
+      "group": "dc785decbed3d7ce",
+      "phase": "traction",
+      "anchor": 757.25,
+      "velocity_error_mps": [
+        0.06663792785287548,
+        0.058955310208910205,
+        0.07097515027792412
+      ],
+      "prefix_integral_error_m": [
+        0.02294473034819876,
+        0.08700894853342674,
+        0.18770201571944978
+      ]
+    },
+    {
+      "bag": "30618_9c09b081",
+      "group": "dc785decbed3d7ce",
+      "phase": "coast",
+      "anchor": 398.5,
+      "velocity_error_mps": [
+        -0.06367987182911694,
+        -0.22641880047991503,
+        -0.6683599264280211
+      ],
+      "prefix_integral_error_m": [
+        -0.01491668576051216,
+        -0.24072014483828627,
+        -1.4446817585265093
+      ]
+    },
+    {
+      "bag": "30618_9c09b081",
+      "group": "dc785decbed3d7ce",
+      "phase": "braking",
+      "anchor": 551.8000000000001,
+      "velocity_error_mps": [
+        -0.016244950763749877,
+        0.04427037921154309,
+        0.15496368449503617
+      ],
+      "prefix_integral_error_m": [
+        -0.015039306991017349,
+        -0.012005147337747416,
+        0.2547504814468574
+      ]
+    },
+    {
+      "bag": "30618_9c10cd0d",
+      "group": "95a748306e6cbf16",
+      "phase": "traction",
+      "anchor": 682.0,
+      "velocity_error_mps": [
+        0.032457230871001386,
+        0.06810910357055455,
+        0.20234769964689114
+      ],
+      "prefix_integral_error_m": [
+        0.0021514555683931655,
+        0.06183992670088885,
+        0.3570990845979597
+      ]
+    },
+    {
+      "bag": "30618_9c10cd0d",
+      "group": "95a748306e6cbf16",
+      "phase": "coast",
+      "anchor": 722.25,
+      "velocity_error_mps": [
+        -0.12180807105034575,
+        -0.37852979522687136,
+        -2.392704837870708
+      ],
+      "prefix_integral_error_m": [
+        -0.016540603248448593,
+        -0.36792926512086876,
+        -3.5855200137868377
+      ]
+    },
+    {
+      "bag": "30618_9c10cd0d",
+      "group": "95a748306e6cbf16",
+      "phase": "braking",
+      "anchor": 558.5,
+      "velocity_error_mps": [
+        -0.05296636135910315,
+        -0.03416196633207402,
+        -0.17619642394657653
+      ],
+      "prefix_integral_error_m": [
+        -0.010675697730805593,
+        -0.05249561185491967,
+        -0.32188999265322926
+      ]
+    },
+    {
+      "bag": "30618_a395846d",
+      "group": "0f36b619fba02a9b",
+      "phase": "traction",
+      "anchor": 918.45,
+      "velocity_error_mps": [
+        0.01246895724756314,
+        -0.06683931523990339,
+        -0.15049156756618842
+      ],
+      "prefix_integral_error_m": [
+        0.030766860380788096,
+        0.02812693882845708,
+        -0.3397536247137525
+      ]
+    },
+    {
+      "bag": "30618_a395846d",
+      "group": "0f36b619fba02a9b",
+      "phase": "coast",
+      "anchor": 456.20000000000005,
+      "velocity_error_mps": [
+        -0.031095140274260302,
+        -0.1039780380938069,
+        -0.23042054394807465
+      ],
+      "prefix_integral_error_m": [
+        -0.006838532345242799,
+        -0.10971734244293142,
+        -0.6378066960920631
+      ]
+    },
+    {
+      "bag": "30618_a395846d",
+      "group": "0f36b619fba02a9b",
+      "phase": "braking",
+      "anchor": 725.2,
+      "velocity_error_mps": [
+        -0.029732287223707132,
+        0.04073209839994618,
+        0.19743504697642145
+      ],
+      "prefix_integral_error_m": [
+        -0.015680397902055967,
+        0.02896290715078873,
+        0.48436349346674007
+      ]
+    },
+    {
+      "bag": "30618_a53d5f6f",
+      "group": "4a5f0d46327316bb",
+      "phase": "traction",
+      "anchor": 477.05,
+      "velocity_error_mps": [
+        0.05552182882486534,
+        0.1540955040333145,
+        0.7062979473779052
+      ],
+      "prefix_integral_error_m": [
+        0.022245062015840308,
+        0.16769788893800142,
+        1.4147205416691557
+      ]
+    },
+    {
+      "bag": "30618_a53d5f6f",
+      "group": "4a5f0d46327316bb",
+      "phase": "coast",
+      "anchor": 358.65000000000003,
+      "velocity_error_mps": [
+        -0.0014150631242078049,
+        -0.02064876867194343,
+        0.37503364180003906
+      ],
+      "prefix_integral_error_m": [
+        -0.0004301335286560898,
+        0.0016757387549906628,
+        0.47604286373402543
+      ]
+    },
+    {
+      "bag": "30618_a53d5f6f",
+      "group": "4a5f0d46327316bb",
+      "phase": "braking",
+      "anchor": 402.40000000000003,
+      "velocity_error_mps": [
+        0.02810906265708013,
+        0.14702510258434387,
+        0.40873423859942726
+      ],
+      "prefix_integral_error_m": [
+        0.00012230796162758354,
+        0.19159910581291975,
+        0.6183692581609973
+      ]
+    },
+    {
+      "bag": "30618_ab5921a4",
+      "group": "1cff0aebccb39ff5",
+      "phase": "traction",
+      "anchor": 634.75,
+      "velocity_error_mps": [
+        0.04112443050649528,
+        0.1616872741280364,
+        0.2343281834463813
+      ],
+      "prefix_integral_error_m": [
+        0.024071075364868286,
+        0.12939896263628592,
+        0.7096201170327602
+      ]
+    },
+    {
+      "bag": "30618_ab5921a4",
+      "group": "1cff0aebccb39ff5",
+      "phase": "coast",
+      "anchor": 338.25,
+      "velocity_error_mps": [
+        -0.017330522125028835,
+        -0.14001409164211598,
+        -0.4101386665046274
+      ],
+      "prefix_integral_error_m": [
+        -0.0013403778068418262,
+        -0.16383608834330496,
+        -0.8302747531465527
+      ]
+    },
+    {
+      "bag": "30618_ab5921a4",
+      "group": "1cff0aebccb39ff5",
+      "phase": "braking",
+      "anchor": 537.7,
+      "velocity_error_mps": [
+        -0.03575286406302958,
+        -0.12590451482303777,
+        -0.42305735823663726
+      ],
+      "prefix_integral_error_m": [
+        -0.025168219902804975,
+        -0.18550149331112434,
+        -1.0652121860099533
+      ]
+    },
+    {
+      "bag": "30618_b3042f78",
+      "group": "bc403256f12f9710",
+      "phase": "traction",
+      "anchor": 716.1500000000001,
+      "velocity_error_mps": [
+        0.025070160326468027,
+        -0.07306486278081925,
+        -0.3250378923467716
+      ],
+      "prefix_integral_error_m": [
+        0.0057277113167349195,
+        -0.024506268341371883,
+        -0.6206630697236796
+      ]
+    },
+    {
+      "bag": "30618_b3042f78",
+      "group": "bc403256f12f9710",
+      "phase": "coast",
+      "anchor": 433.8,
+      "velocity_error_mps": [
+        -0.0903427805649244,
+        -0.38209313848570403,
+        -0.31789994266147126
+      ],
+      "prefix_integral_error_m": [
+        -0.012249266814792631,
+        -0.4045083125686798,
+        -1.5039989849797686
+      ]
+    },
+    {
+      "bag": "30618_b3042f78",
+      "group": "bc403256f12f9710",
+      "phase": "braking",
+      "anchor": 499.90000000000003,
+      "velocity_error_mps": [
+        0.007298816445790113,
+        -0.55915895232718,
+        -5.907920300460707
+      ],
+      "prefix_integral_error_m": [
+        -0.023424776740913925,
+        -0.17267913406877528,
+        -10.362782504614863
+      ]
+    },
+    {
+      "bag": "30618_b83d854d",
+      "group": "eeabf7d118bbcdac",
+      "phase": "traction",
+      "anchor": 680.25,
+      "velocity_error_mps": [
+        -0.06846952092974856,
+        -0.2362013183880176,
+        -0.5806547928566648
+      ],
+      "prefix_integral_error_m": [
+        -0.0023117054190122505,
+        -0.18160005944838298,
+        -1.341591340551035
+      ]
+    },
+    {
+      "bag": "30618_b83d854d",
+      "group": "eeabf7d118bbcdac",
+      "phase": "coast",
+      "anchor": 392.90000000000003,
+      "velocity_error_mps": [
+        -0.004605784583915806,
+        0.02109199402534756,
+        -0.06983435290324014
+      ],
+      "prefix_integral_error_m": [
+        0.0016745022660509484,
+        0.01359023703089132,
+        0.06883114008786885
+      ]
+    },
+    {
+      "bag": "30618_b83d854d",
+      "group": "eeabf7d118bbcdac",
+      "phase": "braking",
+      "anchor": 534.6,
+      "velocity_error_mps": [
+        0.014911905237119605,
+        0.03411481649043857,
+        -0.14010593920468484
+      ],
+      "prefix_integral_error_m": [
+        -0.00807869396554828,
+        0.022218783655942643,
+        -0.23556532515037548
+      ]
+    },
+    {
+      "bag": "30618_b95ca60a",
+      "group": "e894436afa9dd9f1",
+      "phase": "traction",
+      "anchor": 621.85,
+      "velocity_error_mps": [
+        -0.021656466357733883,
+        0.025449771908713004,
+        -0.18930495381118106
+      ],
+      "prefix_integral_error_m": [
+        -0.006048837770655852,
+        -0.07783003787286442,
+        -0.04952280027774293
+      ]
+    },
+    {
+      "bag": "30618_b95ca60a",
+      "group": "e894436afa9dd9f1",
+      "phase": "coast",
+      "anchor": 402.0,
+      "velocity_error_mps": [
+        -0.02938031735018054,
+        -0.06999014586574726,
+        -0.28057165747279456
+      ],
+      "prefix_integral_error_m": [
+        -0.013151274656190258,
+        -0.07710923455225215,
+        -0.6013167206212772
+      ]
+    },
+    {
+      "bag": "30618_b95ca60a",
+      "group": "e894436afa9dd9f1",
+      "phase": "braking",
+      "anchor": 386.0,
+      "velocity_error_mps": [
+        -0.05310130782442268,
+        -0.23531480391275394,
+        -0.33525217729954804
+      ],
+      "prefix_integral_error_m": [
+        -0.021025929101780107,
+        -0.2256559155522985,
+        -1.3265728578792175
+      ]
+    },
+    {
+      "bag": "30618_bab2fe58",
+      "group": "5c1be3e9a2189121",
+      "phase": "braking",
+      "anchor": 34.550000000000004,
+      "velocity_error_mps": [
+        0.07117856862079597,
+        -0.6382629271190479,
+        -1.4863343448970492
+      ],
+      "prefix_integral_error_m": [
+        -0.004766276565566023,
+        -0.3772856314164538,
+        -3.2383562705276354
+      ]
+    },
+    {
+      "bag": "30618_cfd9fd5a",
+      "group": "95a748306e6cbf16",
+      "phase": "traction",
+      "anchor": 649.75,
+      "velocity_error_mps": [
+        0.006795614471569067,
+        0.02139335667225062,
+        0.264980344730704
+      ],
+      "prefix_integral_error_m": [
+        0.01093357284381908,
+        0.01325608284657129,
+        0.3061258729161461
+      ]
+    },
+    {
+      "bag": "30618_cfd9fd5a",
+      "group": "95a748306e6cbf16",
+      "phase": "coast",
+      "anchor": 351.45000000000005,
+      "velocity_error_mps": [
+        -0.00970601791839698,
+        -0.15847996235591744,
+        -0.15529493331153255
+      ],
+      "prefix_integral_error_m": [
+        -0.0017330823954623208,
+        -0.14731271685440803,
+        -0.472942247981626
+      ]
+    },
+    {
+      "bag": "30618_cfd9fd5a",
+      "group": "95a748306e6cbf16",
+      "phase": "braking",
+      "anchor": 490.20000000000005,
+      "velocity_error_mps": [
+        -0.13307570473719998,
+        -0.11740352673228571,
+        0.14639524981115315
+      ],
+      "prefix_integral_error_m": [
+        -0.03498460169614934,
+        -0.3257333289602944,
+        0.008332415531259713
+      ]
+    },
+    {
+      "bag": "30618_d4ba7005",
+      "group": "0448e10aab8a0e05",
+      "phase": "traction",
+      "anchor": 461.20000000000005,
+      "velocity_error_mps": [
+        0.1428730252296191,
+        0.39508490966892396,
+        0.38252573288802516
+      ],
+      "prefix_integral_error_m": [
+        0.03611379268548494,
+        0.5219313699702006,
+        1.5740540733546324
+      ]
+    },
+    {
+      "bag": "30618_d4ba7005",
+      "group": "0448e10aab8a0e05",
+      "phase": "coast",
+      "anchor": 199.20000000000002,
+      "velocity_error_mps": [
+        -0.004959235843564613,
+        -0.29698846535384327,
+        -0.00324088829946767
+      ],
+      "prefix_integral_error_m": [
+        -0.0005314658075808673,
+        -0.12734540269272726,
+        -0.5646722600016653
+      ]
+    },
+    {
+      "bag": "30618_d4ba7005",
+      "group": "0448e10aab8a0e05",
+      "phase": "braking",
+      "anchor": 206.45000000000002,
+      "velocity_error_mps": [
+        0.029355142729999173,
+        -0.1017406837139525,
+        -0.18779217536088266
+      ],
+      "prefix_integral_error_m": [
+        -0.011530178227684174,
+        -0.006821414002104563,
+        -0.21037454503778755
+      ]
+    },
+    {
+      "bag": "30618_dd8e6395",
+      "group": "0448e10aab8a0e05",
+      "phase": "traction",
+      "anchor": 588.3000000000001,
+      "velocity_error_mps": [
+        0.009343794190728616,
+        0.19916668081037692,
+        0.7816176660748511
+      ],
+      "prefix_integral_error_m": [
+        0.023573887954337472,
+        0.19993122959356863,
+        1.3271668705781003
+      ]
+    },
+    {
+      "bag": "30618_dd8e6395",
+      "group": "0448e10aab8a0e05",
+      "phase": "coast",
+      "anchor": 315.70000000000005,
+      "velocity_error_mps": [
+        -0.0063292565240526955,
+        0.019570536607307787,
+        0.005760714022478908
+      ],
+      "prefix_integral_error_m": [
+        -0.001472087110877891,
+        0.002829301541009885,
+        -0.006116981528614227
+      ]
+    },
+    {
+      "bag": "30618_dd8e6395",
+      "group": "0448e10aab8a0e05",
+      "phase": "braking",
+      "anchor": 591.65,
+      "velocity_error_mps": [
+        -0.04481393318660132,
+        0.3063034096244568,
+        0.7375107462427941
+      ],
+      "prefix_integral_error_m": [
+        -0.011306557175528554,
+        0.20966647842784522,
+        1.7813726238241088
+      ]
+    },
+    {
+      "bag": "30618_ddad08d6",
+      "group": "bf69dbfe85be52b0",
+      "phase": "traction",
+      "anchor": 511.65000000000003,
+      "velocity_error_mps": [
+        -0.0805609740583293,
+        -0.20187045651304736,
+        -0.4105239371174605
+      ],
+      "prefix_integral_error_m": [
+        0.004788156285287367,
+        -0.16927091112868983,
+        -0.9702899923288661
+      ]
+    },
+    {
+      "bag": "30618_ddad08d6",
+      "group": "bf69dbfe85be52b0",
+      "phase": "coast",
+      "anchor": 310.40000000000003,
+      "velocity_error_mps": [
+        0.0018292791895833105,
+        -0.03289393206058122,
+        0.1339274599857223
+      ],
+      "prefix_integral_error_m": [
+        0.0014994799832513473,
+        -0.0011405847989430307,
+        0.0457632468527801
+      ]
+    },
+    {
+      "bag": "30618_ddad08d6",
+      "group": "bf69dbfe85be52b0",
+      "phase": "braking",
+      "anchor": 471.8,
+      "velocity_error_mps": [
+        -0.5774397955482451,
+        -1.999718814689249,
+        -2.906044004034551
+      ],
+      "prefix_integral_error_m": [
+        -0.17601523521496296,
+        -2.1459146293504396,
+        -9.869475420582953
+      ]
+    },
+    {
+      "bag": "30618_e2dcf65f",
+      "group": "de891506667c23f9",
+      "phase": "traction",
+      "anchor": 704.8000000000001,
+      "velocity_error_mps": [
+        -0.062445234428087915,
+        -0.18185967098537503,
+        -0.3229379600900568
+      ],
+      "prefix_integral_error_m": [
+        -0.005117246570075219,
+        -0.16464538143405666,
+        -0.9462249653617806
+      ]
+    },
+    {
+      "bag": "30618_e2dcf65f",
+      "group": "de891506667c23f9",
+      "phase": "coast",
+      "anchor": 525.25,
+      "velocity_error_mps": [
+        -0.15343720708986197,
+        -0.33191092870655226,
+        -0.5634492227171801
+      ],
+      "prefix_integral_error_m": [
+        -0.040317134632838585,
+        -0.4336153093234191,
+        -1.7318791741187267
+      ]
+    },
+    {
+      "bag": "30618_e2dcf65f",
+      "group": "de891506667c23f9",
+      "phase": "braking",
+      "anchor": 402.0,
+      "velocity_error_mps": [
+        -0.023571786982996557,
+        0.024118868605428112,
+        0.8502952115119164
+      ],
+      "prefix_integral_error_m": [
+        -0.014185094223129753,
+        -0.029938090030466494,
+        1.2545196302074288
+      ]
+    },
+    {
+      "bag": "30618_e392e5bd",
+      "group": "86c32e441a296aaa",
+      "phase": "traction",
+      "anchor": 757.2506620730001,
+      "velocity_error_mps": [
+        -0.0010664380927742911,
+        -0.03989916862143872,
+        -0.140841178854604
+      ],
+      "prefix_integral_error_m": [
+        0.004198329962521082,
+        -0.003070048620382725,
+        -0.20951511664593944
+      ]
+    },
+    {
+      "bag": "30618_e392e5bd",
+      "group": "86c32e441a296aaa",
+      "phase": "coast",
+      "anchor": 684.6006620730001,
+      "velocity_error_mps": [
+        -0.06054010706149704,
+        -0.10147931573688673,
+        1.8178469064755003
+      ],
+      "prefix_integral_error_m": [
+        -0.022110835537018324,
+        -0.09449947801361441,
+        0.9569453320120587
+      ]
+    },
+    {
+      "bag": "30618_e392e5bd",
+      "group": "86c32e441a296aaa",
+      "phase": "braking",
+      "anchor": 487.20066207300005,
+      "velocity_error_mps": [
+        -0.03496405172700623,
+        -0.11398317307380967,
+        -0.20877636537226252
+      ],
+      "prefix_integral_error_m": [
+        -0.008654662391799498,
+        -0.09493393637895647,
+        -0.6204898047976762
+      ]
+    },
+    {
+      "bag": "30618_e3d94878",
+      "group": "eeabf7d118bbcdac",
+      "phase": "traction",
+      "anchor": 616.1500000000001,
+      "velocity_error_mps": [
+        -0.057599800729623674,
+        -0.1827222575453682,
+        -0.18723592326044525
+      ],
+      "prefix_integral_error_m": [
+        0.00431045015709247,
+        -0.09498796155234641,
+        -0.8088202446477087
+      ]
+    },
+    {
+      "bag": "30618_e3d94878",
+      "group": "eeabf7d118bbcdac",
+      "phase": "coast",
+      "anchor": 666.8000000000001,
+      "velocity_error_mps": [
+        0.033622585089272405,
+        0.0786905549286594,
+        -0.14788939578796345
+      ],
+      "prefix_integral_error_m": [
+        0.021749046817835033,
+        0.04812352003099639,
+        -0.01002198447879413
+      ]
+    },
+    {
+      "bag": "30618_e3d94878",
+      "group": "eeabf7d118bbcdac",
+      "phase": "braking",
+      "anchor": 674.75,
+      "velocity_error_mps": [
+        -0.05321343444377469,
+        0.011812588502646548,
+        0.67444874620249
+      ],
+      "prefix_integral_error_m": [
+        -0.009768839819456553,
+        -0.21062862174722408,
+        0.8824343661516346
+      ]
+    },
+    {
+      "bag": "30618_e7dcdab1",
+      "group": "c8a1e61d1b0710e9",
+      "phase": "traction",
+      "anchor": 710.35,
+      "velocity_error_mps": [
+        -0.003534796495376469,
+        0.16032946403542603,
+        0.39513218609549305
+      ],
+      "prefix_integral_error_m": [
+        0.0007740746600480125,
+        0.07954015608113202,
+        1.0905889352667717
+      ]
+    },
+    {
+      "bag": "30618_e7dcdab1",
+      "group": "c8a1e61d1b0710e9",
+      "phase": "coast",
+      "anchor": 675.2,
+      "velocity_error_mps": [
+        -0.008600050548892568,
+        0.18242662546396105,
+        0.7256583949136388
+      ],
+      "prefix_integral_error_m": [
+        -0.00024166639257036464,
+        0.09642975379233656,
+        1.3435444540460446
+      ]
+    },
+    {
+      "bag": "30618_e7dcdab1",
+      "group": "c8a1e61d1b0710e9",
+      "phase": "braking",
+      "anchor": 499.8,
+      "velocity_error_mps": [
+        0.05613759302041199,
+        0.29894755929887484,
+        0.9234702308981051
+      ],
+      "prefix_integral_error_m": [
+        0.012971316224737978,
+        0.26776343106819506,
+        1.921947770805783
+      ]
+    },
+    {
+      "bag": "30618_efb92709",
+      "group": "58dd5f96d4201195",
+      "phase": "traction",
+      "anchor": 757.3000000000001,
+      "velocity_error_mps": [
+        -0.08860356856605645,
+        -0.3399573410228873,
+        -0.8096443192244349
+      ],
+      "prefix_integral_error_m": [
+        -0.016237342405723835,
+        -0.32973546328904674,
+        -2.139803775174962
+      ]
+    },
+    {
+      "bag": "30618_efb92709",
+      "group": "58dd5f96d4201195",
+      "phase": "coast",
+      "anchor": 393.25,
+      "velocity_error_mps": [
+        0.02263040159004781,
+        -0.0880179664159364,
+        0.19247947385920838
+      ],
+      "prefix_integral_error_m": [
+        0.008268580104998511,
+        -0.008702279767859786,
+        0.3458956999613213
+      ]
+    },
+    {
+      "bag": "30618_efb92709",
+      "group": "58dd5f96d4201195",
+      "phase": "braking",
+      "anchor": 620.95,
+      "velocity_error_mps": [
+        -0.024987451821228746,
+        -0.018363359237083543,
+        -0.11001735318551908
+      ],
+      "prefix_integral_error_m": [
+        -0.01475499050511283,
+        -0.03598746688119098,
+        -0.16137653789075335
+      ]
+    },
+    {
+      "bag": "30618_f19a4ac3",
+      "group": "1cff0aebccb39ff5",
+      "phase": "traction",
+      "anchor": 725.25,
+      "velocity_error_mps": [
+        -0.057087648338834285,
+        -0.10785671836086053,
+        0.10393951421983338
+      ],
+      "prefix_integral_error_m": [
+        -0.016369705667390096,
+        -0.11284898434052444,
+        -0.14161298583485357
+      ]
+    },
+    {
+      "bag": "30618_f19a4ac3",
+      "group": "1cff0aebccb39ff5",
+      "phase": "coast",
+      "anchor": 600.5,
+      "velocity_error_mps": [
+        -0.020012619352521632,
+        0.06574167596714453,
+        -0.037996346605016385
+      ],
+      "prefix_integral_error_m": [
+        0.005544878505795895,
+        0.05539564221758793,
+        -0.07448416524583723
+      ]
+    },
+    {
+      "bag": "30618_f19a4ac3",
+      "group": "1cff0aebccb39ff5",
+      "phase": "braking",
+      "anchor": 484.95000000000005,
+      "velocity_error_mps": [
+        -0.09530708792100562,
+        -0.19385828727578014,
+        -0.7258174154172172
+      ],
+      "prefix_integral_error_m": [
+        -0.024286920868994984,
+        -0.2508579140790626,
+        -1.8999926387024086
+      ]
+    },
+    {
+      "bag": "30618_f28179bb",
+      "group": "8ff91290187a9769",
+      "phase": "traction",
+      "anchor": 405.35,
+      "velocity_error_mps": [
+        -0.07477048938791064,
+        0.0484428806878654,
+        0.1341717214614011
+      ],
+      "prefix_integral_error_m": [
+        -0.023572084115049866,
+        -0.040676839085628975,
+        0.3634929148686071
+      ]
+    },
+    {
+      "bag": "30618_f28179bb",
+      "group": "8ff91290187a9769",
+      "phase": "coast",
+      "anchor": 273.65000000000003,
+      "velocity_error_mps": [
+        0.006195920616613115,
+        0.03000327004684067,
+        0.22877795092558273
+      ],
+      "prefix_integral_error_m": [
+        -0.0002817667670143784,
+        0.0212764753356847,
+        0.4976298434757551
+      ]
+    },
+    {
+      "bag": "30618_f28179bb",
+      "group": "8ff91290187a9769",
+      "phase": "braking",
+      "anchor": 377.40000000000003,
+      "velocity_error_mps": [
+        0.028900224187846213,
+        0.008236949682291161,
+        -0.30056714955438313
+      ],
+      "prefix_integral_error_m": [
+        -0.0004392353648687107,
+        0.015760660780329852,
+        -0.14841711296727472
+      ]
+    },
+    {
+      "bag": "30618_f3b8c99b",
+      "group": "bc403256f12f9710",
+      "phase": "traction",
+      "anchor": 513.95,
+      "velocity_error_mps": [
+        -0.08283995270206823,
+        -0.22267761295437616,
+        -0.5581804863826889
+      ],
+      "prefix_integral_error_m": [
+        0.00017783850041101171,
+        -0.1671020680225091,
+        -1.186742374832456
+      ]
+    },
+    {
+      "bag": "30618_f3b8c99b",
+      "group": "bc403256f12f9710",
+      "phase": "coast",
+      "anchor": 356.35,
+      "velocity_error_mps": [
+        -0.022999505212595306,
+        0.015182437212622357,
+        -0.35471301149346957
+      ],
+      "prefix_integral_error_m": [
+        -0.004563919113946751,
+        0.05988687256049309,
+        -0.2838228550032629
+      ]
+    },
+    {
+      "bag": "30618_f3b8c99b",
+      "group": "bc403256f12f9710",
+      "phase": "braking",
+      "anchor": 398.3,
+      "velocity_error_mps": [
+        -0.19952889353299286,
+        -1.032232823994434,
+        -4.576851783353304
+      ],
+      "prefix_integral_error_m": [
+        -0.066384912253339,
+        -0.9054899621133372,
+        -10.199045192951615
+      ]
+    },
+    {
+      "bag": "30639_0be558e2",
+      "group": "0d4506540f0e7621",
+      "phase": "traction",
+      "anchor": 763.85,
+      "velocity_error_mps": [
+        0.02587028938082181,
+        -0.01474762606271618,
+        -0.08426504976414684
+      ],
+      "prefix_integral_error_m": [
+        0.018346478578414385,
+        0.04849844297677845,
+        -0.20267341760837992
+      ]
+    },
+    {
+      "bag": "30639_0be558e2",
+      "group": "0d4506540f0e7621",
+      "phase": "coast",
+      "anchor": 472.6,
+      "velocity_error_mps": [
+        0.00492402437155981,
+        -0.11639000647089581,
+        0.2034576167517752
+      ],
+      "prefix_integral_error_m": [
+        0.00463273623569863,
+        -0.12902367911322743,
+        0.16426560309835178
+      ]
+    },
+    {
+      "bag": "30639_0be558e2",
+      "group": "0d4506540f0e7621",
+      "phase": "braking",
+      "anchor": 754.4000000000001,
+      "velocity_error_mps": [
+        0.0334682362486749,
+        -0.06991538988764834,
+        -0.15084703936650268
+      ],
+      "prefix_integral_error_m": [
+        -0.007816966016635606,
+        -0.02037628970551624,
+        -0.2894777685722187
+      ]
+    },
+    {
+      "bag": "30639_2b4a6347",
+      "group": "bc1e4cbe924a90ce",
+      "phase": "traction",
+      "anchor": 776.75,
+      "velocity_error_mps": [
+        0.010185861925478434,
+        0.14770111062121138,
+        0.33410710621534
+      ],
+      "prefix_integral_error_m": [
+        0.011186896282002678,
+        0.09655168370961197,
+        0.9138788087334209
+      ]
+    },
+    {
+      "bag": "30639_2b4a6347",
+      "group": "bc1e4cbe924a90ce",
+      "phase": "coast",
+      "anchor": 754.0500000000001,
+      "velocity_error_mps": [
+        -0.03348520150454526,
+        -0.1789452068312496,
+        0.2911421212464802
+      ],
+      "prefix_integral_error_m": [
+        -0.007236752415211173,
+        -0.2640188726253236,
+        0.033161614477385366
+      ]
+    },
+    {
+      "bag": "30639_2b4a6347",
+      "group": "bc1e4cbe924a90ce",
+      "phase": "braking",
+      "anchor": 467.95000000000005,
+      "velocity_error_mps": [
+        -0.022229509768160405,
+        -0.087481322528423,
+        -0.22911249432758618
+      ],
+      "prefix_integral_error_m": [
+        -0.0009206685729454334,
+        -0.057019480808011794,
+        -0.45874057286499115
+      ]
+    },
+    {
+      "bag": "30639_4285f2bc",
+      "group": "bc1e4cbe924a90ce",
+      "phase": "traction",
+      "anchor": 866.25,
+      "velocity_error_mps": [
+        0.06263057241034176,
+        -0.15920880453559016,
+        -0.5872562370010086
+      ],
+      "prefix_integral_error_m": [
+        0.024701587604271134,
+        -0.034914546937231124,
+        -1.100693227042747
+      ]
+    },
+    {
+      "bag": "30639_4285f2bc",
+      "group": "bc1e4cbe924a90ce",
+      "phase": "coast",
+      "anchor": 405.35,
+      "velocity_error_mps": [
+        -0.04191459145975962,
+        -0.17059130492737218,
+        -0.680465836217472
+      ],
+      "prefix_integral_error_m": [
+        -0.0115315976232465,
+        -0.17511028144448537,
+        -1.2132832224865877
+      ]
+    },
+    {
+      "bag": "30639_4285f2bc",
+      "group": "bc1e4cbe924a90ce",
+      "phase": "braking",
+      "anchor": 609.95,
+      "velocity_error_mps": [
+        -0.025346290574873365,
+        0.048963281970512806,
+        -0.03565890650602155
+      ],
+      "prefix_integral_error_m": [
+        -0.011417787455854788,
+        -0.022178438502732274,
+        0.06100675928062279
+      ]
+    },
+    {
+      "bag": "30639_44226bde",
+      "group": "f28fe86416cc8dc2",
+      "phase": "traction",
+      "anchor": 639.4000000000001,
+      "velocity_error_mps": [
+        0.007595893611856752,
+        -0.33655018888991606,
+        -0.706719528651238
+      ],
+      "prefix_integral_error_m": [
+        0.015810680224003275,
+        -0.20604679731767758,
+        -1.8762617848398133
+      ]
+    },
+    {
+      "bag": "30639_44226bde",
+      "group": "f28fe86416cc8dc2",
+      "phase": "coast",
+      "anchor": 602.85,
+      "velocity_error_mps": [
+        -0.0039857413495170135,
+        0.057083295953697544,
+        0.1711524351452649
+      ],
+      "prefix_integral_error_m": [
+        -0.0016860630865669676,
+        0.0320045370643314,
+        0.2903272717177315
+      ]
+    },
+    {
+      "bag": "30639_44226bde",
+      "group": "f28fe86416cc8dc2",
+      "phase": "braking",
+      "anchor": 501.1,
+      "velocity_error_mps": [
+        -0.038960319906347074,
+        -0.2014680312169892,
+        -0.4356812948308306
+      ],
+      "prefix_integral_error_m": [
+        -0.02229039997478686,
+        -0.19986578345165998,
+        -1.1346599125545724
+      ]
+    },
+    {
+      "bag": "30639_92226df0",
+      "group": "4ca08ed0da0cb611",
+      "phase": "traction",
+      "anchor": 725.45,
+      "velocity_error_mps": [
+        0.005925300401978362,
+        0.06514646100267996,
+        0.388722444211167
+      ],
+      "prefix_integral_error_m": [
+        0.0031969877102829866,
+        0.048168017863762784,
+        0.6143075367110118
+      ]
+    },
+    {
+      "bag": "30639_92226df0",
+      "group": "4ca08ed0da0cb611",
+      "phase": "coast",
+      "anchor": 463.90000000000003,
+      "velocity_error_mps": [
+        -0.004563618660329283,
+        -0.0661663086865758,
+        -0.22200976170215814
+      ],
+      "prefix_integral_error_m": [
+        -0.007335312728147425,
+        -0.04156381875873686,
+        -0.2210667390181597
+      ]
+    },
+    {
+      "bag": "30639_92226df0",
+      "group": "4ca08ed0da0cb611",
+      "phase": "braking",
+      "anchor": 498.70000000000005,
+      "velocity_error_mps": [
+        0.0060001257718020895,
+        0.060702718680309964,
+        0.08504626501419321
+      ],
+      "prefix_integral_error_m": [
+        0.0007814364587348402,
+        0.05725545644241452,
+        0.37435333826633493
+      ]
+    },
+    {
+      "bag": "30639_927002c2",
+      "group": "8232b134be2a5002",
+      "phase": "traction",
+      "anchor": 655.6516625010001,
+      "velocity_error_mps": [
+        0.06725537101144496,
+        0.1884166721309537,
+        0.7229150059019336
+      ],
+      "prefix_integral_error_m": [
+        0.027953529649248205,
+        0.22747748652450442,
+        1.731904072860739
+      ]
+    },
+    {
+      "bag": "30639_927002c2",
+      "group": "8232b134be2a5002",
+      "phase": "coast",
+      "anchor": 626.0516625010001,
+      "velocity_error_mps": [
+        -0.06651276954120178,
+        -0.29665734406368394,
+        0.05669687375781329
+      ],
+      "prefix_integral_error_m": [
+        -0.014972170967226146,
+        -0.38694612513246657,
+        -0.6420220968764999
+      ]
+    },
+    {
+      "bag": "30639_927002c2",
+      "group": "8232b134be2a5002",
+      "phase": "braking",
+      "anchor": 441.751662501,
+      "velocity_error_mps": [
+        -6.390528662247874e-05,
+        -0.03062546414267331,
+        -0.17569049795490388
+      ],
+      "prefix_integral_error_m": [
+        0.0015738071046953513,
+        0.012314073043429958,
+        -0.24465475373688247
+      ]
+    },
+    {
+      "bag": "30639_d3c43d69",
+      "group": "f28fe86416cc8dc2",
+      "phase": "traction",
+      "anchor": 605.3000000000001,
+      "velocity_error_mps": [
+        0.027023745753110617,
+        0.10458488242227304,
+        0.8196786195249608
+      ],
+      "prefix_integral_error_m": [
+        0.012598714359879703,
+        0.10413439749610619,
+        1.5126313890381036
+      ]
+    },
+    {
+      "bag": "30639_d3c43d69",
+      "group": "f28fe86416cc8dc2",
+      "phase": "coast",
+      "anchor": 377.05,
+      "velocity_error_mps": [
+        -0.1236305815146812,
+        -0.32312978803238757,
+        -0.10044065913409472
+      ],
+      "prefix_integral_error_m": [
+        -0.02229691640700386,
+        -0.31111690748915133,
+        -0.7870039342332975
+      ]
+    },
+    {
+      "bag": "30639_d3c43d69",
+      "group": "f28fe86416cc8dc2",
+      "phase": "braking",
+      "anchor": 537.4,
+      "velocity_error_mps": [
+        -0.035916787033851705,
+        -0.15802956824467174,
+        -0.6065944726402348
+      ],
+      "prefix_integral_error_m": [
+        -0.016986582192593483,
+        -0.12179419218603313,
+        -1.4577816201423934
+      ]
+    }
+  ]
+}
