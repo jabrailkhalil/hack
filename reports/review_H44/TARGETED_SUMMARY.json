@@ -1,0 +1,76 @@
+{
+  "reviewed_pr": 57,
+  "reviewed_head": "dc6e42ec56745b1a8aee7cf506256dc2e8b2a891",
+  "baseline_main": "b2783206000091ab11a1c11ac3ff79082188a4fb",
+  "status": "DIAGNOSTIC_ONLY_NOT_FOR_PROMOTION",
+  "methods": "Published G/W reproduced; post-hoc traction-only and brake-only interventions on three disclosed cases, each with its own full prehistory.",
+  "sampling": "Purposive previously reported counterexamples, not an independent or representative benchmark.",
+  "training_executed": false,
+  "validation_opened": false,
+  "test_opened": false,
+  "runtime_or_friend_branch_modified": false,
+  "python": "3.13.5",
+  "evidence_zip": "H44_review_evidence.zip",
+  "evidence_zip_bytes": 16988724,
+  "evidence_zip_sha256": "cbad394a7b2f21c01d7a4cfa42adade1150329eabf39602b5dee81eea4b7d788",
+  "evidence_location": "Conversation artifact; raw JSON/NPZ, configs, source hashes, drivers and logs; no DB/teacher/baseline source included.",
+  "rows": [
+    {
+      "bag": "30639_9c362687",
+      "fault": {"kind": "dropout", "start": 136.0, "end": 146.0},
+      "receiver": "rover",
+      "cropped_event_rmse": {
+        "v8": 0.258670138631096,
+        "G": 0.6043323857781802,
+        "W": 0.6295206865950719,
+        "G_traction_only": 0.17255541499192878,
+        "G_brake_only": 0.6912872090008954
+      },
+      "faulted_minus_clean_s_end_plus_10": {
+        "v8": 0.4528060085546599,
+        "G": 3.312145386505165,
+        "W": 3.4600869597833253,
+        "G_traction_only": -0.05365584551492475,
+        "G_brake_only": 3.8209271544670855
+      }
+    },
+    {
+      "bag": "30618_27e994fc",
+      "fault": {"kind": "dropout", "start": 190.10000000000002, "end": 200.10000000000002},
+      "receiver": "rover",
+      "cropped_event_rmse": {
+        "v8": 0.24515450546543252,
+        "G": 0.4804935443899473,
+        "W": 0.48072779353892336,
+        "G_traction_only": 0.2443687887225586,
+        "G_brake_only": 0.48130280327304664
+      },
+      "faulted_minus_clean_s_end_plus_10": {
+        "v8": -0.11847361644265675,
+        "G": 1.7831423331504084,
+        "W": 1.78524896353872,
+        "G_traction_only": -0.12574948230167138,
+        "G_brake_only": 1.790418223179131
+      }
+    },
+    {
+      "bag": "30639_c31df386",
+      "fault": {"kind": "dropout", "start": 142.4, "end": 152.4},
+      "receiver": "rover",
+      "cropped_event_rmse": {
+        "v8": 0.4406594935280277,
+        "G": 0.28188199661715585,
+        "W": 0.28940064419161965,
+        "G_traction_only": 0.28712611965811824,
+        "G_brake_only": 0.4788134115670205
+      },
+      "faulted_minus_clean_s_end_plus_10": {
+        "v8": -5.2378829286265045,
+        "G": -1.8992100606720896,
+        "W": -3.0852348123555657,
+        "G_traction_only": -1.516655932655226,
+        "G_brake_only": -5.5848640333987305
+      }
+    }
+  ]
+}
