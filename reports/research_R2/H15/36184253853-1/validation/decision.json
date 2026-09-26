@@ -1,0 +1,88 @@
+{
+  "verdict": "REJECTED",
+  "selected": "h15_l004",
+  "summary": {
+    "baseline_v2": {
+      "clean_rmse": 0.1145498613174081,
+      "fault_rmse": 0.5382867826008657,
+      "distance_rmse": 4.595480653017927,
+      "samples": 698891,
+      "pooled_rmse": 0.21640679415488998,
+      "false_stops_clean": 18,
+      "false_stops_fault": 0,
+      "unrecovered": 0,
+      "clean_mae": 0.04754965140353143,
+      "clean_signed_bias": -0.01597515595189168,
+      "fault_mae": 0.2253169737615307,
+      "fault_signed_bias": -0.06592457342298272,
+      "recovery_group_macro_s": 0.22625520338887986
+    },
+    "h15_l004": {
+      "clean_rmse": 0.11454986100777968,
+      "fault_rmse": 0.5334937264503242,
+      "distance_rmse": 4.595480579264136,
+      "samples": 698891,
+      "pooled_rmse": 0.2164067938282865,
+      "false_stops_clean": 18,
+      "false_stops_fault": 0,
+      "unrecovered": 0,
+      "clean_mae": 0.04754965090734688,
+      "clean_signed_bias": -0.01597515638756656,
+      "fault_mae": 0.2237868888676945,
+      "fault_signed_bias": -0.06585332939688072,
+      "recovery_group_macro_s": 0.22660242561110217
+    }
+  },
+  "candidates": {
+    "h15_l004": {
+      "eligible": false,
+      "reasons": [
+        "insufficient_gain"
+      ],
+      "relative_change": {
+        "clean_rmse": -2.703001267256866e-09,
+        "fault_rmse": -0.00890427984759845,
+        "pooled_rmse": -1.5092107563674517e-09,
+        "distance_rmse": -1.6049200746159897e-08
+      }
+    }
+  },
+  "coverage": {
+    "h15_l004": {
+      "fits": 65711,
+      "fit_bags": [
+        "30618_0686195f",
+        "30618_2255aade",
+        "30618_2dbce472",
+        "30618_2f104a1d",
+        "30618_437e855c",
+        "30618_49fe4c54",
+        "30618_4e1e3181",
+        "30618_68847170",
+        "30618_68d1748a",
+        "30618_76e1f9c7",
+        "30618_7bfbb5ed",
+        "30618_95c49c30",
+        "30618_b15eafc3",
+        "30618_b8044aa0",
+        "30618_defd0170",
+        "30639_3b3d9eb8",
+        "30639_50956d6e",
+        "30639_9f0b519f",
+        "30639_d601d28f"
+      ],
+      "effective_ticks": 2136,
+      "loss_bags": [
+        "30618_2dbce472",
+        "30618_2f104a1d",
+        "30618_b15eafc3",
+        "30618_b8044aa0",
+        "30639_3b3d9eb8",
+        "30639_50956d6e"
+      ],
+      "sufficient": true
+    }
+  },
+  "merge_ready": false,
+  "independent_test": false
+}

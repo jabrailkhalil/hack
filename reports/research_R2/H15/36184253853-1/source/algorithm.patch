@@ -1,0 +1,30 @@
+--- a/src/reserve_odometry/reserve_odometry/core.py
++++ b/src/reserve_odometry/reserve_odometry/core.py
+@@ -313,6 +313,17 @@
+             for i in range(2):
+                 if i not in accepted:
+                     statuses[i] = 'AMBIGUOUS_PAIR'
++        # H15 research hook: original gates above run unchanged; no accepted
++        # wheel is corrected with the auxiliary disturbance prediction.
++        hook = getattr(self, '_h15_prediction', None)
++        if hook is not None:
++            effective = hook(t, command_stale, accepted, statuses)
++            if effective != self.disturbance:
++                a_model = clip(self.drive_a - self.resistance(self.v) + effective,
++                               -c.max_accel_mps2, c.max_accel_mps2)
++                predicted = clip(self.v + dt * a_model, -c.max_speed_mps, c.max_speed_mps)
++                if u <= c.command_deadband and self.v * predicted < 0:
++                    predicted = 0.0
+         self.v = predicted
+         self.pv = p_prior
+         mode = 'MODEL_ONLY'
+@@ -373,6 +384,9 @@
+                 measured_a = (z - old.value) / (tz - old.t)
+                 if abs(measured_a) <= c.max_accel_mps2 and abs(z) > 0.5:
+                     desired = measured_a - self.drive_a + self.resistance(self.v)
++                    learn = getattr(self, '_h15_observe', None)
++                    if learn is not None:
++                        learn(t, tz, z, desired, samples, predicted)
+                     weight = 1 - math.exp(-(tz - old.t) / c.adaptation_tau_s)
+                     self.disturbance = clip(self.disturbance + weight * (desired - self.disturbance),
+                                             -c.disturbance_limit_mps2, c.disturbance_limit_mps2)

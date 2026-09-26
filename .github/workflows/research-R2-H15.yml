@@ -1,0 +1,62 @@
+name: R2 H15 immutable frozen replay
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  replay:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+      PYTHONPATH: src/reserve_odometry
+      H15_MEASURED_SHA: 5b9ab8429741c7ccdb5969ee68aeb9402f79150c
+      H15_FREEZE_COMMIT: dff80eecff17dd2ef100060f68649908513cf466
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 5b9ab8429741c7ccdb5969ee68aeb9402f79150c
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - name: Prepare isolated replay of the already published freeze
+        run: |
+          set -euo pipefail
+          echo "OUT=$RUNNER_TEMP/H15-repeat-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT" >> "$GITHUB_ENV"
+          echo "DEST=reports/research_R2/H15/repeat-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT" >> "$GITHUB_ENV"
+          python -m pip install -r requirements-research.txt
+          python research/R2/H15/apply.py
+      - name: Verify candidate and retrieve checksum-pinned data
+        run: |
+          set -euo pipefail
+          mkdir -p "$OUT"
+          python -m unittest discover -s research/R2/H15/tests -v 2>&1 | tee "$OUT/tests.log"
+          python tools/get_dataset.py 2>&1 | tee "$OUT/dataset.log"
+          git show "$H15_FREEZE_COMMIT:reports/research_R2/H15/36184253853-1/FROZEN.json" > "$OUT/FROZEN.json"
+      - name: Repeat exactly the selected frozen candidate without tuning
+        run: |
+          set -euo pipefail
+          python research/R2/H15/run.py validation --frozen "$OUT/FROZEN.json" --output "$OUT/validation" 2>&1 | tee "$OUT/validation.log"
+      - uses: actions/upload-artifact@v4
+        if: always() && env.OUT != ''
+        with:
+          name: R2-H15-repeat-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.OUT }}/
+          retention-days: 30
+      - name: Preserve only this repeat in a new own checkpoint
+        if: always() && env.OUT != ''
+        run: |
+          set -euo pipefail
+          if ! test -d "$OUT"; then exit 0; fi
+          git restore src/reserve_odometry/reserve_odometry/core.py
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          branch="checkpoint/H15-repeat-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          git switch -c "$branch"
+          mkdir -p "$DEST"
+          cp -a "$OUT/." "$DEST/"
+          git add "$DEST"
+          git diff --cached --quiet || git commit -m "research(H15): preserve immutable repeat $GITHUB_RUN_ID attempt $GITHUB_RUN_ATTEMPT"
+          git push origin "HEAD:refs/heads/$branch"
