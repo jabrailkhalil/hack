@@ -1,0 +1,316 @@
+{
+  "scope": "synthetic mechanism/safety diagnosis, NOT real-recording accuracy",
+  "truth_definition": "fixed baseline physical coefficients + fixed external disturbance 0.12 m/s^2 (0 for low_speed_lock); causal Euler truth",
+  "candidate_parameters_fitted": false,
+  "safety_no_new_false_stops_or_future": true,
+  "scenarios": [
+    {
+      "scenario": "healthy_sync",
+      "models": {
+        "baseline": {
+          "max_error": 0.011156294739782524,
+          "false_stops": 0,
+          "outputs": 401,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 200,
+            "FUSED": 200
+          },
+          "rmse": 0.0015654914773297207,
+          "h14_counts": null
+        },
+        "candidate": {
+          "max_error": 0.011156294739782524,
+          "false_stops": 0,
+          "outputs": 401,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 200,
+            "FUSED": 200
+          },
+          "rmse": 0.0015654914773297207,
+          "h14_counts": {
+            "pairs": 200,
+            "async_pairs": 0,
+            "updates": 199,
+            "async_updates": 0,
+            "hard_clears": 0,
+            "expired_clears": 0,
+            "recheck_rejections": 0
+          }
+        }
+      }
+    },
+    {
+      "scenario": "healthy_async",
+      "models": {
+        "baseline": {
+          "max_error": 0.017989811248741994,
+          "false_stops": 0,
+          "outputs": 400,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "SINGLE_WHEEL": 399
+          },
+          "rmse": 0.014321469565662362,
+          "h14_counts": null
+        },
+        "candidate": {
+          "max_error": 0.016941384335487975,
+          "false_stops": 0,
+          "outputs": 400,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "SINGLE_WHEEL": 399
+          },
+          "rmse": 0.002869412970877588,
+          "h14_counts": {
+            "pairs": 199,
+            "async_pairs": 199,
+            "updates": 198,
+            "async_updates": 198,
+            "hard_clears": 0,
+            "expired_clears": 0,
+            "recheck_rejections": 0
+          }
+        }
+      }
+    },
+    {
+      "scenario": "dropout_async",
+      "models": {
+        "baseline": {
+          "max_error": 0.5823504421622339,
+          "false_stops": 0,
+          "outputs": 400,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "SINGLE_WHEEL": 299,
+            "MODEL_ONLY": 100
+          },
+          "rmse": 0.17420689910625378,
+          "h14_counts": null
+        },
+        "candidate": {
+          "max_error": 0.016941384335487975,
+          "false_stops": 0,
+          "outputs": 400,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "SINGLE_WHEEL": 299,
+            "MODEL_ONLY": 100
+          },
+          "rmse": 0.002914605326601198,
+          "h14_counts": {
+            "pairs": 149,
+            "async_pairs": 149,
+            "updates": 147,
+            "async_updates": 147,
+            "hard_clears": 101,
+            "expired_clears": 0,
+            "recheck_rejections": 0
+          }
+        }
+      }
+    },
+    {
+      "scenario": "single_spike",
+      "models": {
+        "baseline": {
+          "max_error": 0.022723167503928998,
+          "false_stops": 0,
+          "outputs": 400,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "SINGLE_WHEEL": 397,
+            "MODEL_ONLY": 2
+          },
+          "rmse": 0.014392838443522262,
+          "h14_counts": null
+        },
+        "candidate": {
+          "max_error": 0.016941384335487975,
+          "false_stops": 0,
+          "outputs": 400,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "SINGLE_WHEEL": 397,
+            "MODEL_ONLY": 2
+          },
+          "rmse": 0.0028880837628085516,
+          "h14_counts": {
+            "pairs": 198,
+            "async_pairs": 198,
+            "updates": 196,
+            "async_updates": 196,
+            "hard_clears": 2,
+            "expired_clears": 0,
+            "recheck_rejections": 0
+          }
+        }
+      }
+    },
+    {
+      "scenario": "alternating_zeros",
+      "models": {
+        "baseline": {
+          "max_error": 0.07693027887098491,
+          "false_stops": 0,
+          "outputs": 400,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "SINGLE_WHEEL": 387,
+            "MODEL_ONLY": 12
+          },
+          "rmse": 0.01662660102456719,
+          "h14_counts": null
+        },
+        "candidate": {
+          "max_error": 0.016941384335487975,
+          "false_stops": 0,
+          "outputs": 400,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "SINGLE_WHEEL": 387,
+            "MODEL_ONLY": 12
+          },
+          "rmse": 0.003084292122872826,
+          "h14_counts": {
+            "pairs": 192,
+            "async_pairs": 192,
+            "updates": 190,
+            "async_updates": 190,
+            "hard_clears": 12,
+            "expired_clears": 0,
+            "recheck_rejections": 0
+          }
+        }
+      }
+    },
+    {
+      "scenario": "common_lock",
+      "models": {
+        "baseline": {
+          "max_error": 0.0981915463573717,
+          "false_stops": 0,
+          "outputs": 400,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "SINGLE_WHEEL": 385,
+            "MODEL_ONLY": 14
+          },
+          "rmse": 0.018559656217115944,
+          "h14_counts": null
+        },
+        "candidate": {
+          "max_error": 0.016941384335487975,
+          "false_stops": 0,
+          "outputs": 400,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "SINGLE_WHEEL": 385,
+            "MODEL_ONLY": 14
+          },
+          "rmse": 0.0032665053604691587,
+          "h14_counts": {
+            "pairs": 192,
+            "async_pairs": 192,
+            "updates": 190,
+            "async_updates": 190,
+            "hard_clears": 14,
+            "expired_clears": 0,
+            "recheck_rejections": 0
+          }
+        }
+      }
+    },
+    {
+      "scenario": "startup",
+      "models": {
+        "baseline": {
+          "max_error": 0.017738553155187367,
+          "false_stops": 0,
+          "outputs": 400,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "SINGLE_WHEEL": 399
+          },
+          "rmse": 0.014342827195689726,
+          "h14_counts": null
+        },
+        "candidate": {
+          "max_error": 0.017738553155187367,
+          "false_stops": 0,
+          "outputs": 400,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "SINGLE_WHEEL": 399
+          },
+          "rmse": 0.00420941786273193,
+          "h14_counts": {
+            "pairs": 199,
+            "async_pairs": 199,
+            "updates": 190,
+            "async_updates": 190,
+            "hard_clears": 0,
+            "expired_clears": 0,
+            "recheck_rejections": 0
+          }
+        }
+      }
+    },
+    {
+      "scenario": "low_speed_lock",
+      "models": {
+        "baseline": {
+          "max_error": 0.0013060809601019852,
+          "false_stops": 0,
+          "outputs": 400,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "SINGLE_WHEEL": 377,
+            "MODEL_ONLY": 22
+          },
+          "rmse": 9.397888173181014e-05,
+          "h14_counts": null
+        },
+        "candidate": {
+          "max_error": 0.0013060809601019852,
+          "false_stops": 0,
+          "outputs": 400,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "SINGLE_WHEEL": 377,
+            "MODEL_ONLY": 22
+          },
+          "rmse": 9.398381611433313e-05,
+          "h14_counts": {
+            "pairs": 188,
+            "async_pairs": 188,
+            "updates": 178,
+            "async_updates": 178,
+            "hard_clears": 22,
+            "expired_clears": 0,
+            "recheck_rejections": 0
+          }
+        }
+      }
+    }
+  ]
+}
