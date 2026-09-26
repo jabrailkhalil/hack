@@ -1,0 +1,44 @@
+name: R3-H29 train input export
+on:
+  push:
+    branches: [research/R3-H29]
+    paths: [.github/workflows/r3-h29-train-export.yml]
+permissions:
+  contents: read
+jobs:
+  export:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - name: Prepare exact audited data and research dependencies
+        run: |
+          python -m pip install -r requirements-research.txt
+          python tools/get_dataset.py
+      - name: Export only train vehicle samples in first 180 source seconds
+        env:
+          OUT: ${{ runner.temp }}/h29-train
+        run: |
+          python - <<'PY'
+          import hashlib,json,os,sys
+          from pathlib import Path
+          sys.path.insert(0,'tools/research_v3')
+          import experiment as ex
+          out=Path(os.environ['OUT']);out.mkdir()
+          store=ex.Store();rows=[]
+          for bag in store.plan['splits']['train']:
+              events,refs=store.load(bag,'train')
+              assert not any(refs.values())
+              events=events[events[:,0]<=180.]
+              path=out/(bag+'.npz');ex.np.savez_compressed(path,events=events)
+              rows.append(dict(bag=bag,group=store.records[bag]['group'],split='train',bag_sha256=store.records[bag]['sha256'],events=len(events),export_sha256=hashlib.sha256(path.read_bytes()).hexdigest()))
+          (out/'provenance.json').write_text(json.dumps(dict(baseline='e3b0c9c039d2953fbfcda51231263d38ef9f1024',source=os.environ['GITHUB_SHA'],rows=rows,access=store.access,train_gnss=False,validation_opened=False,test_opened=False),indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: R3-H29-train-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/h29-train/
+          retention-days: 7
