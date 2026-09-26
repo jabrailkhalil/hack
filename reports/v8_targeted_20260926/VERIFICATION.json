@@ -1,0 +1,43 @@
+{
+  "status": "LOCAL_PASS_NOT_ROS",
+  "source_commit": "0ac3e7caa0ced4bcafc18cecb5eb226e0f7bb2da",
+  "tests": {
+    "candidate": 27,
+    "historical_runtime": 156,
+    "research_integrity": 43
+  },
+  "implementation_blobs_verified": 11,
+  "compileall": "PASS",
+  "reproduction": {
+    "status": "EXACT_PASS",
+    "first_workers": 4,
+    "repeat_workers": 2,
+    "bag_json_equal": 17,
+    "npz_files_equal": 73,
+    "model_arrays_equal": 146,
+    "compared_prediction_rows": 3169674,
+    "max_numeric_difference": 0,
+    "summary_equal_except_timing": true,
+    "wall_seconds": [
+      21.508347555,
+      35.265992377999964
+    ],
+    "round2_interrupted_prefix_bags_equal": 13,
+    "semantics": "Identical deterministic development replay, not independent statistical replication"
+  },
+  "log_sha256": {
+    "candidates.log": "be5d85ea98cb9a7e3de7ce306944285154d16104a7ba79138ebb2f49baa8c4fe",
+    "legacy.log": "c91b400c25a50982a6e1aebf0de5c5ef5bdfdc384a8cb6f2ea9239eda11c2757",
+    "final_candidates.log": "77248588229e61b6ea359829b5f3b4ca88a8e6177874cd14db88f1d124d7006a",
+    "integrity.log": "344c884fd4874035dc41737c0d27d05360df0467ea40f33ef2a71de44ca8e363"
+  },
+  "not_run": [
+    "validation",
+    "final_test",
+    "train_check",
+    "installed_ROS",
+    "2CPU500MB",
+    "end_to_end_latency_RSS"
+  ],
+  "ready_to_merge": false
+}
