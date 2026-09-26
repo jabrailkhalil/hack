@@ -1,0 +1,23 @@
+--- a/src/reserve_odometry/reserve_odometry/core.py
++++ b/src/reserve_odometry/reserve_odometry/core.py
+@@ -139,6 +139,10 @@
+         self.reacquire_blocked_until = -math.inf
+         self.last_estimate = None
+ 
++    def _advance_drive(self, target, dt, command_stale):
++        alpha = 1.0 - math.exp(-dt / self.c.actuator_tau_s)
++        return self.drive_a + alpha * (target - self.drive_a)
++
+     def drive_target(self, u, v):
+         c = self.c
+         q = max(0.0, (abs(u) - c.command_deadband) / (1 - c.command_deadband))
+@@ -268,8 +272,7 @@
+         u = 0.0 if command_stale else clip(command.value, -1, 1)
+         previous_v = self.v
+         target = self.drive_target(u, self.v)
+-        alpha = 1.0 - math.exp(-dt / c.actuator_tau_s)
+-        self.drive_a += alpha * (target - self.drive_a)
++        self.drive_a = self._advance_drive(target, dt, command_stale)
+         a_model = clip(self.drive_a - self.resistance(self.v) + self.disturbance,
+                        -c.max_accel_mps2, c.max_accel_mps2)
+         predicted = clip(self.v + dt * a_model, -c.max_speed_mps, c.max_speed_mps)
