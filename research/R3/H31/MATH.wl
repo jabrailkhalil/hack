@@ -1,0 +1,12 @@
+ClearAll[w1,w2,v1,v2,v3,y,lo,hi,a,h,e1,e2,e3];
+w={w1,w2,1-w1-w2}; v={v1,v2,v3};
+ass=w1>=0&&w2>=0&&w1+w2<=1&&lo<=hi&&lo<=v1<=hi&&lo<=v2<=hi&&lo<=v3<=hi;
+m=w.v;
+Print["speed_bound_counterexample=",Resolve[Exists[{w1,w2,v1,v2,v3,lo,hi},ass&&(m<lo||m>hi)],Reals]];
+Print["jensen_identity_residual=",Factor[Expand[w.((v-y)^2)-(m-y)^2-(w[[1]]*w[[2]]*(v1-v2)^2+w[[1]]*w[[3]]*(v1-v3)^2+w[[2]]*w[[3]]*(v2-v3)^2)]]];
+Print["convex_error_square=",Factor[w.({e1,e2,e3}^2)-(w.{e1,e2,e3})^2]];
+Print["CV_acceleration_onset_error=",-a*h];
+Print["CV_distance_onset_error=",Integrate[-a*h,{h,0,tt}]];
+Print["physics_weight_floor=",Simplify[1/4+3/4*s>=1/4,0<=s<=1]];
+Print["regime_switch_counterexample_errors_at_1s=",{0,-1,-1}];
+Print["equal_weight_error_at_1s=",Mean[{0,-1,-1}]];
