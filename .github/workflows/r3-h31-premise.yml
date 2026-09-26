@@ -1,0 +1,33 @@
+name: R3-H31 baseline premise
+on:
+  push:
+    branches: [research/R3-H31]
+    paths: [.github/workflows/r3-h31-premise.yml]
+permissions:
+  contents: read
+jobs:
+  premise:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - name: Dependencies and pinned organizer archive
+        run: |
+          python -m pip install -r requirements-research.txt
+          python tools/get_dataset.py
+      - name: Baseline-only train one-second forecasts; no fitting or alternatives
+        run: |
+          python research/R3/H31/probe.py --output "$RUNNER_TEMP/h31-premise" --export
+          git rev-parse HEAD > "$RUNNER_TEMP/h31-premise/SOURCE_SHA.txt"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: R3-H31-premise-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/h31-premise/
+          retention-days: 30
