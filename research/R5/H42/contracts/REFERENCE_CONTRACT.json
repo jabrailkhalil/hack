@@ -1,0 +1,171 @@
+{
+  "antenna_to_base_link_available": false,
+  "baseline_sha": "b2783206000091ab11a1c11ac3ff79082188a4fb",
+  "database_observations": "Pending direct permitted-role audit; see immutable per-bag topics/schema/count evidence",
+  "items": [
+    {
+      "evidence_level": "QA_REPORTED",
+      "field": "runtime_gnss",
+      "qa_time": "06:18",
+      "statement": "GNSS forbidden in main runtime; allowed offline identification/map",
+      "value": null
+    },
+    {
+      "evidence_level": "QA_REPORTED",
+      "field": "official_reference",
+      "qa_time": "10:24;23:43",
+      "statement": "/localization/kinematic_state; combined localization including lidar, not raw GNSS",
+      "value": null
+    },
+    {
+      "evidence_level": "QA_REPORTED",
+      "field": "official_metric",
+      "qa_time": "16:50;19:01;22:11",
+      "statement": "Components XYZ and Cartesian distance; scalar-route handling discussed, not fully specified",
+      "value": null
+    },
+    {
+      "evidence_level": "QA_REPORTED",
+      "field": "coordinate_family",
+      "qa_time": "10:24",
+      "statement": "Cartesian coordinates described as MGRS-based 100km square",
+      "value": null
+    },
+    {
+      "evidence_level": "UNKNOWN",
+      "field": "mgrs_transform",
+      "qa_time": null,
+      "statement": "Grid zone/square, projector implementation, numeric origin, axis mapping and precise transform not supplied",
+      "value": null
+    },
+    {
+      "evidence_level": "QA_UNCERTAIN",
+      "field": "initial_gnss_duration",
+      "qa_time": "03:29;19:49",
+      "statement": "A few seconds suggested; exact duration of checking script not specified",
+      "value": null
+    },
+    {
+      "evidence_level": "EXPERIMENT_ASSUMPTION",
+      "field": "start_window_seconds",
+      "qa_time": null,
+      "statement": "At most3s is R5 experimental scenario, not organizer constant",
+      "value": 3.0
+    },
+    {
+      "evidence_level": "QA_REPORTED",
+      "field": "no_initial_fix",
+      "qa_time": "15:55;17:31;19:01",
+      "statement": "Handle relative coordinates when initial GNSS unavailable; actual scalar scoring remains uncertain",
+      "value": null
+    },
+    {
+      "evidence_level": "QA_QUALIFIED",
+      "field": "relative_origin",
+      "qa_time": "01:38",
+      "statement": "Start of recording may be treated as relative origin, often initially stopped",
+      "value": null
+    },
+    {
+      "evidence_level": "QA_REPORTED",
+      "field": "route",
+      "qa_time": "06:18;20:27",
+      "statement": "Same route/map, outbound and return tracks",
+      "value": null
+    },
+    {
+      "evidence_level": "QA_REPORTED",
+      "field": "wheel_speed_unit",
+      "qa_time": "07:30;15:06",
+      "statement": "Wheel topics kilometres/hour; kinematic speed metres/second",
+      "value": null
+    },
+    {
+      "evidence_level": "QA_REPORTED",
+      "field": "base_link_axes",
+      "qa_time": "20:15",
+      "statement": "X forward; Y left; Z up",
+      "value": null
+    },
+    {
+      "evidence_level": "QA_REPORTED",
+      "field": "base_link_origin",
+      "qa_time": "03:56",
+      "statement": "Centre of front bogie at top-of-rail level",
+      "value": null
+    },
+    {
+      "evidence_level": "QA_REPORTED",
+      "field": "bogie_spacing",
+      "qa_time": "03:56",
+      "statement": "7550mm between bogie centres, not GNSS antenna baseline",
+      "value": 7.55
+    },
+    {
+      "evidence_level": "UNKNOWN",
+      "field": "antenna_extrinsics",
+      "qa_time": "25:08",
+      "statement": "Master/rover placement/orientation/lever arms not disclosed; no transform to base_link",
+      "value": null
+    },
+    {
+      "evidence_level": "UNKNOWN",
+      "field": "vertical_reference",
+      "qa_time": null,
+      "statement": "Geoid/rail elevation/offsets and official Z mapping unavailable",
+      "value": null
+    },
+    {
+      "evidence_level": "UNKNOWN",
+      "field": "route_s0",
+      "qa_time": null,
+      "statement": "No authoritative initial route arc-length index from whole assessed trajectory",
+      "value": null
+    },
+    {
+      "evidence_level": "SCHEMA_CONFIRMED",
+      "field": "raw_fix_schema",
+      "qa_time": null,
+      "statement": "NavSatFix uses WGS84 ellipsoid; altitude may be NaN; frame usually antenna; covariance ENU m^2",
+      "value": null
+    },
+    {
+      "evidence_level": "SCHEMA_CONFIRMED",
+      "field": "unknown_covariance",
+      "qa_time": null,
+      "statement": "position_covariance_type0 means UNKNOWN; zeros are not certainty",
+      "value": 0
+    },
+    {
+      "evidence_level": "QA_REPORTED",
+      "field": "raw_gnss_precision",
+      "qa_time": "02:10;17:31;23:43",
+      "statement": "Raw GNSS may jump, stop publishing, or show invalid values; quality not guaranteed",
+      "value": null
+    },
+    {
+      "evidence_level": "EXPERIMENT_ASSUMPTION",
+      "field": "velocity_basis",
+      "qa_time": null,
+      "statement": "Horizontal norm sqrt(vx^2+vy^2), same scalar convention as canonical export/scoring; not signed route speed",
+      "value": null
+    }
+  ],
+  "official_reference_mask_changed": false,
+  "official_xyz_transform_available": false,
+  "producer": "R5-H42",
+  "qa_evidence": {
+    "file": "qa-необрезанная.md",
+    "kind": "user-provided full text transcript; not audio-verified",
+    "sha256": "f15514ed0cf80236806478ac53ceaa1e743e1c7cf81c635cb1a90ec7c9571586",
+    "supersedes": "earlier summary-only evidence scope"
+  },
+  "runtime_changes": false,
+  "schema_sources": [
+    "https://raw.githubusercontent.com/ros2/common_interfaces/humble/sensor_msgs/msg/NavSatFix.msg",
+    "https://raw.githubusercontent.com/ros2/common_interfaces/humble/sensor_msgs/msg/NavSatStatus.msg",
+    "https://raw.githubusercontent.com/ros2/common_interfaces/humble/geometry_msgs/msg/TwistStamped.msg"
+  ],
+  "schema_version": 1,
+  "teacher_kind": "scalar_horizontal_speed_proxy"
+}

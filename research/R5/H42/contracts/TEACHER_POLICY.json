@@ -1,0 +1,57 @@
+{
+  "agreement_absolute_mps": 0.3,
+  "agreement_relative": 0.02,
+  "canonical_reference_mask_replaced": false,
+  "fitted_scales": false,
+  "fix_tolerance_ns": 200000000,
+  "flags": {
+    "ALTITUDE_UNKNOWN": 128,
+    "BOTH_ZERO": 1,
+    "DUPLICATE_COLLAPSED": 1024,
+    "EXACT_PAIR": 8,
+    "GAP_BEFORE": 256,
+    "ISOLATED_ZERO": 512,
+    "NEAR_PAIR": 16,
+    "ONE_ZERO": 2,
+    "SOURCE_REORDERED": 2048,
+    "UNKNOWN_COVARIANCE": 32,
+    "ZERO_COVARIANCE": 64,
+    "ZERO_VS_GT2": 4
+  },
+  "id": "R5-H42-teacher-v1",
+  "limitations": [
+    "not official combined reference",
+    "not signed route speed",
+    "receiver agreement does not exclude common bias",
+    "UNKNOWN covariance is not a calibrated accuracy bound",
+    "fixes are raw antenna positions, not base_link",
+    "full GNSS bag finalization required; never a causal feature"
+  ],
+  "offline_only": true,
+  "pair_tolerance_ns": 50000000,
+  "reasons": {
+    "BAD_SOURCE_TIME": 1024,
+    "CONFLICTING_DUPLICATE": 8,
+    "INVALID_FIX": 256,
+    "MISSING_FIX": 128,
+    "MISSING_MASTER": 1,
+    "MISSING_ROVER": 2,
+    "NONFINITE_VELOCITY": 4,
+    "PAIRING_AMBIGUITY": 16,
+    "SPEED_DISAGREEMENT": 32,
+    "TEMPORAL_JUMP": 512,
+    "VELOCITY_FRAME_MISMATCH": 64
+  },
+  "single_receiver_fallback": false,
+  "state_values": {
+    "0": "AGREED",
+    "1": "AMBIGUOUS",
+    "2": "MISSING"
+  },
+  "target": "mean of two horizontal speed magnitudes in m/s",
+  "temporal_acceleration_mps2": 8.0,
+  "temporal_jump_margin_mps": 0.5,
+  "temporal_max_gap_ns": 500000000,
+  "uses_future_GNSS_history": true,
+  "version": 1
+}
