@@ -1,0 +1,27 @@
+name: R3-H22 source preparation
+on:
+  push:
+    branches: [research/R3-H22]
+    paths: [.github/workflows/R3-H22-source.yml]
+permissions:
+  contents: read
+jobs:
+  source:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Export exact baseline without opening measurements
+        run: |
+          set -eu
+          mkdir -p "$RUNNER_TEMP/H22-source"
+          git archive --format=tar.gz e3b0c9c039d2953fbfcda51231263d38ef9f1024 > "$RUNNER_TEMP/H22-source/baseline.tar.gz"
+          git ls-tree -r e3b0c9c039d2953fbfcda51231263d38ef9f1024 > "$RUNNER_TEMP/H22-source/tree.txt"
+          sha256sum "$RUNNER_TEMP/H22-source/baseline.tar.gz" > "$RUNNER_TEMP/H22-source/SHA256SUMS"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: R3-H22-fixed-source
+          path: ${{ runner.temp }}/H22-source/
+          retention-days: 7
