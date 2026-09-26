@@ -1,0 +1,28 @@
+name: R3-H31 fixed source export
+on:
+  push:
+    branches: [research/R3-H31]
+    paths: [.github/workflows/r3-h31-source.yml]
+permissions:
+  contents: read
+jobs:
+  source:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Export immutable baseline, no dataset or experiments
+        run: |
+          mkdir -p "$RUNNER_TEMP/h31-source"
+          git archive --format=zip -o "$RUNNER_TEMP/h31-source/baseline.zip" e3b0c9c039d2953fbfcda51231263d38ef9f1024
+          echo e3b0c9c039d2953fbfcda51231263d38ef9f1024 > "$RUNNER_TEMP/h31-source/BASELINE.txt"
+          git show 2f959a41e1d7212f535f222ef2ac294dc5e8aeaf:reports/research_R2/H15/36184253853-1/REPORT.md > "$RUNNER_TEMP/h31-source/H15_REPORT.md"
+          git show 476ffef5d4135377dc0215572cdabed520b6acfa:reports/research_R2/H16/H16-36184448864-1/REPORT.md > "$RUNNER_TEMP/h31-source/H16_REPORT.md"
+          git show d1e3517d8a6ea2106cda5451e215b1d0522d21aa:reports/research_R2/H17/36185617651-1/REPORT.md > "$RUNNER_TEMP/h31-source/H17_REPORT.md"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: R3-H31-baseline-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/h31-source
+          retention-days: 30
