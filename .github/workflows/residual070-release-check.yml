@@ -1,0 +1,90 @@
+name: Residual070 release preflight
+on:
+  push:
+    branches: [research/v8-release-validation-20260927]
+    paths: [.github/workflows/residual070-release-check.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validation-data:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Snapshot exact source and extract only allowed validation DBs
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p handoff/data
+          git archive --format=zip HEAD -o handoff/source.zip
+          python3 - <<'PY'
+          import hashlib,io,json,pathlib,urllib.parse,urllib.request,zipfile
+          root=pathlib.Path('.')
+          plan=json.loads((root/'research/plan_v3.json').read_text())
+          split=json.loads((root/'research/split_v3.json').read_text())
+          records={r['bag']:r for r in split['records']}
+          names=plan['splits']['validation']
+          assert len(names)==19
+          query=urllib.parse.urlencode({'public_key':'https://disk.yandex.ru/d/DdnscmWTBtzkOQ','path':'/dataset.zip'})
+          with urllib.request.urlopen('https://cloud-api.yandex.net/v1/disk/public/resources/download?'+query,timeout=30) as f:
+              url=json.load(f)['href']
+          archive=root/'dataset-transport.zip'
+          digest=hashlib.sha256(); total=0
+          with urllib.request.urlopen(url,timeout=60) as inp, archive.open('wb') as out:
+              while True:
+                  block=inp.read(1024*1024)
+                  if not block: break
+                  total+=len(block)
+                  if total>300*1024*1024: raise ValueError('Transport size limit')
+                  digest.update(block);out.write(block)
+          expected='d0b2483e13990edb8219b0d7bbcafc7ed001cce549a4d3af467069b2472e7d52'
+          assert digest.hexdigest()==expected, 'Organizer dataset hash mismatch'
+          receipts=[]
+          with zipfile.ZipFile(archive) as outer:
+              with zipfile.ZipFile(io.BytesIO(outer.read('data.zip'))) as inner:
+                  for bag in names:
+                      assert records[bag]['split']=='validation'
+                      name=bag+'/'+bag+'_0.db3'
+                      blob=inner.read(name)
+                      h=hashlib.sha256(blob).hexdigest()
+                      assert h==records[bag]['sha256'],bag
+                      target=root/'handoff/data'/name
+                      target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(blob)
+                      receipts.append({'bag':bag,'role':'validation','sha256':h,'bytes':len(blob)})
+          (root/'handoff/RECEIPT.json').write_text(json.dumps({'dataset_sha256':expected,'bags':receipts,'test_extracted':False,'test_opened':False,'SQL_reads':0},indent=2)+'\n')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: residual070-validation-inputs
+          path: handoff/
+          retention-days: 30
+  selected-ros:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Provision the pinned ROS build environment
+        run: docker build -t residual070-ros -f Dockerfile.environment .
+      - name: Build offline and verify the explicit candidate in both clock modes
+        run: |
+          mkdir -p release-ros-evidence
+          docker run --rm --network none --cpus 2 --memory 500000000 \
+            -e CMAKE_BUILD_PARALLEL_LEVEL=2 -e MAKEFLAGS=-j2 \
+            -v "$PWD:/work" -w /work residual070-ros bash -lc '
+              set -euo pipefail
+              source /opt/ros/humble/setup.bash
+              colcon --log-base log_release build --build-base build_release --install-base install_release --executor sequential
+              source install_release/setup.bash
+              python3 tests/ros_calibrated_smoke.py --params-file research/v8_targeted/v8_residual070.yaml --expected-json research/v8_targeted/selected.json
+              sed "s/clock_mode: input_stamp/clock_mode: ros_clock/" research/v8_targeted/v8_residual070.yaml > /tmp/residual070-ros-clock.yaml
+              python3 tests/ros_calibrated_smoke.py --params-file /tmp/residual070-ros-clock.yaml --expected-json research/v8_targeted/selected.json
+              PYTHONPATH=tests python3 -c "import ros_low_speed_lock_smoke as t; t.check(\"/work/research/v8_targeted/v8_residual070.yaml\",\"guarded_odometry_node\")"
+              python3 tests/cdr_roundtrip.py
+            ' 2>&1 | tee release-ros-evidence/selected-ros.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: residual070-selected-ros-preflight
+          path: release-ros-evidence/
+          retention-days: 30
