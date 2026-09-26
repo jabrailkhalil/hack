@@ -6,6 +6,7 @@ parameters are illustrative until identified on the organizer's training data.
 from dataclasses import dataclass, asdict
 import math
 from typing import Optional
+from .numerics_h08 import predict as numerical_predict
 
 
 def clip(x, lo, hi):
@@ -30,6 +31,7 @@ class Config:
     rolling_force_n: float = 1200.0
     quadratic_drag_n_s2_m2: float = 4.0
     actuator_tau_s: float = 0.35
+    numerical_prediction: float = 0.0  # H08 is opt-in; 0 preserves legacy arithmetic.
     command_deadband: float = 0.04
     command_exponent: float = 1.25
     travel_direction: float = 1.0
@@ -79,6 +81,8 @@ class Config:
         for key in positive:
             if getattr(self, key) <= 0:
                 raise ValueError(f'{key} must be positive')
+        if self.numerical_prediction not in (0.0, 1.0):
+            raise ValueError('numerical_prediction must be 0 or 1')
         if not 0 <= self.command_deadband < 1 or self.efficiency > 1:
             raise ValueError('Invalid deadband or efficiency')
         if not 0.0 <= self.wheel_time_compensation <= 1.0:
@@ -268,11 +272,16 @@ class Observer:
         u = 0.0 if command_stale else clip(command.value, -1, 1)
         previous_v = self.v
         target = self.drive_target(u, self.v)
-        alpha = 1.0 - math.exp(-dt / c.actuator_tau_s)
-        self.drive_a += alpha * (target - self.drive_a)
-        a_model = clip(self.drive_a - self.resistance(self.v) + self.disturbance,
-                       -c.max_accel_mps2, c.max_accel_mps2)
-        predicted = clip(self.v + dt * a_model, -c.max_speed_mps, c.max_speed_mps)
+        if c.numerical_prediction == 1.0:
+            self.drive_a, predicted = numerical_predict(
+                dt, c.actuator_tau_s, self.drive_a, self.v, target,
+                self.disturbance, self.resistance, c.max_accel_mps2, c.max_speed_mps)
+        else:
+            alpha = 1.0 - math.exp(-dt / c.actuator_tau_s)
+            self.drive_a += alpha * (target - self.drive_a)
+            a_model = clip(self.drive_a - self.resistance(self.v) + self.disturbance,
+                           -c.max_accel_mps2, c.max_accel_mps2)
+            predicted = clip(self.v + dt * a_model, -c.max_speed_mps, c.max_speed_mps)
         # Braking/coasting must not generate a sign reversal numerically.
         if u <= c.command_deadband and self.v * predicted < 0:
             predicted = 0.0

@@ -1,0 +1,179 @@
+name: H08 exact-drive midpoint research
+on:
+  push:
+    branches: [research/parallel-H08]
+    paths: [research/H08/RUN.json]
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: research-H08
+  cancel-in-progress: false
+jobs:
+  prepare:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    outputs:
+      candidate: ${{ steps.source.outputs.candidate }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Materialize only the preregistered H08 source patch
+        id: source
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF_NAME" = research/parallel-H08
+          python3 research/H08/apply.py
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/reserve_odometry/reserve_odometry/core.py src/reserve_odometry/config/h08_exact_midpoint.yaml src/reserve_odometry/config/h08_exact_midpoint.json
+          git diff --cached --quiet || git commit -m 'feat(H08): integrate held actuator drive and midpoint resistance (opt-in)'
+          git push origin HEAD:refs/heads/research/parallel-H08
+          echo "candidate=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+      - name: Record unchanged suite failures; independently gate H08 numerical and safety tests
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/h08-source"
+          PYTHONPATH=src/reserve_odometry python3 research/H08/preflight.py --output "$RUNNER_TEMP/h08-source/preflight.json" 2>&1 | tee "$RUNNER_TEMP/h08-source/unit.log"
+          PYTHONPATH=src/reserve_odometry python3 -m unittest discover -s research/H08/tests -v 2>&1 | tee "$RUNNER_TEMP/h08-source/h08-tests.log"
+          python3 -m compileall -q src research/H08
+      - name: Preserve exact source and patch
+        if: always()
+        run: |
+          mkdir -p "$RUNNER_TEMP/h08-source"
+          git rev-parse HEAD > "$RUNNER_TEMP/h08-source/COMMIT.txt"
+          git diff 984fdf2fc4faf05325249215d6b8541c0e68209a HEAD > "$RUNNER_TEMP/h08-source/H08.patch"
+          git archive --format=zip -o "$RUNNER_TEMP/h08-source/source.zip" HEAD src tests tools research requirements-research.txt Dockerfile.environment reports/research_v5 reports/research_v6 reports/research_v3
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: H08-source-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/h08-source/
+  compare:
+    needs: prepare
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+      OUT: reports/research_H08/runs/${{ github.run_id }}-${{ github.run_attempt }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.prepare.outputs.candidate }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - name: Prepare pinned dependencies and audited data
+        run: |
+          set -euo pipefail
+          mkdir -p "$OUT"
+          git switch -c "checkpoint/H08-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          python -m pip install -r requirements-research.txt
+          python tools/get_dataset.py
+      - name: Development replay (train wheels only; no fitting)
+        run: |
+          set -euo pipefail
+          python research/H08/run.py --stage development --output "$OUT/development" 2>&1 | tee "$OUT/development.log"
+      - name: Commit candidate freeze BEFORE validation measurement access
+        run: |
+          set -euo pipefail
+          python research/H08/run.py --stage freeze --development "$OUT/development" --freeze "$OUT/FROZEN.json"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add "$OUT"
+          git commit -m "research(H08): freeze single candidate before validation $GITHUB_RUN_ID/$GITHUB_RUN_ATTEMPT"
+          git push origin "HEAD:refs/heads/checkpoint/H08-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+      - name: Paired unchanged validation evaluator
+        run: |
+          set -euo pipefail
+          python research/H08/run.py --stage validation --freeze "$OUT/FROZEN.json" --output "$OUT/validation" --workers 2 2>&1 | tee "$OUT/validation.log"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: H08-measurements-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.OUT }}/
+      - name: Preserve all completed checkpoints, even a negative or partial result
+        if: always()
+        run: |
+          set -eu
+          if ! test -d "$OUT"; then exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add "$OUT"
+          git diff --cached --quiet || git commit -m "research(H08): preserve measured evidence $GITHUB_RUN_ID/$GITHUB_RUN_ATTEMPT"
+          git push origin "HEAD:refs/heads/checkpoint/H08-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+  runtime:
+    needs: prepare
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    env:
+      OUT: reports/research_H08/runtime/${{ github.run_id }}-${{ github.run_attempt }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.prepare.outputs.candidate }}
+          fetch-depth: 0
+      - name: Provision existing ROS environment and pinned development data
+        run: |
+          set -euo pipefail
+          mkdir -p "$OUT"
+          python3 tools/get_dataset.py
+          docker build -t h08-runtime -f Dockerfile.environment .
+      - name: Installed candidate and paired short runtime benchmarks offline
+        run: |
+          set -euo pipefail
+          docker run --rm --network none --cpus 2 --memory 500000000 \
+            -e CMAKE_BUILD_PARALLEL_LEVEL=2 -e MAKEFLAGS=-j2 -e ROS_DOMAIN_ID=88 -e OUT="$OUT" \
+            -v "$PWD:/work" -w /work h08-runtime bash -lc '
+              set -eo pipefail
+              source /opt/ros/humble/setup.bash
+              colcon --log-base log_h08 build --build-base build_h08 --install-base install_h08 --executor sequential
+              source install_h08/setup.bash
+              python3 tests/ros_calibrated_smoke.py --params-file install_h08/reserve_odometry/share/reserve_odometry/config/h08_exact_midpoint.yaml --expected-json src/reserve_odometry/config/h08_exact_midpoint.json
+              profile=src/reserve_odometry/config/default.yaml
+              cp "$profile" /tmp/h08-baseline.yaml
+              trap '\''cp /tmp/h08-baseline.yaml "$profile"'\'' EXIT
+              python3 tools/finalization/ros_benchmark.py --seconds 60 --clock-mode input_stamp --output "$OUT/baseline_input_stamp.json"
+              cp src/reserve_odometry/config/h08_exact_midpoint.yaml "$profile"
+              python3 tools/finalization/ros_benchmark.py --seconds 60 --clock-mode input_stamp --output "$OUT/candidate_input_stamp.json"
+              python3 tools/finalization/ros_benchmark.py --seconds 60 --clock-mode ros_clock --output "$OUT/candidate_ros_clock.json"
+              cp /tmp/h08-baseline.yaml "$profile"
+              python3 tools/finalization/ros_benchmark.py --seconds 60 --clock-mode ros_clock --output "$OUT/baseline_ros_clock.json"
+            ' 2>&1 | tee "$OUT/runtime.log"
+      - name: Record source/profile identities and unchanged runtime gates
+        if: always()
+        run: |
+          sudo chown -R "$(id -u):$(id -g)" "$OUT"
+          python3 - <<'PY'
+          import hashlib,json,os,pathlib,subprocess
+          root=pathlib.Path('.'); out=pathlib.Path(os.environ['OUT']); out.mkdir(parents=True,exist_ok=True)
+          result=dict(source_commit=subprocess.check_output(['git','rev-parse','HEAD']).decode().strip(),run_id=os.environ['GITHUB_RUN_ID'],run_attempt=os.environ['GITHUB_RUN_ATTEMPT'],cpu_limit=2,memory_limit_bytes=500000000,network='none',seconds_per_combination=60,full_bag=False,test_evaluated=False,profiles={},checks={})
+          for name in ('adaptive_v5','h08_exact_midpoint'):
+              path=root/'src/reserve_odometry/config'/(name+'.yaml'); result['profiles'][name]=hashlib.sha256(path.read_bytes()).hexdigest()
+          for name in ('baseline_input_stamp','candidate_input_stamp','candidate_ros_clock','baseline_ros_clock'):
+              path=out/(name+'.json')
+              if not path.exists(): result['checks'][name]={'available':False}; continue
+              r=json.loads(path.read_text()); result['checks'][name]=dict(available=True,latency=bool(r['latency_observed_within_nominal_and_peak']),correctness=not r['correctness_failures'],causality=r['causal_errors']==0,rate=r['source_rate_hz']>=10 and r['wall_rate_hz']>=10,rss=r['rss_peak_bytes']<500000000)
+          result['all_measured_gates_passed']=all(all(v.values()) for v in result['checks'].values())
+          (out/'execution.json').write_text(json.dumps(result,indent=2)+'\n')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: H08-runtime-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.OUT }}/
+      - name: Preserve runtime evidence on its own H08 checkpoint branch
+        if: always()
+        run: |
+          set -eu
+          if ! test -d "$OUT"; then exit 0; fi
+          git config --global --add safe.directory "$PWD"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git switch -c "checkpoint/H08-runtime-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          git add "$OUT"
+          git diff --cached --quiet || git commit -m "test(H08): preserve paired short runtime measurements $GITHUB_RUN_ID/$GITHUB_RUN_ATTEMPT"
+          git push origin "HEAD:refs/heads/checkpoint/H08-runtime-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"

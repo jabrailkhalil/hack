@@ -1,0 +1,7 @@
+# H08 — runtime plan, fixed before execution
+
+The single candidate is unchanged. In addition to wheel-only train replay, run the existing `tools/finalization/ros_benchmark.py` on its existing development bag `30618_0652866c`. This loader refuses non-development bags and publishes only controller/front/rear. No GNSS or final-test measurements are used in runtime checks.
+
+Run the unchanged benchmark for 60 seconds per profile/clock combination: baseline input_stamp, candidate input_stamp, candidate ros_clock, baseline ros_clock. Same audited bag, 1x playback, 20Hz output, no deliberate alignment wait. Use an offline Docker container with 2 CPUs and 500000000 bytes memory; provision packages and data before disconnecting. This is a short runtime measurement, not a full-bag or hard real-time guarantee.
+
+The benchmark hardcodes default.yaml. Only inside the disposable runtime working copy, substitute h08_exact_midpoint.yaml for default.yaml for candidate invocations, then restore default byte-for-byte. Do not commit a changed default or modify the benchmark. Record exact profile/source hashes and all raw JSON/CSV/logs. The actual installed H08 launch is checked separately with ros_calibrated_smoke and the candidate expected JSON. Keep the existing benchmark latency/correctness/rate/RSS gates unchanged. Preserve all four combinations, including any failures, under a new H08 run/attempt checkpoint branch.
