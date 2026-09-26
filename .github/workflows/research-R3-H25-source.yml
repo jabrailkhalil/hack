@@ -1,0 +1,23 @@
+name: R3 H25 pinned source
+on:
+  push:
+    branches: [research/R3-H25]
+    paths: [.github/workflows/research-R3-H25-source.yml]
+permissions:
+  contents: read
+jobs:
+  snapshot:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: e3b0c9c039d2953fbfcda51231263d38ef9f1024
+      - name: Export only source and non-final historical documentation
+        run: |
+          git archive --format=zip --output="$RUNNER_TEMP/R3-H25-v8-source.zip" HEAD src tools tests research docs requirements-research.txt requirements-dev.txt .github Dockerfile.environment reports/research_v6 reports/research_v5 reports/guarded_time_alignment
+      - uses: actions/upload-artifact@v4
+        with:
+          name: R3-H25-source-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/R3-H25-v8-source.zip
+          retention-days: 7
