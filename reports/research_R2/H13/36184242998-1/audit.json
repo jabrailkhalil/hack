@@ -1,0 +1,38 @@
+{
+  "audit_kind": "post-run descriptive audit; no bag IO or new measurements",
+  "baseline_reproduction": {
+    "clean_macro_rmse_mps": {"measured": 0.1145498613174081, "published": 0.1145498613174081, "delta": 0.0},
+    "fault_macro_rmse_mps": {"measured": 0.5382867826008657, "published": 0.5382867826008657, "delta": 0.0},
+    "distance_macro_rm": {"measured": 4.595480653017927, "published": 4.595480653017927, "delta": 0.0},
+    "matched_speed_samples": {"measured": 698891, "published": 698891, "delta": 0}
+  },
+  "max_baseline_absolute_delta": 0.0,
+  "feature_off_equal_replays": 260,
+  "feature_off_replays_by_role": {"train": 64, "development": 101, "validation": 95},
+  "max_observed_history_segments": 15,
+  "real_access_by_role": {"train": 64, "development": 17, "validation": 19},
+  "additional_cost_development_bag": "30618_0652866c",
+  "test_db_extracted_or_opened": false,
+  "freeze_bytes_match_published_git_blob": "646634f8fddeda8921005f870b33346529187d8a",
+  "freeze_utc": "2026-09-25T20:16:17.250160+00:00",
+  "validation_started_utc": "2026-09-25T20:16:20.448226+00:00",
+  "first_validation_access_utc": "2026-09-25T20:16:20.468886+00:00",
+  "source_commit": "f53ae2b84f6ce1e4fa3f272107a79a86c911d88b",
+  "freeze_commit": "6cc359f7b8d645606afe087a6469b95b25559614",
+  "evidence_commit": "91b450f276c55a42810a20febe5daeeaadb2d486",
+  "worst_fault_trace_file": "validation/traces/30639_50956d6e-fault2.json",
+  "worst_fault_trace": [
+    {"model":"R2_guarded_v7","phase":"before","t":110.49796607900001,"v":12.043688163438091,"d":-0.024994487871447608,"mode":"MODEL_ONLY","v_error_master":-0.001311836561908919,"v_error_rover":0.011688163438090982},
+    {"model":"R2_guarded_v7","phase":"late_fault","t":120.49796607900001,"v":5.300307981553696,"d":-0.1233742534277997,"mode":"MODEL_ONLY","v_error_master":0.07530798155369656,"v_error_rover":0.07830798155369578},
+    {"model":"R2_guarded_v7","phase":"first_recovery_tick","t":120.547966079,"v":5.264670955691643,"d":-0.1233742534277997,"mode":"MODEL_ONLY","v_error_master":0.10167095569164264,"v_error_rover":0.0956709556916433},
+    {"model":"R2_guarded_v7","phase":"after_1s","t":121.547966079,"v":4.541618546366692,"d":-0.04664126051002641,"mode":"FUSED","v_error_master":0.0026185463666923425,"v_error_rover":0.05161854636669183},
+    {"model":"H13_interval_linear_v1","phase":"before","t":110.49796607900001,"v":12.032850947043952,"d":-0.08291237337170346,"mode":"MODEL_ONLY","v_error_master":-0.012149052956047512,"v_error_rover":0.0008509470439523881},
+    {"model":"H13_interval_linear_v1","phase":"late_fault","t":120.49796607900001,"v":4.768167166784514,"d":-0.17649133454766974,"mode":"MODEL_ONLY","v_error_master":-0.4568328332154854,"v_error_rover":-0.4538328332154862},
+    {"model":"H13_interval_linear_v1","phase":"first_recovery_tick","t":120.547966079,"v":4.729874286866468,"d":-0.17649133454766974,"mode":"MODEL_ONLY","v_error_master":-0.4331257131335322,"v_error_rover":-0.43912571313353155},
+    {"model":"H13_interval_linear_v1","phase":"after_1s","t":121.547966079,"v":4.5363586668381926,"d":-0.07713140894694968,"mode":"FUSED","v_error_master":-0.0026413331618071467,"v_error_rover":0.04635866683819234}
+  ],
+  "last_adaptation_before_worst_fault": {
+    "R2_guarded_v7": {"t":110.44796607900001,"v":12.06394882869219,"s":175.3174975459862,"d":-0.024994487871447608,"mode":"FUSED","transition":true,"start":110.282752761,"end":110.374717415,"measured_a":-0.2577408198068143,"current_pre_g":-0.36390830397180873,"current_post_g":-0.36390830397180873,"original_target":0.10616748416499444,"reason":"","v_error_master":0.01894882869219039,"v_error_rover":0.03194882869219029},
+    "H13_interval_linear_v1": {"t":110.44796607900001,"v":12.056007439158485,"s":175.32339692947758,"d":-0.08291237337170346,"mode":"FUSED","transition":true,"start":110.282752761,"end":110.374717415,"measured_a":-0.2577408198068143,"current_pre_g":-0.36390677263373217,"current_post_g":-0.36390677263373217,"mean_g":-0.31484665670330003,"original_target":0.10616595282691789,"interval_target":0.05710583689648574,"disturbance_before":-0.1111863700342951,"reason":"","v_error_master":0.0110074391584849,"v_error_rover":0.0240074391584848}
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "round": "R2-v7-fixed",
+  "candidate": "H13_interval_linear_v1",
+  "plan_commit": "d70cb94dbebaa0f0bcf8c3a08bc0c3ebdba9ae6d",
+  "variant_budget": 1,
+  "local_h13_tests": "18 passed; implementation tests, not real-data accuracy",
+  "activation": "git apply research/R2/H13/algorithm.patch; construct IntervalReadoutObserver with v7 Config and enabled=True. Canonical launch/default remain unchanged in this research branch.",
+  "local_full_legacy_suite": "144 attempted; 4 errors because source-only export omits historical release/report files. Config compatibility failures were fixed before data access; no legacy tests or YAML changed. Full suite rerun in actual checkout is required.",
+  "validation": "Only after development activation/safety gate and published separate freeze commit. No parameters can change after validation."
+}
