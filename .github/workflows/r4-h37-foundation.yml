@@ -1,0 +1,74 @@
+name: R4 H37 preregistered train foundation
+on:
+  push:
+    branches: [research/R4-H37]
+    paths: [research/R4/H37/foundation.py, .github/workflows/r4-h37-foundation.yml]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  foundation:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+      PYTHONPATH: src/reserve_odometry
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - name: Exact source identity before measurement
+        run: |
+          set -euo pipefail
+          OUT="$RUNNER_TEMP/H37-foundation"
+          mkdir -p "$OUT"
+          echo "OUT=$OUT" >> "$GITHUB_ENV"
+          echo "H37_MEASURED_SHA=$GITHUB_SHA" >> "$GITHUB_ENV"
+          python research/R4/H37/bootstrap.py | tee "$OUT/bootstrap.log"
+          python -m pip install -r requirements-research.txt
+      - name: Original and non-intervening tests
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s tests -v 2>&1 | tee "$OUT/legacy-tests.log"
+          python -m unittest discover -s research/tests -v 2>&1 | tee "$OUT/integrity-tests.log"
+          python -m unittest discover -s research/R4/H37/tests -v 2>&1 | tee "$OUT/foundation-tests.log"
+      - name: Only allowed train and development DB extraction
+        run: |
+          set -euo pipefail
+          python research/R4/H37/prepare.py --output "$OUT/preparation" 2>&1 | tee "$OUT/preparation.log"
+      - name: All 64 train bags, no train GNSS and no intervention
+        run: |
+          set -euo pipefail
+          python research/R4/H37/foundation.py --output "$OUT/train" --workers 2 2>&1 | tee "$OUT/train.log"
+      - name: Preserve exact source and receipts
+        if: always()
+        run: |
+          mkdir -p "$OUT/source"
+          cp -a research/R4/H37/. "$OUT/source/"
+          find "$OUT/source" -type d -name __pycache__ -exec rm -rf {} +
+          git rev-parse HEAD > "$OUT/MEASURED_SOURCE_SHA.txt"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: R4-H37-foundation-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/H37-foundation/
+          retention-days: 30
+      - name: Isolated append-only checkpoint
+        if: always()
+        run: |
+          set -eu
+          test -d "$OUT" || exit 0
+          branch="checkpoint/R4-H37-foundation-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          git switch -c "$branch"
+          destination="reports/research_R4/H37/foundation-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          mkdir -p "$destination"
+          cp -a "$OUT/." "$destination/"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add "$destination"
+          git diff --cached --quiet || git commit -m "research(R4-H37): preserve train foundation $GITHUB_RUN_ID/$GITHUB_RUN_ATTEMPT"
+          git push origin "HEAD:refs/heads/$branch"
