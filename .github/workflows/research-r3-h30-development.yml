@@ -1,0 +1,70 @@
+name: R3 H30 preregistered development only
+on:
+  push:
+    branches: [research/R3-H30]
+    paths: [.github/workflows/research-r3-h30-development.yml]
+permissions:
+  contents: write
+concurrency:
+  group: R3-H30-development
+  cancel-in-progress: false
+jobs:
+  development:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      NUMEXPR_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Structural gate, then development only
+        run: |
+          set -euo pipefail
+          OUT="reports/research_R3/H30/${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          mkdir -p "$OUT/logs"
+          exec > >(tee "$OUT/logs/execute.log") 2>&1
+          set -x
+          python -m pip install -r requirements-research.txt
+          python - <<'PY'
+          import hashlib
+          from pathlib import Path
+          pins={'joint.py':'5784593436f6e9a8722558f9d94a739ecc63b56a9ac5808821e41874a9fe8216','factory.py':'43f135a1a1d10e0227ee80a157ec61f92bf45066a5035adef1bb51ec7bf89d32','tests/test_h30.py':'f266c3474b9c406c8b28ea8656e17ed0b8bc2beb58bcade5bb9c01d358d0ca08','run.py':'b8aacffa52a5e04549d065dc4011f721f8c9f84f98af84bf91e2f474bb5800e2','oracle.py':'4646e60d3bf22c60f0e0b2c181aa2f65effcba3fe14d6c31c80b432dc9a17244'}
+          for p,h in pins.items():
+              assert hashlib.sha256(Path('research/R3/H30',p).read_bytes()).hexdigest()==h,p
+          print('LOCAL_TESTED_SOURCE_HASHES_MATCH',len(pins))
+          PY
+          git archive --format=zip HEAD -o "$OUT/source.zip"
+          git rev-parse HEAD > "$OUT/measured-source-sha.txt"
+          python research/R3/H30/factory.py > "$OUT/algorithm.patch"
+          python -m compileall -q research/R3/H30 src/reserve_odometry/reserve_odometry
+          PYTHONPATH=src/reserve_odometry python -m unittest discover -s tests -v > "$OUT/logs/full-unit.log" 2>&1
+          python -m unittest discover -s research/tests -v > "$OUT/logs/integrity.log" 2>&1
+          python -m unittest discover -s research/R3/H30/tests -v > "$OUT/logs/H30-unit.log" 2>&1
+          python research/R3/H30/oracle.py > "$OUT/ORACLE.json"
+          python research/R3/H30/stage_data.py --stage development --journal "$OUT/staging.json"
+          python research/R3/H30/run.py --stage development --output "$OUT/experiment" --workers 2 > "$OUT/logs/development.log" 2>&1
+          cat "$OUT/experiment/SUMMARY.json"
+      - name: Publish compact immutable checkpoint
+        run: |
+          set -euo pipefail
+          OUT="reports/research_R3/H30/${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          git config user.name 'R3-H30 research checkpoint'
+          git config user.email 'r3-h30@users.noreply.github.com'
+          git switch -c "checkpoint/R3-H30-development-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          git add -f -- "$OUT" ":!$OUT/source.zip"
+          git commit -m "research(R3-H30): immutable development outcome; no validation"
+          git push origin HEAD
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: R3-H30-evidence-${{ github.run_id }}-${{ github.run_attempt }}
+          path: reports/research_R3/H30/${{ github.run_id }}-${{ github.run_attempt }}/
+          retention-days: 30
+          if-no-files-found: error
