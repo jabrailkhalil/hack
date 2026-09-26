@@ -1,0 +1,83 @@
+name: Frozen residual070 release preflight
+on:
+  push:
+    branches: [release/v8-residual070-20260927]
+    paths: ['.github/workflows/v8-residual070-release-preflight.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validation-inputs:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - name: Export exact source before measurement access
+        run: |
+          mkdir -p "$RUNNER_TEMP/handoff"
+          git archive --format=zip --output="$RUNNER_TEMP/handoff/source.zip" HEAD
+          git rev-parse HEAD > "$RUNNER_TEMP/handoff/source-commit.txt"
+      - name: Check frozen profile and source integrity
+        run: |
+          python research/v8_targeted/selected.py
+          python - <<'PY'
+          from pathlib import Path
+          import json, hashlib
+          p = Path('research/v8_targeted')
+          for file, expected in json.loads((p/'FREEZE.json').read_text())['source_sha256'].items():
+              assert hashlib.sha256((p/file).read_bytes()).hexdigest() == expected, file
+          PY
+      - name: Download exact archive and extract validation only
+        run: |
+          python research/v8_release/prepare.py --archive "$RUNNER_TEMP/dataset.zip" --output "$RUNNER_TEMP/validation-inputs"
+          cd "$RUNNER_TEMP/validation-inputs"
+          zip -q -r "$RUNNER_TEMP/handoff/validation-only.zip" data RECEIPT.json COLCON_IGNORE
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: residual070-release-inputs-${{ github.run_id }}
+          path: ${{ runner.temp }}/handoff/
+          retention-days: 7
+          if-no-files-found: error
+  selected-installed-ros:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build dependency image before disconnecting network
+        run: docker build -t residual070-ros-env -f Dockerfile.environment .
+      - name: Verify installed selected profile offline under 2 CPU and 500 MB
+        run: |
+          mkdir -p "$RUNNER_TEMP/ros-evidence"
+          docker run --rm --network none --cpus 2 --memory 500000000 \
+            -e CMAKE_BUILD_PARALLEL_LEVEL=2 -e MAKEFLAGS=-j2 \
+            -v "$PWD:/work" -w /work residual070-ros-env bash -lc '
+              set -eo pipefail
+              source /opt/ros/humble/setup.bash
+              colcon --log-base log_release build --build-base build_release --install-base install_release --executor sequential
+              source install_release/setup.bash
+              PYTHONPATH=src/reserve_odometry python3 -m unittest discover -s tests -v
+              PYTHONPATH=src/reserve_odometry python3 -m unittest discover -s research/v8_targeted -p "test_*.py" -v
+              python3 tests/ros_calibrated_smoke.py --params-file research/v8_targeted/v8_residual070.yaml --expected-json research/v8_targeted/selected.json
+              sed "s/clock_mode: input_stamp/clock_mode: ros_clock/" research/v8_targeted/v8_residual070.yaml > /tmp/residual070-ros-clock.yaml
+              python3 tests/ros_calibrated_smoke.py --params-file /tmp/residual070-ros-clock.yaml --expected-json research/v8_targeted/selected.json
+              python3 - <<"PY"
+          from pathlib import Path
+          text = Path("tests/ros_fault_smoke.py").read_text()
+          text = text.replace("src/reserve_odometry/config/champion_v8.yaml", "research/v8_targeted/v8_residual070.yaml")
+          assert "v8_residual070.yaml" in text, "Fault probe must use selected YAML"
+          path = Path("tests/_release_fault_smoke.py")
+          path.write_text(text)
+          PY
+              python3 tests/_release_fault_smoke.py
+              python3 tests/cdr_roundtrip.py
+            ' 2>&1 | tee "$RUNNER_TEMP/ros-evidence/output.log"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: residual070-installed-ros-${{ github.run_id }}
+          path: ${{ runner.temp }}/ros-evidence/
+          retention-days: 7
