@@ -1,8 +1,5 @@
 name: R4-H41 passive foundation
 on:
-  push:
-    branches: [research/R4-H41]
-    paths: ['.github/workflows/r4-h41-foundation.yml']
   workflow_dispatch:
 permissions:
   contents: write
@@ -25,9 +22,9 @@ jobs:
           set -euo pipefail
           test "$GITHUB_REF_NAME" = research/R4-H41
           git fetch --depth=1 origin e3b0c9c039d2953fbfcda51231263d38ef9f1024
-          python -m pip install -r requirements-research.txt
+          python -m pip install -r requirements-research.txt -r research/R4/H41/requirements-math.txt
           mkdir -p "$RUNNER_TEMP/H41-foundation/logs" "$RUNNER_TEMP/H41-foundation/source"
-          cp research/R4/H41/* "$RUNNER_TEMP/H41-foundation/source/"
+          cp -a research/R4/H41/. "$RUNNER_TEMP/H41-foundation/source/"
           git rev-parse HEAD > "$RUNNER_TEMP/H41-foundation/DIAGNOSTIC_SOURCE_SHA.txt"
           python research/R4/H41/foundation.py --stage source --output "$RUNNER_TEMP/H41-foundation/SOURCE_RECEIPT.json"
       - name: Unchanged tests and passive diagnostics before data
@@ -36,6 +33,7 @@ jobs:
           PYTHONPATH=src/reserve_odometry python -m unittest discover -s tests -v 2>&1 | tee "$RUNNER_TEMP/H41-foundation/logs/unit.log"
           python -m unittest discover -s research/tests -v 2>&1 | tee "$RUNNER_TEMP/H41-foundation/logs/integrity.log"
           python -m unittest discover -s research/R4/H41 -p test_foundation.py -v 2>&1 | tee "$RUNNER_TEMP/H41-foundation/logs/foundation-tests.log"
+          python research/R4/H41/math/check.py --output "$RUNNER_TEMP/H41-foundation/algebra.json" 2>&1 | tee "$RUNNER_TEMP/H41-foundation/logs/algebra.log"
           python -m compileall -q research/R4/H41
       - name: Verified data with train and development members only
         run: |
@@ -65,7 +63,14 @@ jobs:
           cp "$RUNNER_TEMP/H41-foundation/train/access.json" "$destination/access.json"
           cp "$RUNNER_TEMP/H41-foundation/SOURCE_RECEIPT.json" "$destination/SOURCE_RECEIPT.json"
           cp "$RUNNER_TEMP/H41-foundation/extraction.json" "$destination/extraction.json"
-          python -c "import hashlib,pathlib,json; p=pathlib.Path('$RUNNER_TEMP/H41-foundation/train/episodes.csv.gz'); pathlib.Path('$destination/ARTIFACT.json').write_text(json.dumps({'run_id':'$GITHUB_RUN_ID','run_attempt':'$GITHUB_RUN_ATTEMPT','retention_days':30,'episodes_sha256':hashlib.sha256(p.read_bytes()).hexdigest()},indent=2)+'\\n')"
+          DESTINATION="$destination" python - <<'PY'
+          import hashlib,json,os,pathlib
+          p=pathlib.Path(os.environ['RUNNER_TEMP'])/'H41-foundation/train/episodes.csv.gz'
+          target=pathlib.Path(os.environ['DESTINATION'])/'ARTIFACT.json'
+          target.write_text(json.dumps({'run_id':os.environ['GITHUB_RUN_ID'],
+              'run_attempt':os.environ['GITHUB_RUN_ATTEMPT'],'retention_days':30,
+              'episodes_sha256':hashlib.sha256(p.read_bytes()).hexdigest()},indent=2)+'\n')
+          PY
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add "$destination"
