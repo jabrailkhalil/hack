@@ -1,0 +1,277 @@
+DEVELOPMENT 30618_073f08d1 cases 14
+DEVELOPMENT 30618_0652866c cases 14
+DEVELOPMENT 30618_1551d0a9 cases 1
+DEVELOPMENT 30618_117c2d02 cases 14
+DEVELOPMENT 30618_27e994fc cases 14
+DEVELOPMENT 30618_3e012faf cases 14
+DEVELOPMENT 30618_5036aa78 cases 11
+DEVELOPMENT 30618_74559c73 cases 9
+DEVELOPMENT 30618_46e21b9b cases 14
+DEVELOPMENT 30618_bcc9e7a2 cases 14
+DEVELOPMENT 30618_88548b02 cases 14
+DEVELOPMENT 30618_e151d6e4 cases 1
+DEVELOPMENT 30639_0ab96c59 cases 3
+DEVELOPMENT 30639_9c362687 cases 14
+DEVELOPMENT 30639_c31df386 cases 14
+DEVELOPMENT 30639_dce52be4 cases 14
+DEVELOPMENT 30639_e4379d7f cases 14
+{
+  "hypothesis": "R3-H27",
+  "baseline": "e3b0c9c039d2953fbfcda51231263d38ef9f1024",
+  "provenance": {
+    "baseline": "e3b0c9c039d2953fbfcda51231263d38ef9f1024",
+    "source": "e998c7df8e9ce13f284e3c2cbe935c70c0f76c11",
+    "pinned": {
+      "src/reserve_odometry/reserve_odometry/core.py": "67ee39edeb80f31876f5c45cb3efec26eb73844a106f7b4c876a944b6f7cc5dc",
+      "src/reserve_odometry/reserve_odometry/guarded_readout.py": "6303c1230ff800e370875f7238912e47a0564da1b21d42ccf8f417f75b2e05e0",
+      "src/reserve_odometry/reserve_odometry/timeline.py": "ed63b44dede078cb3cde501bd1e5559260763c56ac9b832f39924c1d97b0bdbf",
+      "src/reserve_odometry/reserve_odometry/node.py": "a63b6cf915d0621eda4a99f4a9a91c8b21a3d2209420e2fc9f4f21084a6dbdd4",
+      "src/reserve_odometry/reserve_odometry/guarded_node.py": "ba2bd304ccafd35160e2c2d60c14a170bde2f0480cc04e8279a04d3c752c542f",
+      "src/reserve_odometry/config/champion_v8.yaml": "a6319d8e75615ee63b05bedccd1f79a27287666f084c8f14dd33ad993e7f067e",
+      "src/reserve_odometry/config/default.yaml": "dae5f5c80cd87e968b1e838c5b0d25cc531f816949b1fd2a59dd65e8e93efaec",
+      "src/reserve_odometry/launch/odometry.launch.py": "5f91860ab56c5c025b03d895fbc3646dbd07a3ff47948bac80279e639aa439af",
+      "src/reserve_odometry/setup.py": "ed034076ca9623fba93c995fa9626920c1c4b2ed3425bd8196a612f1131d52f9",
+      "tools/finalization/evaluate.py": "f6a19a1727274ca88e1fe1a9fb76d31dbc8ce4e9bbabf669c488f053d76caec7",
+      "tools/research_v3/experiment.py": "95a398003530454457bacb2096fb6bc9d0d5ee32520420c43a9ebeb406376aa0",
+      "tools/research_v6/compare.py": "70276a0a633cd443d44af870fde73649519be2aaf55944c2a4473c82d7b241b5",
+      "tools/research_guarded/compare.py": "c2478eb77b5c50af7023e654829933937a264f839d77ef53ec24552ba4166baf",
+      "tools/research_h11/compare.py": "1c65d17b5008e183b02d6d44bb626c7161dec1ee0210b62e63371310fcf4d995",
+      "tools/export_bags.py": "696f6bdbf853dac4d4fe6286f6a7f4742f4aea5b1bc508efda52f5bc179c3b66",
+      "research/plan_v3.json": "ddbc1130e214c3d338b3d292232391d3a329a0fd5f13a090027452ae070271b3",
+      "research/split_v3.json": "20928a29daad2b4178ddb92e2a4d9ddb347952f6c03845802a8d82fff7da5ae0",
+      "requirements-research.txt": "d73bd55eb03f248de3404b41d67976a04cdd6326fe00316389d91fb1f4725c8b"
+    },
+    "code": {
+      "research/R3/H27/common.py": "f7ee3dd7c7427805076374dee404cef6a946e529b42198210eb5363d626e5c97",
+      "research/R3/H27/cost.py": "726c4a3b37b0488ca68f0a6ef64343335a2e4829cb8422b0f5a57c14ae7af58e",
+      "research/R3/H27/development.py": "c19f847db028992dcc8bb3960a228af79b0fe36ed687a81f36b458bd8daabe0b",
+      "research/R3/H27/history.py": "5d8e15c7b5c219404c73744043adf76b9262e5eb3a91bf9c4b4f2b924fdcd6f9",
+      "research/R3/H27/oracle.py": "c28be6e7aae3073fd913b2800b7d3f90a0b192e2790747b12d9ba0077804a0c1",
+      "research/R3/H27/prepare.py": "cf17a33c137a155dfedf5226bdf5180e006c0dd12bbd087bf5800a0515de65bc",
+      "research/R3/H27/probe.py": "a0807a5242a3a6ca9b9215771b1e5e4f7f34370999b41e6d4c1ca01e10e9f2c9",
+      "research/R3/H27/tests/test_committed.py": "228a215ad5cbcc32dd5175f8a0aadb1665de496d4c75a1fd8feda9919cb196f6",
+      "research/R3/H27/tests/test_foundation.py": "bd10a6bbbff1388f21d9ef64591d4614f19e1011e63513b694cb25add15afb1d"
+    },
+    "test_evaluated": false,
+    "validation_opened": false,
+    "candidate_code": {
+      "src/reserve_odometry/reserve_odometry/committed_history.py": "5d8e15c7b5c219404c73744043adf76b9262e5eb3a91bf9c4b4f2b924fdcd6f9",
+      "src/reserve_odometry/reserve_odometry/committed_disturbance.py": "b75250635a051e5f5c2782671d8512efd14d1120a0ba2d431e4286415eae01c3"
+    },
+    "scale_sha256": "fd6cc4152626c6b71f1c34d8d9a429d4f2df0fd816fe252937690bd3fb437847",
+    "python": "3.13.5",
+    "numpy": "2.3.5"
+  },
+  "threshold": 0.0823180344240239,
+  "mechanism_status": "ACTIVE",
+  "coverage_status": "SUFFICIENT",
+  "scientific_verdict": "REJECTED",
+  "accuracy_contract_passed": false,
+  "runtime_verified": false,
+  "ready_to_merge": false,
+  "selected": null,
+  "candidates": {
+    "H27_l020": {
+      "summary": {
+        "clean_rmse": 0.09266816064035453,
+        "fault_rmse": 0.2375486120563008,
+        "distance_rmse": 5.310291964265537,
+        "samples": 394221,
+        "pooled_rmse": 0.12930570406058492,
+        "false_stops_clean": 0,
+        "false_stops_fault": 0,
+        "unrecovered": 4
+      },
+      "gains": {
+        "clean_rmse": -1.9054584354805115e-07,
+        "fault_rmse": 0.0
+      },
+      "rejection_reasons": [
+        "counterexample_veto:late_update",
+        "counterexample_veto:transition",
+        "insufficient_gain",
+        "insufficient_mechanism_coverage"
+      ],
+      "risk": {
+        "common_mode": {
+          "baseline": 0.10063227230134311,
+          "candidate": 0.10063227230134311,
+          "passed": true
+        },
+        "genuine_load": {
+          "baseline": 0.25027587955425074,
+          "candidate": 0.25027587955425074,
+          "passed": true
+        },
+        "late_update": {
+          "baseline": 0.4448642282643672,
+          "candidate": 0.7811175657787683,
+          "passed": false
+        },
+        "low_speed": {
+          "baseline": 0.3685456733063761,
+          "candidate": 0.36775461805873166,
+          "passed": true
+        },
+        "slow_drift": {
+          "baseline": 0.6842946583937589,
+          "candidate": 0.6759848215580363,
+          "passed": true
+        },
+        "transition": {
+          "baseline": 0.2142244935800747,
+          "candidate": 0.23098347346143505,
+          "passed": false
+        }
+      },
+      "coverage": {
+        "passed": false,
+        "effective_entries": 14,
+        "effective_ticks": 14,
+        "groups": [
+          "664cca45aeb0db23",
+          "70bb14d1c90f301f",
+          "711abb923942f9fe",
+          "8269991eafa82c45"
+        ]
+      },
+      "eligible": false,
+      "scientific_verdict": "INCONCLUSIVE"
+    },
+    "H27_l040": {
+      "summary": {
+        "clean_rmse": 0.09266811677018905,
+        "fault_rmse": 0.23082386890556378,
+        "distance_rmse": 5.310307498121235,
+        "samples": 394221,
+        "pooled_rmse": 0.1293056823882223,
+        "false_stops_clean": 0,
+        "false_stops_fault": 0,
+        "unrecovered": 4
+      },
+      "gains": {
+        "clean_rmse": 2.828656664455309e-07,
+        "fault_rmse": 0.028308913668345093
+      },
+      "rejection_reasons": [
+        "counterexample_veto:common_mode",
+        "counterexample_veto:genuine_load",
+        "counterexample_veto:late_update",
+        "counterexample_veto:low_speed",
+        "insufficient_gain"
+      ],
+      "risk": {
+        "common_mode": {
+          "baseline": 0.10063227230134311,
+          "candidate": 0.10460032702291841,
+          "passed": false
+        },
+        "genuine_load": {
+          "baseline": 0.25027587955425074,
+          "candidate": 0.6359192020389254,
+          "passed": false
+        },
+        "late_update": {
+          "baseline": 0.4448642282643672,
+          "candidate": 0.8554680697967412,
+          "passed": false
+        },
+        "low_speed": {
+          "baseline": 0.3685456733063761,
+          "candidate": 0.44689187518567186,
+          "passed": false
+        },
+        "slow_drift": {
+          "baseline": 0.6842946583937589,
+          "candidate": 0.682436046476353,
+          "passed": true
+        },
+        "transition": {
+          "baseline": 0.2142244935800747,
+          "candidate": 0.2142244935800747,
+          "passed": true
+        }
+      },
+      "coverage": {
+        "passed": true,
+        "effective_entries": 15,
+        "effective_ticks": 164,
+        "groups": [
+          "664cca45aeb0db23",
+          "70bb14d1c90f301f",
+          "711abb923942f9fe"
+        ]
+      },
+      "eligible": false,
+      "scientific_verdict": "REJECTED"
+    }
+  },
+  "aggregates": {
+    "R3_v8": {
+      "clean_rmse": 0.09266814298282507,
+      "fault_rmse": 0.2375486120563008,
+      "distance_rmse": 5.310295004801444,
+      "samples": 394221,
+      "pooled_rmse": 0.1293056944774334,
+      "false_stops_clean": 0,
+      "false_stops_fault": 0,
+      "unrecovered": 4
+    },
+    "v8_control": {
+      "clean_rmse": 0.09266814298282507,
+      "fault_rmse": 0.2375486120563008,
+      "distance_rmse": 5.310295004801444,
+      "samples": 394221,
+      "pooled_rmse": 0.1293056944774334,
+      "false_stops_clean": 0,
+      "false_stops_fault": 0,
+      "unrecovered": 4
+    },
+    "H27_off": {
+      "clean_rmse": 0.09266814298282507,
+      "fault_rmse": 0.2375486120563008,
+      "distance_rmse": 5.310295004801444,
+      "samples": 394221,
+      "pooled_rmse": 0.1293056944774334,
+      "false_stops_clean": 0,
+      "false_stops_fault": 0,
+      "unrecovered": 4
+    },
+    "H27_l020": {
+      "clean_rmse": 0.09266816064035453,
+      "fault_rmse": 0.2375486120563008,
+      "distance_rmse": 5.310291964265537,
+      "samples": 394221,
+      "pooled_rmse": 0.12930570406058492,
+      "false_stops_clean": 0,
+      "false_stops_fault": 0,
+      "unrecovered": 4
+    },
+    "H27_l040": {
+      "clean_rmse": 0.09266811677018905,
+      "fault_rmse": 0.23082386890556378,
+      "distance_rmse": 5.310307498121235,
+      "samples": 394221,
+      "pooled_rmse": 0.1293056823882223,
+      "false_stops_clean": 0,
+      "false_stops_fault": 0,
+      "unrecovered": 4
+    }
+  },
+  "baseline_reproduction": {
+    "replays": 73,
+    "exact": true
+  },
+  "cases": {
+    "clean": 17,
+    "common_mode": 28,
+    "genuine_load": 2,
+    "late_update": 2,
+    "low_speed": 26,
+    "original": 56,
+    "slow_drift": 28,
+    "transition": 38
+  },
+  "validation_opened": false,
+  "test_evaluated": false
+}
