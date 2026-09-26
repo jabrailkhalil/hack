@@ -1,0 +1,86 @@
+{
+  "round": "R4-v8-fixed",
+  "hypothesis_id": "R4-H33",
+  "baseline_sha": "e3b0c9c039d2953fbfcda51231263d38ef9f1024",
+  "baseline_tree": "eae49a504bc59b5c9b408445150bef32e111956f",
+  "zip_sha256": "a8e0bfa033e0a02c460c30b02f34a5c64ece85b05003512941387d3cf1f319a2",
+  "source_status": "VERIFIED",
+  "data_status": "UNAVAILABLE",
+  "data_status_scope": "Current local runtime; no data extraction occurred in failed Actions",
+  "execution_status": "BLOCKED",
+  "publication_status": "DRAFT_PR_CREATED",
+  "mechanism_status": "DIAGNOSTIC_IMPLEMENTED_NOT_MEASURED",
+  "coverage_status": "NOT_EVALUATED",
+  "scientific_verdict": "NOT_EVALUATED",
+  "accuracy_contract_evaluated": false,
+  "accuracy_contract_passed": false,
+  "candidate_implemented": false,
+  "measured_source_sha": null,
+  "prepared_diagnostic_source_sha": "5c6571789b1c6ca45f9efc74861dc34920e6e308",
+  "attempted_diagnostic_source_sha": "d4837cc66e09321e3104cc3e8f7387f8628fb7fd",
+  "report_sha": "593ba07ecc88742135b3932aabe7b23e67c8c4fc",
+  "freeze_sha": null,
+  "checkpoint_sha": null,
+  "plan_sha": "2d27233cf3bea27c8343cc42ed3c6ece4c4477a6",
+  "train_measurements_opened": false,
+  "development_opened": false,
+  "validation_opened": false,
+  "test_opened": false,
+  "enabled_runtime_verified": false,
+  "ready_to_merge": false,
+  "variants_tested": [],
+  "diagnostic_windows_s": [
+    0.2,
+    0.4
+  ],
+  "run_ids": [
+    36231152403
+  ],
+  "ci_run_ids": [
+    36231152334
+  ],
+  "rejection_reasons": [],
+  "execution_blockers": [
+    "ACTIONS_RUNNER_NOT_ASSIGNED",
+    "LOCAL_DATASET_DOWNLOAD_DNS_FAILURE"
+  ],
+  "missing_evidence": [
+    "64-train-bag foundation covariance/scale/group coverage",
+    "runtime GLS candidate after prerequisite",
+    "paired development accuracy",
+    "published freeze and admitted validation",
+    "enabled ROS and ABBA resource measurements"
+  ],
+  "next_resume_step": "Obtain pinned train in an authorized execution environment; run prepare_data.py --roles train then foundation.py using the unchanged PLAN. Do not jump to development/validation.",
+  "local_checks": {
+    "legacy_passed": 156,
+    "research_integrity_passed": 43,
+    "diagnostic_passed": 19,
+    "compileall_passed": true,
+    "baseline_files_verified": 301,
+    "baseline_files_changed": 0,
+    "remote_local_full_blobs_matched": 3
+  },
+  "actions": {
+    "run_id": 36231152403,
+    "attempt": 1,
+    "job_id": 108374429777,
+    "conclusion": "failure",
+    "runner_id": 0,
+    "steps": [],
+    "artifacts": [],
+    "logs": "404 BlobNotFound",
+    "scheduler_reason": null
+  },
+  "pr": {
+    "number": 47,
+    "url": "https://github.com/jabrailkhalil/hack/pull/47",
+    "draft": true
+  },
+  "metrics": {
+    "train_foundation": null,
+    "development": null,
+    "validation": null
+  },
+  "receipt_sha256": "76b91651dbd368bb4ffef360cac573189e753b7b951833817a3f278c682a331d"
+}
