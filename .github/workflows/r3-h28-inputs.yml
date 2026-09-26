@@ -1,0 +1,66 @@
+name: R3-H28 authorized input cache
+on:
+  push:
+    branches: [research/R3-H28]
+    paths: [.github/workflows/r3-h28-inputs.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  inputs:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: e3b0c9c039d2953fbfcda51231263d38ef9f1024
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - run: python -m pip install -r requirements-research.txt
+      - run: python tools/get_dataset.py
+      - name: Decode only authorized roles and topics; retain exact arrival order
+        run: |
+          python - <<'PY'
+          import sys, os, json, math, sqlite3, hashlib
+          from pathlib import Path
+          sys.path[:0]=['tools/research_v3','tools','src/reserve_odometry']
+          import experiment as ex
+          import numpy as np
+          store=ex.Store(); out=Path(os.environ['RUNNER_TEMP'])/'h28-inputs'
+          out.mkdir(); access=[]; records={}
+          for role in ('train','development'):
+              for bag in store.plan['splits'][role]:
+                  r=store.records[bag]
+                  if r['split']!=role or role not in ('train','development'): raise PermissionError(bag)
+                  path=store.root/bag/(bag+'_0.db3')
+                  if ex.digest(path)!=r['sha256']: raise ValueError('DB hash')
+                  topics=list(ex.CHANNELS)+(list(ex.REFS) if role=='development' else [])
+                  journal=dict(bag=bag,role=role,topics=topics,db_sha256=r['sha256'])
+                  access.append(journal)
+                  (out/'access.json').write_text(json.dumps(access,indent=2))
+                  events=[]; refs={'master':[],'rover':[]}
+                  with sqlite3.connect(path.resolve().as_uri()+'?mode=ro',uri=True) as con:
+                      query='SELECT t.name,t.type,m.data FROM messages m JOIN topics t ON t.id=m.topic_id WHERE t.name IN ('+','.join('?' for _ in topics)+') ORDER BY m.timestamp,m.id'
+                      for topic,typ,raw in con.execute(query,topics):
+                          stamp,values=ex.decode(raw,typ); t=(stamp-r['sensor_start_ns'])/1e9
+                          if topic in ex.CHANNELS:
+                              ch=ex.CHANNELS[topic]; events.append((t,ch,float(values[0])/(15 if ch==0 else 3.6)))
+                          else:
+                              v=math.hypot(float(values[0]),float(values[1]))
+                              if math.isfinite(v): refs[ex.REFS[topic]].append((t,v))
+                  name=role+'--'+bag+'.npz'
+                  np.savez_compressed(out/name,events=np.asarray(events,float).reshape(-1,3),master=np.asarray(refs['master'],float).reshape(-1,2),rover=np.asarray(refs['rover'],float).reshape(-1,2))
+                  records[bag]=dict(role=role,group=r['group'],file=name,db_sha256=r['sha256'],cache_sha256=hashlib.sha256((out/name).read_bytes()).hexdigest())
+                  print(role,bag,len(events),flush=True)
+          manifest=dict(baseline='e3b0c9c039d2953fbfcda51231263d38ef9f1024',split_sha256=ex.digest('research/split_v3.json'),records=records,validation_opened=False,final_test_opened=False,train_gnss_opened=False,run_id=os.environ['GITHUB_RUN_ID'])
+          (out/'manifest.json').write_text(json.dumps(manifest,indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: R3-H28-authorized-inputs
+          path: ${{ runner.temp }}/h28-inputs
+          retention-days: 30
