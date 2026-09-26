@@ -1,0 +1,52 @@
+--- a/src/reserve_odometry/reserve_odometry/core.py
++++ b/src/reserve_odometry/reserve_odometry/core.py
+@@ -6,6 +6,8 @@
+ from dataclasses import dataclass, asdict
+ import math
+ from typing import Optional
++
++from .stop_history import StopHistory
+ 
+ 
+ def clip(x, lo, hi):
+@@ -121,7 +123,7 @@
+         self.sigma_s = 0.0
+         self.used = [None, None]
+         self.raw_previous = [None, None]
+-        self.stop_since = None
++        self.stop_history = StopHistory()
+         self.adapt_previous = None
+         self.reacquire_since = None
+         self.reacquire_previous = None
+@@ -355,23 +357,14 @@
+                 self.adapt_previous = Sample(tz, z)
+         elif any(status not in ('DUPLICATE_OR_OLD', 'ACCEPTED') for status in statuses):
+             self.adapt_previous = None
+-        # Fresh held zeros may sustain stop evidence, but may NOT be re-assimilated.
+-        # A zero reading from locked wheels at substantial model speed is not a stop.
+-        stop_candidate = (not command_stale and u <= c.command_deadband and
+-                          abs(predicted) < c.stop_model_speed_mps and
+-                          all(self._valid(x, t, c.max_age_s) and abs(x.value) < c.stop_speed_mps
+-                              for x in (front, rear)) and
+-                          abs(front.t - rear.t) <= c.pair_skew_s)
+-        if stop_candidate:
+-            if self.stop_since is None:
+-                self.stop_since = t
+-            if t - self.stop_since >= c.stop_dwell_s:
+-                self.v = 0.0
+-                self.drive_a = 0.0
+-                self.disturbance = 0.0
+-                mode = 'STOPPED'
+-        else:
+-            self.stop_since = None
++        # H09: new accepted pairs confirm entry; held trusted inputs only sustain it.
++        if self.stop_history.update(t=t, u=u, predicted=predicted,
++                                    command_stale=command_stale, wheels=(front, rear),
++                                    statuses=statuses, config=c):
++            self.v = 0.0
++            self.drive_a = 0.0
++            self.disturbance = 0.0
++            mode = 'STOPPED'
+         self.s += 0.5 * (previous_v + self.v) * dt
+         # Deliberately conservative temporal-correlation envelope, not calibrated CI.
+         self.sigma_s += dt * math.sqrt(max(p_prior, self.pv))

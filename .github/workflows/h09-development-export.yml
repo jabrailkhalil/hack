@@ -1,0 +1,81 @@
+name: H09 development input export
+on:
+  push:
+    branches: [research/parallel-H09]
+    paths: [.github/workflows/h09-development-export.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  export:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - name: Download and verify the pinned organizer archive
+        run: |
+          python -m pip install -r requirements-research.txt
+          python tools/get_dataset.py
+      - name: Export only development measurement rows and exact baseline source
+        run: |
+          mkdir -p "$RUNNER_TEMP/h09-inputs/development"
+          git archive --format=zip --output="$RUNNER_TEMP/h09-inputs/baseline-source.zip" 984fdf2fc4faf05325249215d6b8541c0e68209a src tools tests research requirements-research.txt
+          python - <<'PY'
+          import hashlib, json, math, os, sqlite3, sys
+          from pathlib import Path
+          import numpy as np
+          sys.path[:0] = ['tools/research_v3', 'tools', 'src/reserve_odometry']
+          import experiment as ex
+          from export_bags import decode
+          out = Path(os.environ['RUNNER_TEMP']) / 'h09-inputs'
+          store = ex.Store()
+          access = []
+          for bag in store.plan['splits']['development']:
+              row = store.records[bag]
+              if row['split'] != 'development':
+                  raise PermissionError('Not a development bag')
+              path = store.root / bag / (bag + '_0.db3')
+              if ex.digest(path) != row['sha256']:
+                  raise ValueError('DB hash mismatch')
+              allowed = list(ex.CHANNELS) + list(ex.REFS)
+              access.append(dict(bag=bag, group=row['group'], purpose='development', sha256=row['sha256'], topics=allowed))
+              (out / 'access.json').write_text(json.dumps(access, indent=2))
+              events = []; refs = {'master': [], 'rover': []}
+              with sqlite3.connect(path.resolve().as_uri() + '?mode=ro', uri=True) as con:
+                  query = ('SELECT t.name,t.type,m.data FROM messages m JOIN topics t ON t.id=m.topic_id '
+                           'WHERE t.name IN (' + ','.join('?' for _ in allowed) + ') ORDER BY m.timestamp,m.id')
+                  for topic, typ, raw in con.execute(query, allowed):
+                      stamp, values = decode(raw, typ)
+                      t = (stamp-row['sensor_start_ns'])/1e9
+                      if topic in ex.CHANNELS:
+                          ch = ex.CHANNELS[topic]
+                          events.append((t,ch,float(values[0])/(15 if ch == 0 else 3.6)))
+                      else:
+                          speed = math.hypot(float(values[0]),float(values[1]))
+                          if math.isfinite(speed): refs[ex.REFS[topic]].append((t,speed))
+              dest = out / 'development' / (bag + '.npz')
+              np.savez_compressed(dest, events=np.asarray(events,float).reshape(-1,3),
+                                  master=np.asarray(refs['master'],float).reshape(-1,2),
+                                  rover=np.asarray(refs['rover'],float).reshape(-1,2))
+              access[-1]['export_sha256'] = hashlib.sha256(dest.read_bytes()).hexdigest()
+              print(bag, len(events), {k:len(v) for k,v in refs.items()}, flush=True)
+          (out/'access.json').write_text(json.dumps(access,indent=2)+'\n')
+          (out/'provenance.json').write_text(json.dumps(dict(baseline='984fdf2fc4faf05325249215d6b8541c0e68209a',
+              source_sha256=hashlib.sha256((out/'baseline-source.zip').read_bytes()).hexdigest(),
+              export_commit=os.environ['GITHUB_SHA'], run_id=os.environ['GITHUB_RUN_ID'],
+              run_attempt=os.environ['GITHUB_RUN_ATTEMPT'], validation_opened=False, final_test_opened=False),indent=2)+'\n')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: h09-development-inputs-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/h09-inputs/
+          retention-days: 7

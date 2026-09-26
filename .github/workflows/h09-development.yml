@@ -1,0 +1,70 @@
+name: H09 paired development experiment
+on:
+  push:
+    branches: [research/parallel-H09]
+    paths: [.github/workflows/h09-development.yml]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  compare:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - name: Prepare pinned development data
+        run: |
+          python -m pip install -r requirements-research.txt
+          python tools/get_dataset.py
+      - name: Baseline and isolated H09 mechanism tests
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/h09-checks"
+          PYTHONPATH=src/reserve_odometry python -m unittest discover -s tests -v 2>&1 | tee "$RUNNER_TEMP/h09-checks/baseline.log"
+          PYTHONPATH=src/reserve_odometry python -m unittest discover -s research/parallel/H09 -p 'test_*.py' -v 2>&1 | tee "$RUNNER_TEMP/h09-checks/h09.log"
+      - name: Existing algorithm tests against activated candidate, then restore baseline
+        run: |
+          set -euo pipefail
+          trap 'git restore src/reserve_odometry/reserve_odometry/core.py' EXIT
+          git apply --check research/parallel/H09/core.patch
+          git apply research/parallel/H09/core.patch
+          for pattern in test_core.py test_timeline.py test_adaptive_profile.py test_candidate_configs.py test_final_runtime.py; do
+            PYTHONPATH=src/reserve_odometry python -m unittest discover -s tests -p "$pattern" -v 2>&1 | tee -a "$RUNNER_TEMP/h09-checks/candidate.log"
+          done
+      - name: Fixed candidate versus exact baseline on all development bags
+        run: |
+          set -euo pipefail
+          python tools/research_h09/compare.py --stage development --output "$RUNNER_TEMP/h09-development" 2>&1 | tee "$RUNNER_TEMP/h09-checks/replay.log"
+          cp -a "$RUNNER_TEMP/h09-checks" "$RUNNER_TEMP/h09-development/checks"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: h09-development-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/h09-development/
+            ${{ runner.temp }}/h09-checks/
+          retention-days: 30
+      - name: Preserve H09 evidence on a new checkpoint branch only
+        if: always()
+        run: |
+          set -eu
+          git restore src/reserve_odometry/reserve_odometry/core.py
+          if ! test -d "$RUNNER_TEMP/h09-development"; then exit 0; fi
+          branch="checkpoint/H09-development-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          destination="reports/research_H09/development/$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          git switch -c "$branch"
+          mkdir -p "$destination"
+          cp -a "$RUNNER_TEMP/h09-development/." "$destination/"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add "$destination"
+          git commit -m "research(H09): preserve development result $GITHUB_RUN_ID [skip ci]"
+          git push origin "HEAD:refs/heads/$branch"
