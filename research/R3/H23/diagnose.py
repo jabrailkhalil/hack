@@ -38,7 +38,8 @@ def main(out):
             (clean if f is None else stress).append(row)
             for sm in row['receivers'].values():
                 for key in ('rmse','mae','bias','n','coverage','false_stop_samples'):
-                    assert sm['baseline_v2'][key]==sm['balanced_physics'][key]
+                    assert (key in sm['baseline_v2']) == (key in sm['balanced_physics'])
+                    assert sm['baseline_v2'].get(key) == sm['balanced_physics'].get(key)
             a=np.asarray(probes[0].rows,float);m=a[:,2]>0
             if f:m &= (a[:,0]>=f['start'])&(a[:,0]<f['end'])
             d=dict(bag=bag,group=group,kind=kind,fault=f,eligible_ticks=int(m.sum()),potential_episodes=int(np.sum(m&~np.r_[False,m[:-1]])),offset_admissible_ticks=int(np.sum(m&(a[:,6]>0))),phase_counts={str(p):int(np.sum(m&(a[:,3]==p))) for p in (-1,0,1)},reference={})
