@@ -1,60 +1,36 @@
-# Поля формы: active champion v8
+# Поля формы для единственного основного решения v8
 
-Эта версия полей относится к **текущему checkout main с champion v8**.
-Исторический `reserve-odometry-v4.zip` остаётся отдельной frozen-версией;
-его final-test нельзя выдавать за test v8. Репозиторий приватный: доступ жюри
-или разрешённый способ передачи нужно обеспечить отдельно. Форма автоматически
-не отправлялась.
+Эти поля относятся к текущему main и выбранному v8. Исторический ZIP v4 имеет отдельные результаты. Форма не отправлена автоматически.
 
-## 1. Ссылка на пакет(ы) ROS 2 Humble
-
+## 1. ROS 2 пакеты
 https://github.com/jabrailkhalil/hack/tree/main/src
 
-Пакеты tram_vehicle_msgs и reserve_odometry. Активный runtime: champion v8 readout поверх v5 inner observer плюс low-speed
-zero-lock protection. Стандартный `odometry.launch.py` запускает именно этот
-профиль. Входы controller/front/rear; выходы скорости, относительного положения
-и диагностики. Runtime без GNSS/IMU/LLM.
+Пакеты tram_vehicle_msgs и reserve_odometry. Единственный устанавливаемый оцениватель: guarded_odometry_node, конфигурация champion_v8.yaml. Основная команда: ros2 launch reserve_odometry odometry.launch.py. Это один pipeline, не переключение между исследовательскими моделями.
 
-## 2. Инструкция для жюри
-
+## 2. Инструкция
 https://github.com/jabrailkhalil/hack/blob/main/submission/JUDGE_GUIDE.md
 
-В подготовленной Ubuntu 22.04 / ROS 2 Humble: bash submission/build.sh, затем bash submission/run.sh. Во втором терминале ros2 bag play с тремя vehicle-топиками. Указаны единицы, stamps, frames, режим /clock, ограничения, воспроизведение прежнего v4 и различие между активным профилем и архивом.
+В подготовленной Ubuntu 22.04 / ROS Humble выполнить bash submission/build.sh, затем bash submission/run.sh. Изолированный install_main исключает старые executables. Для полного dropout использовать продолжающийся /clock и run.sh --clock.
 
-## 3. Математическая модель
+## 3. Модель
+https://github.com/jabrailkhalil/hack/tree/main/src/reserve_odometry/reserve_odometry
+https://github.com/jabrailkhalil/hack/blob/main/reports/adjudication/REPORT.md
 
-https://github.com/jabrailkhalil/hack/blob/main/submission/MODEL.md
-https://github.com/jabrailkhalil/hack/blob/main/reports/research_v6/REPORT.md
+Нелинейная тяга/торможение, продольный прогноз, индивидуальные проверки тележек, адаптивное disturbance, bounded reacquisition, guarded output-time correction, zero-lock protection и quarantine после резкого общего скачка. Интеграл скорости даёт относительный s. Исходники/коэффициенты совпадают с pinned v8, изменения касаются упаковки.
 
-Базовые уравнения и runtime из v4 сохранены. Внутренний v5 использует adaptation_tau_s=0.5. Champion v8 не меняет внутреннее
-состояние фильтра: рекурсивная поправка применяется только к публикуемым v/s и
-сбрасывается/блокируется при недостоверных wheel evidence. Общая нулевая пара не ассимилируется как остановка, пока модельная скорость
-выше порога. После почти одновременного RATE_ANOMALY на обеих тележках
-common-mode reacquisition блокируется на 1.5 с; ordinary fusion не меняется.
+## 4. Параметры и ограничения
+https://github.com/jabrailkhalil/hack/blob/main/ACTIVE_SOLUTION.json
+https://github.com/jabrailkhalil/hack/blob/main/src/reserve_odometry/config/champion_v8.yaml
 
-## 4. Допущения, ограничения и параметры
-
-https://github.com/jabrailkhalil/hack/blob/main/src/reserve_odometry/config/default.yaml
-https://github.com/jabrailkhalil/hack/blob/main/reports/research_v6/PROMOTION.json
-https://github.com/jabrailkhalil/hack/blob/main/submission/LIMITATIONS.md
-
-Коэффициенты эффективные, не паспортные. scale=1/3.6 — эмпирическое допущение до ответа организатора. Положение (s,0,0) — относительная дистанция, не согласованная с GNSS xyz-траектория. Необходимые карта/origin/маршрут не подтверждены; общая правдоподобная ошибка обеих тележек может оставаться неразличимой. Система не сертифицирована для безопасности движения.
+Физические коэффициенты эффективные, не паспортные. Входной масштаб 1/3.6 эмпирический. Runtime получает controller/front/rear, не GNSS/IMU/LLM. Положение relative_1d, не подтверждённая GNSS/ENU траектория. Требуются согласование карты/origin/геометрического критерия и единиц.
 
 ## 5. Точность и быстродействие
+https://github.com/jabrailkhalil/hack/blob/main/reports/adjudication/REPORT.md
 
-https://github.com/jabrailkhalil/hack/blob/main/reports/research_v6/REPORT.md
-https://github.com/jabrailkhalil/hack/tree/main/reports/research_v6
+На 19 одинаковых reused-validation bags: clean group-macro speed RMSE 0.114550 м/с; pooled clean RMSE 0.216407 м/с; original-fault event RMSE 0.538287 м/с; scalar reanchored span-distance RMSE 4.595481 м. 698891 matched points, оба GNSS receivers. При выпадении wheel-данных controller сохранён. Это не independent final test и не официальный score.
 
-На одинаковом повторно используемом validation: group-macro RMSE скорости
-**0.117138→0.114550 м/с**, исходный fault-event RMSE
-**0.538434→0.538287 м/с**, scalar span distance **4.630978→4.595481 м**.
-698891 matched samples. На отдельной low-speed lock suite event RMSE
-2.68877→0.316586 м/с; это специальный fault scenario, не full-dataset gain.
-Нового независимого final test для v8 нет; исторический v4 final test к нему
-не относится. На отдельной common-mode +5 м/с suite event RMSE
-0.092438→0.063562 м/с (-31.24%), REACQUIRING ticks 47→0; это специальная
-инъекция, не full-dataset metric.
+Два локальных полных прогона совпали. 161 локальная unit-проверка, 43 research-integrity, clean wheel surface выполнены. Свежая GitHub/ROS-проверка упаковки не завершилась: jobs прекращаются до steps. Старые ROS timestamps/RSS/final-test не выданы за новые замеры. Частота программно настроена 20 Гц, но свежая wall-clock сертификация этой упаковки не заявляется.
 
-## 6. Ограничения и дальнейшее развитие
+## 6. Дальнейшее развитие
 
-Согласовать единицы и координаты, подключить разрешённую карту/инициализацию, получить новые независимые проверочные записи, расширить подтверждённые сценарии общей пробуксовки, оценить uncertainty и перенос между трамваями. Весь поиск использовал уже существующий validation, а не новый независимый test; результаты не являются официальным баллом жюри.
+Плавный common-mode drift: event RMSE 3.07148 м/с, среднее recovery 4.41 с. Этот сценарий остаётся открытой слабостью; более простые методы иногда быстрее восстанавливаются. Нужны новые независимые записи, подтверждённая геометрия, тесты clock/latency на целевой машине и калибровка uncertainty. Отвергнутые гипотезы не активируются в main автоматически.
