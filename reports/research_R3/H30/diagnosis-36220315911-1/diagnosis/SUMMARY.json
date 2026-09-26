@@ -1,0 +1,1350 @@
+{
+  "baseline": "e3b0c9c039d2953fbfcda51231263d38ef9f1024",
+  "source": "e0948bfcbfc11105077021001891a15e731563fc",
+  "purpose": "vehicle-only diagnosis; no candidate accuracy",
+  "bags": 17,
+  "groups": 7,
+  "input_events": 616942,
+  "counts": {
+    "output_ticks": 319835,
+    "first_seen_2": 148657,
+    "new_status_CANDIDATE": 288,
+    "first_seen_1": 148453,
+    "first_seen_0": 295555,
+    "new_wheel_before_previous_tick": 147100,
+    "new_status_MISSING_OR_STALE": 441,
+    "new_status_ACCEPTED": 296255,
+    "accepted_same_stamp_pair": 147999,
+    "native_pair_opportunity": 147997,
+    "accepted_before_previous_tick": 146655,
+    "native_pair_prior_tick_opportunity": 73257,
+    "new_status_AMBIGUOUS_PAIR": 20,
+    "new_status_MODEL_DISAGREEMENT": 20,
+    "new_status_ZERO_LOCK_SUSPECT": 84,
+    "new_status_RATE_ANOMALY": 2
+  },
+  "accepted_age_s": {
+    "n": 296255,
+    "min": 5.000000555810402e-07,
+    "mean": 0.053947992026781875,
+    "p50": 0.049737243999970815,
+    "p95": 0.10824985640010709,
+    "p99": 0.129467203060108,
+    "max": 0.24997059900000007,
+    "age_gt_50ms": 146655,
+    "age_gt_100ms": 22701,
+    "age_gt_250ms": 0
+  },
+  "first_seen_age_s": {
+    "n": 297110,
+    "min": 0.0,
+    "mean": 0.05524270333725645,
+    "p50": 0.04974246800003357,
+    "p95": 0.10874937730012561,
+    "p99": 0.13065322800002832,
+    "max": 2.117289586,
+    "age_gt_50ms": 147100,
+    "age_gt_100ms": 23144,
+    "age_gt_250ms": 441
+  },
+  "opportunity_groups": 7,
+  "original_baseline_exact": true,
+  "reference_loaded": false,
+  "validation_opened": false,
+  "pinned_source": {
+    "baseline_sha": "e3b0c9c039d2953fbfcda51231263d38ef9f1024",
+    "sha256": {
+      "src/reserve_odometry/reserve_odometry/core.py": "67ee39edeb80f31876f5c45cb3efec26eb73844a106f7b4c876a944b6f7cc5dc",
+      "src/reserve_odometry/reserve_odometry/timeline.py": "ed63b44dede078cb3cde501bd1e5559260763c56ac9b832f39924c1d97b0bdbf",
+      "src/reserve_odometry/reserve_odometry/guarded_readout.py": "6303c1230ff800e370875f7238912e47a0564da1b21d42ccf8f417f75b2e05e0",
+      "src/reserve_odometry/reserve_odometry/guarded_node.py": "ba2bd304ccafd35160e2c2d60c14a170bde2f0480cc04e8279a04d3c752c542f",
+      "src/reserve_odometry/reserve_odometry/node.py": "a63b6cf915d0621eda4a99f4a9a91c8b21a3d2209420e2fc9f4f21084a6dbdd4",
+      "src/reserve_odometry/config/champion_v8.yaml": "a6319d8e75615ee63b05bedccd1f79a27287666f084c8f14dd33ad993e7f067e",
+      "src/reserve_odometry/launch/odometry.launch.py": "5f91860ab56c5c025b03d895fbc3646dbd07a3ff47948bac80279e639aa439af",
+      "tools/finalization/evaluate.py": "f6a19a1727274ca88e1fe1a9fb76d31dbc8ce4e9bbabf669c488f053d76caec7",
+      "tools/research_v3/experiment.py": "95a398003530454457bacb2096fb6bc9d0d5ee32520420c43a9ebeb406376aa0",
+      "tools/research_guarded/compare.py": "c2478eb77b5c50af7023e654829933937a264f839d77ef53ec24552ba4166baf",
+      "tools/research_v6/compare.py": "70276a0a633cd443d44af870fde73649519be2aaf55944c2a4473c82d7b241b5",
+      "tools/export_bags.py": "696f6bdbf853dac4d4fe6286f6a7f4742f4aea5b1bc508efda52f5bc179c3b66",
+      "research/split_v3.json": "20928a29daad2b4178ddb92e2a4d9ddb347952f6c03845802a8d82fff7da5ae0",
+      "research/plan_v3.json": "ddbc1130e214c3d338b3d292232391d3a329a0fd5f13a090027452ae070271b3"
+    }
+  },
+  "per_bag": [
+    {
+      "bag": "30618_0652866c",
+      "group": "8269991eafa82c45",
+      "input_events": 57396,
+      "channel_source_inversions": [
+        0,
+        0,
+        0
+      ],
+      "global_source_inversions": 6826,
+      "never_visible_at_observer_before_last_output": [
+        36,
+        0,
+        7
+      ],
+      "not_yet_visible_tail": [
+        1,
+        0,
+        0
+      ],
+      "counts": {
+        "output_ticks": 29287,
+        "first_seen_2": 14063,
+        "new_status_CANDIDATE": 24,
+        "first_seen_1": 14060,
+        "first_seen_0": 29229,
+        "new_wheel_before_previous_tick": 11568,
+        "new_status_MISSING_OR_STALE": 23,
+        "new_status_ACCEPTED": 28076,
+        "accepted_same_stamp_pair": 14037,
+        "native_pair_opportunity": 14037,
+        "accepted_before_previous_tick": 11545,
+        "native_pair_prior_tick_opportunity": 5772
+      },
+      "first_seen_age_s": {
+        "n": 28123,
+        "min": 0.0,
+        "mean": 0.04443450650112411,
+        "p50": 0.04347079600006509,
+        "p95": 0.0911840566000293,
+        "p99": 0.09587217300001782,
+        "max": 1.050335218,
+        "age_gt_50ms": 11568,
+        "age_gt_100ms": 23,
+        "age_gt_250ms": 23
+      },
+      "accepted_age_s": {
+        "n": 28076,
+        "min": 2.1431000050142757e-05,
+        "mean": 0.04371139757259273,
+        "p50": 0.04345837999994728,
+        "p95": 0.09097227325001711,
+        "p99": 0.09573751500002459,
+        "max": 0.09767100300000209,
+        "age_gt_50ms": 11545,
+        "age_gt_100ms": 0,
+        "age_gt_250ms": 0
+      },
+      "runtime": {
+        "resets": 0,
+        "dropped": 0,
+        "catchups": 1,
+        "causal_errors": 0,
+        "mode_counts": {
+          "INITIALIZED": 1,
+          "MODEL_ONLY": 10525,
+          "FUSED": 9548,
+          "STOPPED": 9131,
+          "SINGLE_WHEEL": 2
+        }
+      },
+      "schedule_sha256": "8f9cfe99a5a5e03d2a359b03e74ad3a5bcbed24e00edf4eb9a0ff3461fd7a4ce",
+      "outputs_sha256": "1e4867f7d1ee9079012eff3003bb6656a94fa1b6572f1017f1e55148d90d79d2",
+      "instrumented_baseline_exact": true
+    },
+    {
+      "bag": "30618_073f08d1",
+      "group": "8269991eafa82c45",
+      "input_events": 49128,
+      "channel_source_inversions": [
+        0,
+        0,
+        0
+      ],
+      "global_source_inversions": 3907,
+      "never_visible_at_observer_before_last_output": [
+        26,
+        0,
+        10
+      ],
+      "not_yet_visible_tail": [
+        1,
+        0,
+        0
+      ],
+      "counts": {
+        "output_ticks": 25509,
+        "first_seen_2": 11816,
+        "new_status_CANDIDATE": 26,
+        "first_seen_0": 25460,
+        "first_seen_1": 11815,
+        "new_wheel_before_previous_tick": 883,
+        "new_status_MISSING_OR_STALE": 25,
+        "new_status_ACCEPTED": 23580,
+        "accepted_same_stamp_pair": 11790,
+        "native_pair_opportunity": 11789,
+        "accepted_before_previous_tick": 858,
+        "native_pair_prior_tick_opportunity": 429
+      },
+      "first_seen_age_s": {
+        "n": 23631,
+        "min": 0.0,
+        "mean": 0.03070254924822356,
+        "p50": 0.0354101949999972,
+        "p95": 0.049629718000005596,
+        "p99": 0.083668675500087,
+        "max": 1.054064451,
+        "age_gt_50ms": 883,
+        "age_gt_100ms": 25,
+        "age_gt_250ms": 25
+      },
+      "accepted_age_s": {
+        "n": 23580,
+        "min": 9.590000900061568e-07,
+        "mean": 0.029623203356521244,
+        "p50": 0.03537994650000087,
+        "p95": 0.04959728100004668,
+        "p99": 0.08237358346020524,
+        "max": 0.08835404699993887,
+        "age_gt_50ms": 858,
+        "age_gt_100ms": 0,
+        "age_gt_250ms": 0
+      },
+      "runtime": {
+        "resets": 0,
+        "dropped": 0,
+        "catchups": 1,
+        "causal_errors": 0,
+        "mode_counts": {
+          "INITIALIZED": 1,
+          "MODEL_ONLY": 9525,
+          "FUSED": 8095,
+          "STOPPED": 7815
+        }
+      },
+      "schedule_sha256": "f7ee6ab09e36238ce494683c3077b6f7304bfc6d3e0904a5bbbed286b11edd04",
+      "outputs_sha256": "4c708601822d393c768783174cd6e0e238fc3d1a24a64d2d40ed16897a3f03bd",
+      "instrumented_baseline_exact": true
+    },
+    {
+      "bag": "30618_117c2d02",
+      "group": "664cca45aeb0db23",
+      "input_events": 46261,
+      "channel_source_inversions": [
+        0,
+        0,
+        0
+      ],
+      "global_source_inversions": 9827,
+      "never_visible_at_observer_before_last_output": [
+        51,
+        0,
+        11
+      ],
+      "not_yet_visible_tail": [
+        1,
+        0,
+        0
+      ],
+      "counts": {
+        "output_ticks": 24124,
+        "first_seen_2": 11064,
+        "new_status_CANDIDATE": 26,
+        "first_seen_0": 24071,
+        "new_wheel_before_previous_tick": 6519,
+        "new_status_MISSING_OR_STALE": 25,
+        "first_seen_1": 11063,
+        "new_status_ACCEPTED": 22017,
+        "accepted_same_stamp_pair": 11000,
+        "native_pair_opportunity": 11000,
+        "accepted_before_previous_tick": 6494,
+        "native_pair_prior_tick_opportunity": 3247,
+        "new_status_AMBIGUOUS_PAIR": 7,
+        "new_status_MODEL_DISAGREEMENT": 10,
+        "new_status_ZERO_LOCK_SUSPECT": 42
+      },
+      "first_seen_age_s": {
+        "n": 22127,
+        "min": 0.0,
+        "mean": 0.03884820042304211,
+        "p50": 0.025128330999997672,
+        "p95": 0.09388114770003995,
+        "p99": 0.09685161700008393,
+        "max": 1.346425519,
+        "age_gt_50ms": 6519,
+        "age_gt_100ms": 25,
+        "age_gt_250ms": 25
+      },
+      "accepted_age_s": {
+        "n": 22017,
+        "min": 1.3339999895833898e-06,
+        "mean": 0.03756888432159933,
+        "p50": 0.025011718000030214,
+        "p95": 0.09382469700005913,
+        "p99": 0.09678809900003671,
+        "max": 0.09774955200009572,
+        "age_gt_50ms": 6494,
+        "age_gt_100ms": 0,
+        "age_gt_250ms": 0
+      },
+      "runtime": {
+        "resets": 0,
+        "dropped": 0,
+        "catchups": 1,
+        "causal_errors": 0,
+        "mode_counts": {
+          "INITIALIZED": 1,
+          "MODEL_ONLY": 9047,
+          "FUSED": 7229,
+          "STOPPED": 7751,
+          "SINGLE_WHEEL": 17
+        }
+      },
+      "schedule_sha256": "31a6f97211d57c073568db7d6b5023fa036529c3c769ce95fcf1d1b3bdc10414",
+      "outputs_sha256": "d88f7c8533408218d625b173fc6d97e884e9327efc96497f10d836cc5e3609d7",
+      "instrumented_baseline_exact": true
+    },
+    {
+      "bag": "30618_1551d0a9",
+      "group": "8269991eafa82c45",
+      "input_events": 159,
+      "channel_source_inversions": [
+        0,
+        0,
+        0
+      ],
+      "global_source_inversions": 49,
+      "never_visible_at_observer_before_last_output": [
+        29,
+        0,
+        8
+      ],
+      "not_yet_visible_tail": [
+        1,
+        0,
+        0
+      ],
+      "counts": {
+        "output_ticks": 99,
+        "first_seen_2": 37,
+        "new_status_CANDIDATE": 26,
+        "first_seen_1": 36,
+        "first_seen_0": 48,
+        "new_wheel_before_previous_tick": 25,
+        "new_status_MISSING_OR_STALE": 25,
+        "new_status_ACCEPTED": 22,
+        "accepted_same_stamp_pair": 11,
+        "native_pair_opportunity": 11
+      },
+      "first_seen_age_s": {
+        "n": 73,
+        "min": 0.0,
+        "mean": 0.30341964732876736,
+        "p50": 0.007226168999999949,
+        "p95": 0.9093375754,
+        "p99": 0.9361149912400002,
+        "max": 1.002038593,
+        "age_gt_50ms": 25,
+        "age_gt_100ms": 25,
+        "age_gt_250ms": 25
+      },
+      "accepted_age_s": {
+        "n": 22,
+        "min": 0.0011376410000005777,
+        "mean": 0.004850378272727566,
+        "p50": 0.0053165030000004165,
+        "p95": 0.008959450650000188,
+        "p99": 0.009050676000000202,
+        "max": 0.009050676000000202,
+        "age_gt_50ms": 0,
+        "age_gt_100ms": 0,
+        "age_gt_250ms": 0
+      },
+      "runtime": {
+        "resets": 0,
+        "dropped": 0,
+        "catchups": 1,
+        "causal_errors": 0,
+        "mode_counts": {
+          "INITIALIZED": 1,
+          "MODEL_ONLY": 6,
+          "FUSED": 4,
+          "STOPPED": 12
+        }
+      },
+      "schedule_sha256": "93798e20ca008d1d96d327d42b02afb7759ac39fda40a0f30d4e45d57ac9532c",
+      "outputs_sha256": "6a6d185f5002c8e267fb1360754dba50bf7f199e14836b1ba671f01e8d6d6d85",
+      "instrumented_baseline_exact": true
+    },
+    {
+      "bag": "30618_27e994fc",
+      "group": "711abb923942f9fe",
+      "input_events": 73866,
+      "channel_source_inversions": [
+        0,
+        0,
+        0
+      ],
+      "global_source_inversions": 14757,
+      "never_visible_at_observer_before_last_output": [
+        14470,
+        23,
+        0
+      ],
+      "not_yet_visible_tail": [
+        1,
+        0,
+        0
+      ],
+      "counts": {
+        "output_ticks": 38004,
+        "first_seen_0": 23533,
+        "first_seen_1": 17919,
+        "new_status_CANDIDATE": 5,
+        "new_wheel_before_previous_tick": 27486,
+        "new_status_MISSING_OR_STALE": 4,
+        "first_seen_2": 17920,
+        "new_status_ACCEPTED": 35828,
+        "accepted_same_stamp_pair": 17913,
+        "native_pair_opportunity": 17913,
+        "accepted_before_previous_tick": 27482,
+        "native_pair_prior_tick_opportunity": 13740,
+        "new_status_RATE_ANOMALY": 2
+      },
+      "first_seen_age_s": {
+        "n": 35839,
+        "min": 3.0243000082919025e-05,
+        "mean": 0.0774251879170978,
+        "p50": 0.07185795200001621,
+        "p95": 0.1301841207001189,
+        "p99": 0.13393425799995384,
+        "max": 1.7990703460000002,
+        "age_gt_50ms": 27486,
+        "age_gt_100ms": 11054,
+        "age_gt_250ms": 4
+      },
+      "accepted_age_s": {
+        "n": 35828,
+        "min": 3.0243000082919025e-05,
+        "mean": 0.0772996647594582,
+        "p50": 0.07186168600014753,
+        "p95": 0.13016706014999502,
+        "p99": 0.13390337400005592,
+        "max": 0.1354309020000528,
+        "age_gt_50ms": 27482,
+        "age_gt_100ms": 11050,
+        "age_gt_250ms": 0
+      },
+      "runtime": {
+        "resets": 0,
+        "dropped": 0,
+        "catchups": 1,
+        "causal_errors": 0,
+        "mode_counts": {
+          "INITIALIZED": 1,
+          "MODEL_ONLY": 10890,
+          "FUSED": 9337,
+          "STOPPED": 17715,
+          "SINGLE_WHEEL": 2
+        }
+      },
+      "schedule_sha256": "d3288e75e274adf36f9d4b7eefb21f0f86bb2414edd3491090e99960e9fdca63",
+      "outputs_sha256": "cc8cb783b13edaf46712d15be34d09c1a88a81dced8ab34eb0be416977513d0e",
+      "instrumented_baseline_exact": true
+    },
+    {
+      "bag": "30618_3e012faf",
+      "group": "664cca45aeb0db23",
+      "input_events": 39573,
+      "channel_source_inversions": [
+        0,
+        0,
+        0
+      ],
+      "global_source_inversions": 9155,
+      "never_visible_at_observer_before_last_output": [
+        48,
+        0,
+        9
+      ],
+      "not_yet_visible_tail": [
+        1,
+        1,
+        1
+      ],
+      "counts": {
+        "output_ticks": 20454,
+        "first_seen_2": 9555,
+        "new_status_CANDIDATE": 30,
+        "first_seen_0": 20404,
+        "new_wheel_before_previous_tick": 11348,
+        "new_status_MISSING_OR_STALE": 29,
+        "first_seen_1": 9554,
+        "new_status_ACCEPTED": 19050,
+        "accepted_same_stamp_pair": 9524,
+        "native_pair_opportunity": 9524,
+        "accepted_before_previous_tick": 11319,
+        "native_pair_prior_tick_opportunity": 5659
+      },
+      "first_seen_age_s": {
+        "n": 19109,
+        "min": 0.0,
+        "mean": 0.06338926192833262,
+        "p50": 0.0625324470000237,
+        "p95": 0.09460493400000303,
+        "p99": 0.11709570300001815,
+        "max": 0.9524933520000001,
+        "age_gt_50ms": 11348,
+        "age_gt_100ms": 343,
+        "age_gt_250ms": 29
+      },
+      "accepted_age_s": {
+        "n": 19050,
+        "min": 0.025353896000069653,
+        "mean": 0.06212106144317628,
+        "p50": 0.06254411249997816,
+        "p95": 0.09449431800001662,
+        "p99": 0.11467806500002098,
+        "max": 0.12524058799999693,
+        "age_gt_50ms": 11319,
+        "age_gt_100ms": 314,
+        "age_gt_250ms": 0
+      },
+      "runtime": {
+        "resets": 0,
+        "dropped": 0,
+        "catchups": 1,
+        "causal_errors": 0,
+        "mode_counts": {
+          "INITIALIZED": 1,
+          "MODEL_ONLY": 8561,
+          "FUSED": 7417,
+          "STOPPED": 4394,
+          "SINGLE_WHEEL": 2
+        }
+      },
+      "schedule_sha256": "eaf9f17748896a9cf6cbb663e3c90af6b1b257db3e16512bba2b9fdf49f2dfcf",
+      "outputs_sha256": "9172d685fd5ff730bc31273bc5099c6af6f9ace150716ade80a109e71241deb1",
+      "instrumented_baseline_exact": true
+    },
+    {
+      "bag": "30618_46e21b9b",
+      "group": "664cca45aeb0db23",
+      "input_events": 46261,
+      "channel_source_inversions": [
+        0,
+        0,
+        0
+      ],
+      "global_source_inversions": 9827,
+      "never_visible_at_observer_before_last_output": [
+        51,
+        0,
+        11
+      ],
+      "not_yet_visible_tail": [
+        1,
+        0,
+        0
+      ],
+      "counts": {
+        "output_ticks": 24124,
+        "first_seen_2": 11064,
+        "new_status_CANDIDATE": 26,
+        "first_seen_0": 24071,
+        "new_wheel_before_previous_tick": 6519,
+        "new_status_MISSING_OR_STALE": 25,
+        "first_seen_1": 11063,
+        "new_status_ACCEPTED": 22017,
+        "accepted_same_stamp_pair": 11000,
+        "native_pair_opportunity": 11000,
+        "accepted_before_previous_tick": 6494,
+        "native_pair_prior_tick_opportunity": 3247,
+        "new_status_AMBIGUOUS_PAIR": 7,
+        "new_status_MODEL_DISAGREEMENT": 10,
+        "new_status_ZERO_LOCK_SUSPECT": 42
+      },
+      "first_seen_age_s": {
+        "n": 22127,
+        "min": 0.0,
+        "mean": 0.03884820042304211,
+        "p50": 0.025128330999997672,
+        "p95": 0.09388114770003995,
+        "p99": 0.09685161700008393,
+        "max": 1.346425519,
+        "age_gt_50ms": 6519,
+        "age_gt_100ms": 25,
+        "age_gt_250ms": 25
+      },
+      "accepted_age_s": {
+        "n": 22017,
+        "min": 1.3339999895833898e-06,
+        "mean": 0.03756888432159933,
+        "p50": 0.025011718000030214,
+        "p95": 0.09382469700005913,
+        "p99": 0.09678809900003671,
+        "max": 0.09774955200009572,
+        "age_gt_50ms": 6494,
+        "age_gt_100ms": 0,
+        "age_gt_250ms": 0
+      },
+      "runtime": {
+        "resets": 0,
+        "dropped": 0,
+        "catchups": 1,
+        "causal_errors": 0,
+        "mode_counts": {
+          "INITIALIZED": 1,
+          "MODEL_ONLY": 9047,
+          "FUSED": 7229,
+          "STOPPED": 7751,
+          "SINGLE_WHEEL": 17
+        }
+      },
+      "schedule_sha256": "31a6f97211d57c073568db7d6b5023fa036529c3c769ce95fcf1d1b3bdc10414",
+      "outputs_sha256": "d88f7c8533408218d625b173fc6d97e884e9327efc96497f10d836cc5e3609d7",
+      "instrumented_baseline_exact": true
+    },
+    {
+      "bag": "30618_5036aa78",
+      "group": "664cca45aeb0db23",
+      "input_events": 4071,
+      "channel_source_inversions": [
+        0,
+        0,
+        0
+      ],
+      "global_source_inversions": 1042,
+      "never_visible_at_observer_before_last_output": [
+        47,
+        0,
+        10
+      ],
+      "not_yet_visible_tail": [
+        1,
+        0,
+        0
+      ],
+      "counts": {
+        "output_ticks": 2051,
+        "first_seen_2": 1006,
+        "new_status_CANDIDATE": 27,
+        "first_seen_0": 2002,
+        "new_wheel_before_previous_tick": 1958,
+        "new_status_MISSING_OR_STALE": 26,
+        "first_seen_1": 1005,
+        "new_status_ACCEPTED": 1958,
+        "accepted_same_stamp_pair": 979,
+        "native_pair_opportunity": 979,
+        "accepted_before_previous_tick": 1932,
+        "native_pair_prior_tick_opportunity": 966
+      },
+      "first_seen_age_s": {
+        "n": 2011,
+        "min": 0.0,
+        "mean": 0.09287779632322511,
+        "p50": 0.08160861100000005,
+        "p95": 0.09886623200000066,
+        "p99": 1.0283531320000001,
+        "max": 1.0505404560000002,
+        "age_gt_50ms": 1958,
+        "age_gt_100ms": 68,
+        "age_gt_250ms": 26
+      },
+      "accepted_age_s": {
+        "n": 1958,
+        "min": 0.03701567600000022,
+        "mean": 0.08119662544637674,
+        "p50": 0.08160861100000005,
+        "p95": 0.09811370055000031,
+        "p99": 0.10074898414000043,
+        "max": 0.10293622600000063,
+        "age_gt_50ms": 1932,
+        "age_gt_100ms": 42,
+        "age_gt_250ms": 0
+      },
+      "runtime": {
+        "resets": 0,
+        "dropped": 0,
+        "catchups": 1,
+        "causal_errors": 0,
+        "mode_counts": {
+          "INITIALIZED": 1,
+          "MODEL_ONLY": 163,
+          "FUSED": 154,
+          "STOPPED": 1658
+        }
+      },
+      "schedule_sha256": "75a23aef49189df03e80dcda5786929d204c6e0580c2036d1a8bb00a8ff76abc",
+      "outputs_sha256": "a5cc994908b0e56c6560de5b0bcf776592b6f2d83105f670299e3b1228292c8c",
+      "instrumented_baseline_exact": true
+    },
+    {
+      "bag": "30618_74559c73",
+      "group": "664cca45aeb0db23",
+      "input_events": 3957,
+      "channel_source_inversions": [
+        0,
+        0,
+        0
+      ],
+      "global_source_inversions": 1020,
+      "never_visible_at_observer_before_last_output": [
+        49,
+        0,
+        10
+      ],
+      "not_yet_visible_tail": [
+        1,
+        0,
+        0
+      ],
+      "counts": {
+        "output_ticks": 1985,
+        "first_seen_2": 982,
+        "new_status_CANDIDATE": 29,
+        "first_seen_0": 1934,
+        "new_wheel_before_previous_tick": 1918,
+        "new_status_MISSING_OR_STALE": 28,
+        "first_seen_1": 981,
+        "new_status_ACCEPTED": 1906,
+        "accepted_same_stamp_pair": 953,
+        "native_pair_opportunity": 953,
+        "accepted_before_previous_tick": 1890,
+        "native_pair_prior_tick_opportunity": 945
+      },
+      "first_seen_age_s": {
+        "n": 1963,
+        "min": 0.0,
+        "mean": 0.10651822611258557,
+        "p50": 0.09644889600000539,
+        "p95": 0.10436937600000107,
+        "p99": 1.00267524458,
+        "max": 1.0547770810000001,
+        "age_gt_50ms": 1918,
+        "age_gt_100ms": 452,
+        "age_gt_250ms": 28
+      },
+      "accepted_age_s": {
+        "n": 1906,
+        "min": 0.005088405000000407,
+        "mean": 0.09474563275865974,
+        "p50": 0.09644889600000539,
+        "p95": 0.10374433625000457,
+        "p99": 0.10736087400000116,
+        "max": 0.10981761600000439,
+        "age_gt_50ms": 1890,
+        "age_gt_100ms": 424,
+        "age_gt_250ms": 0
+      },
+      "runtime": {
+        "resets": 0,
+        "dropped": 0,
+        "catchups": 1,
+        "causal_errors": 0,
+        "mode_counts": {
+          "INITIALIZED": 1,
+          "MODEL_ONLY": 433,
+          "FUSED": 431,
+          "STOPPED": 1042
+        }
+      },
+      "schedule_sha256": "af731e6407cec45e18b5757295c2608c92fa41347cee99036892be9005cfcdfd",
+      "outputs_sha256": "ca98d332c5d1a841772347e84450c44c512423bfc0491e9687fad1e3f0d0b379",
+      "instrumented_baseline_exact": true
+    },
+    {
+      "bag": "30618_88548b02",
+      "group": "711abb923942f9fe",
+      "input_events": 48285,
+      "channel_source_inversions": [
+        0,
+        0,
+        0
+      ],
+      "global_source_inversions": 9477,
+      "never_visible_at_observer_before_last_output": [
+        8935,
+        22,
+        1
+      ],
+      "not_yet_visible_tail": [
+        1,
+        0,
+        0
+      ],
+      "counts": {
+        "output_ticks": 25114,
+        "first_seen_0": 16178,
+        "first_seen_1": 11574,
+        "new_status_CANDIDATE": 5,
+        "new_wheel_before_previous_tick": 18277,
+        "new_status_MISSING_OR_STALE": 4,
+        "first_seen_2": 11574,
+        "new_status_ACCEPTED": 23139,
+        "accepted_same_stamp_pair": 11569,
+        "native_pair_opportunity": 11569,
+        "accepted_before_previous_tick": 18273,
+        "native_pair_prior_tick_opportunity": 9136
+      },
+      "first_seen_age_s": {
+        "n": 23148,
+        "min": 5.785700005844774e-05,
+        "mean": 0.0812077611247085,
+        "p50": 0.08377575300005446,
+        "p95": 0.128001888999961,
+        "p99": 0.13391043156003204,
+        "max": 2.117289586,
+        "age_gt_50ms": 18277,
+        "age_gt_100ms": 8065,
+        "age_gt_250ms": 4
+      },
+      "accepted_age_s": {
+        "n": 23139,
+        "min": 5.785700005844774e-05,
+        "mean": 0.0809884881685359,
+        "p50": 0.08377575300005446,
+        "p95": 0.1279242770000223,
+        "p99": 0.13387923910006178,
+        "max": 0.13540242800002034,
+        "age_gt_50ms": 18273,
+        "age_gt_100ms": 8061,
+        "age_gt_250ms": 0
+      },
+      "runtime": {
+        "resets": 0,
+        "dropped": 0,
+        "catchups": 1,
+        "causal_errors": 0,
+        "mode_counts": {
+          "INITIALIZED": 1,
+          "MODEL_ONLY": 9373,
+          "FUSED": 8010,
+          "STOPPED": 7676,
+          "SINGLE_WHEEL": 1
+        }
+      },
+      "schedule_sha256": "e04d2a7ada13d5758e7135bc18c27b0f6103b0d9a3858ee8932cf1b8e1eca172",
+      "outputs_sha256": "76538229e4b4051e6bc9ed73213f14f3c9932e52d0ee0a08a2363d65186db39b",
+      "instrumented_baseline_exact": true
+    },
+    {
+      "bag": "30618_bcc9e7a2",
+      "group": "664cca45aeb0db23",
+      "input_events": 39573,
+      "channel_source_inversions": [
+        0,
+        0,
+        0
+      ],
+      "global_source_inversions": 9155,
+      "never_visible_at_observer_before_last_output": [
+        48,
+        0,
+        9
+      ],
+      "not_yet_visible_tail": [
+        1,
+        1,
+        1
+      ],
+      "counts": {
+        "output_ticks": 20454,
+        "first_seen_2": 9555,
+        "new_status_CANDIDATE": 30,
+        "first_seen_0": 20404,
+        "new_wheel_before_previous_tick": 11348,
+        "new_status_MISSING_OR_STALE": 29,
+        "first_seen_1": 9554,
+        "new_status_ACCEPTED": 19050,
+        "accepted_same_stamp_pair": 9524,
+        "native_pair_opportunity": 9524,
+        "accepted_before_previous_tick": 11319,
+        "native_pair_prior_tick_opportunity": 5659
+      },
+      "first_seen_age_s": {
+        "n": 19109,
+        "min": 0.0,
+        "mean": 0.06338926192833262,
+        "p50": 0.0625324470000237,
+        "p95": 0.09460493400000303,
+        "p99": 0.11709570300001815,
+        "max": 0.9524933520000001,
+        "age_gt_50ms": 11348,
+        "age_gt_100ms": 343,
+        "age_gt_250ms": 29
+      },
+      "accepted_age_s": {
+        "n": 19050,
+        "min": 0.025353896000069653,
+        "mean": 0.06212106144317628,
+        "p50": 0.06254411249997816,
+        "p95": 0.09449431800001662,
+        "p99": 0.11467806500002098,
+        "max": 0.12524058799999693,
+        "age_gt_50ms": 11319,
+        "age_gt_100ms": 314,
+        "age_gt_250ms": 0
+      },
+      "runtime": {
+        "resets": 0,
+        "dropped": 0,
+        "catchups": 1,
+        "causal_errors": 0,
+        "mode_counts": {
+          "INITIALIZED": 1,
+          "MODEL_ONLY": 8561,
+          "FUSED": 7417,
+          "STOPPED": 4394,
+          "SINGLE_WHEEL": 2
+        }
+      },
+      "schedule_sha256": "eaf9f17748896a9cf6cbb663e3c90af6b1b257db3e16512bba2b9fdf49f2dfcf",
+      "outputs_sha256": "9172d685fd5ff730bc31273bc5099c6af6f9ace150716ade80a109e71241deb1",
+      "instrumented_baseline_exact": true
+    },
+    {
+      "bag": "30618_e151d6e4",
+      "group": "664cca45aeb0db23",
+      "input_events": 1633,
+      "channel_source_inversions": [
+        0,
+        0,
+        0
+      ],
+      "global_source_inversions": 433,
+      "never_visible_at_observer_before_last_output": [
+        40,
+        0,
+        9
+      ],
+      "not_yet_visible_tail": [
+        1,
+        0,
+        0
+      ],
+      "counts": {
+        "output_ticks": 822,
+        "first_seen_2": 402,
+        "new_status_CANDIDATE": 24,
+        "first_seen_0": 780,
+        "new_wheel_before_previous_tick": 555,
+        "new_status_MISSING_OR_STALE": 23,
+        "first_seen_1": 401,
+        "new_status_ACCEPTED": 756,
+        "accepted_same_stamp_pair": 378,
+        "native_pair_opportunity": 378,
+        "accepted_before_previous_tick": 532,
+        "native_pair_prior_tick_opportunity": 266
+      },
+      "first_seen_age_s": {
+        "n": 803,
+        "min": 0.0,
+        "mean": 0.07331606874844442,
+        "p50": 0.05231037200000088,
+        "p95": 0.06331538030000185,
+        "p99": 0.9045088112,
+        "max": 0.9548510850000005,
+        "age_gt_50ms": 555,
+        "age_gt_100ms": 23,
+        "age_gt_250ms": 23
+      },
+      "accepted_age_s": {
+        "n": 756,
+        "min": 0.003182145000000247,
+        "mean": 0.05009114472486886,
+        "p50": 0.05231626800000022,
+        "p95": 0.06184201725000005,
+        "p99": 0.06390986760000077,
+        "max": 0.06521055800000042,
+        "age_gt_50ms": 532,
+        "age_gt_100ms": 0,
+        "age_gt_250ms": 0
+      },
+      "runtime": {
+        "resets": 0,
+        "dropped": 0,
+        "catchups": 1,
+        "causal_errors": 0,
+        "mode_counts": {
+          "INITIALIZED": 1,
+          "MODEL_ONLY": 6,
+          "FUSED": 4,
+          "STOPPED": 745
+        }
+      },
+      "schedule_sha256": "325fa1117f2de663309a46fb38a913d04916e14d17645b64be35b14af68dede6",
+      "outputs_sha256": "340320c950b9f80682a32f75d3abc5c785d9dadfc3f47f83837f04e40384ebca",
+      "instrumented_baseline_exact": true
+    },
+    {
+      "bag": "30639_0ab96c59",
+      "group": "2cd82bc27dbad052",
+      "input_events": 3240,
+      "channel_source_inversions": [
+        0,
+        0,
+        0
+      ],
+      "global_source_inversions": 781,
+      "never_visible_at_observer_before_last_output": [
+        124,
+        19,
+        0
+      ],
+      "not_yet_visible_tail": [
+        1,
+        0,
+        0
+      ],
+      "counts": {
+        "output_ticks": 1641,
+        "first_seen_0": 1514,
+        "first_seen_1": 792,
+        "new_status_CANDIDATE": 3,
+        "new_wheel_before_previous_tick": 223,
+        "new_status_MISSING_OR_STALE": 3,
+        "first_seen_2": 790,
+        "new_status_ACCEPTED": 1576,
+        "accepted_same_stamp_pair": 788,
+        "native_pair_opportunity": 788,
+        "accepted_before_previous_tick": 220,
+        "native_pair_prior_tick_opportunity": 110
+      },
+      "first_seen_age_s": {
+        "n": 1582,
+        "min": 0.00036894600000003663,
+        "mean": 0.04868232059418681,
+        "p50": 0.04510729900000143,
+        "p95": 0.09059403400000221,
+        "p99": 0.09873178100000146,
+        "max": 1.566395415,
+        "age_gt_50ms": 223,
+        "age_gt_100ms": 13,
+        "age_gt_250ms": 3
+      },
+      "accepted_age_s": {
+        "n": 1576,
+        "min": 0.0004710110000001322,
+        "mean": 0.046373566664976856,
+        "p50": 0.04510233699999944,
+        "p95": 0.09040009799999993,
+        "p99": 0.09869620350000119,
+        "max": 0.10684557600000133,
+        "age_gt_50ms": 220,
+        "age_gt_100ms": 10,
+        "age_gt_250ms": 0
+      },
+      "runtime": {
+        "resets": 0,
+        "dropped": 0,
+        "catchups": 1,
+        "causal_errors": 0,
+        "mode_counts": {
+          "INITIALIZED": 1,
+          "FUSED": 57,
+          "MODEL_ONLY": 68,
+          "STOPPED": 1467
+        }
+      },
+      "schedule_sha256": "805a41922f2ffa789ec945f4f02aef9fce6a224626577ead8adbffbf6185233f",
+      "outputs_sha256": "d752c481b21a1445bc723326ef6a1ad32b53b44a5ee34c71ebdf36bd6c55343b",
+      "instrumented_baseline_exact": true
+    },
+    {
+      "bag": "30639_9c362687",
+      "group": "a8a4c11ebcc1dde2",
+      "input_events": 51723,
+      "channel_source_inversions": [
+        1,
+        1,
+        1
+      ],
+      "global_source_inversions": 6485,
+      "never_visible_at_observer_before_last_output": [
+        44,
+        10,
+        10
+      ],
+      "not_yet_visible_tail": [
+        1,
+        0,
+        0
+      ],
+      "counts": {
+        "output_ticks": 27189,
+        "first_seen_2": 12268,
+        "new_status_CANDIDATE": 1,
+        "first_seen_1": 12269,
+        "new_status_ACCEPTED": 24500,
+        "new_wheel_before_previous_tick": 12047,
+        "new_status_MISSING_OR_STALE": 36,
+        "first_seen_0": 27121,
+        "accepted_before_previous_tick": 12011,
+        "accepted_same_stamp_pair": 12248,
+        "native_pair_opportunity": 12248,
+        "native_pair_prior_tick_opportunity": 6005
+      },
+      "first_seen_age_s": {
+        "n": 24537,
+        "min": 0.0,
+        "mean": 0.053267640379912023,
+        "p50": 0.046982876000001284,
+        "p95": 0.10530727900004422,
+        "p99": 0.11034714324003289,
+        "max": 1.0999328430000002,
+        "age_gt_50ms": 12047,
+        "age_gt_100ms": 1690,
+        "age_gt_250ms": 36
+      },
+      "accepted_age_s": {
+        "n": 24500,
+        "min": 4.800999999998723e-05,
+        "mean": 0.05236998241126128,
+        "p50": 0.046811836499998094,
+        "p95": 0.10513783500005047,
+        "p99": 0.11020955000003596,
+        "max": 0.20002943400000017,
+        "age_gt_50ms": 12011,
+        "age_gt_100ms": 1654,
+        "age_gt_250ms": 0
+      },
+      "runtime": {
+        "resets": 0,
+        "dropped": 0,
+        "catchups": 2,
+        "causal_errors": 0,
+        "mode_counts": {
+          "INITIALIZED": 1,
+          "MODEL_ONLY": 11512,
+          "FUSED": 9416,
+          "STOPPED": 6256,
+          "SINGLE_WHEEL": 3
+        }
+      },
+      "schedule_sha256": "322801400d8f5d59e4680e057e48469ed367cd016b5b70e5fda3f15edabb1754",
+      "outputs_sha256": "fdac79a5b68d1db90ab78b3db4925a2eb5d624170686da145bf6dee5224fde47",
+      "instrumented_baseline_exact": true
+    },
+    {
+      "bag": "30639_c31df386",
+      "group": "70bb14d1c90f301f",
+      "input_events": 52134,
+      "channel_source_inversions": [
+        0,
+        0,
+        0
+      ],
+      "global_source_inversions": 10734,
+      "never_visible_at_observer_before_last_output": [
+        29,
+        0,
+        0
+      ],
+      "not_yet_visible_tail": [
+        1,
+        0,
+        0
+      ],
+      "counts": {
+        "output_ticks": 27246,
+        "first_seen_2": 12554,
+        "new_status_CANDIDATE": 1,
+        "first_seen_1": 12361,
+        "new_status_ACCEPTED": 24874,
+        "new_wheel_before_previous_tick": 10027,
+        "new_status_MISSING_OR_STALE": 40,
+        "first_seen_0": 27189,
+        "accepted_before_previous_tick": 9987,
+        "accepted_same_stamp_pair": 12339,
+        "native_pair_opportunity": 12338,
+        "native_pair_prior_tick_opportunity": 4931
+      },
+      "first_seen_age_s": {
+        "n": 24915,
+        "min": 0.0,
+        "mean": 0.04437442232514201,
+        "p50": 0.040327345000036985,
+        "p95": 0.09333022920010307,
+        "p99": 0.09835892704001709,
+        "max": 1.228038948,
+        "age_gt_50ms": 10027,
+        "age_gt_100ms": 48,
+        "age_gt_250ms": 40
+      },
+      "accepted_age_s": {
+        "n": 24874,
+        "min": 5.000000555810402e-07,
+        "mean": 0.04321905801105223,
+        "p50": 0.040172476500003995,
+        "p95": 0.09291244285005856,
+        "p99": 0.09796047600002566,
+        "max": 0.23409011700000004,
+        "age_gt_50ms": 9987,
+        "age_gt_100ms": 8,
+        "age_gt_250ms": 0
+      },
+      "runtime": {
+        "resets": 0,
+        "dropped": 0,
+        "catchups": 1,
+        "causal_errors": 0,
+        "mode_counts": {
+          "INITIALIZED": 1,
+          "MODEL_ONLY": 11204,
+          "FUSED": 9251,
+          "STOPPED": 6594,
+          "SINGLE_WHEEL": 195
+        }
+      },
+      "schedule_sha256": "4d8e3da5d7db1c85615f613478c58d2ef9aa8947770db098d156b60065cf19fe",
+      "outputs_sha256": "ec94cc4d916cc9a9df21a3cb43368b5c5ed2f0a53cf5c953b7d4b6ebd5466da2",
+      "instrumented_baseline_exact": true
+    },
+    {
+      "bag": "30639_dce52be4",
+      "group": "70bb14d1c90f301f",
+      "input_events": 44106,
+      "channel_source_inversions": [
+        0,
+        0,
+        0
+      ],
+      "global_source_inversions": 9200,
+      "never_visible_at_observer_before_last_output": [
+        18,
+        0,
+        0
+      ],
+      "not_yet_visible_tail": [
+        1,
+        0,
+        0
+      ],
+      "counts": {
+        "output_ticks": 22967,
+        "first_seen_2": 10582,
+        "new_status_CANDIDATE": 4,
+        "first_seen_1": 10581,
+        "new_wheel_before_previous_tick": 12150,
+        "new_status_MISSING_OR_STALE": 34,
+        "first_seen_0": 22924,
+        "new_status_ACCEPTED": 21125,
+        "accepted_before_previous_tick": 12114,
+        "accepted_same_stamp_pair": 10557,
+        "native_pair_opportunity": 10557,
+        "native_pair_prior_tick_opportunity": 6053
+      },
+      "first_seen_age_s": {
+        "n": 21163,
+        "min": 0.0,
+        "mean": 0.06030187974883471,
+        "p50": 0.05526066900006299,
+        "p95": 0.094351147999987,
+        "p99": 0.11812607216003482,
+        "max": 1.094009335,
+        "age_gt_50ms": 12150,
+        "age_gt_100ms": 428,
+        "age_gt_250ms": 34
+      },
+      "accepted_age_s": {
+        "n": 21125,
+        "min": 1.3684999999874492e-05,
+        "mean": 0.05928677398270244,
+        "p50": 0.05518736000010449,
+        "p95": 0.0942235410000194,
+        "p99": 0.1143097082400799,
+        "max": 0.24802673599999991,
+        "age_gt_50ms": 12114,
+        "age_gt_100ms": 392,
+        "age_gt_250ms": 0
+      },
+      "runtime": {
+        "resets": 0,
+        "dropped": 0,
+        "catchups": 1,
+        "causal_errors": 0,
+        "mode_counts": {
+          "INITIALIZED": 1,
+          "FUSED": 8432,
+          "SINGLE_WHEEL": 5,
+          "MODEL_ONLY": 9936,
+          "STOPPED": 4550
+        }
+      },
+      "schedule_sha256": "8afd39c6e6cb6c45bf3976e00bf5635628043ab508cd4acd56e1d3154055033f",
+      "outputs_sha256": "e82800420b723e1ecce964b15981c816c8a8c637df5074e719f73b25a48c8f4a",
+      "instrumented_baseline_exact": true
+    },
+    {
+      "bag": "30639_e4379d7f",
+      "group": "a0c46036cc19092a",
+      "input_events": 55576,
+      "channel_source_inversions": [
+        0,
+        0,
+        0
+      ],
+      "global_source_inversions": 8712,
+      "never_visible_at_observer_before_last_output": [
+        32,
+        0,
+        0
+      ],
+      "not_yet_visible_tail": [
+        1,
+        0,
+        0
+      ],
+      "counts": {
+        "output_ticks": 28765,
+        "first_seen_2": 13425,
+        "new_status_CANDIDATE": 1,
+        "first_seen_1": 13425,
+        "new_status_ACCEPTED": 26781,
+        "new_wheel_before_previous_tick": 14249,
+        "new_status_MISSING_OR_STALE": 62,
+        "first_seen_0": 28693,
+        "accepted_before_previous_tick": 14185,
+        "accepted_same_stamp_pair": 13389,
+        "native_pair_opportunity": 13389,
+        "native_pair_prior_tick_opportunity": 7092,
+        "new_status_AMBIGUOUS_PAIR": 6
+      },
+      "first_seen_age_s": {
+        "n": 26850,
+        "min": 0.0,
+        "mean": 0.0520991613586599,
+        "p50": 0.0527251475000412,
+        "p95": 0.08650039600000525,
+        "p99": 0.10383882400014954,
+        "max": 1.8399729060000003,
+        "age_gt_50ms": 14249,
+        "age_gt_100ms": 494,
+        "age_gt_250ms": 62
+      },
+      "accepted_age_s": {
+        "n": 26781,
+        "min": 6.808400000046788e-05,
+        "mean": 0.0496935623268742,
+        "p50": 0.05264442700000416,
+        "p95": 0.08619550999999959,
+        "p99": 0.10334357020019524,
+        "max": 0.24997059900000007,
+        "age_gt_50ms": 14185,
+        "age_gt_100ms": 432,
+        "age_gt_250ms": 0
+      },
+      "runtime": {
+        "resets": 0,
+        "dropped": 0,
+        "catchups": 1,
+        "causal_errors": 0,
+        "mode_counts": {
+          "INITIALIZED": 1,
+          "MODEL_ONLY": 11256,
+          "FUSED": 9918,
+          "STOPPED": 7587,
+          "SINGLE_WHEEL": 2
+        }
+      },
+      "schedule_sha256": "c533917bad7d3248097f893923bc4d6b579faee27a292be2399858e1b881572b",
+      "outputs_sha256": "3a433a52141da2a483d5ea7faac934f19487b58879882ecebd48fd0f2e32b08d",
+      "instrumented_baseline_exact": true
+    }
+  ]
+}
