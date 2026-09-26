@@ -1,0 +1,27 @@
+name: R3-H28 pinned source only
+on:
+  push:
+    branches: [research/R3-H28]
+    paths: [.github/workflows/r3-h28-source.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Export fixed baseline; no measurement access
+        run: |
+          mkdir -p "$RUNNER_TEMP/h28-source"
+          git archive --format=tar.gz e3b0c9c039d2953fbfcda51231263d38ef9f1024 > "$RUNNER_TEMP/h28-source/baseline.tar.gz"
+          git show e3b0c9c039d2953fbfcda51231263d38ef9f1024:src/reserve_odometry/config/champion_v8.yaml > "$RUNNER_TEMP/h28-source/champion_v8.yaml"
+          sha256sum "$RUNNER_TEMP/h28-source/baseline.tar.gz" > "$RUNNER_TEMP/h28-source/SHA256SUMS"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: R3-H28-pinned-source
+          path: ${{ runner.temp }}/h28-source
+          retention-days: 30
