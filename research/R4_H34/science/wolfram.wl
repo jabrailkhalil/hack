@@ -1,0 +1,1 @@
+ClearAll[aa,qq,h,tt,ss,xx]; integr=Integrate[qq+(aa-qq)*Exp[-ss/tt],{ss,0,h},Assumptions->(h>0&&tt>0)]; ff=1-(1-Exp[-xx])/xx; {FullSimplify[integr-h*(aa+(qq-aa)*(1-(1-Exp[-h/tt])/(h/tt))),h>0&&tt>0], Series[ff,{xx,0,5}], Limit[ff,xx->0], Series[(1-Exp[-xx])-ff,{xx,0,3}], ToString[integr,InputForm]}

@@ -1,0 +1,3 @@
+Before any train diagnosis/fitting: two test-harness fixes, no runtime change.
+1. Exact timestamp assertion now compares 199*.05, not separately rounded9.95.
+2. Original sign guard only forbids crossing between two nonzero opposite signs. The initially stronger <=0 test failed for baseline as well as B. Corrected to old_v*new_v>=0 (the actual preserved invariant). Separate 200-step reverse-braking-from-.2 diagnostic is retained: baseline max positive velocity .0483874276051556m/s, B .0578789716752151m/s. This is an inherited zero-origin rebound with larger B amplitude, not a new safety certification. No refitting/tuning based on this diagnostic. Initial failed test log is retained.
