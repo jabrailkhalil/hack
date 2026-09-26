@@ -6,6 +6,7 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
+  pull-requests: read
 jobs:
   snapshot:
     runs-on: ubuntu-22.04
@@ -50,7 +51,6 @@ jobs:
               if name!='main':
                   manifest['peers'][name]={'sha':sha,'author':git('show','-s','--format=%an <%ae>',sha).decode().strip(),'zip_sha256':hashlib.sha256(zip_path.read_bytes()).hexdigest()}
           (out/'manifest.json').write_text(json.dumps(manifest,indent=2))
-          # Capture report/protocol text for current research branch heads, including R2/R3.
           for row in refs:
               branch=row['branch'];sha=row['sha']
               if not branch.startswith('research/'):continue
@@ -63,6 +63,7 @@ jobs:
           print('SNAPSHOT',len(refs),'branches',len(prs),'PRs; algorithms not executed')
           PY
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: adjudication-sources
           path: audit/
