@@ -1,0 +1,17 @@
+{
+  "baseline": "e3b0c9c039d2953fbfcda51231263d38ef9f1024",
+  "protocol_sha": "97224cfe363a8838d092cba6491d597de109a678",
+  "module_sha256": "b0bc8cd8c20529b3f9532d72a7961e4e661467d8076c08167c7df898174fb937",
+  "thresholds": {"1.0": 0.6073472783603308, "2.0": 1.3236027142510385},
+  "rule": "max(3*sigma_w, group-balanced weighted empirical quantile .995), no development tuning",
+  "fit_groups": ["0d4506540f0e7621", "0f36b619fba02a9b", "1cff0aebccb39ff5", "1e811c142a49aa16", "49fc4c6fb44fd0ea", "4a5f0d46327316bb", "4ca08ed0da0cb611", "58dd5f96d4201195", "6090ff2c1bc8dee6", "8232b134be2a5002", "86c32e441a296aaa", "8ff91290187a9769", "96d0ec5b7ee50e7e", "b8fda5f0647666fb", "bc1e4cbe924a90ce", "bc403256f12f9710", "c8a1e61d1b0710e9", "dc785decbed3d7ce", "de891506667c23f9", "e894436afa9dd9f1", "f28fe86416cc8dc2"],
+  "check_groups": ["0448e10aab8a0e05", "2b1581126a480c0f", "5c1be3e9a2189121", "95a748306e6cbf16", "bf69dbfe85be52b0", "eeabf7d118bbcdac"],
+  "train_bags": 64,
+  "full_training_calibration_sha256": "40f8bc852844cd4f59d09af7c01cbcd2559348eee00ecfd59d019d42457b3ab2",
+  "training_artifact": "train/calibration.json in R3-H28 evidence package",
+  "validation_opened": false,
+  "group_counts": {
+    "1.0": {"groups_with_data": 23, "selected_pairs": 26709, "check_pairs": 6548, "above_threshold": 149},
+    "2.0": {"groups_with_data": 23, "selected_pairs": 20258, "check_pairs": 4979, "above_threshold": 108}
+  }
+}
