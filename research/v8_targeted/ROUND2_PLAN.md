@@ -1,0 +1,11 @@
+# Round 2: bounded interpolation after round-1 failure modes
+
+Previous round tested all seven declared candidates. brake_090 gave 30618 original fault RMSE .27239832988807927 -> .22551841469489298 (-17.2101%) and full-faulted distance 1.227531488049144 -> 1.1731514766285747 m (-4.4300%). But 30639 original fault regressed +7.5782%, and 30618 low-speed lock event RMSE .19767038456063885 -> .1997856902273368 (+1.0701%). Preserve these failures; do not promote brake_090 globally.
+
+Exactly three additional static candidates, all other v8 fields unchanged: max_brake_force_n times .94, .95, .96. No interpolation of live state, no speed/vehicle/bag detection. Every candidate is run from its own start. Primary, full-faulted distance and unchanged low/H11/slow suites are measured on all 17 development bags. Same baseline, scoring, masks, source-time grid and groups; no fitting on GNSS and no edits to metric formulas.
+
+Select only a target-30618 research candidate with >=5% original fault gain, target clean/pooled <=0.5% regression, target clean/full-faulted distance <=1%, target low/abrupt/slow event <=0.5%, old per-bag clean <=max(.005 m/s,5%), no new individual false stops or non-recovery, unchanged coverage/schedules. Keep combined guards from PLAN. Rank eligible target candidates by original fault RMSE, breaking ties by smaller coefficient change. This target supplemental guard is stricter than aggregate-only analysis; no existing threshold is relaxed.
+
+30639 remains a disclosed transfer evaluation, not something to hide. Any selected profile is explicitly for configured 30618 only; unknown/other vehicles keep canonical v8. No per-bag coefficient table. The combined mixed-profile result, if provided, must be separately labelled a configured-vehicle policy, not a universal single-parameter victory. Optionally report already measured brake_110 for 30639 descriptively; it is NOT selected in this round.
+
+These three variants are exploratory, chosen after inspecting round 1. All ten attempted variants count toward the search. At most one frozen profile may subsequently reach validation, only after publication of exact source/config hashes. Independent test and enabled ROS are not claimed.
