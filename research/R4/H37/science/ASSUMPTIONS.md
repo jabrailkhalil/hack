@@ -6,4 +6,4 @@ Wolfram worksheet and actual output (including parsing ambiguity) are retained; 
 
 Prior evidence actually read: full accessible body of R3-H24 PR45 via authorized GitHub API. It describes fitted static q maps, rejected at fixed v8 on development; its saturation ordering was unchanged. Its results are context only, not H37 training labels or H37 measured metrics.
 Source: https://github.com/jabrailkhalil/hack/pull/45
-H24 report binding from the PR: acabcd3c8b104d20e0569a7bb6633f6f6bb065d1, reports/research_R3/H24/REPORT.md. Not a claim of reading any externally referenced full scientific paper.
+The read scope is the PR body, not an externally referenced full scientific paper. No unverified report-commit binding is asserted.
