@@ -1,0 +1,1564 @@
+diff --git a/research/R3/H31/BASELINE_PINS.json b/research/R3/H31/BASELINE_PINS.json
+new file mode 100644
+index 0000000..f9b6892
+--- /dev/null
++++ b/research/R3/H31/BASELINE_PINS.json
+@@ -0,0 +1,65 @@
++{
++  "baseline": "e3b0c9c039d2953fbfcda51231263d38ef9f1024",
++  "files": {
++    "src/reserve_odometry/config/adaptive_v5.json": "3b84e6eb09262ba7a24771e5a56e0aa3ecb89c67f18e501cd0d0366514e99da1",
++    "src/reserve_odometry/config/adaptive_v5.yaml": "dae5f5c80cd87e968b1e838c5b0d25cc531f816949b1fd2a59dd65e8e93efaec",
++    "src/reserve_odometry/config/calibrated_v3.yaml": "a34faa159b8e9436c58e957376f4dd4207395ad63f5b8391ed2a3737c339dbf5",
++    "src/reserve_odometry/config/candidates_v3/balanced_physics.json": "68b81682f9ac48d11bf7d8e67418a45de546ab35526954c5f6fc3eda2d7ec425",
++    "src/reserve_odometry/config/candidates_v3/balanced_physics.yaml": "d1f8fd9d96911ba0f1381a6d1b6837f50fa9f6a2c518cb38421e9c229d3f0a14",
++    "src/reserve_odometry/config/candidates_v3/baseline_v2.json": "92b2a8a371ab890e0087c173c0560b31949c2ac8235141beeaeb55f70c07ac91",
++    "src/reserve_odometry/config/candidates_v3/baseline_v2.yaml": "3aa6c2105bdaf437956bd7e8479d9e97d888dcd7d81d7e39b0ca6278add1075a",
++    "src/reserve_odometry/config/candidates_v3/gain_only.json": "d0cff828b4b74cc121e44977ba52391290c81b63a1ff24788182f62dc46b2b83",
++    "src/reserve_odometry/config/candidates_v3/gain_only.yaml": "e4aa198fb8835335327180e91f42ab3c45efb537cc2bcbb9b7661f5fef761f2b",
++    "src/reserve_odometry/config/candidates_v3/nonlinear_physics.json": "275c2b2ef4eed2206fac7ede40c4dd26045315d94223f0cd07e67e918f751567",
++    "src/reserve_odometry/config/candidates_v3/nonlinear_physics.yaml": "68100c74c31ddeac2a634d66b521156991d526dceca38bed37c47ddab7ed7115",
++    "src/reserve_odometry/config/champion_v8.json": "358c595ac4bacc70e962e4ee93c10a8632776465718e21675cfda380c676309e",
++    "src/reserve_odometry/config/champion_v8.yaml": "a6319d8e75615ee63b05bedccd1f79a27287666f084c8f14dd33ad993e7f067e",
++    "src/reserve_odometry/config/default.yaml": "dae5f5c80cd87e968b1e838c5b0d25cc531f816949b1fd2a59dd65e8e93efaec",
++    "src/reserve_odometry/config/frozen_v4.yaml": "a29d075cbcca235a1cf5ab1f79a0a992f70ba788e729b452f732c273932eeb0e",
++    "src/reserve_odometry/config/guarded_readout_v7.json": "295a0ad77172798ad2bdaa2b5c375f48cbe8f533e54b7f38b2a3cb53f8f3ecd1",
++    "src/reserve_odometry/config/guarded_readout_v7.yaml": "e1f71a7cacd43d099bdc4f5aef59734906625716c871a78843584e0ea06e431e",
++    "src/reserve_odometry/config/time_aligned_v6.json": "9467bbf8322636fab4117ab8dbdbaf1386900d5f784488807288116611c4183c",
++    "src/reserve_odometry/config/time_aligned_v6.yaml": "bfe7114691b6d64428235286f9e5bcf94906bd4cdd22b17c623f19795f8e5556",
++    "src/reserve_odometry/launch/odometry.launch.py": "5f91860ab56c5c025b03d895fbc3646dbd07a3ff47948bac80279e639aa439af",
++    "src/reserve_odometry/launch/v5_odometry.launch.py": "3853c6189c9b633af32044381c5995a19ade8cdc7f8efe29046b15225467ca29",
++    "src/reserve_odometry/package.xml": "a0a24f3f7ba564188ee0f223e2afe5378019a58fba1d296f62726263822ec883",
++    "src/reserve_odometry/reserve_odometry/__init__.py": "e1f572a23a3af0453ee58954e1ac155057c09f538f30cf660aa84e9dadba6b74",
++    "src/reserve_odometry/reserve_odometry/core.py": "67ee39edeb80f31876f5c45cb3efec26eb73844a106f7b4c876a944b6f7cc5dc",
++    "src/reserve_odometry/reserve_odometry/guarded_node.py": "ba2bd304ccafd35160e2c2d60c14a170bde2f0480cc04e8279a04d3c752c542f",
++    "src/reserve_odometry/reserve_odometry/guarded_readout.py": "6303c1230ff800e370875f7238912e47a0564da1b21d42ccf8f417f75b2e05e0",
++    "src/reserve_odometry/reserve_odometry/node.py": "a63b6cf915d0621eda4a99f4a9a91c8b21a3d2209420e2fc9f4f21084a6dbdd4",
++    "src/reserve_odometry/reserve_odometry/route.py": "631c9be75cc8bcf9770deb3e79aa3fad7c40d01bfaf446015a3566325df47739",
++    "src/reserve_odometry/reserve_odometry/timeline.py": "ed63b44dede078cb3cde501bd1e5559260763c56ac9b832f39924c1d97b0bdbf",
++    "src/reserve_odometry/resource/reserve_odometry": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
++    "src/reserve_odometry/setup.cfg": "504ebb3ed9db6bc2727b1b3396daf6f5334ea6b7f6eda26672ba2c415f400b71",
++    "src/reserve_odometry/setup.py": "ed034076ca9623fba93c995fa9626920c1c4b2ed3425bd8196a612f1131d52f9",
++    "src/tram_vehicle_msgs/CMakeLists.txt": "f220119ed18c68585208da7689733bf38a1a6a5a76973371b6ba18a1086636a6",
++    "src/tram_vehicle_msgs/msg/DriverControllerCommand.msg": "fe294e3cd4132ed8dd732d677e78196ae882d2be5468e76d029ea785615517fb",
++    "src/tram_vehicle_msgs/msg/VelocitySensor.msg": "4fae2e24132e779ae396773fe3df0f54584c8e54323f6f36d249e45449d7e8fd",
++    "src/tram_vehicle_msgs/package.xml": "0fff58dd63afcc03627c11b9968e817043499f438467d90520f59fc5af54127d",
++    "tests/cdr_roundtrip.py": "ba831b86762ae121249a03b10d4047dce707d03e75df773a87d399e0403bda38",
++    "tests/ros_calibrated_smoke.py": "329ef1019bf6c6000ace866c6d0aef196c6897e64be80bc84bf42884168aa29f",
++    "tests/ros_fault_smoke.py": "42c0c4dcb42dbde4563f4e65743064114c13719ecafe04432c43efaacdbb1560",
++    "tests/ros_low_speed_lock_smoke.py": "e5c1375498359b07e8b0a91faa7237f7ece8c673127eeb413054c9249680045a",
++    "tests/ros_smoke.py": "1bd207d9c9828b7019e588fb5c658322770ff33a27c7746437c8c32f66828588",
++    "tests/test_active_profile.py": "bb4761146272d13ba923c947dc725b60dce5489cfb60f12dcd9817c1cc50375a",
++    "tests/test_adaptive_profile.py": "28f59423cbf75574891abb53379bf16a5aacf14720c29e98cb39c6e56fe95a0c",
++    "tests/test_candidate_configs.py": "ab918b878c990e6d3bd2285a61337ed6d043747152917b917090dfa301b6c071",
++    "tests/test_core.py": "c2688cfb12273ea49af59f1b943426a4c270e122fb10041e35fc97be9f44e9d6",
++    "tests/test_final_runtime.py": "83529f043c9a196440d71d07fc2eca95db835258014b345d0991435c7e0b2859",
++    "tests/test_guarded_readout.py": "7a505c717e1daf686042aac448a1298d394c7fc2ff8a862cc60fb4f74d3b4b19",
++    "tests/test_submission_integrity.py": "973f43a1d9c6a5014b8fda7e6e02f2771e7689886df9302c7e261efeffd72084",
++    "tests/test_time_alignment.py": "a6be36ac761fcf30c708e4ca96d3569a5cd440da4082754f2dd8b51f991d1800",
++    "tests/test_timeline.py": "ec6dfab8e9693fccebdc6f47d87a37dfb761f15a0b0acb5a78fc98f7661ae58d",
++    "tools/finalization/evaluate.py": "f6a19a1727274ca88e1fe1a9fb76d31dbc8ce4e9bbabf669c488f053d76caec7",
++    "tools/research_v3/experiment.py": "95a398003530454457bacb2096fb6bc9d0d5ee32520420c43a9ebeb406376aa0",
++    "tools/research_v3/manifest.py": "51f24a2b9486938ac935d0b648f0612c76df075f7372caf6cc5bd457a8e53abb",
++    "tools/export_bags.py": "696f6bdbf853dac4d4fe6286f6a7f4742f4aea5b1bc508efda52f5bc179c3b66",
++    "tools/research_guarded/compare.py": "c2478eb77b5c50af7023e654829933937a264f839d77ef53ec24552ba4166baf",
++    "tools/research_v6/compare.py": "70276a0a633cd443d44af870fde73649519be2aaf55944c2a4473c82d7b241b5",
++    "tools/research_h11/compare.py": "1c65d17b5008e183b02d6d44bb626c7161dec1ee0210b62e63371310fcf4d995",
++    "research/split_v3.json": "20928a29daad2b4178ddb92e2a4d9ddb347952f6c03845802a8d82fff7da5ae0",
++    "research/plan_v3.json": "ddbc1130e214c3d338b3d292232391d3a329a0fd5f13a090027452ae070271b3",
++    "requirements-research.txt": "d73bd55eb03f248de3404b41d67976a04cdd6326fe00316389d91fb1f4725c8b"
++  }
++}
+diff --git a/research/R3/H31/MATH.wl b/research/R3/H31/MATH.wl
+new file mode 100644
+index 0000000..224ab51
+--- /dev/null
++++ b/research/R3/H31/MATH.wl
+@@ -0,0 +1,12 @@
++ClearAll[w1,w2,v1,v2,v3,y,lo,hi,a,h,e1,e2,e3];
++w={w1,w2,1-w1-w2}; v={v1,v2,v3};
++ass=w1>=0&&w2>=0&&w1+w2<=1&&lo<=hi&&lo<=v1<=hi&&lo<=v2<=hi&&lo<=v3<=hi;
++m=w.v;
++Print["speed_bound_counterexample=",Resolve[Exists[{w1,w2,v1,v2,v3,lo,hi},ass&&(m<lo||m>hi)],Reals]];
++Print["jensen_identity_residual=",Factor[Expand[w.((v-y)^2)-(m-y)^2-(w[[1]]*w[[2]]*(v1-v2)^2+w[[1]]*w[[3]]*(v1-v3)^2+w[[2]]*w[[3]]*(v2-v3)^2)]]];
++Print["convex_error_square=",Factor[w.({e1,e2,e3}^2)-(w.{e1,e2,e3})^2]];
++Print["CV_acceleration_onset_error=",-a*h];
++Print["CV_distance_onset_error=",Integrate[-a*h,{h,0,tt}]];
++Print["physics_weight_floor=",Simplify[1/4+3/4*s>=1/4,0<=s<=1]];
++Print["regime_switch_counterexample_errors_at_1s=",{0,-1,-1}];
++Print["equal_weight_error_at_1s=",Mean[{0,-1,-1}]];
+diff --git a/research/R3/H31/MATH_OUTPUT.txt b/research/R3/H31/MATH_OUTPUT.txt
+new file mode 100644
+index 0000000..0b41ba2
+--- /dev/null
++++ b/research/R3/H31/MATH_OUTPUT.txt
+@@ -0,0 +1,17 @@
++WolframLanguageEvaluator actual evaluation, timeConstraint20, current session:
++speed_bound_counterexample=False
++jensen_identity_residual=0
++convex_error_square= e1^2*w1-2*e1*e3*w1+e3^2*w1-e1^2*w1^2+2*e1*e3*w1^2-e3^2*w1^2+e2^2*w2-2*e2*e3*w2+e3^2*w2-2*e1*e2*w1*w2+2*e1*e3*w1*w2+2*e2*e3*w1*w2-2*e3^2*w1*w2-e2^2*w2^2+2*e2*e3*w2^2-e3^2*w2^2
++CV_acceleration_onset_error=-(a h)
++CV_distance_onset_error=-(a tt^2)/2
++physics_weight_floor=True
++regime_switch_counterexample_errors_at_1s={0,-1,-1}
++equal_weight_error_at_1s=-2/3
++Out[1]=Null
++Formatting of the expanded polynomial normalized to ASCII; no warning emitted.
++Assumptions: real values, nonnegative normalized weights, pointwise common bounds.
++Convex speed bound does not bound the derivative under changing weights/taper.
++The runtime limiter handles that separately on missing MODEL_ONLY ticks; guard and
++measurement transitions remain canonical. Jensen bounds error by weighted member
++squares, not by the BEST member's error. No switching-observer stability theorem
++or deterministic post-regime-shift superiority is claimed.
+diff --git a/research/R3/H31/PLAN.md b/research/R3/H31/PLAN.md
+new file mode 100644
+index 0000000..7640c9b
+--- /dev/null
++++ b/research/R3/H31/PLAN.md
+@@ -0,0 +1,187 @@
++# R3-H31 / R3-v8-fixed — prospective PLAN
++
++Baseline e3b0c9c039d2953fbfcda51231263d38ef9f1024, actual GuardedReadoutObserver,
++champion_v8.yaml, returned Estimate.v/s, readout(1,.5), inner adaptation .5,
++wheel_time_compensation=0, common_mode_quarantine=1.5, 20Hz/delay0.
++No main updates, old report/hash edits, merge, automatic validation, or test IO.
++
++## Premise BEFORE algorithm
++
++Baseline-only probe source 88776624962c0ae68959ab5015ce7d042475e98e,
++Actions 36220305076/1, artifact10899227293 SHA256
++65506514d55691a538b6390437f4a580cf7f698f2c0b98228449831990278496.
++64 original train bags /27 groups: 17,511 completed non-overlapping 1s forecasts
++(spacing>=2s) in25groups. Endpoint RMSE vs trusted wheel pseudolabel=.160311594634m/s,
++p95 absolute=.246153121041m/s;559 errors>.3m/s. Braking RMSE=.215450551360,
++coast=.142137565543, traction=.0929531263625. Not ground truth and not independent
++17,511 trips. 42,083 nonhealthy MODEL_ONLY ticks are only an upper bound on
++potential scope; these include disagreement/marginal freshness, not just true
++outages. Actual both-missing activation will be measured separately.
++No alternative forecast/selector comparison yet. Development streams were
++transported losslessly with original role/hash/topic/order metadata, not scored
++or inspected for candidate selection; train transport contains no GNSS.
++H15/H16/H17 full reports read. In particular small aggregate benefits do not erase
++transition/coast/group/distance regressions. Different best parameters by group
++do not identify one physical law.
++
++## Single candidate, no fitting/search
++
++One causal ensemble, fixed internal bank (not three validation candidates):
++1. Original v8 commanded physics; healthy virtual prediction uses an independent
++   deepcopy of canonical observer, receives subsequent commands ONLY.
++2. Constant published velocity at launch.
++3. Constant clipped net acceleration a0=drive_a-resistance(inner_v)+disturbance,
++   integrated only for first1s, then constant velocity. All members clip speed
++   to baseline max_speed and forbid numerical reversal on braking/coasting.
++All physical coefficients are exactly YAML values. No GNSS, fault labels,
++file/group IDs, endpoint initialization, new Q/R, or future command use.
++
++Launch one virtual bank from CURRENT canonical state on trusted data, no more
++than once/2s. Horizon EXACTLY1s, max one pending bank; retain its endpoint forecast
++without further integration after horizon. Endpoint pseudo-target is linear
++interpolation of two consecutive already-received trusted wheel-pair endpoints
++bracketing that horizon, gap<=max_age=.25s, scored only after later endpoint
++arrives, no more than .25s grace. Endpoints require BOTH wheel timestamps advance,
++mean is not two independent sensors. Start state NEVER modified by target.
++Healthy held pair: fresh channels, skew<=.05s, difference<=.15m/s, statuses only
++ACCEPTED/DUPLICATE_OR_OLD, valid command, |v|>.5m/s, no initialization/stop/reacquire.
++A loss of health cancels pending prediction/target bracket, never fabricates a score.
++
++Regime is traction/coast/braking by existing deadband PLUS a command epoch:
++a change in sign-class or |u-u_epoch|>.2 invalidates completed scores and pending
++bank. Stale command invalidates applicability immediately. These conditions
++are runtime-observable, not true unknown changes in load.
++
++Scores: last at most8 completed triplets, age<=20s. A usable selector needs>=3
++completed records, newest<=4s old, EVERY completion stamp strictly<trigger.
++Each record holds launch/end/completion stamps and3 losses. Loss sigma=.4m/s
++=wheel_sigma + .5*disturbance_limit*1s, rho=min(4,2*(hypot(1,error/sigma)-1)).
++L_i is unweighted mean of retained losses. Priors=(.5,.25,.25), temperature=1.
++q_i=prior_i*exp(-L_i)/sum(prior_j*exp(-L_j));
++w=(.25,0,0)+.75*q. Nonnegative sum1; physics weight>=.25.
++The rule and scales above are fixed before candidate measurements; no training
++optimizer or recalibration. No retrospective best-model switch in runtime.
++
++## Outage-only published correction; canonical state stays exact
++
++Apply only when canonical mode MODEL_ONLY and BOTH wheel statuses are
++MISSING_OR_STALE. Ordinary duplicate prediction ticks are not outages. Never
++activate during zero-lock suspect, quarantine (t<reacquire_blocked_until),
++STOPPED or REACQUIRING. Freeze usable scores and weights at first eligible
++outage tick; init alternative velocities from PREVIOUS canonical published
++Estimate, not a future/returning wheel. Physical member is current canonical
++published v, driven by commands as they actually arrive. Net a0 from the prior
++canonical state. Use min(h,1s) for constant-acceleration member. Weights never
++learn from missing/suspicious wheel readings.
++
++Short applicability: full correction until1s from first outage tick, linearly
++taper to canonical over1..2s, zero new forecast correction after2s. Change of
++command epoch, stale command, stop/reacquire/quarantine revokes weights for the
++rest of that outage. Missing-channel fallback targets canonical, not any
++untrusted wheel. Rate-limit toward target during missing MODEL_ONLY using
++intersection of speed bound, |extra delta_v|<=.6m/s and previous published
++velocity +/-max_accel*dt. If intersection unexpectedly empty, veto and immediate
++canonical fallback; count it. Enforce no sign reversal in braking/coast.
++At any nonmissing/guarded/measurement-correction tick output v is exactly
++canonical; these discrete sensor/guard transitions take precedence over the
++outage-only rate limiter and are logged separately (no global smoothness claim).
++
++delta_s += .5*(previous_delta_v+new_delta_v)*dt on ALL initialized steps,
++including recovery. Never erase delta_s on recovery. Explicit reset can clear
++auxiliary state. Published a=base.a+(delta_v-delta_v_previous)/dt, uncertainty
++adds conservative delta envelopes, not calibrated CI. Internal canonical
++variables AND base.last_estimate stay exactly untouched; wrapper.last_estimate
++is the published output. This is composition, not mutation of legacy core.
++
++## Data and measurement
++
++Premise: all64 train, vehicle-only; no fit/check reallocation or GNSS fitting.
++Main comparison: ALL17 original development bags/all7 groups; both references.
++Baseline independently executes canonical v8; H31-off exact comparison and
++per-tick equality of candidate.base with an independent canonical object,
++including base.last_estimate. Profile/source/split/data hashes checked.
++Use unchanged evaluate.score/replay/match/metrics/distance and v6.summary;
++only factory/role/transport adapters added. Original fault_windows unchanged.
++Legacy scorer aliases renamed only AFTER score. Per-bag, receiver, fault,
++group, MAE/bias/p95/recovery/missingness and all material regressions saved.
++NPZ transport arrays must reproduce original inputs exactly; hashes bind them
++to original checksummed SQLite and role journals. Scoring works on either raw
++role-safe source or transported arrays. No resampling or masks change.
++
++One nonselcted equal-weight(1/3) diagnostic control on development, with SAME
++eligibility, timing and guards, not a second validation candidate. Optional
++posthoc oracle only as diagnostic lower bound from already-recorded member
++outputs, never used by runtime or for parameter choice. It cannot authorize gain.
++
++Separate mandatory safety suites: existing low-speed anchors and lock3/5s from
++champion_v7/LOW_SPEED_REPORT; existing h11.common_fault_windows/.7/1.2s+5m/s,
++same injection function. Each suite event-macro regression<=.5%, no new stops
++or individual unrecovered. Preserve original suites and thresholds exactly.
++Additional regime-transition dropout diagnostics: first traction->coast and
++coast->brake transitions per bag after25s/before end-25s, based on vehicle data;
++start dropout exactly at transition, duration5s, warmup20s/recovery10s. Their
++aggregate event regression<=.5% and no new stops/unrecovered is a safety veto;
++gain never substitutes original admission.
++
++## Prospective coverage and admission
++
++Coverage: >=100 completed forecasts in>=3 source groups; original fault suite
++>=5 distinct (bag,anchor) eligible outage contexts from>=3 source groups,
++>=100 effective |delta_v|>1e-6 ticks; >=2 groups with GNSS among altered original
++contexts. Repeated durations and two receivers are NOT independent episodes.
++Insufficient coverage -> INCONCLUSIVE, never expand suite or lower thresholds.
++
++Only one frozen candidate can reach validation, only if ALL pass:
++>=2% clean OR >=5% original fault macro gain; no >.5% clean/fault/pooled growth;
++<=1% scalar-distance growth; every clean RMSE<=base+max(.005,5%base); same n,
++coverage/timestamps/masks; no new per-case false-stops/unrecovered/causal/resets;
++separate low/common/transition safety gates; tests and coverage pass.
++Baseline zero uses absolute tolerance1e-12 instead of division. No validation
++when development fails. Classification: insufficient coverage INCONCLUSIVE;
++adequately covered variant failing gain/safety REJECTED. Not a family verdict.
++Freeze must be separate published commit before validation IO. No automated
++push-trigger validation in any workflow. Historical validation not independent.
++Final test never opened. Existing baseline faults are not allowance to add new ones.
++
++## Tests, cost, mathematical assumptions
++
++Off equality, inner equality every tick, source pins, prefix, future/duplicate,
++NaN/stale/reset, strict completion-before-trigger, endpoint isolation, no rescore,
++record/time/count bounds, convex weights, distance persistence/derivative.
++Synthetic mandatory cases: command acceleration/braking changes exactly with
++wheel loss; hidden +/-load change same command at loss (no observability claim);
++false common pair on return; genuine stop; zero-lock; long dropout/stale command.
++For commanded regime-switch/guard cases require exact canonical speed once
++fallback takes effect; uncommanded changes require no new false stop/nonrecovery
++and event RMSE<=base*1.005+1e-12. No changes to candidate after dev results.
++
++CPU step and replay separately: first120s firstdevelopment bag,10s warmup,
++5 measured AB/BA pairs; exact same held tape/output collector and threads1.
++Also a matching first-original-dropout tape so healthy learning cost and outage
++cost are both visible. Benchmark excludes off-equivalence/audit wrappers.
++Runtime stores one canonical plus<=one virtual canonical,<=8 score triplets,
++one target predecessor, scalars and fixed-key saturated counters. No growing log
++inside observer. Full traces compressed artifacts30d, not giant Git JSON.
++
++Wolfram checked convex bounds and Jensen identity. Pointwise convex mixture is
++not guaranteed better than BEST member. Frozen weights preserve derivative
++bounds only when member bounds and identical weights apply; hard transitions
++need separate treatment. Unknown acceleration gives CV error=-a*h and distance
++error=-a*h^2/2; past scores do not predict unobserved regime changes. Pseudolabel
++and interpolation assumptions are not a GNSS-independent truth guarantee.
++JMLR Herbster/Warmuth2001 abstract read as expert-tracking context only. Known
++Consensus30/Scite25 monthly quota stop respected: no new calls, no fulltext or
++citation-context claim. Worksheets/actual outputs and source-depth saved.
++
++## Execution/publication
++
++Commands planned: probe.py --export (already run); tests.py; run.py --stage
++baseline/train/development/cost --output fresh --streams exported_root
++(or original --data-root). Source commit/hashes pinned BEFORE real comparison.
++Conditional freeze/validation only after admission; enabled installed ROS both
++clock modes offline2CPU/500000000B only after accuracy pass. Otherwise
++NOT_RUN_AFTER_REJECTION/INCONCLUSIVE, never inherit canonical CI's certificate.
++Report/SUMMARY statuses: mechanism_status,coverage_status,scientific_verdict,
++accuracy_contract_passed,runtime_verified,ready_to_merge. Compact evidence in
++Git; large traces/logs compressed artifact; no raw bags committed. One Russian
++Draft PR R3-H31 with explicit negative/incomplete label when appropriate.
+diff --git a/research/R3/H31/SOURCES.md b/research/R3/H31/SOURCES.md
+new file mode 100644
+index 0000000..c7f7444
+--- /dev/null
++++ b/research/R3/H31/SOURCES.md
+@@ -0,0 +1,32 @@
++# Read sources / limits
++
++The three required fixed R2 reports H15, H16 and H17 were fetched through GitHub
++and read in full from immutable source artifact10899042151. They are prior
++negative results, not R3 performance measurements. H15 documented original fault
++and individual-group regressions; H16 documented long-coast and distance failures;
++H17 found group-dependent preferences, not a universal physical delay.
++
++Runtime core/readout/Timeline, canonical launch/champion_v8 YAML, official
++score/match/distance functions, v6 aggregation, guarded fault_windows, H11
++common_fault_windows/inject_common and frozen split were read. Sixty baseline
++source/test/scorer/role files are pinned in BASELINE_PINS.json. The low-speed
++anchor is the exact source of tools/research_lock/low_speed.py at6190e82
++(blob674666746d1f6c20bd6d27e4467fd9f246e8c5dc), read through GitHub; its old loader
++role is not reused. The anchor logic is reproduced verbatim for development.
++
++Scientific context: Herbster and Warmuth, Tracking the Best Linear Predictor,
++JMLR1(Sep),281-309(2001), https://www.jmlr.org/papers/v1/herbster01a.html.
++Read publisher HTML abstract only, not full text. It distinguishes tracking and
++fixed-comparator losses in online prediction. Our capped eight-record heuristic
++and physical fallback are engineering assumptions; no theorem from the article
++is transferred to this nonlinear odometry problem.
++
++Consensus and Scite were NOT called again: task and prior session already
++reported monthly search/MCP stops30/25. No fresh search, fulltext, citation
++context or quota-status verification is claimed. Public primary-source abstract
++and actual Wolfram algebra are sufficient context for executing the experiment,
++not evidence of better odometry. Failed auxiliary author-page request is not used.
++
++MATH.wl contains the exact evaluated Wolfram code; MATH_OUTPUT.txt transcribes
++actual output, assumptions and warnings. No model change or parameter choice
++uses validation, final data or another R3 validation result.
+diff --git a/research/R3/H31/driver_tests.py b/research/R3/H31/driver_tests.py
+new file mode 100644
+index 0000000..2f353e3
+--- /dev/null
++++ b/research/R3/H31/driver_tests.py
+@@ -0,0 +1,40 @@
++"""Synthetic driver tests, no dataset or held-out measurement IO."""
++from copy import deepcopy
++from pathlib import Path
++import tempfile
++import unittest
++import run as r
++
++class DriverTests(unittest.TestCase):
++    def test_role_access_denied_before_file(self):
++        data=r.Data()
++        for bag in data.plan['splits']['test'][:1]:
++            with self.assertRaises(PermissionError):data.get(bag,'development')
++            with self.assertRaises(PermissionError):data.get(bag,'test')
++    def test_original_scorer_and_exact_inner_off(self):
++        events=r.np.array([(i*.05,ch, .2 if ch==0 else 5.) for i in range(801) for ch in (0,1,2)],float)
++        refs={'master':[(i*.05,5.) for i in range(801)],'rover':[]}
++        with tempfile.TemporaryDirectory() as td:
++            p=Path(td);meta=dict(case_id='synthetic',suite='clean',bag='synthetic',group='synthetic',role='synthetic')
++            b=r.score_case(events,refs,meta,p,True)
++            c=r.score_case(events,refs,meta,p,False)
++            self.assertEqual(b['receivers']['master']['v8'],c['receivers']['master']['v8'])
++            self.assertEqual(c['audit']['v8']['canonical_output_sha256'],c['audit']['H31']['canonical_output_sha256'])
++            self.assertEqual(c['audit']['H31']['stats']['limit_failures'],0)
++    def test_guard_cannot_be_relaxed_by_other_metrics(self):
++        events=r.np.array([(i*.05,ch,.2 if ch==0 else 5.) for i in range(801) for ch in (0,1,2)],float)
++        refs={'master':[(i*.05,5.) for i in range(801)],'rover':[]}
++        with tempfile.TemporaryDirectory() as td:
++            rows=[]
++            for suite in ('clean','original','low_speed','common','transition'):
++                meta=dict(case_id='s-'+suite,suite=suite,bag='s',group='g',role='synthetic')
++                if suite!='clean':meta['fault']=dict(kind='dropout',start=25.,end=30.)
++                rows.append(r.score_case(events,refs,meta,Path(td)))
++            s={n:r.summary(rows,n) for n in ('v8','H31','equal_weight')}
++            modified=deepcopy(s);modified['H31']['fault_rmse']=s['v8']['fault_rmse']*1.01+1e-6
++            result=r.evaluate_gate(rows,modified,dict(passed=True))
++            self.assertIn('aggregate_regression:fault_rmse',result['reasons'])
++            self.assertFalse(result['validation_authorized'])
++            self.assertFalse(result['coverage']['passed'])
++
++if __name__=='__main__':unittest.main()
+diff --git a/research/R3/H31/probe.py b/research/R3/H31/probe.py
+new file mode 100644
+index 0000000..2f27830
+--- /dev/null
++++ b/research/R3/H31/probe.py
+@@ -0,0 +1,118 @@
++"""R3-H31 premise probe/export; baseline only, no ensemble, no validation/test IO."""
++import argparse
++import copy
++import hashlib
++import json
++import math
++from pathlib import Path
++import sqlite3
++import sys
++from collections import Counter
++ROOT=Path(__file__).resolve().parents[3]
++sys.path[:0]=[str(ROOT/'tools/finalization'),str(ROOT/'src/reserve_odometry')]
++import evaluate as ev
++import numpy as np
++from reserve_odometry.core import Config, Sample
++from reserve_odometry.guarded_readout import GuardedReadoutObserver, ReadoutConfig
++from reserve_odometry.timeline import Timeline
++BASE='e3b0c9c039d2953fbfcda51231263d38ef9f1024'
++
++def profile():
++    p={}
++    for line in (ROOT/'src/reserve_odometry/config/champion_v8.yaml').read_text().splitlines():
++        key,sep,value=line.strip().partition(':')
++        if sep and key.startswith(('model.','readout.')):p[key]=float(value)
++    c=Config(**{k[6:]:v for k,v in p.items() if k.startswith('model.')})
++    r=ReadoutConfig(**{k[8:]:v for k,v in p.items() if k.startswith('readout.')})
++    assert c.common_mode_quarantine_s==1.5 and c.wheel_time_compensation==0
++    assert c.adaptation_tau_s==.5 and r.gain==1 and r.holdoff_s==.5
++    return c,r
++
++def load(store,bag,role):
++    if role=='train':return store.load(bag,'train')
++    if role!='development' or store.records[bag]['split']!=role:
++        raise PermissionError('Only original train/development allowed')
++    row=store.records[bag];path=store.root/bag/(bag+'_0.db3')
++    if ev.sha(path)!=row['sha256']:raise ValueError('Bag hash mismatch')
++    allowed=list(ev.ex.CHANNELS)+list(ev.ex.REFS)
++    store.access.append(dict(bag=bag,purpose=role,topics=allowed,sha256=row['sha256']))
++    events=[];refs={'master':[],'rover':[]}
++    with sqlite3.connect(path.resolve().as_uri()+'?mode=ro',uri=True) as con:
++        sql=('SELECT t.name,t.type,m.data FROM messages m JOIN topics t ON t.id=m.topic_id '
++             'WHERE t.name IN ('+','.join('?' for _ in allowed)+') ORDER BY m.timestamp,m.id')
++        for topic,typ,raw in con.execute(sql,allowed):
++            stamp,values=ev.decode(raw,typ);t=(stamp-row['sensor_start_ns'])/1e9
++            if topic in ev.ex.CHANNELS:
++                ch=ev.ex.CHANNELS[topic];events.append((t,ch,float(values[0])/(15 if ch==0 else 3.6)))
++            else:
++                speed=math.hypot(float(values[0]),float(values[1]))
++                if math.isfinite(speed):refs[ev.ex.REFS[topic]].append((t,speed))
++    return np.asarray(events,float),refs
++
++def regime(command,c):
++    return 1 if command.value>c.command_deadband else (-1 if command.value<-c.command_deadband else 0)
++
++def premise(events):
++    c,r=profile();o=GuardedReadoutObserver(c,readout=r);tl=Timeline(o,rate_hz=20,delay_s=0)
++    pending=None;next_launch=-math.inf;old=None;last_stamps=(-math.inf,-math.inf)
++    counts=Counter();errors=[];prev_outage=False
++    for t,ch,value in events:
++        tl.ingest(int(ch),Sample(float(t),float(value)))
++        for e,held in tl.advance():
++            counts['outputs']+=1;cmd,f,rear=held
++            healthy=(not e.command_stale and f is not None and rear is not None
++                     and o._valid(f,e.t,c.max_age_s) and o._valid(rear,e.t,c.max_age_s)
++                     and abs(f.t-rear.t)<=.05 and abs(f.value-rear.value)<=.15
++                     and all(x in ('ACCEPTED','DUPLICATE_OR_OLD') for x in (e.front_status,e.rear_status))
++                     and abs(e.v)>.5 and e.mode not in ('WAITING_FOR_INITIALIZATION','INITIALIZED','STOPPED','REACQUIRING'))
++            outage=e.mode=='MODEL_ONLY' and not healthy
++            counts['potential_outage_outputs']+=outage
++            counts['natural_outage_episodes']+=outage and not prev_outage;prev_outage=outage
++            reg=regime(cmd,c) if not e.command_stale else None
++            if pending is not None:
++                if not healthy or reg!=pending['reg'] or e.t>pending['end']+.25:
++                    pending=None;counts['aborted_forecasts']+=1
++                else:
++                    p=pending
++                    if e.t<=p['end']+1e-9:p['forecast']=p['shadow'].step(e.t,cmd).v
++            if not healthy:old=None;continue
++            if f.t<=last_stamps[0] or rear.t<=last_stamps[1]:continue
++            last_stamps=(f.t,rear.t);z=(f.value+rear.value)*.5;tz=(f.t+rear.t)*.5
++            if pending and old and old[0]<=pending['end']<=tz and 0<tz-old[0]<=.25:
++                p=pending;weight=(p['end']-old[0])/(tz-old[0]);target=old[1]+weight*(z-old[1])
++                errors.append(dict(start=p['start'],end=p['end'],scored_at=e.t,regime=p['reg'],
++                                   predicted=p['forecast'],wheel_target=target,error=p['forecast']-target))
++                counts['completed_forecasts']+=1;pending=None
++            old=(tz,z)
++            if pending is None and e.t>=next_launch:
++                pending=dict(start=e.t,end=e.t+1,reg=reg,shadow=copy.deepcopy(o),forecast=e.v)
++                next_launch=e.t+2;counts['launched_forecasts']+=1
++    return dict(counts=dict(counts),errors=errors,causal_errors=tl.resets)
++
++def main():
++    a=argparse.ArgumentParser();a.add_argument('--output',type=Path,required=True);a.add_argument('--export',action='store_true');args=a.parse_args()
++    args.output.mkdir(parents=True,exist_ok=False);store=ev.ex.Store();rows=[];manifest=[]
++    for role in ('train','development'):
++        for bag in store.plan['splits'][role]:
++            events,refs=load(store,bag,role)
++            if args.export:
++                out=args.output/'streams'/role/(bag+'.npz');out.parent.mkdir(parents=True,exist_ok=True)
++                np.savez_compressed(out,events=events,master=np.asarray(refs['master'],float).reshape(-1,2),rover=np.asarray(refs['rover'],float).reshape(-1,2))
++                manifest.append(dict(bag=bag,role=role,group=store.records[bag]['group'],bag_sha256=store.records[bag]['sha256'],stream_sha256=ev.sha(out)))
++            if role=='train':
++                row=dict(bag=bag,group=store.records[bag]['group'],**premise(events));rows.append(row)
++            print('PROBE_OR_TRANSPORT',role,bag,flush=True)
++    ev.save(args.output/'train_premise.json',dict(baseline=BASE,horizon_s=1.,launch_spacing_s=2.,target='trusted wheel interpolation; NOT ground truth',rows=rows))
++    ev.save(args.output/'stream_manifest.json',dict(baseline=BASE,split_sha256=ev.sha(ROOT/'research/split_v3.json'),records=manifest))
++    ev.save(args.output/'access.json',dict(access=store.access,development_use='transport only; no candidate or GNSS scoring before PLAN',validation_opened=False,test_opened=False))
++    flat=[x for row in rows for x in row['errors']];counts=Counter()
++    for row in rows:counts.update(row['counts'])
++    summary=dict(baseline=BASE,train_bags=len(rows),source_groups=len({row['group'] for row in rows}),counts=dict(counts),
++                 completed_groups=len({row['group'] for row in rows if row['errors']}),
++                 endpoint_rmse_mps=float(np.sqrt(np.mean([x['error']**2 for x in flat]))) if flat else None,
++                 endpoint_abs_p95_mps=float(np.quantile([abs(x['error']) for x in flat],.95)) if flat else None,
++                 beyond_03mps=sum(abs(x['error'])>.3 for x in flat),
++                 by_regime={str(reg):dict(n=sum(x['regime']==reg for x in flat),rmse=float(np.sqrt(np.mean([x['error']**2 for x in flat if x['regime']==reg])))) for reg in (-1,0,1) if any(x['regime']==reg for x in flat)},
++                 references_used_for_premise=False,validation_opened=False,test_opened=False)
++    ev.save(args.output/'PREMISE_SUMMARY.json',summary);print(json.dumps(summary,indent=2),flush=True)
++if __name__=='__main__':main()
+diff --git a/research/R3/H31/run.py b/research/R3/H31/run.py
+new file mode 100644
+index 0000000..19059a3
+--- /dev/null
++++ b/research/R3/H31/run.py
+@@ -0,0 +1,449 @@
++"""R3-H31 role-safe, unchanged-scorer driver. No validation entry point.
++
++The measured algorithm is an opt-in composition, not a changed canonical launch.
++Original raw SQLite or verified lossless train/development transport is accepted.
++"""
++import argparse
++from collections import Counter
++from concurrent.futures import ProcessPoolExecutor
++from contextlib import contextmanager
++from copy import deepcopy
++import csv
++from dataclasses import asdict
++import datetime
++import gzip
++import hashlib
++import importlib.util
++import json
++import math
++import os
++from pathlib import Path
++import platform
++import statistics
++import sys
++import time
++
++ROOT=Path(__file__).resolve().parents[3]
++sys.path[:0]=[str(Path(__file__).parent),str(ROOT/'src/reserve_odometry'),str(ROOT/'tools/finalization')]
++from probe import profile,load,BASE
++import evaluate as ev
++import numpy as np
++from reserve_odometry.core import Config,Sample
++from reserve_odometry.guarded_readout import GuardedReadoutObserver
++from reserve_odometry.prequential_outage import PrequentialOutageObserver,EnsembleConfig
++from reserve_odometry.timeline import Timeline
++
++
++def module(name,path):
++    spec=importlib.util.spec_from_file_location(name,path)
++    mod=importlib.util.module_from_spec(spec);sys.modules[name]=mod;spec.loader.exec_module(mod);return mod
++
++v6=module('h31_v6',ROOT/'tools/research_v6/compare.py')
++guarded=module('h31_guarded_scoring',ROOT/'tools/research_guarded/compare.py')
++h11=module('h31_h11',ROOT/'tools/research_h11/compare.py')
++OPS=dict(rate_hz=20.,alignment_delay_s=0.)
++NAMES={'baseline_v2':'v8','balanced_physics':'H31','equal_weight':'equal_weight'}
++
++
++def save(path,data):ev.save(path,data)
++def canon(data):return json.dumps(data,sort_keys=True,separators=(',',':'),allow_nan=False).encode()
++def digest_data(data):return hashlib.sha256(canon(data)).hexdigest()
++def dump_gz(path,data):
++    path=Path(path);path.parent.mkdir(parents=True,exist_ok=True)
++    with gzip.open(path,'wt',encoding='utf-8') as f:json.dump(data,f,separators=(',',':'),allow_nan=False)
++def read_gz(path):
++    with gzip.open(path,'rt',encoding='utf-8') as f:return json.load(f)
++
++
++def identity():
++    pins=json.loads((Path(__file__).parent/'BASELINE_PINS.json').read_text())
++    for p,h in pins['files'].items():
++        if ev.sha(ROOT/p)!=h:raise AssertionError('Baseline source changed: '+p)
++    paths=list(pins['files'])+[str(p.relative_to(ROOT)) for p in (ROOT/'research/R3/H31').rglob('*')
++                             if p.is_file() and p.suffix in ('.py','.json','.md','.wl')]
++    paths+=['src/reserve_odometry/reserve_odometry/prequential_outage.py']
++    sources={p:ev.sha(ROOT/p) for p in sorted(set(paths))}
++    measured=os.environ.get('H31_SOURCE_SHA')
++    if not measured:raise ValueError('Set H31_SOURCE_SHA to published source commit before measurement')
++    return dict(baseline_sha=BASE,source_sha=measured,source_sha256=sources,
++                profile={**asdict(profile()[0]),'readout':asdict(profile()[1])},
++                python=platform.python_version(),numpy=np.__version__,platform=platform.platform(),
++                utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),
++                run_id=os.environ.get('GITHUB_RUN_ID','local'),run_attempt=os.environ.get('GITHUB_RUN_ATTEMPT','1'),
++                validation_opened=False,test_opened=False)
++
++
++class Data:
++    def __init__(self,streams=None,data_root=None):
++        self.store=ev.ex.Store(data_root or ROOT/'dataset/data');self.streams=Path(streams) if streams else None
++        self.access=[];self.records=self.store.records;self.plan=self.store.plan
++        if self.streams:
++            m=json.loads((self.streams/'stream_manifest.json').read_text())
++            assert m['baseline']==BASE and m['split_sha256']==ev.sha(ROOT/'research/split_v3.json')
++            self.transport={r['bag']:r for r in m['records']}
++    def get(self,bag,role):
++        record=self.records[bag]
++        if role not in ('train','development') or record['split']!=role:
++            raise PermissionError('Only exact train/development membership allowed')
++        if not self.streams:
++            events,refs=load(self.store,bag,role);self.access=list(self.store.access)
++            return events,refs
++        m=self.transport[bag];path=self.streams/'streams'/role/(bag+'.npz')
++        assert m['role']==role and m['group']==record['group'] and m['bag_sha256']==record['sha256']
++        assert ev.sha(path)==m['stream_sha256']
++        with np.load(path,allow_pickle=False) as f:
++            events=f['events'];refs={k:f[k].tolist() for k in ('master','rover')}
++        if role=='train' and any(refs.values()):raise AssertionError('Train reference prohibited')
++        assert events.ndim==2 and events.shape[1]==3 and np.all(np.isin(events[:,1],[0,1,2]))
++        self.access.append(dict(bag=bag,purpose=role,group=record['group'],
++             bag_sha256=record['sha256'],transport_sha256=m['stream_sha256'],
++             topics=list(ev.ex.CHANNELS)+(list(ev.ex.REFS) if role=='development' else [])))
++        return events,refs
++
++
++class Audited:
++    """External diagnostics/equivalence only. Not used in CPU benchmarks."""
++    def __init__(self,c,readout,*,candidate=False,equal=False):
++        self.o=PrequentialOutageObserver(c,readout=readout,ensemble=EnsembleConfig(True,equal)) if candidate else GuardedReadoutObserver(c,readout=readout)
++        self.check=GuardedReadoutObserver(deepcopy(c),readout=deepcopy(readout))
++        self.off=PrequentialOutageObserver(deepcopy(c),readout=deepcopy(readout),ensemble=EnsembleConfig(False))
++        self.candidate=candidate;self.steps=0;self.completions=0;self.effective=0
++        self.selected=[];self.trace=[];self.eq_hash=hashlib.sha256();self.last_trace=-math.inf
++        self.total_stats=Counter();self.max_records=0;self.limit_failures=0
++    @property
++    def c(self):return self.o.c
++    @property
++    def t(self):return self.o.t
++    def reset(self,**kwargs):
++        if self.candidate:self.total_stats.update(self.o.stats)
++        self.o.reset(**kwargs);self.check.reset(**kwargs);self.off.reset(**kwargs)
++    def step(self,*args,**kw):
++        e=self.o.step(*args,**kw);truth=self.check.step(*args,**kw);disabled=self.off.step(*args,**kw)
++        if disabled!=truth or vars(self.off.base)!=vars(self.check):raise AssertionError('Feature-off mismatch')
++        inner=self.o.base if self.candidate else self.o
++        if vars(inner)!=vars(self.check):raise AssertionError('Canonical inner-state mismatch')
++        if not self.candidate and e!=truth:raise AssertionError('Canonical mismatch')
++        self.steps+=1;self.eq_hash.update(canon(asdict(truth)))
++        if self.candidate:
++            d=self.o.last_diag;self.max_records=max(self.max_records,len(self.o.scores))
++            if d:
++                self.completions+=int(d['completed']);self.effective+=abs(d['delta_v'])>1e-6
++                if d['triggered'] and d['selected']:
++                    if not d['score_stamp']<d['trigger']:raise AssertionError('Score leakage at trigger')
++                    self.selected.append(dict(t=d['trigger'],score_stamp=d['score_stamp'],count=self.o.outage.score_count,weights=list(self.o.outage.weights)))
++                if d['triggered'] or d['completed'] or d['missing'] or abs(d['delta_v'])>0 or e.t-self.last_trace>=1:
++                    # Compressed offline artifact only; no observer logging.
++                    self.trace.append(dict(**d,base_v=truth.v,v=e.v,s=e.s,base_s=truth.s,
++                         mode=e.mode,front_status=e.front_status,rear_status=e.rear_status,
++                         completed_losses=list(self.o.scores[-1].losses) if d['completed'] else None))
++                    self.last_trace=e.t
++        return e
++    def summary(self):
++        stats=dict(self.total_stats)
++        if self.candidate:
++            count=Counter(stats);count.update(self.o.stats);stats=dict(count)
++        return dict(steps=self.steps,completed=self.completions,effective_ticks=self.effective,
++                    selected_outages=self.selected,stats=stats,max_records=self.max_records,
++                    canonical_output_sha256=self.eq_hash.hexdigest(),inner_checks_passed=True,off_checks_passed=True)
++
++
++@contextmanager
++def factory(audit=True,baseline_only=False,equal=True):
++    refs={};models={};instances={}
++    for k in ('baseline_v2','balanced_physics')+(() if baseline_only or not equal else ('equal_weight',)):
++        c,r=profile();models[k]=c;refs[id(c)]=(k,r)
++    original=ev.Observer
++    def new(c):
++        k,r=refs[id(c)];candidate=k!='baseline_v2' and not baseline_only
++        if audit:o=Audited(c,r,candidate=candidate,equal=k=='equal_weight')
++        elif candidate:o=PrequentialOutageObserver(c,readout=r,ensemble=EnsembleConfig(True,k=='equal_weight'))
++        else:o=GuardedReadoutObserver(c,readout=r)
++        instances[k]=o;return o
++    ev.Observer=new
++    try:yield models,instances
++    finally:ev.Observer=original
++
++
++def score_case(events,refs,meta,output,baseline_only=False):
++    fault=meta.get('fault');common=fault is not None and fault['kind']=='common_bias'
++    if common:events=h11.inject_common(events,fault)
++    with factory(baseline_only=baseline_only) as (models,instances):
++        scores=ev.score(events,refs,models,OPS,fault)
++        audits={NAMES[k]:(obj.summary() if isinstance(obj,Audited) else {}) for k,obj in instances.items()}
++        hashes={a['canonical_output_sha256'] for a in audits.values()}
++        if len(hashes)!=1:raise AssertionError('Baseline trajectory differs across models')
++        for k,obj in instances.items():
++            if isinstance(obj,Audited) and obj.trace:
++                dump_gz(output/'traces'/(meta['case_id']+'-'+NAMES[k]+'.json.gz'),obj.trace)
++    for row in scores['receivers'].values():
++        for old,new in NAMES.items():
++            if old in row:row[new]=row.pop(old)
++    for old,new in NAMES.items():
++        if old in scores['runtime']:scores['runtime'][new]=scores['runtime'].pop(old)
++    result=dict(**meta,**scores,audit=audits)
++    if baseline_only:
++        for r in result['receivers'].values():
++            # score adds common_front/mean keys to the second legacy alias only.
++            a={k:v for k,v in r['v8'].items() if not k.startswith('common_')}
++            b={k:v for k,v in r['H31'].items() if not k.startswith('common_')}
++            if a!=b:raise AssertionError('Independent baseline reproduction mismatch')
++        if result['runtime']['v8']!=result['runtime']['H31']:raise AssertionError('Baseline counters mismatch')
++    return result
++
++
++def low_windows(events):
++    # Exact source 6190e82 tools/research_lock/low_speed.py, role adapter only.
++    grid=ev.ex.grid_channels(events)
++    if grid is None:return
++    t,u,f,r,valid=grid
++    idx=np.flatnonzero(valid&(abs(f-r)<.15)&((f+r)/2>1)&((f+r)/2<2)&(u>=0)&(t>max(25.,.1*t[-1]))&(t<t[-1]-25.))
++    if len(idx):
++        anchor=float(t[idx[0]])
++        for duration in (3.,5.):
++            yield dict(kind='lock',start=anchor,end=anchor+duration),events[(events[:,0]>=anchor-20)&(events[:,0]<=anchor+duration+10.1)]
++
++
++def transition_windows(events):
++    grid=ev.ex.grid_channels(events)
++    if grid is None:return
++    t,u,f,r,valid=grid;reg=np.where(u>.04,1,np.where(u<-.04,-1,0))
++    for before,after in ((1,0),(0,-1)):
++        idx=np.flatnonzero(valid[1:]&valid[:-1]&(reg[:-1]==before)&(reg[1:]==after)&(t[1:]>25)&(t[1:]<t[-1]-25))+1
++        if len(idx):
++            anchor=float(t[idx[0]]);fault=dict(kind='dropout',start=anchor,end=anchor+5.,transition=f'{before}_to_{after}')
++            yield fault,events[(events[:,0]>=anchor-20)&(events[:,0]<=anchor+15.1)]
++
++
++def worker(args):
++    bag,role,streams,data_root,output,baseline_only=args;output=Path(output)
++    data=Data(streams,data_root);events,refs=data.get(bag,role);group=data.records[bag]['group'];rows=[]
++    meta=dict(bag=bag,group=group,role=role,suite='clean',case_id=bag+'-clean')
++    if role=='train':
++        with factory(equal=False) as (models,instances):
++            for name,c in models.items():
++                pred,rt=ev.replay(events,c,OPS)
++                obj=instances[name];a=obj.summary()
++                rows.append(dict(model=NAMES[name],outputs=len(pred),runtime=rt,audit=a))
++            if rows[0]['audit']['canonical_output_sha256']!=rows[1]['audit']['canonical_output_sha256']:
++                raise AssertionError('Train inner mismatch')
++        result=dict(bag=bag,group=group,role=role,models=rows,reference_used=False,access=data.access)
++    else:
++        rows.append(score_case(events,refs,meta,output,baseline_only))
++        suites=(('original',guarded.fault_windows),('low_speed',low_windows),('common',h11.common_fault_windows),('transition',transition_windows))
++        for suite,fn in suites:
++            for number,(fault,window) in enumerate(fn(events)):
++                meta=dict(bag=bag,group=group,role=role,suite=suite,fault=fault,case_id=f'{bag}-{suite}-{number}')
++                rows.append(score_case(window,refs,meta,output,baseline_only))
++        result=dict(bag=bag,group=group,role=role,cases=rows,access=data.access)
++    dump_gz(output/'bags'/(bag+'.json.gz'),result)
++    print('CHECKPOINT',role,bag,flush=True)
++    return result
++
++
++def summary(rows,name):
++    clean=[r for r in rows if r['suite']=='clean'];stress=[r for r in rows if r['suite']=='original']
++    s=v6.summary(clean,stress,name)
++    s.update(clean_mae=v6.macro(clean,name,'mae'),clean_bias=v6.macro(clean,name,'bias'),
++             clean_p95=v6.macro(clean,name,'p95'),fault_mae=v6.macro(stress,name,'mae'),
++             fault_bias=v6.macro(stress,name,'bias'),recovery_s=v6.macro(stress,name,'recovery_s'))
++    s['extra']={}
++    for suite in ('low_speed','common','transition'):
++        cases=[r for r in rows if r['suite']==suite]
++        s['extra'][suite]=dict(event_macro_rmse=v6.macro(cases,name,'event_rmse'),
++              full_macro_rmse=v6.macro(cases,name,'rmse'),mae=v6.macro(cases,name,'mae'),
++              bias=v6.macro(cases,name,'bias'),recovery_s=v6.macro(cases,name,'recovery_s'),
++              false_stops=v6.total(cases,name,'false_stop_samples'),unrecovered=v6.unrecovered(cases,name))
++    return s
++
++
++def evaluate_gate(rows,sums,risk):
++    b=sums['v8'];c=sums['H31'];reasons=[];safety=[]
++    missing=any(b[k] is None or c[k] is None for k in ('clean_rmse','fault_rmse','pooled_rmse','distance_rmse'))
++    gains={k:(1-c[k]/b[k] if b[k] else None) for k in ('clean_rmse','fault_rmse')}
++    if missing:reasons.append('missing_reference')
++    elif not ((gains['clean_rmse'] is not None and gains['clean_rmse']>=.02) or (gains['fault_rmse'] is not None and gains['fault_rmse']>=.05)):
++        reasons.append('insufficient_gain')
++    for k in ('clean_rmse','fault_rmse','pooled_rmse','distance_rmse'):
++        if c[k] is not None and b[k] is not None and c[k]>b[k]*(1.01 if k=='distance_rmse' else 1.005)+1e-12:
++            reasons.append('aggregate_regression:'+k)
++    for suite in ('low_speed','common','transition'):
++        bb=b['extra'][suite]['event_macro_rmse'];cc=c['extra'][suite]['event_macro_rmse']
++        if bb is None or cc is None:safety.append('missing_extra_reference:'+suite)
++        elif cc>bb*1.005+1e-12:safety.append('extra_event_regression:'+suite)
++    for row in rows:
++        key=row['case_id'];rt=row['runtime']['H31']
++        if rt['causal_errors'] or rt['resets']:safety.append('causality_or_reset:'+key)
++        if row['audit']['H31']['stats'].get('limit_failures',0):safety.append('empty_limiter_intersection:'+key)
++        for recv,m in row['receivers'].items():
++            bb=m['v8'];cc=m['H31'];pair=key+'/'+recv
++            if bb['n']!=cc['n'] or bb['coverage']!=cc['coverage']:safety.append('coverage:'+pair)
++            if cc.get('false_stop_samples',0)>bb.get('false_stop_samples',0):safety.append('false_stop:'+pair)
++            if bb.get('event_rmse') is not None and bb.get('recovery_s') is not None and cc.get('recovery_s') is None:
++                safety.append('new_individual_unrecovered:'+pair)
++            if row['suite']=='clean' and bb['rmse'] is not None and (cc['rmse'] is None or cc['rmse']>bb['rmse']+max(.005,.05*bb['rmse'])):
++                reasons.append('per_bag_clean:'+pair)
++    if not risk['passed']:safety.append('synthetic_counterexample')
++    clean=[r for r in rows if r['suite']=='clean'];original=[r for r in rows if r['suite']=='original']
++    completed=sum(r['audit']['H31']['completed'] for r in clean)
++    completed_groups=sorted({r['group'] for r in clean if r['audit']['H31']['completed']})
++    eligible={(r['bag'],r['fault']['start']) for r in original if r['audit']['H31']['selected_outages']}
++    eligible_groups=sorted({r['group'] for r in original if r['audit']['H31']['selected_outages']})
++    effective=sum(r['audit']['H31']['effective_ticks'] for r in original)
++    reference_groups=sorted({r['group'] for r in original if r['audit']['H31']['effective_ticks'] and any(m['H31']['event_rmse'] is not None for m in r['receivers'].values())})
++    coverage=dict(completed_forecasts=completed,completed_groups=completed_groups,
++        eligible_original_contexts=len(eligible),eligible_original_groups=eligible_groups,
++        effective_original_ticks=effective,altered_original_reference_groups=reference_groups)
++    covered=(completed>=100 and len(completed_groups)>=3 and len(eligible)>=5 and len(eligible_groups)>=3
++             and effective>=100 and len(reference_groups)>=2)
++    coverage['passed']=covered
++    reasons=sorted(set(reasons+safety))
++    verdict='INCONCLUSIVE' if not covered else ('REJECTED' if reasons else 'DEVELOPMENT_PASSED_PENDING_VALIDATION')
++    return dict(mechanism_status='ACTIVE' if effective else 'NOT_EFFECTIVE_ON_ORIGINAL_SUITE',
++        coverage_status='SUFFICIENT' if covered else 'INSUFFICIENT',scientific_verdict=verdict,
++        coverage=coverage,gains=gains,reasons=reasons,safety_reasons=sorted(set(safety)),
++        development_contract_passed=covered and not reasons,accuracy_contract_passed=False,
++        runtime_verified=False,ready_to_merge=False,validation_authorized=covered and not reasons,
++        validation_opened=False,test_opened=False,
++        runtime_stage='NOT_RUN_AFTER_REJECTION' if verdict=='REJECTED' else 'NOT_RUN_AFTER_INCONCLUSIVE' if not covered else 'PENDING')
++
++
++def write_tables(output,rows,sums):
++    fields=['suite','bag','group','receiver','kind','start','end','model','rmse','event_rmse','mae','bias','p95','n','coverage','false_stop_samples','recovery_s','distance_rmse','effective_ticks','completed','selected_outages']
++    with (output/'per_bag.csv').open('w',newline='') as out:
++        w=csv.DictWriter(out,fields);w.writeheader()
++        for row in rows:
++            f=row.get('fault',{})
++            for rec,models in row['receivers'].items():
++                for name in sums:
++                    m=models[name];a=row['audit'][name]
++                    line={k:row[k] for k in ('suite','bag','group')};line.update(receiver=rec,model=name,**{k:f.get(k) for k in ('kind','start','end')})
++                    line.update({k:m.get(k) for k in ('rmse','event_rmse','mae','bias','p95','n','coverage','false_stop_samples','recovery_s')})
++                    line.update(distance_rmse=m.get('distance_surrogate',{}).get('reanchored_span_rmse_m'),effective_ticks=a['effective_ticks'],completed=a['completed'],selected_outages=len(a['selected_outages']))
++                    w.writerow(line)
++    groups={}
++    for g in sorted({r['group'] for r in rows}):
++        groups[g]={name:summary([r for r in rows if r['group']==g],name) for name in sums}
++    save(output/'per_group.json',groups)
++    with (output/'aggregate.csv').open('w',newline='') as out:
++        w=csv.writer(out);w.writerow(['model','metric','value'])
++        for name,s in sums.items():
++            for k,v in s.items():
++                if k!='extra':w.writerow([name,k,v])
++                else:
++                    for suite,mm in v.items():
++                        for mk,mv in mm.items():w.writerow([name,suite+'.'+mk,mv])
++
++
++def run_stage(args):
++    provenance=identity();output=args.output;output.mkdir(parents=True,exist_ok=False)
++    save(output/'started.json',provenance)
++    role='train' if args.stage=='train' else 'development';data=Data(args.streams,args.data_root)
++    jobs=[(bag,role,str(args.streams) if args.streams else None,str(args.data_root) if args.data_root else None,str(output),args.stage=='baseline') for bag in data.plan['splits'][role]]
++    with ProcessPoolExecutor(max_workers=args.workers) as pool:results=list(pool.map(worker,jobs))
++    access=[a for r in results for a in r['access']];save(output/'access.json',dict(access=access,validation_opened=False,test_opened=False))
++    if role=='train':
++        total={name:dict(outputs=0,completed=0,effective_ticks=0) for name in ('v8','H31')}
++        for r in results:
++            for m in r['models']:
++                s=total[m['model']];s['outputs']+=m['outputs'];s['completed']+=m['audit']['completed'];s['effective_ticks']+=m['audit']['effective_ticks']
++        save(output/'SUMMARY.json',dict(bags=len(results),groups=len({r['group'] for r in results}),models=total,reference_used=False,equivalence_passed=True))
++        return
++    rows=[c for r in results for c in r['cases']]
++    if args.stage=='baseline':
++        names=('v8','H31');sums={n:summary(rows,n) for n in names}
++        save(output/'SUMMARY.json',dict(independent_execution_reproduced=True,baseline=sums['v8'],bags=len(results),groups=len({r['group'] for r in results})))
++        return
++    if args.baseline is None:raise ValueError('Development requires --baseline completed stage')
++    comparisons=0
++    for result in results:
++        old=read_gz(args.baseline/'bags'/(result['bag']+'.json.gz'))
++        for before,after in zip(old['cases'],result['cases']):
++            assert before['case_id']==after['case_id']
++            assert before['runtime']['v8']==after['runtime']['v8']
++            assert before['audit']['v8']['canonical_output_sha256']==after['audit']['v8']['canonical_output_sha256']
++            for rec,mm in before['receivers'].items():
++                assert mm['v8']==after['receivers'][rec]['v8'];comparisons+=1
++    sums={name:summary(rows,name) for name in ('v8','H31','equal_weight')}
++    testmod=module('h31_tests_for_risk',ROOT/'research/R3/H31/tests.py');risk=testmod.risk_probes()
++    save(output/'synthetic_risk.json',risk)
++    decision=evaluate_gate(rows,sums,risk);save(output/'decision.json',decision)
++    case_counts=Counter(r['suite'] for r in rows)
++    rc={suite:sum(m['v8']['rmse'] is not None for r in rows if r['suite']==suite for m in r['receivers'].values()) for suite in case_counts}
++    save(output/'SUMMARY.json',dict(**decision,summary=sums,bags=len(results),groups=len({r['group'] for r in results}),
++         cases=dict(case_counts),reference_cases=rc,baseline_reproduced=True,compared_case_receiver_metrics=comparisons,
++         actual_published_estimate=True,equal_weight_is_diagnostic_only=True))
++    write_tables(output,rows,sums)
++    print(json.dumps(dict(decision=decision,summary=sums),indent=2),flush=True)
++
++
++def tape(events,fault=None):
++    c,r=profile();tl=Timeline(GuardedReadoutObserver(c,readout=r),rate_hz=20,delay_s=0);result=[]
++    for t,ch,v in events:
++        ch=int(ch)
++        if fault and fault['start']<=t<fault['end']:
++            if fault['kind']=='dropout' and ch in (1,2):continue
++            if fault['kind']=='lock' and ch in (1,2):v=0
++            if fault['kind']=='bias' and ch==1:v+=5
++        tl.ingest(ch,Sample(float(t),float(v)))
++        for e,held in tl.advance():result.append((e.t,*held))
++    return result
++
++
++def cost(args):
++    provenance=identity();args.output.mkdir(parents=True,exist_ok=False);save(args.output/'started.json',provenance)
++    data=Data(args.streams,args.data_root);bag=data.plan['splits']['development'][0];events,_=data.get(bag,'development')
++    clean=events[events[:,0]<=events[0,0]+120.]
++    original=[(f,w) for f,w in guarded.fault_windows(events) if f['kind']=='dropout'];f,w=original[0]
++    trials=[]
++    for label,flow,fault in (('healthy_learning',clean,None),('original_dropout',w,f)):
++        held=tape(flow,fault);cut=held[0][0]+10
++        for mode in ('step','replay'):
++            for rep in range(6):
++                for name in (('v8','H31') if rep%2==0 else ('H31','v8')):
++                    c,r=profile();o=GuardedReadoutObserver(c,readout=r) if name=='v8' else PrequentialOutageObserver(c,readout=r)
++                    collector=[]
++                    if mode=='step':
++                        cpu=wall=0.;measured=0
++                        for tick in held:
++                            if tick[0]<cut:o.step(*tick);continue
++                            ts=time.perf_counter_ns();cs=time.process_time_ns();e=o.step(*tick)
++                            cpu+=time.process_time_ns()-cs;wall+=time.perf_counter_ns()-ts;measured+=1
++                            collector.append((e.t,e.v,e.s))
++                    else:
++                        # Whole official replay, after one explicit 10s observer warmup
++                        # in a separate object; every measured replay starts identically.
++                        for tick in held:
++                            if tick[0]>=cut:break
++                            o.step(*tick)
++                        original_factory=ev.Observer
++                        ev.Observer=(lambda cc:GuardedReadoutObserver(cc,readout=r)) if name=='v8' else (lambda cc:PrequentialOutageObserver(cc,readout=r))
++                        ts=time.perf_counter_ns();cs=time.process_time_ns()
++                        try:a,info=ev.replay(flow,c,OPS,fault)
++                        finally:ev.Observer=original_factory
++                        cpu=time.process_time_ns()-cs;wall=time.perf_counter_ns()-ts;measured=len(a);collector=a[:,:3].tolist()
++                    trials.append(dict(dataset=label,bag=bag,mode=mode,repeat=rep,warmup=rep==0,model=name,
++                         outputs=measured,cpu_us_per_output=cpu/1000/measured,wall_us_per_output=wall/1000/measured,
++                         output_sha256=digest_data(collector),effective_ticks=o.stats['effective_ticks'] if name=='H31' and mode=='step' else None))
++    summaries={}
++    for label in ('healthy_learning','original_dropout'):
++        summaries[label]={}
++        for mode in ('step','replay'):
++            summaries[label][mode]={}
++            for name in ('v8','H31'):
++                items=[x for x in trials if not x['warmup'] and x['dataset']==label and x['mode']==mode and x['model']==name]
++                assert len({x['output_sha256'] for x in items})==1
++                summaries[label][mode][name]={k:statistics.median(x[k] for x in items) for k in ('cpu_us_per_output','wall_us_per_output')}
++    save(args.output/'trials.json',dict(trials=trials,scope='Python step/replay ONLY; not ROS latency/RSS',warmup='10s explicit + first AB pair discarded; replay includes full flow',summary=summaries))
++    save(args.output/'access.json',dict(access=data.access,validation_opened=False,test_opened=False))
++    print(json.dumps(summaries,indent=2),flush=True)
++
++
++if __name__=='__main__':
++    p=argparse.ArgumentParser(description=__doc__)
++    p.add_argument('--stage',choices=['baseline','train','development','cost'],required=True)
++    p.add_argument('--output',type=Path,required=True);p.add_argument('--baseline',type=Path)
++    p.add_argument('--streams',type=Path);p.add_argument('--data-root',type=Path);p.add_argument('--workers',type=int,default=2)
++    args=p.parse_args()
++    if not 1<=args.workers<=4:p.error('workers must be1..4')
++    if args.stage=='cost':cost(args)
++    else:run_stage(args)
+diff --git a/research/R3/H31/tests.py b/research/R3/H31/tests.py
+new file mode 100644
+index 0000000..2784322
+--- /dev/null
++++ b/research/R3/H31/tests.py
+@@ -0,0 +1,289 @@
++"""Executable H31 invariants and mandatory counterexamples; no dataset needed."""
++import argparse
++from copy import deepcopy
++from dataclasses import asdict
++import json
++import math
++from pathlib import Path
++import random
++import sys
++import unittest
++ROOT=Path(__file__).resolve().parents[3]
++sys.path[:0]=[str(ROOT/'src/reserve_odometry'),str(Path(__file__).parent)]
++from probe import profile
++from reserve_odometry.core import Sample
++from reserve_odometry.guarded_readout import GuardedReadoutObserver
++from reserve_odometry.prequential_outage import PrequentialOutageObserver, EnsembleConfig, CompletedScore
++
++
++def make(enabled=True, equal=False):
++    c,r=profile()
++    return PrequentialOutageObserver(c,readout=r,ensemble=EnsembleConfig(enabled,equal))
++
++
++def warm(o, end=20., u=.2):
++    for i in range(round(end*20)+1):
++        t=i*.05;tw=(i//2)*.1
++        o.step(t,Sample(t,u),Sample(tw,5.),Sample(tw,5.))
++
++
++def seeded():
++    o=make();o.reset(velocity=5)
++    o.step(10,Sample(10,0),Sample(10,5),Sample(10,5))
++    o.command_epoch=(0,0.)
++    o.base.drive_a=.2
++    for k in (2,4,6):
++        o.scores.append(CompletedScore(k,k+1,k+1.1,(2.,0.,1.)))
++    # Most recent record age<4s at 10.05.
++    return o
++
++
++class Invariants(unittest.TestCase):
++    def test_disabled_exact_and_enabled_inner_7000(self):
++        c,r=profile();b=GuardedReadoutObserver(c,readout=r);off=make(False);on=make()
++        rng=random.Random(3103)
++        for i in range(7000):
++            t=i*.05;cmd=Sample(t, .1 if i%300<200 else -.1)
++            ts=(i//2)*.1
++            if i%211<180:
++                z=4+.01*math.sin(ts);f=Sample(ts,z);re=Sample(ts,z+.001)
++            else:f=re=None
++            if i%503==0:f=Sample(t+1,5.)
++            e=b.step(t,cmd,f,re);x=off.step(t,cmd,f,re);y=on.step(t,cmd,f,re)
++            self.assertEqual(e,x)
++            self.assertEqual(vars(b),vars(off.base))
++            self.assertEqual(vars(b),vars(on.base))
++            self.assertTrue(all(math.isfinite(v) for v in (y.v,y.s,y.a)))
++
++    def test_scores_finish_before_selection(self):
++        o=make()
++        for k in (1,3,5):o.scores.append(CompletedScore(k,k+1,k+1,(0,0,0)))
++        self.assertFalse(o._weights(6)[1])
++        self.assertTrue(o._weights(6.05)[1])
++        self.assertLess(o._weights(6.05)[2],6.05)
++        self.assertFalse(o._weights(30)[1])
++
++    def test_normalized_convex_weights(self):
++        for values in ((0,0,0),(4,0,4),(0,4,4),(4,4,4)):
++            o=make()
++            for k in (1,3,5):o.scores.append(CompletedScore(k,k+1,k+1,values))
++            w,usable,_,_=o._weights(6.1)
++            self.assertTrue(usable);self.assertAlmostEqual(sum(w),1)
++            self.assertGreaterEqual(w[0],.25);self.assertTrue(all(0<=x<=1 for x in w))
++
++    def test_equal_weight_control_not_selector(self):
++        o=make(equal=True)
++        for k in (1,3,5):o.scores.append(CompletedScore(k,k+1,k+1,(4,0,4)))
++        self.assertEqual(o._weights(6.1)[0],(1/3,1/3,1/3))
++
++    def test_no_score_from_duplicates_and_completion_horizon(self):
++        o=make();warm(o)
++        self.assertGreater(o.stats['completed'],3)
++        for r in o.scores:
++            self.assertLessEqual(r.horizon,r.completed)
++            self.assertAlmostEqual(r.horizon-r.start,1.)
++        n=o.stats['completed']
++        for i in range(1,4):o.step(20+i*.05,Sample(20,0.2),Sample(20,5),Sample(20,5))
++        self.assertEqual(n,o.stats['completed'])
++
++    def test_endpoint_cannot_change_initial_forecast(self):
++        a,b=make(),make();warm(a,6);warm(b,6)
++        # Force a fresh launch, no model change; then vary only later wheel target.
++        for o in (a,b):o.pending=None;o.next_launch=6.05
++        a.step(6.1,Sample(6.1,.2),Sample(6.1,5),Sample(6.1,5))
++        b.step(6.1,Sample(6.1,.2),Sample(6.1,5),Sample(6.1,5))
++        initial=a.pending.velocity
++        for i in range(1,12):
++            t=6.1+i*.05
++            a.step(t,Sample(t,.2),Sample(t,5),Sample(t,5))
++            b.step(t,Sample(t,.2),Sample(t,5.01),Sample(t,5.01))
++        self.assertEqual(a.pending.velocity,initial)
++        self.assertEqual(b.pending.velocity,initial)
++        self.assertEqual(vars(a.pending.physics),vars(b.pending.physics))
++
++    def test_distance_survives_recovery(self):
++        o=seeded();last=o.last_estimate;oldbase=o.base.last_estimate;dv=0.;ds=0.
++        for i in range(1,31):
++            t=10+i*.05;e=o.step(t,Sample(t,0))
++            new=e.v-o.base.last_estimate.v
++            ds+=.5*(dv+new)*.05;dv=new
++            self.assertAlmostEqual(e.s-o.base.last_estimate.s,ds,places=11)
++            self.assertAlmostEqual(e.a,o.base.last_estimate.a+(new-(last.v-oldbase.v))/.05,places=10)
++            last=e;oldbase=o.base.last_estimate
++        self.assertNotEqual(ds,0)
++        e=o.step(11.55,Sample(11.55,0),Sample(11.55,5),Sample(11.55,5))
++        ds+=dv*.025
++        self.assertEqual(e.v,o.base.last_estimate.v)
++        self.assertAlmostEqual(e.s-o.base.last_estimate.s,ds,places=11)
++        self.assertNotEqual(o.delta_s,0)
++
++    def test_score_weights_frozen_in_outage(self):
++        o=seeded();snap=None
++        for i in range(1,31):
++            e=o.step(10+i*.05,Sample(10+i*.05,0))
++            if snap is None:snap=(list(o.scores),o.outage.weights)
++            self.assertEqual(list(o.scores),snap[0]);self.assertEqual(o.outage.weights,snap[1])
++
++    def test_regime_change_at_loss_exact_fallback(self):
++        for u in (.8,-.8):
++            o=seeded()
++            for i in range(1,61):
++                t=10+i*.05;e=o.step(t,Sample(t,u))
++                self.assertEqual(e.v,o.base.last_estimate.v)
++                self.assertEqual(o.delta_v,0)
++
++    def test_command_magnitude_change_same_regime_invalidates(self):
++        o=make();warm(o)
++        self.assertGreaterEqual(len(o.scores),3)
++        e=o.step(20.05,Sample(20.05,.8))
++        self.assertEqual(e.v,o.base.last_estimate.v);self.assertFalse(o.outage.usable)
++
++    def test_false_common_pair_return_and_zero_lock_bypass(self):
++        o=seeded()
++        for i in range(1,20):o.step(10+i*.05,Sample(10+i*.05,0))
++        e=o.step(11,Sample(11,0),Sample(11,10),Sample(11,10))
++        self.assertEqual(e.v,o.base.last_estimate.v)
++        self.assertEqual(o.delta_v,0)
++        e=o.step(11.05,Sample(11.05,0),Sample(11.05,0),Sample(11.05,0))
++        self.assertEqual(e.v,o.base.last_estimate.v)
++
++    def test_quarantine_overrides_existing_correction(self):
++        o=seeded();o.step(10.05,Sample(10.05,0))
++        o.base.reacquire_blocked_until=15
++        e=o.step(10.1,Sample(10.1,0))
++        self.assertEqual(e.v,o.base.last_estimate.v)
++
++    def test_future_and_stale_are_not_labels(self):
++        o=make();warm(o);n=o.stats['completed']
++        o.step(20.05,Sample(25,.3),Sample(25,7),Sample(25,7))
++        self.assertEqual(len(o.scores),0)
++        self.assertIsNone(o.pending)
++        self.assertEqual(n,o.stats['completed'])
++
++    def test_prefix_invariance(self):
++        a,b=make(),make()
++        for i in range(501):
++            t=i*.05;args=(t,Sample(t,.1),Sample(t,5.),Sample(t,5.))
++            self.assertEqual(a.step(*args),b.step(*args))
++        history=deepcopy(a.scores)
++        for i in range(501,521):
++            t=i*.05;a.step(t,Sample(t,.1));b.step(t,Sample(t,.5),Sample(t,6),Sample(t,6))
++        self.assertTrue(all(s.horizon<=25 for s in history))
++        # Prefix outputs were compared before either suffix was supplied.
++
++    def test_bounded_state_10000(self):
++        o=make()
++        keys=None
++        for i in range(10000):
++            t=i*.05;cmd=Sample(t,0)
++            w=Sample(t,5+.001*math.sin(t)) if i%401<350 else None
++            e=o.step(t,cmd,w,w)
++            self.assertLessEqual(len(o.scores),8)
++            self.assertEqual(len(o.stats),len(o.STATS))
++            self.assertLessEqual(abs(e.v),o.c.max_speed_mps)
++            self.assertLessEqual(abs(o.delta_v),o.c.disturbance_limit_mps2+1e-10)
++            if keys is None:keys=set(vars(o))
++            self.assertEqual(set(vars(o)),keys)
++            for score in o.scores:self.assertEqual(len(score.losses),3)
++        self.assertEqual(o.stats['limit_failures'],0)
++
++    def test_rate_bounds_and_no_reverse_in_outage(self):
++        o=seeded();prev=o.last_estimate
++        for i in range(1,61):
++            t=10+i*.05;e=o.step(t,Sample(t,0))
++            self.assertLessEqual(abs(e.v-prev.v),o.c.max_accel_mps2*.05+1e-9)
++            self.assertGreaterEqual(e.v,0);prev=e
++        self.assertEqual(o.stats['limit_failures'],0)
++
++    def test_explicit_reset_only_clears_distance(self):
++        o=seeded();o.step(10.05,Sample(10.05,0));self.assertNotEqual(o.delta_s,0)
++        o.reset(position=7.,velocity=2.)
++        self.assertEqual(o.delta_s,0);self.assertEqual(len(o.scores),0);self.assertIsNone(o.pending)
++        self.assertEqual(o.step(0).s,7.)
++
++    def test_invalid_time_preserves_auxiliary_state(self):
++        o=seeded();s=deepcopy(o.scores)
++        for t in (10,9,100,float('nan')):
++            with self.assertRaises(ValueError):o.step(t)
++            self.assertEqual(o.scores,s)
++
++
++def risk_probes():
++    rows=[]
++    for kind in ('command_acceleration','command_braking','hidden_load_positive','hidden_load_negative','false_return'):
++        o=make();c,r=profile();b=GuardedReadoutObserver(c,readout=r)
++        err_b=[];err_c=[];stops=[0,0];return_errors=[[],[]];effective=0
++        for i in range(701):
++            t=i*.05;u=.2
++            if kind=='command_acceleration' and t>=20:u=.8
++            if kind=='command_braking' and t>=20:u=-.8
++            truth=5.
++            if kind=='hidden_load_positive':truth=5+.6*min(max(t-20,0),5)
++            if kind=='hidden_load_negative':truth=5-.6*min(max(t-20,0),5)
++            # Commanded changes use simple clipped acceleration truth, not oracle inputs.
++            if kind=='command_acceleration':truth=5+.6*min(max(t-20,0),5)
++            if kind=='command_braking':truth=max(0,5-.8*max(t-20,0))
++            z=truth+5 if kind=='false_return' and 25<=t<26.2 else truth
++            w=None if 20<=t<25 else Sample((i//2)*.1,z)
++            e=b.step(t,Sample(t,u),w,w);f=o.step(t,Sample(t,u),w,w)
++            assert vars(o.base)==vars(b)
++            if 20<=t<25:
++                err_b.append((e.v-truth)**2);err_c.append((f.v-truth)**2)
++                effective+=abs(f.v-e.v)>1e-6
++            if truth>1:
++                stops[0]+=e.mode=='STOPPED';stops[1]+=f.mode=='STOPPED'
++            if 25<=t<35:
++                return_errors[0].append(abs(e.v-truth)<.25);return_errors[1].append(abs(f.v-truth)<.25)
++        rb=math.sqrt(sum(err_b)/len(err_b));rc=math.sqrt(sum(err_c)/len(err_c))
++        recovered=[any(all(x[j:j+20]) for j in range(len(x)-19)) for x in return_errors]
++        passed=rc<=rb*1.005+1e-12 and stops[1]<=stops[0] and not(recovered[0] and not recovered[1]) and o.stats['limit_failures']==0
++        rows.append(dict(kind=kind,baseline_event_rmse=rb,candidate_event_rmse=rc,false_stops=stops,recovered=recovered,effective_ticks=effective,passed=passed))
++    # Same preregistered counterexample families, with nonzero pre-outage
++    # acceleration so the ensemble actually intervenes (steady fixtures above
++    # can make all three predictions identical).
++    for kind in ('active_history_hidden_load_positive','active_history_hidden_load_negative',
++                 'active_history_command_acceleration','active_history_command_braking',
++                 'active_history_false_return'):
++        o=make();c,r=profile();b=GuardedReadoutObserver(c,readout=r)
++        eb=[];ec=[];stops=[0,0];ret=[[],[]];effective=0;selected=0
++        for i in range(701):
++            t=i*.05;u=.2;acc=.12
++            if t>=20:
++                if 'hidden_load_positive' in kind:acc=.72
++                if 'hidden_load_negative' in kind:acc=-.48
++                if 'command_acceleration' in kind:u=.8;acc=.72
++                if 'command_braking' in kind:u=-.8;acc=-.8
++            def true_at(ts):
++                a=.12
++                if ts>=20:
++                    if 'hidden_load_positive' in kind or 'command_acceleration' in kind:a=.72
++                    if 'hidden_load_negative' in kind:a=-.48
++                    if 'command_braking' in kind:a=-.8
++                return max(0.,3+.12*min(ts,20)+a*max(0.,ts-20))
++            truth=true_at(t);tw=(i//2)*.1;z=true_at(tw)
++            if 'false_return' in kind and 25<=t<26.2:z+=5
++            w=None if 20<=t<25 else Sample(tw,z)
++            e=b.step(t,Sample(t,u),w,w);f=o.step(t,Sample(t,u),w,w)
++            assert vars(o.base)==vars(b)
++            if 20<=t<25:
++                eb.append((e.v-truth)**2);ec.append((f.v-truth)**2)
++                effective+=abs(f.v-e.v)>1e-6
++            if truth>1:
++                stops[0]+=e.mode=='STOPPED';stops[1]+=f.mode=='STOPPED'
++            if 25<=t<35:
++                ret[0].append(abs(e.v-truth)<.25);ret[1].append(abs(f.v-truth)<.25)
++        rb=math.sqrt(sum(eb)/len(eb));rc=math.sqrt(sum(ec)/len(ec))
++        recovered=[any(all(x[j:j+20]) for j in range(len(x)-19)) for x in ret]
++        passed=rc<=rb*1.005+1e-12 and stops[1]<=stops[0] and not(recovered[0] and not recovered[1]) and o.stats['limit_failures']==0
++        rows.append(dict(kind=kind,baseline_event_rmse=rb,candidate_event_rmse=rc,false_stops=stops,
++                         recovered=recovered,effective_ticks=effective,selected_outages=o.stats['selected_outages'],passed=passed))
++    return dict(cases=rows,passed=all(r['passed'] for r in rows),scope='synthetic counterexamples, not real-data accuracy')
++
++
++if __name__=='__main__':
++    p=argparse.ArgumentParser();p.add_argument('--risk-output',type=Path);p.add_argument('-v',action='store_true');args=p.parse_args()
++    result=unittest.TextTestRunner(verbosity=2 if args.v else 1).run(unittest.defaultTestLoader.loadTestsFromTestCase(Invariants))
++    risk=risk_probes();print(json.dumps(risk,indent=2))
++    if args.risk_output:
++        args.risk_output.parent.mkdir(parents=True,exist_ok=True);args.risk_output.write_text(json.dumps(risk,indent=2)+'\n')
++    raise SystemExit(0 if result.wasSuccessful() else 1)
+diff --git a/src/reserve_odometry/reserve_odometry/prequential_outage.py b/src/reserve_odometry/reserve_odometry/prequential_outage.py
+new file mode 100644
+index 0000000..ab0d654
+--- /dev/null
++++ b/src/reserve_odometry/reserve_odometry/prequential_outage.py
+@@ -0,0 +1,295 @@
++"""R3-H31: bounded past-score ensemble, published outage path only.
++
++The contained canonical v8 is NEVER modified by ensemble state or pseudotargets.
++This experimental module is opt-in; canonical ROS launch does not use it.
++"""
++from collections import deque
++from copy import deepcopy
++from dataclasses import dataclass, replace
++import math
++from typing import Optional
++from .core import Config, Estimate, Sample, clip
++from .guarded_readout import GuardedReadoutObserver, ReadoutConfig
++
++
++@dataclass(frozen=True)
++class EnsembleConfig:
++    enabled: bool = True
++    equal_weight_control: bool = False  # diagnostic only; not a second candidate
++
++
++@dataclass(frozen=True)
++class CompletedScore:
++    start: float
++    horizon: float
++    completed: float
++    losses: tuple
++
++
++@dataclass
++class PendingForecast:
++    start: float
++    horizon: float
++    physics: GuardedReadoutObserver
++    velocity: float
++    acceleration: float
++    command: Sample
++    endpoint: Optional[tuple] = None
++
++
++@dataclass
++class Outage:
++    trigger: float
++    seed_time: float
++    velocity: float
++    acceleration: float
++    weights: tuple
++    usable: bool
++    score_stamp: Optional[float]
++    score_count: int
++    revoked: bool = False
++
++
++class PrequentialOutageObserver:
++    """One canonical + at most one virtual canonical, eight score triplets.
++
++    Published last_estimate is deliberately separate from base.last_estimate.
++    Only controller/front/rear samples enter step(). No runtime file/data IDs.
++    """
++    HORIZON = 1.0
++    SPACING = 2.0
++    MAX_RECORDS = 8
++    SCORE_AGE = 20.0
++    RECENT_SCORE = 4.0
++    MIN_RECORDS = 3
++    PRIORS = (.5, .25, .25)
++    PHYSICS_FLOOR = .25
++    COMMAND_CHANGE = .2
++    STATS = ('steps', 'launches', 'completed', 'cancelled', 'outage_ticks',
++             'selected_outages', 'effective_ticks', 'regime_resets',
++             'guarded_resets', 'limit_failures', 'outage_episodes')
++
++    def __init__(self, config: Config, *, readout: Optional[ReadoutConfig] = None,
++                 ensemble: Optional[EnsembleConfig] = None):
++        self.ensemble = ensemble or EnsembleConfig()
++        self.base = GuardedReadoutObserver(config, readout=readout)
++        self.reset()
++
++    @property
++    def c(self):
++        return self.base.c
++
++    @property
++    def t(self):
++        return self.base.t
++
++    def reset(self, *, velocity=None, position=0.0):
++        self.base.reset(velocity=velocity, position=position)
++        self.scores = deque(maxlen=self.MAX_RECORDS)
++        self.pending = None
++        self.outage = None
++        self.endpoint_previous = None
++        self.endpoint_stamps = (-math.inf, -math.inf)
++        self.command_epoch = None
++        self.next_launch = -math.inf
++        self.delta_v = self.delta_s = self.extra_sigma_s = 0.0
++        self.last_estimate = None
++        self.stats = dict.fromkeys(self.STATS, 0)
++        self.last_diag = None
++
++    def _count(self, key):
++        self.stats[key] = min(2**31-1, self.stats[key]+1)
++
++    def _cancel(self):
++        if self.pending is not None:
++            self._count('cancelled')
++        self.pending = None
++        self.endpoint_previous = None
++
++    def _regime(self, u):
++        return 1 if u > self.c.command_deadband else (-1 if u < -self.c.command_deadband else 0)
++
++    def _bounded_member(self, v, initial, u):
++        v = clip(v, -self.c.max_speed_mps, self.c.max_speed_mps)
++        if u <= self.c.command_deadband and initial*v < 0:
++            return 0.0
++        return v
++
++    def _trusted(self, e, front, rear):
++        return (not e.command_stale and self.base._valid(front, e.t, self.c.max_age_s)
++                and self.base._valid(rear, e.t, self.c.max_age_s)
++                and abs(front.t-rear.t) <= .05
++                and abs(front.value-rear.value) <= .15
++                and abs(e.v) > .5
++                and e.mode not in ('INITIALIZED', 'WAITING_FOR_INITIALIZATION', 'STOPPED', 'REACQUIRING')
++                and e.t >= self.base.reacquire_blocked_until
++                and all(s in ('ACCEPTED', 'DUPLICATE_OR_OLD')
++                        for s in (e.front_status, e.rear_status)))
++
++    def _weights(self, trigger):
++        records = [s for s in self.scores if trigger-self.SCORE_AGE <= s.completed < trigger-1e-9]
++        if len(records) < self.MIN_RECORDS or trigger-records[-1].completed > self.RECENT_SCORE:
++            return (1.0, 0.0, 0.0), False, None, len(records)
++        if self.ensemble.equal_weight_control:
++            weights = (1/3, 1/3, 1/3)
++        else:
++            losses = [sum(r.losses[i] for r in records)/len(records) for i in range(3)]
++            masses = [prior*math.exp(-loss) for prior, loss in zip(self.PRIORS, losses)]
++            z = sum(masses)
++            q = [m/z for m in masses]
++            weights = (self.PHYSICS_FLOOR+(1-self.PHYSICS_FLOOR)*q[0],
++                       (1-self.PHYSICS_FLOOR)*q[1], (1-self.PHYSICS_FLOOR)*q[2])
++        return weights, True, records[-1].completed, len(records)
++
++    def _learn(self, e, command, front, rear, healthy, u):
++        """Targets arrive AFTER prediction; no target is passed to virtual step."""
++        if not healthy:
++            self._cancel()
++            return False
++        if self.pending is not None:
++            p = self.pending
++            if e.t > p.horizon+self.c.max_age_s:
++                self._cancel()
++            elif p.endpoint is None:
++                deadline = min(e.t, p.horizon)
++                # Do not inject a just-arrived command backwards across the horizon.
++                held_command = command if command.t <= deadline+1e-9 else p.command
++                if deadline > p.physics.t+1e-12:
++                    p.physics.step(deadline, held_command)
++                p.command = command
++                if e.t+1e-9 >= p.horizon:
++                    p.endpoint = (p.physics.last_estimate.v, p.velocity,
++                                  self._bounded_member(p.velocity+p.acceleration*self.HORIZON,
++                                                       p.velocity, u))
++        # Held duplicates and half-new pairs cannot rescore an episode.
++        if front.t <= self.endpoint_stamps[0] or rear.t <= self.endpoint_stamps[1]:
++            return False
++        self.endpoint_stamps = (front.t, rear.t)
++        tz = (front.t+rear.t)*.5
++        z = (front.value+rear.value)*.5
++        old = self.endpoint_previous
++        completed = False
++        p = self.pending
++        if (p is not None and p.endpoint is not None and old is not None
++                and old[0] <= p.horizon <= tz and 0 < tz-old[0] <= self.c.max_age_s
++                and e.t >= p.horizon):
++            target = old[1]+(z-old[1])*(p.horizon-old[0])/(tz-old[0])
++            sigma = self.c.wheel_sigma_mps+.5*self.c.disturbance_limit_mps2*self.HORIZON
++            losses = tuple(min(4.0, 2*(math.hypot(1.0, (v-target)/sigma)-1)) for v in p.endpoint)
++            self.scores.append(CompletedScore(p.start, p.horizon, e.t, losses))
++            self.pending = None
++            self._count('completed')
++            completed = True
++        self.endpoint_previous = (tz, z)
++        if self.pending is None and e.t >= self.next_launch:
++            a = clip(self.base.drive_a-self.base.resistance(self.base.v)+self.base.disturbance,
++                     -self.c.max_accel_mps2, self.c.max_accel_mps2)
++            self.pending = PendingForecast(e.t, e.t+self.HORIZON, deepcopy(self.base), e.v, a, command)
++            self.next_launch = e.t+self.SPACING
++            self._count('launches')
++        return completed
++
++    def step(self, t, command=None, front=None, rear=None) -> Estimate:
++        old_t = self.base.t
++        old_canonical = self.base.last_estimate
++        old_published = self.last_estimate
++        old_delta = self.delta_v
++        old_a = clip(self.base.drive_a-self.base.resistance(self.base.v)+self.base.disturbance,
++                     -self.c.max_accel_mps2, self.c.max_accel_mps2)
++        e = self.base.step(t, command, front, rear)
++        if not self.ensemble.enabled:
++            self.last_estimate = e
++            return e
++        self._count('steps')
++        if old_t is None or e.mode in ('INITIALIZED', 'WAITING_FOR_INITIALIZATION'):
++            self.last_estimate = e
++            return e
++        dt = t-old_t
++        u = 0.0 if e.command_stale else clip(command.value, -1, 1)
++        current_regime = self._regime(u)
++        changed = (e.command_stale or self.command_epoch is None
++                   or current_regime != self.command_epoch[0]
++                   or abs(u-self.command_epoch[1]) > self.COMMAND_CHANGE)
++        if changed:
++            self.scores.clear()
++            self._cancel()
++            self.command_epoch = None if e.command_stale else (current_regime, u)
++            self._count('regime_resets')
++            if self.outage is not None:
++                self.outage.revoked = True
++        while self.scores and t-self.scores[0].completed > self.SCORE_AGE:
++            self.scores.popleft()
++        healthy = self._trusted(e, front, rear)
++        missing = (e.mode == 'MODEL_ONLY' and
++                   e.front_status == e.rear_status == 'MISSING_OR_STALE')
++        permitted = missing and not e.command_stale and t >= self.base.reacquire_blocked_until
++        output_v = e.v
++        members = (e.v, e.v, e.v)
++        weights = (1.0, 0.0, 0.0)
++        triggered = False
++        if missing:
++            self._count('outage_ticks')
++            if self.outage is None:
++                weights, usable, stamp, count = self._weights(t)
++                self.outage = Outage(t, old_t, old_canonical.v, old_a, weights,
++                                     usable and permitted, stamp, count, not permitted)
++                self._count('outage_episodes')
++                triggered = True
++                if self.outage.usable:
++                    self._count('selected_outages')
++            o = self.outage
++            if not permitted or changed:
++                o.revoked = True
++            target = e.v
++            if o.usable and not o.revoked:
++                weights = o.weights
++                cv = self._bounded_member(o.velocity, o.velocity, u)
++                ca = self._bounded_member(o.velocity+o.acceleration*min(t-o.seed_time, self.HORIZON),
++                                          o.velocity, u)
++                members = (e.v, cv, ca)
++                mix = sum(w*v for w, v in zip(weights, members))
++                taper = clip(2.0-(t-o.trigger), 0.0, 1.0)
++                target = e.v+taper*(mix-e.v)
++            # Applicability revoked: weights no longer drive target; only a bounded
++            # residual transition toward canonical may remain on missing ticks.
++            if permitted or (old_delta != 0 and t >= self.base.reacquire_blocked_until):
++                if o.usable or old_delta != 0:
++                    previous_v = old_published.v
++                    cap = self.c.disturbance_limit_mps2*self.HORIZON
++                    lower = max(-self.c.max_speed_mps, e.v-cap, previous_v-self.c.max_accel_mps2*dt)
++                    upper = min(self.c.max_speed_mps, e.v+cap, previous_v+self.c.max_accel_mps2*dt)
++                    if u <= self.c.command_deadband:
++                        if previous_v > 0: lower = max(lower, 0.0)
++                        elif previous_v < 0: upper = min(upper, 0.0)
++                    if lower <= upper:
++                        output_v = clip(target, lower, upper)
++                    else:
++                        self._count('limit_failures')
++                        o.revoked = True
++        else:
++            if old_delta != 0:
++                self._count('guarded_resets')
++            self.outage = None
++        completed = self._learn(e, command, front, rear, healthy, u)
++        self.delta_v = output_v-e.v
++        if abs(self.delta_v) > 1e-6:
++            self._count('effective_ticks')
++        self.delta_s += .5*(old_delta+self.delta_v)*dt
++        self.extra_sigma_s += .5*(abs(old_delta)+abs(self.delta_v))*dt
++        o = self.outage
++        self.last_diag = dict(t=t, triggered=triggered, completed=completed,
++                              score_count=len(self.scores), selected=o is not None and o.usable,
++                              revoked=o is not None and o.revoked,
++                              trigger=o.trigger if o is not None else None,
++                              score_stamp=o.score_stamp if o is not None else None,
++                              weights=weights, members=members, missing=missing,
++                              delta_v=self.delta_v, delta_s=self.delta_s,
++                              pending_start=self.pending.start if self.pending is not None else None)
++        if self.delta_v == self.delta_s == self.extra_sigma_s == 0:
++            self.last_estimate = e
++        else:
++            self.last_estimate = replace(e, v=output_v, s=e.s+self.delta_s,
++                a=e.a+(self.delta_v-old_delta)/dt,
++                variance_v=e.variance_v+self.delta_v**2,
++                variance_s=(math.sqrt(e.variance_s)+self.extra_sigma_s)**2)
++        return self.last_estimate
