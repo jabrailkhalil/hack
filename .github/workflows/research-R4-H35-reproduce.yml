@@ -1,0 +1,79 @@
+name: R4-H35 exact-source reproduction
+on:
+  push:
+    branches: [research/R4-H35]
+    paths: [.github/workflows/research-R4-H35-reproduce.yml]
+permissions:
+  contents: write
+  actions: read
+jobs:
+  reproduce:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 25
+    env:
+      H35_SOURCE_SHA: c75384cda3fb77de508c2d4128f38c17ed24613b
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+      PYTHONPATH: src/reserve_odometry
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: c75384cda3fb77de508c2d4128f38c17ed24613b
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - name: Record exact source; prepare pinned research environment
+        run: |
+          echo "H35_DATA_ROOT=$RUNNER_TEMP/H35-data" >> "$GITHUB_ENV"
+          echo "OUT=$RUNNER_TEMP/H35-evidence" >> "$GITHUB_ENV"
+          mkdir -p "$RUNNER_TEMP/H35-evidence"
+          git rev-parse HEAD > "$RUNNER_TEMP/H35-evidence/MEASURED_SOURCE_SHA.txt"
+          test "$(git rev-parse HEAD)" = "$H35_SOURCE_SHA"
+          python -m pip install -r requirements-research.txt > "$RUNNER_TEMP/H35-evidence/dependencies.log" 2>&1
+      - name: Baseline and enabled H35 sanity, no data
+        run: |
+          python -m unittest discover -s tests -v > "$OUT/baseline-unit.log" 2>&1
+          python -m unittest discover -s research/tests -v > "$OUT/research-integrity.log" 2>&1
+          python -m unittest discover -s research/R4/H35/tests -v > "$OUT/H35-tests.log" 2>&1
+          python -m compileall -q research/R4/H35
+      - name: Retrieve authorized permitted-role data artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api /repos/jabrailkhalil/hack/actions/artifacts/10902188904/zip > "$RUNNER_TEMP/data-artifact.zip"
+          python research/R4/H35/stage_data.py --artifact "$RUNNER_TEMP/data-artifact.zip" --output "$H35_DATA_ROOT" --role train
+      - name: Reproduce the published train foundation without changing parameters
+        run: |
+          python research/R4/H35/foundation.py --output "$OUT/foundation" > "$OUT/foundation.log" 2>&1
+          python -c "import json,os; assert json.load(open(os.environ['OUT']+'/foundation/results.json'))['verdict']=='PASS'"
+      - name: Reproduce both exact candidates on all development, no validation
+        run: |
+          python research/R4/H35/stage_data.py --artifact "$RUNNER_TEMP/data-artifact.zip" --output "$H35_DATA_ROOT" --role development
+          python research/R4/H35/run.py --foundation "$OUT/foundation/results.json" --output "$OUT/development" --workers 2 > "$OUT/development.log" 2>&1
+      - name: Matched healthy and dropout 3AB 3BA cost, not ROS latency
+        run: python research/R4/H35/cost.py --output "$OUT/cost" > "$OUT/cost.log" 2>&1
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: R4-H35-evidence-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/H35-evidence/
+          if-no-files-found: error
+          retention-days: 30
+      - name: Preserve compact results in this run's own checkpoint branch
+        if: always()
+        run: |
+          set -eu
+          branch="checkpoint/R4-H35-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          git switch -c "$branch"
+          dest="reports/research_R4/H35/$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          mkdir -p "$dest"
+          for p in MEASURED_SOURCE_SHA.txt foundation/started.json foundation/results.json foundation/access.json development/started.json development/decision.json development/aggregate.csv development/per_case.csv development/access.json cost/results.json; do
+            if test -f "$OUT/$p"; then mkdir -p "$dest/$(dirname "$p")"; cp "$OUT/$p" "$dest/$p"; fi
+          done
+          if test -f "$OUT/development/results.json"; then gzip -n -c "$OUT/development/results.json" > "$dest/development/results.json.gz"; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add "$dest"
+          git diff --cached --quiet || git commit -m "research(R4-H35): preserve exact-source reproduction $GITHUB_RUN_ID attempt $GITHUB_RUN_ATTEMPT"
+          git push origin "HEAD:refs/heads/$branch"
