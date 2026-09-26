@@ -1,0 +1,148 @@
+{
+  "round": "R4",
+  "hypothesis_id": "R4-H39",
+  "execution_id": "local-train-20260926T093203Z",
+  "baseline_sha": "e3b0c9c039d2953fbfcda51231263d38ef9f1024",
+  "baseline_tree": "eae49a504bc59b5c9b408445150bef32e111956f",
+  "zip_sha256": "a8e0bfa033e0a02c460c30b02f34a5c64ece85b05003512941387d3cf1f319a2",
+  "dataset_sha256": "d0b2483e13990edb8219b0d7bbcafc7ed001cce549a4d3af467069b2472e7d52",
+  "dataset_archive_bytes": 256294592,
+  "source_status": "VERIFIED",
+  "data_status": "AVAILABLE",
+  "execution_status": "COMPLETED",
+  "publication_status": "DRAFT_PR_CREATED",
+  "pr_number": 52,
+  "mechanism_status": "FOUNDATION_LATTICE_NOT_ESTABLISHED; NO_RUNTIME_CANDIDATE",
+  "coverage_status": "SUFFICIENT: 10 fitting and 8 check groups per channel; 8/4 required",
+  "scientific_verdict": "INCONCLUSIVE",
+  "foundation_passed": false,
+  "accuracy_contract_evaluated": false,
+  "accuracy_contract_passed": false,
+  "candidate_implemented": false,
+  "measured_source_sha": null,
+  "candidate_sha": null,
+  "diagnostic_source_sha": "8ce1a1b708aa72e6f2126c77c023647f6febf247",
+  "foundation_sha256": "edfb20e6159e0b3236de3c14dbedd4940e4d9d8f7a6628c1d871125e9e64d951",
+  "plan_sha": "28afa1e554d71093164145b250b11e47fff95d22",
+  "report_sha": null,
+  "checkpoint_sha": null,
+  "report_sha_binding": "The publishing commit is bound by the later append-only PUBLICATION.json/PUBLISHED_SUMMARY.json.",
+  "freeze_sha": null,
+  "validation_opened": false,
+  "test_opened": false,
+  "enabled_runtime_verified": false,
+  "ready_to_merge": false,
+  "variants_tested": 0,
+  "run_ids": {
+    "local": "local-train-20260926T093203Z",
+    "prior_failed_actions": 36231320102,
+    "new_actions_research_run": null
+  },
+  "train_bags": 64,
+  "train_groups": 27,
+  "unique_wire_streams": 48,
+  "input_events_decoded": 2646426,
+  "train_gnss_decoded": false,
+  "q_front_mps": null,
+  "q_rear_mps": null,
+  "eligible_samples_including_wire_duplicates": {
+    "front": 98668,
+    "rear": 96570
+  },
+  "eligible_samples_wire_deduplicated": {
+    "front": 86799,
+    "rear": 84720
+  },
+  "qualified_group_sample_counts": {
+    "front": 83219,
+    "rear": 81154
+  },
+  "q_search_range_mps": [
+    1e-06,
+    0.5
+  ],
+  "practical_q_range_mps": [
+    0.034641016151377546,
+    0.5
+  ],
+  "q_is_measured": false,
+  "fitting_proposals": {
+    "front": 4851,
+    "rear": 4726
+  },
+  "coherent_proposals": {
+    "front": 0,
+    "rear": 0
+  },
+  "fixed_q_check_evaluated": false,
+  "fixed_q_check_not_evaluated_reason": "No fitting candidate q selected.",
+  "necessary_pair_test_required_fraction": 0.98,
+  "necessary_pair_test_required_group_fraction": 0.8,
+  "qualified_group_pair_summary": {
+    "front": {
+      "fitting": {
+        "groups": 10,
+        "eligible_samples": 49608,
+        "best_pair_support_min": 0.033203125,
+        "best_pair_support_median": 0.0361328125,
+        "best_pair_support_max": 0.048828125,
+        "groups_meeting_pair_support": 0
+      },
+      "check": {
+        "groups": 8,
+        "eligible_samples": 33611,
+        "best_pair_support_min": 0.029296875,
+        "best_pair_support_median": 0.0390625,
+        "best_pair_support_max": 0.046875,
+        "groups_meeting_pair_support": 0
+      }
+    },
+    "rear": {
+      "fitting": {
+        "groups": 10,
+        "eligible_samples": 48127,
+        "best_pair_support_min": 0.03125,
+        "best_pair_support_median": 0.0390625,
+        "best_pair_support_max": 0.044921875,
+        "groups_meeting_pair_support": 0
+      },
+      "check": {
+        "groups": 8,
+        "eligible_samples": 33027,
+        "best_pair_support_min": 0.033203125,
+        "best_pair_support_median": 0.0419921875,
+        "best_pair_support_max": 0.048828125,
+        "groups_meeting_pair_support": 0
+      }
+    }
+  },
+  "rejection_reasons": [],
+  "prerequisite_reasons": {
+    "front": [
+      "LATTICE_NOT_ESTABLISHED",
+      "NO_PRACTICAL_LATTICE_PAIR_SUPPORT:fitting",
+      "NO_PRACTICAL_LATTICE_PAIR_SUPPORT:check"
+    ],
+    "rear": [
+      "LATTICE_NOT_ESTABLISHED",
+      "NO_PRACTICAL_LATTICE_PAIR_SUPPORT:fitting",
+      "NO_PRACTICAL_LATTICE_PAIR_SUPPORT:check"
+    ]
+  },
+  "local_checks": {
+    "baseline_tests": 156,
+    "integrity_tests": 43,
+    "foundation_tests": 22,
+    "compileall": "PASS",
+    "independent_saved_artifact_audit": "PASS",
+    "saved_arrays_verified": 128,
+    "independent_pair_bounds_verified": 50
+  },
+  "foundation_elapsed_wall_s": 20.815392593000013,
+  "missing_evidence": [
+    "No admitted interval runtime candidate: accuracy and enabled ROS measurements intentionally not run."
+  ],
+  "next_resume_step": "Stop under the preregistered H39 protocol; no retuning or validation. Separate authorization would be needed for a different quantization model.",
+  "raw_foundation_summary_sha256": "7d2298e4f2d5e225a083760ea2b2364c13fd35c46e7d3b602373b87a017016e4",
+  "raw_npz_sha256": "d6f8b2bb5f7d4e2a08ee9f7386bc9616311d0262b0bcdba53928b667f45fe859"
+}
