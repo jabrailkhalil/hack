@@ -1,0 +1,25 @@
+{
+  "scientific_verdict": "REJECTED",
+  "selected": null,
+  "accuracy_contract_evaluated": true,
+  "accuracy_contract_passed": false,
+  "validation_admitted": false,
+  "validation_opened": false,
+  "test_opened": false,
+  "ready_to_merge": false,
+  "baseline_rejection_reasons": ["aggregate_regression:distance_rmse", "aggregate_regression:fault_rmse", "insufficient_gain", "supplemental_regression:full_faulted"],
+  "attribution_rejection_reasons": ["insufficient_gain"],
+  "summary": {
+    "main": {"clean_rmse":0.09266814298282507,"fault_rmse":0.2375486120563008,"pooled_rmse":0.1293056944774334,"distance_rmse":5.310295004801444,"samples":394221,"false_stops_clean":0,"false_stops_fault":0,"unrecovered":4},
+    "A": {"clean_rmse":0.09254486455646188,"fault_rmse":0.2572790373166005,"pooled_rmse":0.12889979546417324,"distance_rmse":5.4048155034088206,"samples":394221,"false_stops_clean":0,"false_stops_fault":0,"unrecovered":4},
+    "B": {"clean_rmse":0.09260787522069953,"fault_rmse":0.2565142507837878,"pooled_rmse":0.12892953787654646,"distance_rmse":5.414146723572881,"samples":394221,"false_stops_clean":0,"false_stops_fault":0,"unrecovered":4},
+    "B0": {"clean_rmse":0.09274438990027233,"fault_rmse":0.23863935767810593,"pooled_rmse":0.12935238551691192,"distance_rmse":5.313810026083711,"samples":394221,"false_stops_clean":0,"false_stops_fault":0,"unrecovered":4}
+  },
+  "supplemental": {
+    "full_faulted_distance": {"main":6.269376947281123,"A":6.607841107039533,"B":6.61859001405016},
+    "low_speed_event_rmse": {"main":0.3685456733063761,"A":0.34559716573838384,"B":0.3450098398917692},
+    "common_mode_event_rmse": {"main":0.10063227230134311,"A":0.08313882627848393,"B":0.08318641790986167}
+  },
+  "coverage": {"changed_outputs_B":221306,"reference_groups":6,"passed":true},
+  "note": "Compact copy of the locally recomputed decision. Original detailed JSON, full per-bag results, masks/counts, access and all failures are in the delivery evidence. No Actions accuracy run is claimed."
+}
