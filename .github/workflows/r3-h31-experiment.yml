@@ -1,0 +1,121 @@
+name: R3-H31 prequential outage ensemble
+on:
+  push:
+    branches: [research/R3-H31]
+    paths: [.github/workflows/r3-h31-experiment.yml]
+permissions:
+  contents: write
+jobs:
+  experiment:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 35
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - name: Materialize exact readable candidate and publish before any comparison
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF_NAME" = research/R3-H31
+          python - <<'PY'
+          import base64,hashlib,json,pathlib,zlib
+          root=pathlib.Path('.');parts=root/'research/R3/H31/transport'
+          if parts.exists():
+              payload=''.join((parts/f'{i}.b64').read_text() for i in range(4))
+              raw=zlib.decompress(base64.b64decode(payload))
+              assert hashlib.sha256(raw).hexdigest()=='eff1820a0f0ed0221134ba91654d29bb65e75cb65499623ac4c4ed1ba91a3cd6'
+              files=json.loads(raw)
+              for name,content in files.items():
+                  path=pathlib.Path(name)
+                  assert '..' not in path.parts and not path.is_absolute()
+                  assert name.startswith('research/R3/H31/') or name=='src/reserve_odometry/reserve_odometry/prequential_outage.py'
+                  assert not path.exists(), name
+                  path.parent.mkdir(parents=True,exist_ok=True);path.write_text(content)
+              for p in parts.iterdir(): p.unlink()
+              parts.rmdir()
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add research/R3/H31 src/reserve_odometry/reserve_odometry/prequential_outage.py
+          git diff --cached --quiet || git commit -m 'feat(R3-H31): bounded prequential outage ensemble; fixed candidate before measurements'
+          git push origin HEAD:refs/heads/research/R3-H31
+          echo "H31_SOURCE_SHA=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
+          mkdir -p "$RUNNER_TEMP/h31-evidence/source"
+          git rev-parse HEAD > "$RUNNER_TEMP/h31-evidence/source/SOURCE_SHA.txt"
+          git diff e3b0c9c039d2953fbfcda51231263d38ef9f1024 HEAD -- src research/R3/H31 > "$RUNNER_TEMP/h31-evidence/source/H31.patch"
+          git archive --format=zip HEAD > "$RUNNER_TEMP/h31-evidence/source/source.zip"
+      - name: Pinned dependencies and all unit/integrity checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT="$RUNNER_TEMP/h31-evidence"
+          python -m pip install -r requirements-research.txt
+          PYTHONPATH=src/reserve_odometry python -m unittest discover -s tests -v 2>&1 | tee "$OUT/unit.log"
+          python -m unittest discover -s research/tests -v 2>&1 | tee "$OUT/research-integrity.log"
+          python research/R3/H31/tests.py -v --risk-output "$OUT/synthetic.json" 2>&1 | tee "$OUT/H31-tests.log"
+          python research/R3/H31/driver_tests.py -v 2>&1 | tee "$OUT/driver-tests.log"
+          python -m compileall -q src research/R3/H31
+      - name: Pinned data and actual baseline reproduction on development
+        shell: bash
+        run: |
+          set -euo pipefail
+          python tools/get_dataset.py
+          python research/R3/H31/run.py --stage baseline --output "$RUNNER_TEMP/h31-evidence/baseline" --workers 2 2>&1 | tee "$RUNNER_TEMP/h31-evidence/baseline.log"
+      - name: All original train groups vehicle-only
+        shell: bash
+        run: |
+          set -euo pipefail
+          python research/R3/H31/run.py --stage train --output "$RUNNER_TEMP/h31-evidence/train" --workers 2 2>&1 | tee "$RUNNER_TEMP/h31-evidence/train.log"
+      - name: One fixed development candidate and equal-weight diagnostic
+        shell: bash
+        run: |
+          set -euo pipefail
+          python research/R3/H31/run.py --stage development --baseline "$RUNNER_TEMP/h31-evidence/baseline" --output "$RUNNER_TEMP/h31-evidence/development" --workers 2 2>&1 | tee "$RUNNER_TEMP/h31-evidence/development.log"
+      - name: Paired cost including healthy forecast learning
+        shell: bash
+        run: |
+          set -euo pipefail
+          python research/R3/H31/run.py --stage cost --output "$RUNNER_TEMP/h31-evidence/cost" 2>&1 | tee "$RUNNER_TEMP/h31-evidence/cost.log"
+      - name: Hash raw evidence and explicitly record non-run stages
+        if: always()
+        run: |
+          python - <<'PY'
+          import pathlib,json,hashlib,os
+          root=pathlib.Path(os.environ['RUNNER_TEMP'])/'h31-evidence';root.mkdir(exist_ok=True)
+          files={str(p.relative_to(root)):hashlib.sha256(p.read_bytes()).hexdigest() for p in root.rglob('*') if p.is_file()}
+          (root/'ARTIFACT_MANIFEST.json').write_text(json.dumps({'run_id':os.environ['GITHUB_RUN_ID'],'run_attempt':os.environ['GITHUB_RUN_ATTEMPT'],'source_sha':os.environ.get('H31_SOURCE_SHA'),'files':files,'validation_opened':False,'test_opened':False,'enabled_ros_benchmark':'NOT_RUN; development gate must be reviewed first'},indent=2)+'\n')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: R3-H31-evidence-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/h31-evidence/
+          retention-days: 30
+      - name: Preserve compact checkpoints only on own new branch
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -d "$RUNNER_TEMP/h31-evidence" || exit 0
+          branch="checkpoint/R3-H31-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          git switch -c "$branch"
+          dest="reports/research_R3/H31/$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          mkdir -p "$dest"
+          H31_DEST="$dest" python - <<'PY'
+          import pathlib,os,shutil
+          src=pathlib.Path(os.environ['RUNNER_TEMP'])/'h31-evidence';dst=pathlib.Path(os.environ['H31_DEST'])
+          for name in ['ARTIFACT_MANIFEST.json','synthetic.json','source/SOURCE_SHA.txt','source/H31.patch','baseline/SUMMARY.json','train/SUMMARY.json','train/access.json','development/SUMMARY.json','development/decision.json','development/per_bag.csv','development/per_group.json','development/aggregate.csv','development/started.json','development/access.json','cost/trials.json']:
+              p=src/name
+              if p.exists():
+                  q=dst/name;q.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(p,q)
+          PY
+          git add "$dest"
+          git diff --cached --quiet || git commit -m "research(R3-H31): preserve compact result $GITHUB_RUN_ID/$GITHUB_RUN_ATTEMPT; no validation"
+          git push origin "HEAD:refs/heads/$branch"
