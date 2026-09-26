@@ -1,0 +1,6 @@
+Actual WolframLanguageEvaluator output, timeConstraint=30:
+Out[1]= <|"observability_determinant" -> -1 + rho, "joseph_equals_conditional_covariance" -> {{0, 0}, {0, 0}}, "joseph_determinant" -> ((-c^2 + a*d)*rr)/(a + 2*c + d + rr), "effective_velocity_gain" -> (a + c)/(a + 2*c + d + rr), "scalar_reconstruction" -> (a + c)^2/(a*(a + 2*c + d + rr)), "scalar_reconstruction_error" -> (c*(a + c))/(a*(a + 2*c + d + rr)), "numerical_P_is_positive_definite" -> True, "numerical_actual_and_scalar_gain" -> {0.5, 0.625}, "conditional_white_limit" -> a/(a + rt), "stationary_variance_identity" -> True, "stationary_process_noise_nonnegative" -> True|>
+
+No warnings were returned by this explicit symbolic evaluation. Preconditions for the interpretation: P PSD, R>0, a>0 for scalar reconstruction. rho=0 limit assumes cross-prior=0 and Rwhite+stationary_B=Rtotal; not unconditional canonical-v8 equivalence. rho<1 stability pertains to b alone, not the nonlinear switched observer.
+
+Earlier WolframContext semantic lookup returned mostly No Results Found. Its query for 'difference c(a+c)/...' was interpreted as a finite difference in c and produced an unrelated expression. That context result was NOT used as verification. This explicit matrix worksheet supersedes that failed semantic interpretation, without asserting global stability or measured accuracy.
