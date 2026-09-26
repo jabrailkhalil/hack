@@ -1,0 +1,172 @@
+{
+  "hypothesis": "R3-H27",
+  "baseline": "e3b0c9c039d2953fbfcda51231263d38ef9f1024",
+  "threshold": 0.0823180344240239,
+  "scale_sha256": "fd6cc4152626c6b71f1c34d8d9a429d4f2df0fd816fe252937690bd3fb437847",
+  "mechanism_status": "PROPOSAL_ONLY_NO_INTERVENTION",
+  "coverage_status": "SUFFICIENT",
+  "scientific_verdict": "FOUNDATION_SUFFICIENT_FOR_PATCH",
+  "accuracy_contract_passed": false,
+  "runtime_verified": false,
+  "ready_to_merge": false,
+  "variants": {
+    "0.2": {
+      "coverage_passed": false,
+      "qualifying_episodes": 14,
+      "natural_episodes": 14,
+      "original_fault_episodes": 0,
+      "potential_model_only_ticks": 14,
+      "original_source_groups": [
+        "664cca45aeb0db23",
+        "70bb14d1c90f301f",
+        "711abb923942f9fe",
+        "8269991eafa82c45"
+      ],
+      "bags": [
+        "30618_073f08d1",
+        "30618_117c2d02",
+        "30618_3e012faf",
+        "30618_46e21b9b",
+        "30618_88548b02",
+        "30618_bcc9e7a2",
+        "30639_c31df386",
+        "30639_dce52be4"
+      ],
+      "by_group": {
+        "664cca45aeb0db23": {
+          "episodes": 8,
+          "ticks": 8
+        },
+        "70bb14d1c90f301f": {
+          "episodes": 2,
+          "ticks": 2
+        },
+        "711abb923942f9fe": {
+          "episodes": 2,
+          "ticks": 2
+        },
+        "8269991eafa82c45": {
+          "episodes": 2,
+          "ticks": 2
+        }
+      },
+      "reasons": {
+        "below_threshold": 128,
+        "insufficient_window": 77,
+        "no_recent_history": 294,
+        "proposed": 14,
+        "unstable": 2
+      },
+      "delta_d": {
+        "n": 14,
+        "median": 0.09068985071152129,
+        "mad": 0.02585050936192125,
+        "p95_abs": 0.14748479482122737,
+        "max_abs": 0.18263976801978324
+      },
+      "observed_delta_d": {
+        "n": 144,
+        "median": 0.0057604483503242345,
+        "mad": 0.021135963425696395,
+        "p95_abs": 0.10330384804301962,
+        "max_abs": 0.18263976801978324
+      }
+    },
+    "0.4": {
+      "coverage_passed": true,
+      "qualifying_episodes": 15,
+      "natural_episodes": 12,
+      "original_fault_episodes": 3,
+      "potential_model_only_ticks": 164,
+      "original_source_groups": [
+        "664cca45aeb0db23",
+        "70bb14d1c90f301f",
+        "711abb923942f9fe"
+      ],
+      "bags": [
+        "30618_117c2d02",
+        "30618_3e012faf",
+        "30618_46e21b9b",
+        "30618_88548b02",
+        "30618_bcc9e7a2",
+        "30639_c31df386",
+        "30639_dce52be4"
+      ],
+      "by_group": {
+        "664cca45aeb0db23": {
+          "episodes": 10,
+          "ticks": 10
+        },
+        "70bb14d1c90f301f": {
+          "episodes": 4,
+          "ticks": 153
+        },
+        "711abb923942f9fe": {
+          "episodes": 1,
+          "ticks": 1
+        }
+      },
+      "reasons": {
+        "below_threshold": 94,
+        "insufficient_window": 112,
+        "no_recent_history": 294,
+        "proposed": 15
+      },
+      "delta_d": {
+        "n": 15,
+        "median": 0.09344511768122533,
+        "mad": 0.024841123796423406,
+        "p95_abs": 0.13065843207746553,
+        "max_abs": 0.13065843207746553
+      },
+      "observed_delta_d": {
+        "n": 109,
+        "median": 0.0023910718524808444,
+        "mad": 0.026044634540538694,
+        "p95_abs": 0.10302693074810883,
+        "max_abs": 0.13065843207746553
+      }
+    }
+  },
+  "development_bags": 17,
+  "original_fault_scenarios": 56,
+  "validation_opened": false,
+  "test_evaluated": false,
+  "limitation": "Counts are proposed nonzero d substitutions, not demonstrated beneficial changes or true d contamination.",
+  "provenance": {
+    "baseline": "e3b0c9c039d2953fbfcda51231263d38ef9f1024",
+    "source": "70e17cd736175752ad27858401f999116d86a5b5",
+    "pinned": {
+      "src/reserve_odometry/reserve_odometry/core.py": "67ee39edeb80f31876f5c45cb3efec26eb73844a106f7b4c876a944b6f7cc5dc",
+      "src/reserve_odometry/reserve_odometry/guarded_readout.py": "6303c1230ff800e370875f7238912e47a0564da1b21d42ccf8f417f75b2e05e0",
+      "src/reserve_odometry/reserve_odometry/timeline.py": "ed63b44dede078cb3cde501bd1e5559260763c56ac9b832f39924c1d97b0bdbf",
+      "src/reserve_odometry/reserve_odometry/node.py": "a63b6cf915d0621eda4a99f4a9a91c8b21a3d2209420e2fc9f4f21084a6dbdd4",
+      "src/reserve_odometry/reserve_odometry/guarded_node.py": "ba2bd304ccafd35160e2c2d60c14a170bde2f0480cc04e8279a04d3c752c542f",
+      "src/reserve_odometry/config/champion_v8.yaml": "a6319d8e75615ee63b05bedccd1f79a27287666f084c8f14dd33ad993e7f067e",
+      "src/reserve_odometry/config/default.yaml": "dae5f5c80cd87e968b1e838c5b0d25cc531f816949b1fd2a59dd65e8e93efaec",
+      "src/reserve_odometry/launch/odometry.launch.py": "5f91860ab56c5c025b03d895fbc3646dbd07a3ff47948bac80279e639aa439af",
+      "src/reserve_odometry/setup.py": "ed034076ca9623fba93c995fa9626920c1c4b2ed3425bd8196a612f1131d52f9",
+      "tools/finalization/evaluate.py": "f6a19a1727274ca88e1fe1a9fb76d31dbc8ce4e9bbabf669c488f053d76caec7",
+      "tools/research_v3/experiment.py": "95a398003530454457bacb2096fb6bc9d0d5ee32520420c43a9ebeb406376aa0",
+      "tools/research_v6/compare.py": "70276a0a633cd443d44af870fde73649519be2aaf55944c2a4473c82d7b241b5",
+      "tools/research_guarded/compare.py": "c2478eb77b5c50af7023e654829933937a264f839d77ef53ec24552ba4166baf",
+      "tools/research_h11/compare.py": "1c65d17b5008e183b02d6d44bb626c7161dec1ee0210b62e63371310fcf4d995",
+      "tools/export_bags.py": "696f6bdbf853dac4d4fe6286f6a7f4742f4aea5b1bc508efda52f5bc179c3b66",
+      "research/plan_v3.json": "ddbc1130e214c3d338b3d292232391d3a329a0fd5f13a090027452ae070271b3",
+      "research/split_v3.json": "20928a29daad2b4178ddb92e2a4d9ddb347952f6c03845802a8d82fff7da5ae0",
+      "requirements-research.txt": "d73bd55eb03f248de3404b41d67976a04cdd6326fe00316389d91fb1f4725c8b"
+    },
+    "code": {
+      "research/R3/H27/common.py": "f7ee3dd7c7427805076374dee404cef6a946e529b42198210eb5363d626e5c97",
+      "research/R3/H27/history.py": "5d8e15c7b5c219404c73744043adf76b9262e5eb3a91bf9c4b4f2b924fdcd6f9",
+      "research/R3/H27/oracle.py": "c28be6e7aae3073fd913b2800b7d3f90a0b192e2790747b12d9ba0077804a0c1",
+      "research/R3/H27/prepare.py": "cf17a33c137a155dfedf5226bdf5180e006c0dd12bbd087bf5800a0515de65bc",
+      "research/R3/H27/probe.py": "a0807a5242a3a6ca9b9215771b1e5e4f7f34370999b41e6d4c1ca01e10e9f2c9",
+      "research/R3/H27/tests/test_foundation.py": "bd10a6bbbff1388f21d9ef64591d4614f19e1011e63513b694cb25add15afb1d"
+    },
+    "test_evaluated": false,
+    "validation_opened": false,
+    "python": "3.13.5",
+    "numpy": "2.3.5"
+  }
+}
