@@ -1,0 +1,88 @@
+name: R2 H12 integral readout
+on:
+  push:
+    branches: [research/round2-H12]
+    paths: [.github/workflows/r2-h12.yml]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  research:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 45
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - name: Unique run evidence
+        run: |
+          echo "OUT=$RUNNER_TEMP/H12-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT" >> "$GITHUB_ENV"
+          mkdir -p "$RUNNER_TEMP/H12-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT/logs"
+      - name: Install pinned research dependencies
+        run: python -m pip install -r requirements-research.txt > "$OUT/logs/install.txt" 2>&1
+      - name: Original and H12 integrity checks
+        run: |
+          set -euo pipefail
+          PYTHONPATH=src/reserve_odometry python -m unittest discover -s tests -v 2>&1 | tee "$OUT/logs/baseline_tests.txt"
+          python -m unittest discover -s research/tests -v 2>&1 | tee "$OUT/logs/research_tests.txt"
+          python research/R2/H12/test_h12.py 2>&1 | tee "$OUT/logs/h12_tests.txt"
+          python -m compileall -q src tools tests research/R2/H12
+      - name: Pinned organizer data
+        run: python tools/get_dataset.py > "$OUT/logs/dataset.txt" 2>&1
+      - name: Train sanity and all genuine development bags
+        run: |
+          set -euo pipefail
+          python research/R2/H12/run.py --stage development --output "$OUT/experiment" 2>&1 | tee "$OUT/logs/development.txt"
+      - name: Freeze only after sufficient activation and safety
+        id: gate
+        run: |
+          allowed=$(python -c "import json,os; print(str(json.load(open(os.environ['OUT']+'/experiment/development/decision.json'))['validation_allowed']).lower())")
+          echo "allowed=$allowed" >> "$GITHUB_OUTPUT"
+          if [ "$allowed" = true ]; then
+            python research/R2/H12/run.py --stage freeze --output "$OUT/experiment"
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            branch="checkpoint/R2-H12-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+            git switch -c "$branch"
+            destination="reports/research_R2/H12/$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+            mkdir -p "$destination"
+            cp -a "$OUT/." "$destination/"
+            git add -f "$destination"
+            git commit -m "research(H12): publish freeze before validation $GITHUB_RUN_ID"
+            git push origin "HEAD:refs/heads/$branch"
+            git rev-parse HEAD > "$OUT/experiment/FREEZE_COMMIT.txt"
+          fi
+      - name: One frozen paired validation
+        if: steps.gate.outputs.allowed == 'true'
+        run: |
+          set -euo pipefail
+          python research/R2/H12/run.py --stage validation --output "$OUT/experiment" 2>&1 | tee "$OUT/logs/validation.txt"
+      - name: Preserve all available evidence without overwriting
+        if: always()
+        run: |
+          set -eu
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          branch="checkpoint/R2-H12-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          git show-ref --verify --quiet "refs/heads/$branch" || git switch -c "$branch"
+          destination="reports/research_R2/H12/$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          mkdir -p "$destination"
+          cp -a "$OUT/." "$destination/"
+          cp research/R2/H12/PLAN.md "$destination/PLAN.md"
+          cp research/R2/H12/{algorithm.patch,BASELINE.json,SOURCES.md,wolfram.wl,wolfram_output.txt} "$destination/"
+          git add -f "$destination"
+          git diff --cached --quiet || git commit -m "research(H12): preserve actual run evidence $GITHUB_RUN_ID"
+          git push origin "HEAD:refs/heads/$branch"
+          git rev-parse HEAD > "$OUT/CHECKPOINT_COMMIT.txt"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: R2-H12-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.OUT }}/
+          retention-days: 30
