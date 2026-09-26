@@ -1,0 +1,77 @@
+name: R3 H25 train-only prerequisite
+on:
+  push:
+    branches: [research/R3-H25]
+    paths: [.github/workflows/research-R3-H25-prerequisite.yml]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  prerequisite:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+      PYTHONPATH: src/reserve_odometry
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - name: Prepare fresh evidence and verify published source
+        run: |
+          set -eu
+          OUT="$RUNNER_TEMP/R3-H25-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          mkdir "$OUT"
+          echo "H25_OUT=$OUT" >> "$GITHUB_ENV"
+          test "$(git hash-object research/R3/H25/prerequisite.py)" = fdbe2d092b216808e901fe8b5a51ea1bdf3af206
+          test "$(git hash-object research/R3/H25/tests/test_prerequisite.py)" = e8370a8d96936c076054d115d6033d9dca53abc4
+          git archive --format=zip --output="$OUT/source.zip" HEAD research/R3/H25 .github/workflows/research-R3-H25-prerequisite.yml
+          printf '%s\n' "$GITHUB_SHA" > "$OUT/measured-source.txt"
+          python -m pip install -r requirements-research.txt 2>&1 | tee "$OUT/dependencies.log"
+      - name: Actual unit integrity and prerequisite checks before train
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s tests -v 2>&1 | tee "$H25_OUT/unit.log"
+          python -m unittest discover -s research/tests -v 2>&1 | tee "$H25_OUT/integrity.log"
+          python -m unittest discover -s research/R3/H25/tests -v 2>&1 | tee "$H25_OUT/prerequisite-tests.log"
+          python -m compileall -q src research/R3/H25
+      - name: Download exact archive and extract ONLY train SQLite files
+        run: |
+          set -euo pipefail
+          python research/R3/H25/stage_train.py 2>&1 | tee "$H25_OUT/dataset.log"
+      - name: Measure train premise and exact canonical baseline reproduction
+        run: |
+          set -euo pipefail
+          python research/R3/H25/prerequisite.py --output "$H25_OUT/train" 2>&1 | tee "$H25_OUT/train.log"
+      - uses: actions/upload-artifact@v4
+        id: evidence
+        if: always()
+        with:
+          name: R3-H25-prerequisite-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.H25_OUT }}/
+          retention-days: 30
+      - name: Preserve compact results in unique own checkpoint, never runtime or raw bags
+        if: always()
+        env:
+          ARTIFACT_ID: ${{ steps.evidence.outputs.artifact-id }}
+          ARTIFACT_DIGEST: ${{ steps.evidence.outputs.artifact-digest }}
+        run: |
+          set -eu
+          if ! test -f "$H25_OUT/train/SUMMARY.json"; then exit 0; fi
+          branch="checkpoint/R3-H25-prerequisite-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          git switch -c "$branch"
+          dest="reports/research_R3/H25/$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          mkdir -p "$dest"
+          for file in SUMMARY.json started.json access.json per_bag.json pairs_manifest.json; do
+            cp "$H25_OUT/train/$file" "$dest/$file"
+          done
+          cp "$H25_OUT/measured-source.txt" "$dest/"
+          cp "$H25_OUT/unit.log" "$H25_OUT/integrity.log" "$H25_OUT/prerequisite-tests.log" "$H25_OUT/train.log" "$H25_OUT/dataset.log" "$dest/"
+          printf '{"artifact_id":"%s","sha256":"%s","retention_days":30,"run_id":"%s","attempt":"%s"}\n' "$ARTIFACT_ID" "$ARTIFACT_DIGEST" "$GITHUB_RUN_ID" "$GITHUB_RUN_ATTEMPT" > "$dest/artifact.json"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -f "$dest"
+          git commit -m "research(R3-H25): preserve train prerequisite $GITHUB_RUN_ID attempt $GITHUB_RUN_ATTEMPT"
+          git push origin "HEAD:refs/heads/$branch"
