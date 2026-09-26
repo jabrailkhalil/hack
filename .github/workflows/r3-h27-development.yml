@@ -1,0 +1,104 @@
+name: R3 H27 fixed development and counterexamples
+on:
+  push:
+    branches: [research/R3-H27]
+    paths: [.github/workflows/r3-h27-development.yml]
+permissions:
+  contents: write
+jobs:
+  development:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    env:
+      PYTHONPATH: src/reserve_odometry
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - name: Exact local-tested source before data access
+        run: |
+          OUT="$RUNNER_TEMP/R3-H27-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          mkdir -p "$OUT"
+          echo "H27_OUT=$OUT" >> "$GITHUB_ENV"
+          git rev-parse HEAD > "$OUT/MEASURED_SOURCE_SHA.txt"
+          python - <<'PY'
+          import json,hashlib
+          from pathlib import Path
+          for manifest in ('SOURCE_SHA256.json','CANDIDATE_SOURCE_SHA256.json'):
+              for p,h in json.loads(Path('research/R3/H27',manifest).read_text()).items():
+                  actual=hashlib.sha256(Path(p).read_bytes()).hexdigest()
+                  assert actual==h,(p,actual,h)
+          print('All local-tested code hashes match')
+          PY
+          python -m pip install -r requirements-research.txt
+      - name: Build and actual tests, no replacement of historical guards
+        run: |
+          set -o pipefail
+          python -m compileall -q src research/R3/H27
+          python -m unittest discover -s research/R3/H27/tests -v 2>&1 | tee "$H27_OUT/H27-tests.log"
+          python -m unittest discover -s tests -v 2>&1 | tee "$H27_OUT/legacy-tests.log"
+          python -m unittest discover -s research/tests -v 2>&1 | tee "$H27_OUT/research-tests.log"
+      - name: Exact allowed dataset only
+        run: |
+          set -o pipefail
+          python research/R3/H27/prepare.py 2>&1 | tee "$H27_OUT/data.log"
+          cp dataset/H27-extraction.json "$H27_OUT/"
+      - name: Both fixed lags, all development, original and independent diagnostic suites
+        run: |
+          set -o pipefail
+          python research/R3/H27/development.py --output "$H27_OUT/development" --workers 2 2>&1 | tee "$H27_OUT/development.log"
+      - name: Fixed AB BA CPU, no validation under any outcome
+        run: |
+          set -o pipefail
+          python research/R3/H27/cost.py --output "$H27_OUT/cost" 2>&1 | tee "$H27_OUT/cost.log"
+      - name: Preserve source, patch and artifact hashes
+        if: always()
+        run: |
+          test -n "$H27_OUT" || exit 0
+          cp -a research/R3/H27 "$H27_OUT/source"
+          mkdir -p "$H27_OUT/runtime"
+          cp src/reserve_odometry/reserve_odometry/committed_*.py "$H27_OUT/runtime/"
+          git diff e3b0c9c039d2953fbfcda51231263d38ef9f1024 HEAD -- src/reserve_odometry/reserve_odometry/committed_history.py src/reserve_odometry/reserve_odometry/committed_disturbance.py > "$H27_OUT/runtime.patch"
+          find "$H27_OUT" -type d -name __pycache__ -prune -exec rm -rf {} +
+          python - <<'PY'
+          import os,json,hashlib
+          from pathlib import Path
+          root=Path(os.environ['H27_OUT'])
+          manifest={str(p.relative_to(root)):hashlib.sha256(p.read_bytes()).hexdigest() for p in root.rglob('*') if p.is_file()}
+          (root/'ARTIFACT_FILES_SHA256.json').write_text(json.dumps(manifest,indent=2)+'\n')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: R3-H27-development-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.H27_OUT }}/
+          retention-days: 30
+      - name: Compact append-only checkpoint; no giant traces in Git
+        if: always()
+        run: |
+          set -eu
+          test -n "$H27_OUT" || exit 0
+          branch="checkpoint/R3-H27-development-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          git switch -c "$branch"
+          dest="reports/research_R3/H27/$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          mkdir -p "$dest"
+          export H27_DEST="$dest"
+          python - <<'PY'
+          import os,shutil
+          from pathlib import Path
+          src=Path(os.environ['H27_OUT']);dst=Path(os.environ['H27_DEST'])
+          for p in src.rglob('*'):
+              parts=p.relative_to(src).parts
+              if p.is_file() and p.suffix in ('.json','.log','.txt','.patch') and not ({'source','runtime','traces'} & set(parts)):
+                  target=dst/p.relative_to(src);target.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(p,target)
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add "$dest"
+          git diff --cached --quiet || git commit -m "research(R3-H27): preserve measured development $GITHUB_RUN_ID/$GITHUB_RUN_ATTEMPT"
+          git push origin "HEAD:refs/heads/$branch"
