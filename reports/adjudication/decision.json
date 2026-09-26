@@ -1,0 +1,36 @@
+{
+  "selected": "v8",
+  "model_commit": "e3b0c9c039d2953fbfcda51231263d38ef9f1024",
+  "method": "strict paired estimator comparison, no fitting; reused validation",
+  "fresh_test": false,
+  "source_unchanged": true,
+  "data": {"bags": 19,"reference_bag_receiver_pairs": 30,"matched_clean_samples": 698891,"fault_cases": 152},
+  "local_checks": {"unit_tests_passed": 161,"research_tests_passed": 43,"wheel_one_entrypoint_one_launch_one_config": true,"full_numerical_runs":2,"all_per_bag_json_and_prediction_hashes_identical":true},
+  "ci": {"status": "blocked_before_runner_execution","latest_comparison_run":36230840124,"independent_GitHub_reproduction_completed":false,"fresh_ROS_packaging_check_completed":false},
+  "raw_archive": {"filename":"adjudication-local-results.zip","sha256":"2b349de25a0e6b5e874fb78909fa57791e2155f03cba0f9eda16364ac5041143","bytes":452934,"location":"attached to conversation, not a GitHub Actions artifact"},
+  "result_columns": ["clean_group_rmse","clean_pooled_rmse","distance_span_rmse","original_fault_rmse","abrupt_rmse","slow_rmse","slow_mean_recovery_s","clean_false_STOPPED_samples","original_fault_false_STOPPED_samples"],
+  "results": {
+    "ours_v8":[0.1145498613174081,0.21640679415489,4.595480653017927,0.5382867826008657,0.06356193689081441,3.0714759791117885,4.407455492599998,18,0],
+    "A":[0.18891201846776579,0.45725647253112817,17.366652835943736,1.7906269776831283,0.9210644647616619,3.1256902413965495,1.1349554925999987,10,136],
+    "B":[0.11513821708242616,0.21667950179300394,4.706018782114389,1.6718085075094795,0.296546265116326,3.099872366007557,1.7341221592666647,10,20],
+    "C":[0.11523546350581022,0.2167010835578173,4.708158585820848,1.653020455216588,0.29529045839063933,3.0990703145938494,1.740788825933331,10,20],
+    "H1_10":[0.1586122235020767,0.3404980041222953,12.627385674452352,1.6298158456561123,0.26010500642804674,3.1282358414869957,1.9474554925999983,10,18],
+    "H2_050":[0.11534600733905302,0.2166627570033662,4.698008940548743,1.7365694196523096,0.3232543095181797,3.0946508881586343,1.6841221592666642,10,32],
+    "mean":[0.17598913425647703,0.3471239248354644,14.576176786551027,3.370558680409163,4.804237529723306,3.060703205455448,0.36162215926666474,0,0],
+    "front":[0.12568736514257964,0.21999814147352814,4.762908265871971,3.9706549813079857,4.800867252623154,3.058833940799085,0.406622159266666,0,0],
+    "rear":[0.24101117020932328,0.5860829674027492,26.61726728991944,2.798399415914739,4.80762147546271,3.0626375367109526,0.39495549259999907,0,0]
+  },
+  "eligible_replacements":[],
+  "rejection_summary": {
+    "A":"clean/pooled/distance/fault regression, added false stops, per-bag regression, no gain",
+    "B":"clean/distance/fault regression, added false stops, per-bag regression, no gain",
+    "C":"clean/distance/fault regression, added false stops, per-bag regression, no gain",
+    "H1_10":"clean/pooled/distance/fault regression, added false stops, per-bag regression, no gain",
+    "H2_050":"clean/distance/fault regression, added false stops, no gain",
+    "mean":"clean/pooled/distance/fault and per-bag regression, no gain",
+    "front":"clean/pooled/distance/fault and per-bag regression, no gain",
+    "rear":"clean/pooled/distance/fault and per-bag regression, no gain"
+  },
+  "baseline_reproduction":{"expected":0.1145498613174081,"actual":0.1145498613174081,"max_error":0.0},
+  "qualification":"Best eligible incumbent on this fixed benchmark, not a universal optimum. Explicit STOPPED and near-zero velocity are separately recorded; simple baselines do not emit a STOPPED state. Full source/receiver/fault evidence is in the raw archive."
+}
