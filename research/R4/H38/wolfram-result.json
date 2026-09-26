@@ -1,0 +1,16 @@
+{
+  "raw_effective_R": "(c + e^2 + (-2 + nu)*r0)/(1 + nu)",
+  "scale_to_variance": true,
+  "raw_formula": true,
+  "joseph": "(p*re)/(p + re)",
+  "gain_reconstruction": true,
+  "positive_covariance": true,
+  "lower_floor_condition": true,
+  "gaussian_limit": "r0",
+  "gain_bounds_with_clipped_R": true,
+  "assumptions": "nu > 2 && r0 > 0 && p > 0 && c >= 0 && re > 0 && Element[e, Reals]",
+  "scope": "Scalar algebra for fixed final effective R, NOT true nonlinear Student posterior covariance; variance floor may break reconstructed-gain equality.",
+  "tool": "Wolfram.WolframLanguageEvaluator",
+  "warnings_in_algebra_response": [],
+  "response_format_note": "Decoded JSON from actual Out[1]; tool metadata and this note added afterwards. Context lookup did not return the requested algebra; it is not used as verification."
+}
