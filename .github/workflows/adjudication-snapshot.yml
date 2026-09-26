@@ -1,0 +1,69 @@
+name: Adjudication source snapshot
+on:
+  push:
+    branches: [review/single-main-20260926]
+    paths: ['.github/workflows/adjudication-snapshot.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  snapshot:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Export pinned code and complete branch census (no algorithms executed)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p audit
+          python - <<'PY'
+          import hashlib,json,os,pathlib,subprocess,urllib.request
+          out=pathlib.Path('audit')
+          repo=os.environ['GITHUB_REPOSITORY']
+          def git(*args):return subprocess.check_output(['git',*args])
+          refs=[]
+          for line in git('for-each-ref','--format=%(refname:short) %(objectname)','refs/remotes/origin').decode().splitlines():
+              name,sha=line.split();refs.append(dict(branch=name.removeprefix('origin/'),sha=sha))
+          (out/'branches.json').write_text(json.dumps(refs,indent=2))
+          prs=[]
+          for page in range(1,10):
+              url=f'https://api.github.com/repos/{repo}/pulls?state=all&per_page=100&page={page}'
+              req=urllib.request.Request(url,headers={'Authorization':'Bearer '+os.environ['GH_TOKEN'],'Accept':'application/vnd.github+json'})
+              with urllib.request.urlopen(req,timeout=30) as r:items=json.load(r)
+              for p in items:
+                  prs.append({k:p.get(k) for k in ('number','title','state','draft','merged_at','html_url','body')}|{'head':p['head']['sha'],'branch':p['head']['ref'],'author':p['user']['login']})
+              if len(items)<100:break
+          (out/'pull_requests.json').write_text(json.dumps(prs,ensure_ascii=False,indent=2))
+          main='e3b0c9c039d2953fbfcda51231263d38ef9f1024'
+          peer={'A':'98accff0d97b2ff69a2307e30841d2dec788c1d3','B':'46a81edf2a02ea170af5bde818746aea808e728a','C':'84342ac394f0de4e3f79e42e1b3a6526ebb6608a','D':'13c86f38e18d23ae964b23b0ee2ef63cca4a799a','H1_10':'b33d8b42262a5aabe0fdc22ac7b65b54d507798e','H2_050':'f76e4d729801a479b036a18a1bbe69cf47877e84'}
+          manifest={'main':main,'peers':{}}
+          for name,sha in {'main':main,**peer}.items():
+              zip_path=out/(name+'.zip')
+              args=['archive','--format=zip','--output='+str(zip_path),sha]
+              if name!='main':args+=['tools/tram_port']
+              git(*args)
+              files=git('ls-tree','-r',sha,*([] if name=='main' else ['tools/tram_port'])).decode()
+              (out/(name+'-blobs.txt')).write_text(files)
+              if name!='main':
+                  manifest['peers'][name]={'sha':sha,'author':git('show','-s','--format=%an <%ae>',sha).decode().strip(),'zip_sha256':hashlib.sha256(zip_path.read_bytes()).hexdigest()}
+          (out/'manifest.json').write_text(json.dumps(manifest,indent=2))
+          # Capture report/protocol text for current research branch heads, including R2/R3.
+          for row in refs:
+              branch=row['branch'];sha=row['sha']
+              if not branch.startswith('research/'):continue
+              paths=git('ls-tree','-r','--name-only',sha).decode().splitlines()
+              selected=[p for p in paths if p.endswith(('REPORT.md','RESULTS.md','DECISION.json','decision.json')) and ('R3' in p or 'round2' in p or '/research_H' in p or 'research/parallel' in p)]
+              dest=out/'branch_reports'/branch.replace('/','__');dest.mkdir(parents=True,exist_ok=True)
+              for path in selected:
+                  data=git('show',sha+':'+path)
+                  if len(data)<=500000:(dest/path.replace('/','__')).write_bytes(data)
+          print('SNAPSHOT',len(refs),'branches',len(prs),'PRs; algorithms not executed')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: adjudication-sources
+          path: audit/
+          retention-days: 7
