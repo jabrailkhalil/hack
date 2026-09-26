@@ -1,0 +1,68 @@
+name: R4-H38 pinned train-development data
+on:
+  push:
+    branches: [research/R4-H38]
+    paths: [.github/workflows/r4-h38-data.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  stage:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - name: Download exact archive and extract only train/development databases
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib, importlib.util, json, os, shutil, urllib.parse, urllib.request, zipfile
+          from pathlib import Path, PurePosixPath
+          root=Path.cwd(); out=Path(os.environ['RUNNER_TEMP'])/'h38-data'; out.mkdir()
+          spec=importlib.util.spec_from_file_location('pinned_downloader',root/'tools/get_dataset.py')
+          down=importlib.util.module_from_spec(spec);spec.loader.exec_module(down)
+          manifest_path=root/'research/split_v3.json'
+          plan=json.loads((root/'research/plan_v3.json').read_text())
+          assert hashlib.sha256(manifest_path.read_bytes()).hexdigest()==plan['manifest_sha256']
+          records=json.loads(manifest_path.read_text())['records']
+          allowed={r['bag']:r for r in records if r['split'] in ('train','development')}
+          assert len(allowed)==81
+          query=urllib.parse.urlencode(dict(public_key=down.KEY,path='/dataset.zip'))
+          with urllib.request.urlopen(down.API+'?'+query,timeout=30) as response: url=json.load(response)['href']
+          archive=out.parent/'h38-dataset.zip'; h=hashlib.sha256(); total=0
+          with urllib.request.urlopen(url,timeout=60) as source, archive.open('xb') as target:
+              while block:=source.read(1024*1024):
+                  total+=len(block)
+                  if total>300*1024*1024:raise ValueError('Archive exceeds pinned limit')
+                  h.update(block);target.write(block)
+          assert h.hexdigest()==down.SHA256
+          inner=out.parent/'h38-bags.zip'
+          with zipfile.ZipFile(archive) as z:
+              matches=[i for i in z.infolist() if PurePosixPath(i.filename).name=='data.zip']
+              assert len(matches)==1
+              with z.open(matches[0]) as source,inner.open('xb') as target:shutil.copyfileobj(source,target)
+          extracted=[]
+          with zipfile.ZipFile(inner) as z:
+              for bag,r in sorted(allowed.items()):
+                  matches=[i for i in z.infolist() if PurePosixPath(i.filename).name==bag+'_0.db3']
+                  assert len(matches)==1
+                  member=matches[0]
+                  assert member.file_size==r['bytes']
+                  destination=out/'data'/bag/(bag+'_0.db3');destination.parent.mkdir(parents=True)
+                  with z.open(member) as source,destination.open('xb') as target:shutil.copyfileobj(source,target)
+                  actual=hashlib.sha256(destination.read_bytes()).hexdigest();assert actual==r['sha256']
+                  extracted.append(dict(bag=bag,role=r['split'],sha256=actual,bytes=r['bytes']))
+          receipt=dict(baseline_sha='e3b0c9c039d2953fbfcda51231263d38ef9f1024',baseline_tree='eae49a504bc59b5c9b408445150bef32e111956f',source_sha=os.environ['GITHUB_SHA'],run_id=os.environ['GITHUB_RUN_ID'],run_attempt=os.environ['GITHUB_RUN_ATTEMPT'],dataset_zip_sha256=h.hexdigest(),split_sha256=plan['manifest_sha256'],extracted=extracted,sqlite_opened=False,validation_extracted=False,test_extracted=False,scope='raw files only; no measurements decoded; train GNSS never queried')
+          (out/'DATA_STAGE.json').write_text(json.dumps(receipt,indent=2)+'\n')
+          print('VERIFIED_DATA_STAGE',len(extracted),'databases; validation/test NOT extracted')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: R4-H38-data-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/h38-data/
+          compression-level: 6
+          retention-days: 7
