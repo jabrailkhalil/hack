@@ -1,0 +1,37 @@
+# R3-H30 PLAN — один кандидат, до реализации/accuracy
+
+## Идентичность
+R3-v8-fixed; baseline e3b0c9c039d2953fbfcda51231263d38ef9f1024; настоящий GuardedReadoutObserver, champion_v8.yaml, guarded_odometry_node. Полный effective profile из YAML: 20 Hz/delay 0, readout gain1/holdoff0.5, adaptation_tau0.5, inner compensation0, quarantine1.5. Moving main не включать. Ветка research/R3-H30. Параметры не подбираются; train/fitting не требуется. Все 17 development bags/7 исходных групп, все available references только у внешнего evaluator. Никаких validation/test measurement IO до допуска и отдельного freeze; текущий loader допускает только development.
+
+## Основание до алгоритма
+Vehicle-only diagnostic source e0948bfcbfc11105077021001891a15e731563fc, run36220315911/1: 616942 events, 319835 ticks, 147997 delayed agreeing accepted pairs в7 groups, 73257 таких pairs старше предыдущего output. Accepted wheel age mean0.053947992 s/p95 0.108249856 s/max0.249970599 s. Это потенциальное вмешательство, не улучшение точности. Instrumented observer точно совпал с обычным v8 replay. Ненулевой age не объявляется широким произвольным OOSM. Диагностика не читала reference. Исходные результаты в checkpoint/R3-H30-diagnosis-36220315911-1.
+
+## Единственный выбранный способ: joint cross-covariance
+Выбран НЕ forward replay. Причина по коду: replay полного core повторно меняет raw checks/recovery/d и требует полной истории событий; joint update может оставить эти блоки исполняющимися один раз. До реализации Wolfram проверил порядок conditioning и conditional Brownian bridge (оба True) для линейной модели dv=a(t)dt+sqrt(q)dW, известных кусочно-постоянных a,q, независимых observation noises R>0. Это sanity oracle, не доказательство nonlinear observer.
+
+Кандидат H30_joint_native хранит максимум32 timestamps/means и32x32 совместную covariance, transition noise rates и ledger максимум64 channel/stamp identities в max_age_s. Старые состояния маргинализуются удалением соответствующих строк/столбцов. История за пределом окна не используется. Текущая marginal следует прежнему predictor с F=1 и исходным q (baseline тоже pv+=q*dt). Nominal acceleration/drive/d не переигрываются задним числом. Это локальная additive-error аппроксимация, не точный nonlinear Bayesian posterior и не совместная оценка d.
+
+Для нового timestamp tau между сохранёнными l,r: lambda=(tau-t_l)/(t_r-t_l); mu_tau=(1-lambda)mu_l+lambda mu_r, C_tau,j=(1-lambda)P_lj+lambda P_rj; P_tau,tau=(1-lambda)^2P_ll+2lambda(1-lambda)P_lr+lambda^2P_rr+q*(t_r-t_l)*lambda*(1-lambda). Последнее слагаемое — условная variance bridge, не независимость endpoints. Между узлами nominal drift фиксирован. Condition: K_i=P_i,tau/(P_tau,tau+R); mu_i+=K_i*(z-mu_tau); Joseph/rank-one covariance с правильными cross terms. Runtime без NumPy/SciPy.
+
+Native update допускается только для двух уже принятых исходными hard gates согласованных колёс с одним source timestamp (tolerance1e-9), свежей командой, доступной историей и без near-zero/sign/speed-clamp режима. R имеет исходную sigma² correlation floor (НЕ /2) и прежний robust multiplier по native innovation. Zero-age выполняет обычный scalar update. Сохраняются source raw/rate/model/zero-lock/quarantine/recovery/stop predicates, physics/gains/noise; d обучается единожды прежним блоком по оригинальным samples. Нельзя снова применить measurement к уже conditioned covariance; ledger запрещает дубликаты. Hard rejected, single/skew pair, stale/out-of-history/capacity/sign/clipped updates используют явный legacy fallback и сброс только covariance history, НЕ s/d/reset observer.
+
+## Readout и выход
+Feature-off точно воспроизводит ВЕСЬ canonical v8, включая legacy readout. На native update и последующих healthy prediction ticks age readout=0 (не накладывать ту же компенсацию второй раз). На legacy update — исходный guarded readout с существующим holdoff. Уже накопленная distance correction не обнуляется при переключении/recovery. Core s и residual readout integral образуют trapezoidal integral опубликованной velocity; уже emitted Estimate immutable, прошлые s/outputs не переписываются. Output grid/masks/Timeline неизменны. Covariance-банк может уточнять прошлые внутренние means, это не повторная публикация.
+
+## Бюджет и покрытие
+Ровно один candidate; off/pristine являются контролями, не вариантами. Коэффициентов поиска нет. До accuracy допуска unit/oracle: max abs discrepancy chronological linear oracle <=1e-9 (mean/cov), eigenvalue >=-1e-10 на независимой NumPy проверке; zero-age, nonzero noise, irregular/late arrivals, duplicate ledger, causal-prefix, bounded history, feature-off exact, d-no-replay и immutable outputs/integral. Structural/accounting failure => INCONCLUSIVE без accuracy promotion/validation; не лечить его метрикой.
+
+После реализации покрытие: >=1000 реально отличающихся native updates (|delta_v относительно обычной same-state correction|>1e-9), >=3 groups с >=100 such updates, >=100 native updates старше предыдущего output. Простое исполнение bridge не засчитывается. При недостатке — INCONCLUSIVE без validation.
+
+## Development contract / машинные veto
+Неизменные official replay/score/match/distance/fault_windows и v6 summary/legacy decide (technical aliases только). Выполнить независимое повторное исполнение baseline; одинаковые data/timestamps/masks/output shape/arrival order. Хотя бы2% clean macro RMSE gain ИЛИ5% original fault-event macro gain. Регрессия clean/fault/pooled<=0.5%, distance<=1%; clean bag/receiver <=base+max(0.005m/s,5%base). Сохраняются coverage/mask, отсутствие новых individual false stops/unrecovered, causality/reset ошибок; старые проблемы baseline не дают права ухудшить их. Все failing cases перечислить, не только counts.
+
+Отдельно перенести существующие v8 low-speed lock и H11 abrupt-common-mode suites на development с их vehicle-only anchor/injection definitions; event macro regression<=0.5%, no new individual false stops/unrecovered. Это отдельные veto, их gain не заменяет original-suite gain. При failure development => REJECTED, validation NOT_RUN_AFTER_REJECTION. Будет сохранён даже ранний отрицательный результат; scope/search не расширять.
+
+## Цена/публикация
+После warmup6 AB/BA pairs на первом исходном development bag, threads=1, одинаковый output collector; отдельно step CPU/replay CPU/wall и memory slots. Feature-off baseline full/integrity tests не выдавать за enabled ROS. При accuracy rejection expensive installed2CPU/500000000 bytes both-clock ROS => NOT_RUN_AFTER_REJECTION. При pass требуется отдельный published FREEZE перед validation и enabled ROS; без них ready_to_merge=false.
+
+В Git компактные per-bag/group/receiver/fault results, summary/PLAN/report/hashes; нет raw bags/гигантских traces. Сжатые traces/source snapshots — own Actions artifacts с retention30d. Только один Draft PR на русском с verdict, SHA и limitations. Итоговые поля mechanism_status, coverage_status, scientific_verdict, accuracy_contract_passed, runtime_verified, ready_to_merge раздельно.
+
+## Литература
+Bar-Shalom (2002), DOI10.1109/TAES.2002.1039398, indexed publisher metadata/abstract, не прочитанный full text: IEEE HTML требует JS verification, прямой PDF вернул HTTP418. Не обходить ограничение. Wolfram и независимый numeric chronological oracle проверяют наши явные линейные допущения, не приписываются статье. Consensus/Scite не вызывались повторно из-за известных quota stops в карточке. SOURCES/worksheet/output сохранить.
