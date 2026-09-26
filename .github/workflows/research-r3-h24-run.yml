@@ -1,0 +1,122 @@
+name: R3 H24 two fits and gated development
+on:
+  push:
+    branches: ['research/R3-H24']
+    paths: ['research/R3_H24/RUN_FIT_DEVELOP']
+permissions:
+  contents: write
+  actions: read
+jobs:
+  research:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 40
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - name: Unique output and declared dependencies
+        run: |
+          mkdir "$RUNNER_TEMP/H24"
+          echo "H24_OUT=$RUNNER_TEMP/H24" >> "$GITHUB_ENV"
+          python -m pip install -r requirements-research.txt
+      - uses: actions/download-artifact@v4
+        with:
+          name: R3-H24-preflight-36220067112-1
+          run-id: 36220067112
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: ${{ runner.temp }}/H24-preflight
+      - name: Source pins and all tests before either fit
+        run: |
+          set -euo pipefail
+          git rev-parse HEAD > "$H24_OUT/SOURCE_SHA.txt"
+          git archive --format=zip HEAD src/reserve_odometry/reserve_odometry/command_map.py research/R3_H24 tools/research_R3_H24 .github/workflows/research-r3-h24-run.yml > "$H24_OUT/measured_code.zip"
+          python - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          manifest=json.loads(Path('research/R3_H24/candidate_manifest.json').read_text())
+          for path,expected in manifest.items():
+              assert hashlib.sha256(Path(path).read_bytes()).hexdigest()==expected,path
+          print('CANDIDATE_SOURCE_PINS_PASS',json.dumps(manifest))
+          PY
+          PYTHONPATH=src/reserve_odometry python -m unittest discover -s tests -v 2>&1 | tee "$H24_OUT/unit-original.log"
+          python -m unittest discover -s research/tests -v 2>&1 | tee "$H24_OUT/research-integrity.log"
+          PYTHONPATH=src/reserve_odometry python -m unittest discover -s research/R3_H24/tests -v 2>&1 | tee "$H24_OUT/unit-h24.log"
+          python -m compileall -q src/reserve_odometry tools/research_R3_H24 research/R3_H24
+      - name: Exactly two preregistered fits; no SQLite or GNSS
+        run: |
+          set -euo pipefail
+          python tools/research_R3_H24/fit.py --preflight "$RUNNER_TEMP/H24-preflight/train" --output "$H24_OUT/fit" 2>&1 | tee "$H24_OUT/fit.log"
+      - name: Verify each enabled fitted map with unchanged mechanism tests
+        run: |
+          set -euo pipefail
+          PYTHONPATH=src/reserve_odometry:research/R3_H24/tests python - <<'PY' 2>&1 | tee "$H24_OUT/unit-fitted.log"
+          import json,os,unittest
+          from pathlib import Path
+          import test_command_map as test
+          original=test.make
+          for name in ('H24_L01','H24_L1'):
+              result=json.loads((Path(os.environ['H24_OUT'])/'fit'/(name+'.json')).read_text())
+              nodes=tuple(result['knots'])
+              test.make=lambda enabled=True,values=None:original(enabled,nodes if values is None else values)
+              print('ENABLED_FITTED',name,nodes,flush=True)
+              tests=unittest.defaultTestLoader.loadTestsFromTestCase(test.CommandMapTests)
+              run=unittest.TextTestRunner(verbosity=2).run(tests)
+              if not run.wasSuccessful():raise SystemExit(1)
+          PY
+      - name: Fixed dataset and all original development groups; never validation
+        run: |
+          set -euo pipefail
+          python tools/get_dataset.py 2>&1 | tee "$H24_OUT/dataset.log"
+          python tools/research_R3_H24/develop.py --fit "$H24_OUT/fit" --output "$H24_OUT/development" --workers 2 2>&1 | tee "$H24_OUT/development.log"
+      - name: Hash all finished evidence
+        if: always()
+        run: |
+          python - <<'PY'
+          import os,hashlib,json
+          from pathlib import Path
+          root=Path(os.environ['H24_OUT'])
+          data={str(p.relative_to(root)):hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(root.rglob('*')) if p.is_file() and p.name!='SHA256.json'}
+          (root/'SHA256.json').write_text(json.dumps(data,indent=2)+'\n')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: R3-H24-mapping-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/H24/
+          retention-days: 30
+      - name: Preserve compact own checkpoint; no automatic validation or promotion
+        if: always()
+        run: |
+          set -eu
+          test -d "$H24_OUT/fit" || exit 0
+          branch="checkpoint/R3-H24-mapping-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          git switch -c "$branch"
+          dest="reports/research_R3/H24/$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          mkdir -p "$dest"
+          export H24_DEST="$dest"
+          python - <<'PY'
+          import os,json,shutil
+          from pathlib import Path
+          root=Path(os.environ['H24_OUT']);dest=Path(os.environ['H24_DEST'])
+          for rel in ('SOURCE_SHA.txt','SHA256.json','fit/started.json','fit/decision.json','development/started.json','development/decision.json','development/per_bag.csv','development/per_group.json','development/cost.json','development/access.json'):
+              if (root/rel).exists():
+                  (dest/rel).parent.mkdir(parents=True,exist_ok=True)
+                  shutil.copyfile(root/rel,dest/rel)
+          for name in ('H24_L01','H24_L1'):
+              p=root/'fit'/(name+'.json')
+              if p.exists():
+                  d=json.loads(p.read_text());d.pop('per_window',None)
+                  (dest/'fit').mkdir(exist_ok=True)
+                  (dest/'fit'/(name+'.json')).write_text(json.dumps(d,indent=2)+'\n')
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add "$dest"
+          git commit -m "research(R3-H24): preserve two-fit result and development decision $GITHUB_RUN_ID"
+          git push origin "HEAD:refs/heads/$branch"
