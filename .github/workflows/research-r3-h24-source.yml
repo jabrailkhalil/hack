@@ -1,0 +1,27 @@
+name: R3 H24 pinned source snapshot
+on:
+  push:
+    branches: ['research/R3-H24']
+    paths: ['.github/workflows/research-r3-h24-source.yml']
+permissions:
+  contents: read
+jobs:
+  source:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Export source only; no dataset or measurement access
+        run: |
+          set -eu
+          mkdir -p "$RUNNER_TEMP/H24-source"
+          git archive --format=zip e3b0c9c039d2953fbfcda51231263d38ef9f1024 > "$RUNNER_TEMP/H24-source/baseline.zip"
+          git rev-parse e3b0c9c039d2953fbfcda51231263d38ef9f1024 > "$RUNNER_TEMP/H24-source/BASELINE_SHA.txt"
+          sha256sum "$RUNNER_TEMP/H24-source/baseline.zip" > "$RUNNER_TEMP/H24-source/SHA256SUMS"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: R3-H24-source-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/H24-source/
+          retention-days: 7
