@@ -1,0 +1,187 @@
+{
+  "name": "H24_L1",
+  "lambda_": 1.0,
+  "success": true,
+  "status": 2,
+  "message": "`ftol` termination condition is satisfied.",
+  "nfev": 6,
+  "njev": 6,
+  "actual_objective_calls": 42,
+  "elapsed_s": 20.680934803000014,
+  "objective": 0.3913508477661599,
+  "fractions": [
+    0.48733904113382936,
+    0.40932237532057697,
+    0.5424995011168473,
+    0.47957223559954865,
+    0.31953255039722556,
+    0.5713083213632091
+  ],
+  "knots": [
+    0.48733904113382936,
+    0.6971826425510549,
+    0.8614609078966297,
+    0.47957223559954865,
+    0.6458658464559512,
+    0.8481856352545827
+  ],
+  "active_mask": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "config": {
+    "mass_kg": 40000.0,
+    "wheel_radius_m": 0.33,
+    "gear_ratio": 6.0,
+    "efficiency": 0.9,
+    "total_motor_torque_nm": 2905.0616664738573,
+    "max_power_w": 280873.5334860941,
+    "max_brake_force_n": 45568.80940352644,
+    "rolling_force_n": 2089.7308146696687,
+    "quadratic_drag_n_s2_m2": 5.021948020794408e-17,
+    "actuator_tau_s": 0.3927619145850434,
+    "command_deadband": 0.04,
+    "command_exponent": 0.5207432400037213,
+    "travel_direction": 1.0,
+    "max_speed_mps": 40.0,
+    "max_accel_mps2": 3.0,
+    "wheel_time_compensation": 0.0,
+    "wheel_sigma_mps": 0.1,
+    "process_noise_v": 0.1,
+    "max_age_s": 0.25,
+    "command_timeout_s": 0.5,
+    "pair_skew_s": 0.1,
+    "disagreement_mps": 0.7,
+    "wheel_rate_limit_mps2": 4.0,
+    "rate_noise_margin_mps": 0.25,
+    "innovation_floor_mps": 0.8,
+    "innovation_cap_mps": 3.0,
+    "stop_speed_mps": 0.07,
+    "stop_model_speed_mps": 0.25,
+    "stop_dwell_s": 0.5,
+    "adaptation_tau_s": 0.5,
+    "disturbance_limit_mps2": 0.6,
+    "max_step_s": 0.2,
+    "reacquire_dwell_s": 0.8,
+    "reacquire_max_residual_mps": 8.0,
+    "reacquire_step_mps": 0.15,
+    "reacquire_min_speed_mps": 0.4,
+    "reacquire_accel_margin_mps2": 0.8,
+    "common_mode_quarantine_s": 1.5
+  },
+  "readout": {
+    "gain": 1.0,
+    "holdoff_s": 0.5
+  },
+  "operational": {
+    "rate_hz": 20.0,
+    "alignment_delay_s": 0.0
+  },
+  "command_map": {
+    "traction": [
+      0.48733904113382936,
+      0.6971826425510549,
+      0.8614609078966297
+    ],
+    "braking": [
+      0.47957223559954865,
+      0.6458658464559512,
+      0.8481856352545827
+    ],
+    "enabled": true
+  },
+  "stats": [
+    {
+      "role": "fitting",
+      "phase": "all",
+      "windows": 154,
+      "groups": 18,
+      "data_loss": 0.3838342058963767,
+      "horizon_group_rms": [
+        0.1443434759866559,
+        0.48647630854289126
+      ]
+    },
+    {
+      "role": "fitting",
+      "phase": "traction",
+      "windows": 68,
+      "groups": 17,
+      "data_loss": 0.054866563452882905,
+      "horizon_group_rms": [
+        0.04448110064429483,
+        0.12973936897526891
+      ]
+    },
+    {
+      "role": "fitting",
+      "phase": "braking",
+      "windows": 69,
+      "groups": 18,
+      "data_loss": 0.61388232883848,
+      "horizon_group_rms": [
+        0.1936246444043969,
+        0.641682490161053
+      ]
+    },
+    {
+      "role": "fitting",
+      "phase": "coast",
+      "windows": 17,
+      "groups": 17,
+      "data_loss": 0.15723938378786662,
+      "horizon_group_rms": [
+        0.05715839205788563,
+        0.26289896516464534
+      ]
+    },
+    {
+      "role": "check",
+      "phase": "all",
+      "windows": 51,
+      "groups": 6,
+      "data_loss": 0.341745225796708,
+      "horizon_group_rms": [
+        0.11165676157067662,
+        0.5203465009904018
+      ]
+    },
+    {
+      "role": "check",
+      "phase": "traction",
+      "windows": 24,
+      "groups": 6,
+      "data_loss": 0.07566797680072442,
+      "horizon_group_rms": [
+        0.05016223308368287,
+        0.156936928060696
+      ]
+    },
+    {
+      "role": "check",
+      "phase": "braking",
+      "windows": 21,
+      "groups": 6,
+      "data_loss": 0.6312159770951188,
+      "horizon_group_rms": [
+        0.1545782984421129,
+        0.7454099222513186
+      ]
+    },
+    {
+      "role": "check",
+      "phase": "coast",
+      "windows": 6,
+      "groups": 6,
+      "data_loss": 0.2894332856328453,
+      "horizon_group_rms": [
+        0.08608803868472317,
+        0.3675872485560423
+      ]
+    }
+  ]
+}
