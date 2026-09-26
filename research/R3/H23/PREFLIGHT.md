@@ -1,0 +1,7 @@
+# R3-H23: измерение основания до реализации кандидата
+
+Baseline e3b0c9c039d2953fbfcda51231263d38ef9f1024, canonical v8 из champion_v8.yaml. Ветка зарезервирована после проверки scientific ID в PR/ветках. Никаких runtime изменений на этом этапе.
+
+Все 17 development bags и исходные fault_windows; scorer неизменен. Baseline исполняется дважды (probe и direct canonical), численные поля сверяются. Измеряются число ticks/эпизодов и независимых исходных групп без ACCEPTED source stamps более max_age_s, в MODEL_ONLY, с валидной командой и статусами только MISSING_OR_STALE/DUPLICATE_OR_OLD/ZERO_LOCK_SUSPECT. На этих ticks внешний evaluator считает скорость-ошибку, отдельно фазы команды, допустимость d_offset и различие командного drive_target исходной и строго опубликованной H16-B физики. Ни альтернативного rollout, ни сравнения вариантов, ни подбора параметров здесь нет.
+
+H16_B.json проверен по B.json и train/results.json models.B в checkpoint af5ee198617e5ecb262e78c529cea3581927557b. Train повторно не обучается. Validation/test не распаковывать и не открывать. Результат диагностики будет входом для единственного предзарегистрированного PLAN перед сравнением H23. Известные квотные остановки Consensus/Scite не обходятся; доступны сохранённые основания H16/H18. Локальный Git DNS недоступен; исполнение в Actions.

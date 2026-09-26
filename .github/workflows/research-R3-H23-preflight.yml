@@ -1,0 +1,51 @@
+name: R3-H23 baseline defect diagnosis
+on:
+  push:
+    branches: [research/R3-H23]
+    paths: [research/R3/H23/PREFLIGHT.md]
+permissions:
+  contents: read
+jobs:
+  diagnose:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - name: Dependencies, pinned B identity and baseline
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/H23-preflight"
+          python -m pip install -r requirements-research.txt > "$RUNNER_TEMP/H23-preflight/dependencies.log" 2>&1
+          git fetch --no-tags origin af5ee198617e5ecb262e78c529cea3581927557b
+          python - <<'PY'
+          import hashlib,json,subprocess
+          from pathlib import Path
+          p=json.loads(Path('research/R3/H23/H16_B.json').read_text())
+          raw=subprocess.check_output(['git','show',p['origin_commit']+':'+p['origin_path']])
+          result=subprocess.check_output(['git','show',p['origin_commit']+':reports/research_R2/H16/H16-36184448864-1/train/results.json'])
+          b=json.loads(raw)
+          assert hashlib.sha256(raw).hexdigest()==p['origin_sha256']
+          assert hashlib.sha256(result).hexdigest()==p['results_sha256']
+          assert json.loads(result)['models']['B']==b and b['config']==p['config'] and b['theta']==p['theta']
+          print('Exact published B JSON and results identity PASS')
+          PY
+      - name: Development only; no validation or test extraction
+        run: python research/R3/H23/prepare_data.py --roles development --journal "$RUNNER_TEMP/H23-preflight/extraction.json"
+      - name: Baseline defect and paired canonical reproduction
+        run: |
+          set -euo pipefail
+          python research/R3/H23/diagnose.py --output "$RUNNER_TEMP/H23-preflight/diagnosis" | tee "$RUNNER_TEMP/H23-preflight/diagnosis.log"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: R3-H23-preflight-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/H23-preflight/
+          retention-days: 30
