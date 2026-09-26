@@ -1,0 +1,201 @@
+{
+  "baseline": "e3b0c9c039d2953fbfcda51231263d38ef9f1024",
+  "candidate_source": "dfa87b1dcae41d5695589ad5a110f8ad5c7ef394",
+  "selected": "A",
+  "summary": {
+    "main": {
+      "macro_rmse": 0.09266814298282507,
+      "pooled_rmse": 0.1293056944774334,
+      "n": 394221,
+      "distance_macro": 5.310295004801444,
+      "false_stops": 0,
+      "fault_macro": 0.2375486120563008,
+      "fault_false_stops": 0,
+      "fault_missing_recovery": 4,
+      "mean_recovery_s": 0.8222337428571304,
+      "groups": {
+        "8269991eafa82c45": 0.02467686311810358,
+        "711abb923942f9fe": 0.10598262720618301,
+        "2cd82bc27dbad052": 0.01918502773970963,
+        "a8a4c11ebcc1dde2": 0.12035163351200452,
+        "70bb14d1c90f301f": 0.14767057962529004,
+        "a0c46036cc19092a": 0.13814212669565956
+      },
+      "missing_bag_receivers": [
+        "30618_117c2d02/master",
+        "30618_117c2d02/rover",
+        "30618_3e012faf/master",
+        "30618_3e012faf/rover",
+        "30618_46e21b9b/master",
+        "30618_46e21b9b/rover",
+        "30618_5036aa78/master",
+        "30618_5036aa78/rover",
+        "30618_74559c73/master",
+        "30618_74559c73/rover",
+        "30618_bcc9e7a2/master",
+        "30618_bcc9e7a2/rover",
+        "30618_e151d6e4/master",
+        "30618_e151d6e4/rover",
+        "30639_e4379d7f/master"
+      ]
+    },
+    "candidate": {
+      "macro_rmse": 0.09262644122968093,
+      "pooled_rmse": 0.12898699183347442,
+      "n": 394221,
+      "distance_macro": 5.378594772069278,
+      "false_stops": 0,
+      "fault_macro": 0.22352145071679813,
+      "fault_false_stops": 0,
+      "fault_missing_recovery": 4,
+      "mean_recovery_s": 0.7597337428571304,
+      "groups": {
+        "8269991eafa82c45": 0.02417764314106927,
+        "711abb923942f9fe": 0.10575491631754083,
+        "2cd82bc27dbad052": 0.02018823588453446,
+        "a8a4c11ebcc1dde2": 0.11984124704014584,
+        "70bb14d1c90f301f": 0.14755337760551712,
+        "a0c46036cc19092a": 0.13824322738927802
+      },
+      "missing_bag_receivers": [
+        "30618_117c2d02/master",
+        "30618_117c2d02/rover",
+        "30618_3e012faf/master",
+        "30618_3e012faf/rover",
+        "30618_46e21b9b/master",
+        "30618_46e21b9b/rover",
+        "30618_5036aa78/master",
+        "30618_5036aa78/rover",
+        "30618_74559c73/master",
+        "30618_74559c73/rover",
+        "30618_bcc9e7a2/master",
+        "30618_bcc9e7a2/rover",
+        "30618_e151d6e4/master",
+        "30618_e151d6e4/rover",
+        "30639_e4379d7f/master"
+      ]
+    }
+  },
+  "scientific_verdict": "REJECTED",
+  "mechanism_status": "ACTIVE",
+  "coverage_status": "SUFFICIENT",
+  "accuracy_contract_passed": false,
+  "runtime_verified": false,
+  "ready_to_merge": false,
+  "changed_outputs": 220771,
+  "changed_groups": [
+    "2cd82bc27dbad052",
+    "664cca45aeb0db23",
+    "70bb14d1c90f301f",
+    "711abb923942f9fe",
+    "8269991eafa82c45",
+    "a0c46036cc19092a",
+    "a8a4c11ebcc1dde2"
+  ],
+  "clean_gain": 0.00045001174947323364,
+  "fault_gain": 0.0590496455360392,
+  "rejection_reasons": [
+    "aggregate_regression:distance_macro",
+    "check_integral_bias:group:0448e10aab8a0e05:5.0",
+    "check_integral_bias:group:8232b134be2a5002:5.0",
+    "check_integral_bias:group:e894436afa9dd9f1:5.0",
+    "check_velocity:group:e894436afa9dd9f1:5.0",
+    "check_velocity:phase:coast:5.0",
+    "supplemental_regression:low_speed"
+  ],
+  "missing_evidence": [],
+  "delta": {
+    "macro_rmse": {
+      "baseline": 0.09266814298282507,
+      "candidate": 0.09262644122968093,
+      "absolute": -4.170175314413549e-05,
+      "relative": -0.00045001174947323364
+    },
+    "fault_macro": {
+      "baseline": 0.2375486120563008,
+      "candidate": 0.22352145071679813,
+      "absolute": -0.014027161339502658,
+      "relative": -0.0590496455360392
+    },
+    "pooled_rmse": {
+      "baseline": 0.1293056944774334,
+      "candidate": 0.12898699183347442,
+      "absolute": -0.0003187026439589735,
+      "relative": -0.0024647224180416316
+    },
+    "distance_macro": {
+      "baseline": 5.310295004801444,
+      "candidate": 5.378594772069278,
+      "absolute": 0.06829976726783471,
+      "relative": 0.012861765157317961
+    }
+  },
+  "supplemental": {
+    "low_speed": {
+      "main": {
+        "event_macro_rmse": 0.3685456733063761,
+        "false_stops": 0,
+        "unrecovered": 6,
+        "mean_recovery_s": 0.3445493535714214,
+        "reacquiring_ticks": 0,
+        "groups": {
+          "8269991eafa82c45": 0.12889587882143197,
+          "711abb923942f9fe": 0.26644489029984575,
+          "2cd82bc27dbad052": 1.3091482963817662,
+          "a8a4c11ebcc1dde2": 0.1552661314468774,
+          "70bb14d1c90f301f": 0.17669615492016988,
+          "a0c46036cc19092a": 0.17482268796816516
+        }
+      },
+      "candidate": {
+        "event_macro_rmse": 0.3884895720421991,
+        "false_stops": 0,
+        "unrecovered": 6,
+        "mean_recovery_s": 0.3677636392857074,
+        "reacquiring_ticks": 0,
+        "groups": {
+          "8269991eafa82c45": 0.1705802775691932,
+          "711abb923942f9fe": 0.26858455741446874,
+          "2cd82bc27dbad052": 1.3648638509381494,
+          "a8a4c11ebcc1dde2": 0.1411704338047305,
+          "70bb14d1c90f301f": 0.20311475388425568,
+          "a0c46036cc19092a": 0.182623558642397
+        }
+      }
+    },
+    "common_mode": {
+      "main": {
+        "event_macro_rmse": 0.10063227230134311,
+        "false_stops": 0,
+        "unrecovered": 2,
+        "mean_recovery_s": 0.11419802857142665,
+        "reacquiring_ticks": 16,
+        "groups": {
+          "8269991eafa82c45": 0.16980765714928567,
+          "711abb923942f9fe": 0.06735565757839733,
+          "a8a4c11ebcc1dde2": 0.0793322060602202,
+          "70bb14d1c90f301f": 0.11775416455948268,
+          "a0c46036cc19092a": 0.06891167615932964
+        }
+      },
+      "candidate": {
+        "event_macro_rmse": 0.090870622961901,
+        "false_stops": 0,
+        "unrecovered": 2,
+        "mean_recovery_s": 0.11419802857142665,
+        "reacquiring_ticks": 9,
+        "groups": {
+          "8269991eafa82c45": 0.11441407113951801,
+          "711abb923942f9fe": 0.06735001425082078,
+          "a8a4c11ebcc1dde2": 0.08265258404895015,
+          "70bb14d1c90f301f": 0.12260640623440293,
+          "a0c46036cc19092a": 0.06733003913581316
+        }
+      }
+    }
+  },
+  "validation_opened": false,
+  "validation_authorized": false,
+  "enabled_ros": "NOT_RUN_AFTER_REJECTION",
+  "test_evaluated": false
+}
