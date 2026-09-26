@@ -1,0 +1,60 @@
+name: R4-H35 permitted data staging
+on:
+  push:
+    branches: [research/R4-H35]
+    paths: [.github/workflows/research-R4-H35-data.yml]
+permissions:
+  contents: read
+jobs:
+  stage:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download exact archive; extract only train and development databases
+        run: |
+          python - <<'PY'
+          import hashlib,io,json,os,runpy,urllib.parse,urllib.request,zipfile
+          from pathlib import Path
+          cfg=runpy.run_path('tools/get_dataset.py')
+          q=urllib.parse.urlencode(dict(public_key=cfg['KEY'],path='/dataset.zip'))
+          with urllib.request.urlopen(cfg['API']+'?'+q,timeout=30) as r:
+              href=json.load(r)['href']
+          raw=Path(os.environ['RUNNER_TEMP'])/'organizer-pinned.zip'
+          with urllib.request.urlopen(href,timeout=60) as src,raw.open('wb') as dst:
+              total=0
+              while block:=src.read(1024*1024):
+                  total+=len(block)
+                  if total>300*1024*1024: raise ValueError('archive size')
+                  dst.write(block)
+          digest=hashlib.sha256(raw.read_bytes()).hexdigest()
+          assert digest==cfg['SHA256'],digest
+          plan=json.loads(Path('research/plan_v3.json').read_text())
+          manifest=json.loads(Path('research/split_v3.json').read_text())
+          assert hashlib.sha256(Path('research/split_v3.json').read_bytes()).hexdigest()==plan['manifest_sha256']
+          records={x['bag']:x for x in manifest['records']}
+          out=Path(os.environ['RUNNER_TEMP'])/'H35-data';out.mkdir()
+          with zipfile.ZipFile(raw) as outer:
+              names=[n for n in outer.namelist() if n=='data.zip' or n.endswith('/data.zip')]
+              assert len(names)==1,names
+              with zipfile.ZipFile(io.BytesIO(outer.read(names[0]))) as inner,zipfile.ZipFile(out/'permitted.zip','w',zipfile.ZIP_DEFLATED) as export:
+                  journal=[]
+                  for role in ('train','development'):
+                      for bag in plan['splits'][role]:
+                          assert records[bag]['split']==role
+                          suffix=bag+'/'+bag+'_0.db3'
+                          matches=[n for n in inner.namelist() if n==suffix or n.endswith('/'+suffix)]
+                          assert len(matches)==1,(bag,matches)
+                          payload=inner.read(matches[0])
+                          h=hashlib.sha256(payload).hexdigest();assert h==records[bag]['sha256'],bag
+                          export.writestr(role+'/'+suffix,payload)
+                          journal.append(dict(bag=bag,role=role,sha256=h,bytes=len(payload)))
+          (out/'receipt.json').write_text(json.dumps(dict(dataset_sha256=digest,split_sha256=plan['manifest_sha256'],sql_payload_decoded=False,validation_extracted=False,test_extracted=False,records=journal),indent=2))
+          print('verified databases:',len(journal))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: R4-H35-permitted-data-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/H35-data/
+          if-no-files-found: error
+          retention-days: 7
