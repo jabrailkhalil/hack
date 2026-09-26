@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "hypothesis_id": "R5-H48",
+  "scope": "RESEARCH_PREFLIGHT_BEFORE_COORDINATE_IO",
+  "created_utc": "2026-09-26T17:30:59.497043+00:00",
+  "baseline_commit": "b2783206000091ab11a1c11ac3ff79082188a4fb",
+  "baseline_tree": "973d50d288e050325ee1c71a90fa8d81f2a099af",
+  "continuation_head": "8f39143cb84f6a0fd3fe39bb94d0761f692ee9a5",
+  "dependencies": {
+    "source": {
+      "local_path": "/mnt/data/R5_source_b2783206.zip",
+      "drive_file_id": "1yRQp9K9PrabA5KbUHJ6Pk4WBTI9UT9eC",
+      "version": "baseline-b2783206",
+      "sha256": "4823fbdbbb979d7b561841e2831e68f2f7d9d8ec0d14e970f09a38cd51dff4c4",
+      "bytes": 3871238
+    },
+    "dataset": {
+      "local_path": "/mnt/data/dataset(6).zip",
+      "drive_file_id": null,
+      "version": "dataset-v1",
+      "sha256": "d0b2483e13990edb8219b0d7bbcafc7ed001cce549a4d3af467069b2472e7d52",
+      "bytes": 256294592
+    },
+    "teacher": {
+      "local_path": "/mnt/data/R5_H42_teacher_component.zip",
+      "drive_file_id": "1IMOfUjzBYtkhxSflKd39jhjMH5KPYOt1",
+      "version": "R5-H42-v1",
+      "sha256": "2ee08edb32343350bf6ae6202836644de4fb309640f2d140a1eb9d5791af28b8",
+      "bytes": 28190115
+    },
+    "atlas": {
+      "local_path": "/mnt/data/R5_H43_atlas_handoff.zip",
+      "drive_file_id": "1MyidYX4Dqyueznm8ik81hQJ8MTMas2IF",
+      "version": "R5-H43-v1",
+      "sha256": "6a759f4bafe4ece014e9dd4f25b201549e317f2ca9db7b47b6c15d4443d9b011",
+      "bytes": 1076521
+    },
+    "launch": {
+      "local_path": "/mnt/data/R5_wave2_H44-H48_launch.zip",
+      "drive_file_id": "1suagMTf5Sf4_oQA2G2KmnFh-hBQmVCqV",
+      "version": "R5-wave2",
+      "sha256": "6c5ec5057b630c4e90b798f98fe23fd2e6ab5315b956f2c5ec3d826eb32551a2",
+      "bytes": 186875
+    }
+  },
+  "checks": {
+    "source_receipt": {
+      "path": "SOURCE_RECEIPT.json",
+      "sha256": "9c0fa2d987cce4097cfd2235beaf891c5f0d083fb0f912e9bbc0589182439ff7"
+    },
+    "outer": {
+      "path": "receipts/outer.json",
+      "sha256": "a0f0b5a746ffcebbe89728ae20fe5d3c603804d77ca2102f9ce6213193e6359d"
+    },
+    "teacher_native": {
+      "path": "receipts/teacher.native.lock.json",
+      "sha256": "973d568154e5c7c78108cd1a99e6d713e956386734d19e2bf6b59612f2047f47"
+    },
+    "atlas_native": {
+      "path": "receipts/atlas.native.lock.json",
+      "sha256": "cbd3285b30118655ff72b0f3eab854c2ac1d0c56e8732b272265b25b854e8a40"
+    },
+    "fold_bridge": {
+      "path": "receipts/folds_bridge.json",
+      "sha256": "cd2d95aa7779b1e1c4ca0eb01ace3f99f6951e6a55e0ea558db1bf48eab127f4"
+    },
+    "policy": {
+      "path": "teacher/R5_H42_teacher/contracts/TEACHER_POLICY.json",
+      "sha256": "f679cc5c9884845a49163774dd68aa7f04524c73b1d31d5b03879d515bdd741a"
+    },
+    "reference_contract": {
+      "path": "teacher/R5_H42_teacher/contracts/REFERENCE_CONTRACT.json",
+      "sha256": "c7b335ed6ed9fb9f68992acd687960ec5df16e4b8c0662cdada51fb20035d037"
+    },
+    "folds": {
+      "path": "launch/R5_wave2_H44-H48/contracts/TRAIN_FOLDS.json",
+      "sha256": "7efb88def952af5089e89c0415256b529bf6e944cda8596387569cc055192356"
+    },
+    "split": {
+      "path": "baseline/research/split_v3.json",
+      "sha256": "20928a29daad2b4178ddb92e2a4d9ddb347952f6c03845802a8d82fff7da5ae0"
+    }
+  },
+  "fit_authorized": true,
+  "coordinates_opened": false,
+  "fit_groups": 20,
+  "check_groups": 7,
+  "fit_bags": 50,
+  "check_bags": 14,
+  "test_allowed": false,
+  "runtime_gnss_allowed": false,
+  "initial_prefix_exception_s": 3
+}
