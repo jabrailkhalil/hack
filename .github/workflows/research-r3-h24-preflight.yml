@@ -1,0 +1,59 @@
+name: R3 H24 train preflight
+on:
+  push:
+    branches: ['research/R3-H24']
+    paths: ['research/R3_H24/RUN_PREFLIGHT']
+permissions:
+  contents: write
+jobs:
+  preflight:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - name: Prepare unique evidence and research dependencies
+        run: |
+          mkdir "$RUNNER_TEMP/H24"
+          echo "H24_OUT=$RUNNER_TEMP/H24" >> "$GITHUB_ENV"
+          python -m pip install -r requirements-research.txt
+      - name: Original integrity and executable source record
+        run: |
+          set -euo pipefail
+          git rev-parse HEAD > "$H24_OUT/SOURCE_SHA.txt"
+          git archive --format=zip HEAD > "$H24_OUT/source.zip"
+          PYTHONPATH=src/reserve_odometry python -m unittest discover -s tests -v 2>&1 | tee "$H24_OUT/unit.log"
+          python -m unittest discover -s research/tests -v 2>&1 | tee "$H24_OUT/integrity.log"
+      - name: Exact data and train-only diagnosis; no candidate or fitting
+        run: |
+          set -euo pipefail
+          python tools/get_dataset.py 2>&1 | tee "$H24_OUT/dataset.log"
+          python tools/research_R3_H24/preflight.py --output "$H24_OUT/train" --workers 2 2>&1 | tee "$H24_OUT/train.log"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: R3-H24-preflight-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/H24/
+          retention-days: 30
+      - name: Compact own checkpoint; never modify another ref
+        if: always()
+        run: |
+          set -eu
+          test -f "$H24_OUT/train/coverage.json" || exit 0
+          branch="checkpoint/R3-H24-preflight-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          git switch -c "$branch"
+          dest="reports/research_R3/H24/preflight-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          mkdir -p "$dest"
+          cp "$H24_OUT/train/coverage.json" "$H24_OUT/train/started.json" "$H24_OUT/train/access.json" "$H24_OUT/train/per_bag.json" "$H24_OUT/train/windows.json" "$dest/"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add "$dest"
+          git commit -m "research(R3-H24): preserve train coverage before fitting $GITHUB_RUN_ID"
+          git push origin "HEAD:refs/heads/$branch"
