@@ -1,0 +1,134 @@
+name: R3-H28 bounded shadow development only
+on:
+  push:
+    branches: [research/R3-H28]
+    paths: [research/R3/H28/SOURCE.b64]
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: read
+jobs:
+  research:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 25
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - name: Publish exact sealed plaintext source on this branch only
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF_NAME" = research/R3-H28
+          OUT="$RUNNER_TEMP/R3-H28-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          mkdir -p "$OUT/checks"
+          echo "H28_OUT=$OUT" >> "$GITHUB_ENV"
+          if test -f research/R3/H28/SOURCE.b64; then
+            python - <<'PY'
+          import base64,gzip,json,hashlib
+          from pathlib import Path
+          raw=gzip.decompress(base64.b64decode(Path('research/R3/H28/SOURCE.b64').read_text()))
+          assert hashlib.sha256(raw).hexdigest()=='f0323ca0a87729c867fa36420e45c504f1a4b926dc04155872b84aa7f04df1d3'
+          source=json.loads(raw)
+          allowed={'BASELINE_FILES.json','SOURCES.md','assess.py','cost.py','counterexamples.py','data.py','math_check.py','prior_h13.py','probe.py','run.py','test_shadow.py','wolfram-output.txt','wolfram.wl'}
+          for path,text in source.items():
+              p=Path(path)
+              assert (p.parent==Path('research/R3/H28') and p.name in allowed) or path=='src/reserve_odometry/reserve_odometry/shadow_drift.py'
+              assert not p.exists(),path
+              p.parent.mkdir(parents=True,exist_ok=True);p.write_text(text)
+          cfg=json.loads(Path('research/R3/H28/CALIBRATION.json').read_text())
+          assert hashlib.sha256(Path('src/reserve_odometry/reserve_odometry/shadow_drift.py').read_bytes()).hexdigest()==cfg['module_sha256']
+          Path('research/R3/H28/SOURCE.b64').unlink()
+          PY
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git add research/R3/H28 src/reserve_odometry/reserve_odometry/shadow_drift.py
+            git commit -m 'research(R3-H28): publish sealed shadow source, tests and immutable development driver [skip ci]'
+            git push origin HEAD:refs/heads/research/R3-H28
+          fi
+          git rev-parse HEAD > "$OUT/source.commit"
+          echo "H28_SOURCE_SHA=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
+      - name: Install research-only dependencies
+        run: |
+          python -m pip install -r requirements-research.txt sympy==1.14.0
+      - name: Compile and unchanged unit/integrity plus shadow invariants
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m compileall -q src tools tests research/R3/H28
+          PYTHONPATH=src/reserve_odometry python -m unittest discover -s tests -v 2>&1 | tee "$H28_OUT/checks/unit.log"
+          python -m unittest discover -s research/tests -v 2>&1 | tee "$H28_OUT/checks/integrity.log"
+          PYTHONPATH=src/reserve_odometry python -m unittest discover -s research/R3/H28 -p 'test_*.py' -v 2>&1 | tee "$H28_OUT/checks/shadow.log"
+          python research/R3/H28/math_check.py --output "$H28_OUT/checks/symbolic.json" 2>&1 | tee "$H28_OUT/checks/symbolic.log"
+          python research/R3/H28/counterexamples.py --calibration research/R3/H28/CALIBRATION.json --output "$H28_OUT/counterexamples.json" 2>&1 | tee "$H28_OUT/checks/counterexamples.log"
+      - uses: actions/download-artifact@v4
+        with:
+          name: R3-H28-authorized-inputs
+          run-id: 36220091298
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: ${{ runner.temp }}/h28-inputs
+      - name: Reproduce sealed train calibration; no development tuning
+        shell: bash
+        run: |
+          set -euo pipefail
+          python research/R3/H28/run.py calibrate --cache "$RUNNER_TEMP/h28-inputs" --output "$H28_OUT/train" --workers 2 2>&1 | tee "$H28_OUT/checks/train.log"
+          python - <<'PY'
+          import json,os,hashlib
+          from pathlib import Path
+          old=json.loads(Path('research/R3/H28/CALIBRATION.json').read_text())
+          p=Path(os.environ['H28_OUT'])/'train/calibration.json';new=json.loads(p.read_text())
+          assert new['thresholds']==old['thresholds']
+          assert hashlib.sha256(p.read_bytes()).hexdigest()==old['full_training_calibration_sha256']
+          print('SEALED_TRAIN_CALIBRATION_EXACT')
+          PY
+      - name: All original development groups and separate fault suites; validation unavailable
+        shell: bash
+        run: |
+          set -euo pipefail
+          python research/R3/H28/run.py development --cache "$RUNNER_TEMP/h28-inputs" --calibration research/R3/H28/CALIBRATION.json --output "$H28_OUT/development" --workers 2 2>&1 | tee "$H28_OUT/checks/development.log"
+      - name: Step and replay CPU, AB-BA with identical collectors and exact PR27 comparator
+        shell: bash
+        run: |
+          set -euo pipefail
+          python research/R3/H28/cost.py --cache "$RUNNER_TEMP/h28-inputs" --calibration research/R3/H28/CALIBRATION.json --output "$H28_OUT/cost.json" 2>&1 | tee "$H28_OUT/checks/cost.log"
+      - name: Preserve compact evidence and explicit non-admission
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json,os,hashlib,platform
+          from pathlib import Path
+          import numpy,scipy,sympy
+          out=Path(os.environ['H28_OUT'])
+          data=json.loads((out/'development/SUMMARY.json').read_text())
+          assert all(not r['admit_validation'] for r in data.values())
+          sources={str(p):hashlib.sha256(p.read_bytes()).hexdigest() for p in Path('research/R3/H28').glob('*') if p.is_file()}
+          p=Path('src/reserve_odometry/reserve_odometry/shadow_drift.py');sources[str(p)]=hashlib.sha256(p.read_bytes()).hexdigest()
+          (out/'execution.json').write_text(json.dumps(dict(source_commit=os.environ['H28_SOURCE_SHA'],run_id=os.environ['GITHUB_RUN_ID'],run_attempt=os.environ['GITHUB_RUN_ATTEMPT'],baseline='e3b0c9c039d2953fbfcda51231263d38ef9f1024',sources=sources,python=platform.python_version(),numpy=numpy.__version__,scipy=scipy.__version__,sympy=sympy.__version__,validation_opened=False,final_test_opened=False,enabled_ros_benchmark='NOT_RUN_AFTER_NON_ADMISSION'),indent=2)+'\n')
+          manifest={str(p.relative_to(out)):hashlib.sha256(p.read_bytes()).hexdigest() for p in out.rglob('*') if p.is_file()}
+          (out/'SHA256.json').write_text(json.dumps(manifest,indent=2)+'\n')
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          branch="checkpoint/R3-H28-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          git switch -c "$branch"
+          dest="reports/research_R3/H28/$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          mkdir -p "$dest/train" "$dest/development"
+          cp "$H28_OUT/execution.json" "$H28_OUT/SHA256.json" "$H28_OUT/cost.json" "$dest/"
+          cp "$H28_OUT/train/calibration.json" "$H28_OUT/train/access.json" "$dest/train/"
+          cp "$H28_OUT/development/SUMMARY.json" "$H28_OUT/development/access.json" "$H28_OUT/development/started.json" "$dest/development/"
+          git add "$dest"
+          git commit -m "research(R3-H28): preserve development non-admission and compact evidence $GITHUB_RUN_ID [skip ci]"
+          git push origin "HEAD:refs/heads/$branch"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: R3-H28-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.H28_OUT }}
+          retention-days: 30
