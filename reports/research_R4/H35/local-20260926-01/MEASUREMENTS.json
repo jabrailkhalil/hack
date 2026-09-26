@@ -1,0 +1,25 @@
+{
+  "baseline_sha": "e3b0c9c039d2953fbfcda51231263d38ef9f1024",
+  "measured_source_sha": "c75384cda3fb77de508c2d4128f38c17ed24613b",
+  "execution": "LOCAL_COMPLETED",
+  "scientific_verdict": "REJECTED",
+  "stage": "development",
+  "validation_opened": false,
+  "test_opened": false,
+  "selected": null,
+  "baseline_reproduced": true,
+  "off_exact": true,
+  "units": {"speed_errors": "m/s", "distance_errors": "m", "recovery": "s", "relative_changes": "fraction, not percent"},
+  "foundation": {"verdict":"PASS","episodes":100,"groups":23,"median_potential_mps":0.0930806735241043,"false_transition_proxy_rate":0.0,"kinds":{"traction_to_coast":87,"amplitude_release":13},"bags":64,"published_outputs":1366299,"train_gnss_opened":false},
+  "development_counts": {"bags":17,"groups":7,"clean_reference_pairs":19,"clean_missing_reference_pairs":15,"clean_reference_groups":6,"original_fault_scenarios":56,"original_reference_pairs":60,"original_reference_groups":5,"common_mode_scenarios":28,"common_mode_reference_pairs":30,"release_diagnostic_scenarios":24,"release_diagnostic_reference_pairs":30,"full_faulted_bag_replays_per_model":56},
+  "summary": {
+    "v8": {"clean_rmse":0.09266814298282507,"fault_rmse":0.2375486120563008,"distance_rmse":5.310295004801444,"samples":394221,"pooled_rmse":0.1293056944774334,"false_stops_clean":0,"false_stops_fault":0,"unrecovered":4,"clean_mae":0.03493335290464455,"clean_bias":0.0063906774202189785,"clean_p95":0.09009279009188104,"clean_signed_integral_error_m":4.0416262881044105,"fault_window_mae":0.15379652933081722,"fault_window_bias":0.01117030785164182,"fault_window_p95":0.45667042861771223,"fault_window_recovery_s":0.7243582848749885,"common_mode_rmse":0.10063227230134311,"release_diagnostic_rmse":0.3709816718341446,"full_fault_distance_rmse":6.269376947281123},
+    "H35_R050": {"clean_rmse":0.09249927569595458,"fault_rmse":0.23208529801196703,"distance_rmse":5.333899141531654,"samples":394221,"pooled_rmse":0.12925053510503023,"false_stops_clean":0,"false_stops_fault":0,"unrecovered":4,"clean_mae":0.03483622938585235,"clean_bias":0.006510874074275562,"clean_p95":0.08986876284177141,"clean_signed_integral_error_m":4.196720625140061,"fault_window_mae":0.15112695112475633,"fault_window_bias":0.006269299226529104,"fault_window_p95":0.44996198977304414,"fault_window_recovery_s":0.6821707848749883,"common_mode_rmse":0.10253289812265778,"release_diagnostic_rmse":0.4012265732506942,"full_fault_distance_rmse":6.312562778798129},
+    "H35_R200": {"clean_rmse":0.09298232154967102,"fault_rmse":0.26552455664345753,"distance_rmse":5.285661297342593,"samples":394221,"pooled_rmse":0.12948456665783978,"false_stops_clean":0,"false_stops_fault":0,"unrecovered":4,"clean_mae":0.03512606182900003,"clean_bias":0.006264286725580275,"clean_p95":0.09081913531386282,"clean_signed_integral_error_m":3.8764560518908446,"fault_window_mae":0.163827177437157,"fault_window_bias":0.012914002693543897,"fault_window_p95":0.5008990083832778,"fault_window_recovery_s":0.7352957848749879,"common_mode_rmse":0.10120409604085456,"release_diagnostic_rmse":0.40007544534443296,"full_fault_distance_rmse":6.138970742518088}
+  },
+  "activation": {"H35_R050":{"local_release_changes":92979,"changed_speed_ticks":185484,"groups":7},"H35_R200":{"local_release_changes":111192,"changed_speed_ticks":189859,"groups":7}},
+  "original_rejection_reasons": {"H35_R050":["insufficient_gain","aggregate_regression:common_mode_rmse"],"H35_R200":["insufficient_gain","aggregate_regression:fault_rmse","aggregate_regression:common_mode_rmse","aggregate_regression:initial_low_speed_rmse"]},
+  "pinned_low_audit": {"algorithm_source_sha":"c75384cda3fb77de508c2d4128f38c17ed24613b","audit_source_sha":"27ea26e128d4e26273aeaa60763d8cded705e9fa","scenarios":26,"reference_comparisons":34,"v8":{"event_rmse":0.3685456733063761,"false_stops":0,"unrecovered":6},"H35_R050":{"event_rmse":0.3492935419083493,"relative_change":-0.05223811536113809,"false_stops":0,"unrecovered":6,"passed":true},"H35_R200":{"event_rmse":0.41599244525107465,"relative_change":0.12874054800056078,"false_stops":0,"unrecovered":6,"passed":false},"scope":"Supplemental post-rejection exact existing suite. Initial incomplete 5s suite remains in raw results; no parameter or algorithm change."},
+  "audit": {"status":"PASS","aggregate_fields_recomputed":32,"max_absolute_delta":8.881784197001252e-16,"baseline_files_checked":301,"remote_blobs_checked":10,"train_accesses":64,"development_accesses":17,"new_individual_unrecovered":0,"added_false_stops":0,"causal_errors":0,"unexpected_resets":0},
+  "raw_sha256": {"foundation/results.json":"decfef3c8398b88613d0cc187c7259cf28c2240b885395d1ec632b2f7d0f04e1","development/results.json":"92587ed8ee035a46631ed802f24b8373671f13bcca6fcbe6bd4ffe53cd66a69c","development/decision.json":"557f5527d72c26e65c0122f8220e345c10cb66bcca9b9131d0f3315bf89efec2","pinned_low/results.json":"ee0201ad3b6fa45305b69fccf0932c4ee3002bebdf83647a01bc5d97bda9cfdf","cost/results.json":"4fe6b5873b4a05e71a43ae30dba7d8f7158faf2413005cfb5dd0ece96224a169"}
+}
