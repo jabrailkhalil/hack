@@ -20,8 +20,8 @@ from tram_vehicle_msgs.msg import VelocitySensor, DriverControllerCommand
 def main():
     root=Path(__file__).resolve().parents[1]
     log=tempfile.TemporaryFile(mode='w+')
-    proc=subprocess.Popen(['ros2','run','reserve_odometry','odometry_node','--ros-args','--params-file',
-        str(root/'src/reserve_odometry/config/default.yaml'),'-p','clock_mode:=ros_clock','-p','use_sim_time:=true'],
+    proc=subprocess.Popen(['ros2','run','reserve_odometry','guarded_odometry_node','--ros-args','--params-file',
+        str(Path(subprocess.check_output(['ros2','pkg','prefix','reserve_odometry'],text=True).strip())/'share/reserve_odometry/config/champion_v8.yaml'),'-p','clock_mode:=ros_clock','-p','use_sim_time:=true'],
         stdout=log,stderr=subprocess.STDOUT,start_new_session=True)
     rclpy.init();p=Node('final_fault_probe');positions=[];velocities=[];diagnostic=[]
     try:

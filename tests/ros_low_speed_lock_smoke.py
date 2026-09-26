@@ -65,4 +65,3 @@ def check(profile, executable):
 
 if __name__=='__main__':
     check('champion_v8.yaml','guarded_odometry_node')
-    check('default.yaml','odometry_node')

@@ -26,6 +26,7 @@ def main():
         client=node.create_client(GetParameters,'/reserve_odometry/get_parameters');assert client.wait_for_service(timeout_sec=20)
         req=GetParameters.Request();req.names=list(expected);future=client.call_async(req);rclpy.spin_until_future_complete(node,future,timeout_sec=5)
         assert future.done() and future.result() is not None
+        assert len(future.result().values)==len(expected), 'Missing parameter responses'
         for (key,wanted),actual in zip(expected.items(),future.result().values):
             assert actual.type==3,(key,actual.type);assert math.isclose(actual.double_value,wanted,rel_tol=1e-9,abs_tol=1e-12),(key,wanted,actual)
         velocities=[];positions=[]
