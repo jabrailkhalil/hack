@@ -1,0 +1,27 @@
+name: R4 H40 development-only data handoff
+on:
+  push:
+    branches: [research/R4-H40]
+    paths: [.github/workflows/research-r4-h40-data.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  development-data:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Stage only development with immutable organizer and per-bag hashes
+        run: |
+          mkdir -p handoff
+          python3 research/R4/H40/stage_data.py --stage development --journal handoff/STAGING.json
+          cp -a dataset/data handoff/data
+          git rev-parse HEAD > handoff/SOURCE_SHA.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: R4-H40-development-data-${{ github.run_id }}-${{ github.run_attempt }}
+          path: handoff/
+          compression-level: 6
+          retention-days: 1
+          if-no-files-found: error
