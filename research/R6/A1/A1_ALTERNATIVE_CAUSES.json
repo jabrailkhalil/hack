@@ -1,0 +1,58 @@
+{
+  "timestamp_jump": {
+    "status": "PASS",
+    "evidence": "max dt 0.0500000000001819, output monotonic"
+  },
+  "duplicate_event": {
+    "status": "PASS",
+    "evidence": "SQL IDs unique; held duplicates rejected rather than re-assimilated"
+  },
+  "future_sample": {
+    "status": "PASS",
+    "evidence": "Causal Timeline; no held source timestamp beyond output"
+  },
+  "broken_dt": {
+    "status": "PASS",
+    "evidence": "nonnegative dt, sum 1291.4"
+  },
+  "overflow": {
+    "status": "PASS",
+    "evidence": "finite float64 v/s, velocity bounded"
+  },
+  "NaN_Inf": {
+    "status": "PASS",
+    "evidence": "all published/inner v,s,d finite; -inf inactive deadlines intentional"
+  },
+  "integrator_arithmetic": {
+    "status": "PASS",
+    "evidence": "max signed integral residual 4.867615643888712e-09 m"
+  },
+  "position_reset_mismatch": {
+    "status": "PASS",
+    "evidence": "zero Timeline resets; identical prefault trajectory; s never intervened"
+  },
+  "readout_only_artifact": {
+    "status": "PASS",
+    "evidence": "inner velocity also saturates, published correction bounded"
+  },
+  "fault_still_active": {
+    "status": "PASS",
+    "evidence": "only wheel events with source t in [71.55,74.55) skipped"
+  },
+  "wrong_clean_pairing": {
+    "status": "PASS",
+    "evidence": "identical input array/output timestamps; exact archived paired clean/faulted traces"
+  },
+  "saturation_logging": {
+    "status": "PASS",
+    "evidence": "counted abs published v >= canonical max_speed, bounded dt; inner also recorded"
+  },
+  "counterfactual_future": {
+    "status": "PASS",
+    "evidence": "same-timestamp clean pre-step state, identical raw Sample bytes"
+  },
+  "passive_instrumentation": {
+    "status": "PASS",
+    "evidence": "untouched replay exactly equal at every t/v/s/internal_v/d tick"
+  }
+}
