@@ -1,0 +1,5 @@
+# Pre-F0 clarification: exactly three eligible anchors
+
+No H57 data enumeration, residual prediction or fitting has run. Synthetic tests exposed a collision in the independently nearest-rounded ranks: when n=3, q*(n-1) gives2/3 and4/3, both rounded to index1. Returning one anchor would violate the equal-count comparison.
+
+For n=3 use the closest DISTINCT ordered index pair to these two target ranks, minimizing summed squared rank distance. The equal-cost tie is resolved toward earlier timestamps, yielding indices[0,1]. For n<=2 retain all; for n>=4 the original independently nearest rule always gives distinct indices and is unchanged. This is a deterministic small-n boundary clarification, not another tested scientific candidate or a data-driven change. It changes no validity, threshold, warmup, loss, weights, fitting budget or check admission. Unit tests exhaustively compare the rule to a rational arithmetic oracle and enforce distinct indices/counts. Both the failed pre-data synthetic test log and corrected log are preserved.
