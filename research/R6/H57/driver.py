@@ -3,7 +3,7 @@
 The initial F0 completed all64 bags and historical-C0 equality checks, but
 JSON could not encode the NumPy int64 material-group count. Preserve that
 failed attempt. This wrapper converts only scalar containers at the JSON
-boundary and adds itself to the source lock. No predicate, selector,
+boundary (including the final console summary) and adds itself to the source lock. No predicate, selector,
 weights, objective, optimizer, parameters or scorer is changed.
 Use driver.py for every stage, not run.py directly.
 """
@@ -13,6 +13,7 @@ import run as implementation
 
 _original_write = implementation.write
 _original_sources = implementation.source_files
+_original_foundation = implementation.foundation
 
 
 def native_scalars(value):
@@ -35,6 +36,12 @@ def source_files():
     return result
 
 
+def foundation(meta, c0, c1):
+    gate, rows = _original_foundation(meta, c0, c1)
+    return native_scalars(gate), native_scalars(rows)
+
+
+implementation.foundation = foundation
 implementation.write = write
 implementation.source_files = source_files
 
