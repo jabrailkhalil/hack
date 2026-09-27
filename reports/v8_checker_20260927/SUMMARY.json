@@ -1,0 +1,175 @@
+{
+  "status": "ADDITIONAL_BAG_TESTED_NOT_RELEASE_ADMISSION",
+  "candidate": "v8_residual070",
+  "tested_head": "123d351aae6794cf2cb1795a2afdcf5fd472dcc0",
+  "baseline_commit": "b2783206000091ab11a1c11ac3ff79082188a4fb",
+  "bag": "30618_88aea4d9",
+  "db_sha256": "48f846d134d0584b38f9ca06b7ba812a16aeeecc896594313e3fa9acd27e10c3",
+  "checker_sha256": "3f6e46923ad431d7ae4f811ff144cbca00c572a1631277dcaa3659cdf8e7a058",
+  "original_validation_members": 0,
+  "original_validation_total": 19,
+  "recorded_duration_s": 1309.591314745,
+  "message_count": 117976,
+  "reference_count": 65579,
+  "clock_and_scoring": "Native source-clock, frozen evaluator; checksum-pinned uploaded checker arithmetic; offline nearest timestamps 50ms. NOT live ROS.",
+  "native": {
+    "main": {
+      "n": 26187,
+      "rmse": 0.05153835084834264,
+      "maximum_error": 0.3905441545008561,
+      "mae": 0.03528619886166188,
+      "coverage": 1.0,
+      "raw_incompatible_frame_xyz_rmse_m": 130335.13132643873,
+      "scalar_distance": {
+        "definition": "s versus integral of matched /localization/kinematic_state linear.x; NOT XYZ",
+        "full_span_terminal_error_m": 3.7517330990367554,
+        "full_span_reference_distance_m": 5483.657383580141,
+        "full_span_terminal_drift_percent": 0.06841662118188982,
+        "continuous_spans": 1,
+        "reanchored_span_rmse_m": 3.997748289206831,
+        "longest_reference_span": {
+          "start_s": 4.3500000000000005,
+          "duration_s": 1309.3000000000002,
+          "reference_distance_m": 5483.657383580099,
+          "terminal_error_m": 3.751733099078592
+        }
+      }
+    },
+    "disturbance_070": {
+      "n": 26187,
+      "rmse": 0.05135395903514269,
+      "maximum_error": 0.3905441545008561,
+      "mae": 0.03520201127449403,
+      "coverage": 1.0,
+      "raw_incompatible_frame_xyz_rmse_m": 130335.2444524388,
+      "scalar_distance": {
+        "definition": "s versus integral of matched /localization/kinematic_state linear.x; NOT XYZ",
+        "full_span_terminal_error_m": 3.8657294574695698,
+        "full_span_reference_distance_m": 5483.657383580141,
+        "full_span_terminal_drift_percent": 0.07049545927221539,
+        "continuous_spans": 1,
+        "reanchored_span_rmse_m": 3.805481567770526,
+        "longest_reference_span": {
+          "start_s": 4.3500000000000005,
+          "duration_s": 1309.3000000000002,
+          "reference_distance_m": 5483.657383580099,
+          "terminal_error_m": 3.8657294575114065
+        }
+      }
+    }
+  },
+  "native_speed_rmse_change_percent": -0.35777592834226324,
+  "timer_sensitivity": {
+    "0ns": {
+      "main": {
+        "n": 26187,
+        "rmse": 0.05111897907746305,
+        "maximum_error": 0.37733194570619555
+      },
+      "disturbance_070": {
+        "n": 26187,
+        "rmse": 0.051112132773909406,
+        "maximum_error": 0.37733194570619555
+      }
+    },
+    "5000000ns": {
+      "main": {
+        "n": 26187,
+        "rmse": 0.05073391741774683,
+        "maximum_error": 0.36516799386226856
+      },
+      "disturbance_070": {
+        "n": 26187,
+        "rmse": 0.05074983545050889,
+        "maximum_error": 0.36516799386226856
+      }
+    }
+  },
+  "original_faults": [
+    {
+      "kind": "bias",
+      "start": 131.4,
+      "end": 136.4,
+      "main": 0.02648202808639773,
+      "disturbance_070": 0.02648202808639773
+    },
+    {
+      "kind": "dropout",
+      "start": 131.4,
+      "end": 136.4,
+      "main": 0.06121009137875531,
+      "disturbance_070": 0.06121009137875531
+    },
+    {
+      "kind": "dropout",
+      "start": 131.4,
+      "end": 141.4,
+      "main": 0.06652804517066266,
+      "disturbance_070": 0.06652804517066266
+    },
+    {
+      "kind": "lock",
+      "start": 131.4,
+      "end": 134.4,
+      "main": 0.02948848306703243,
+      "disturbance_070": 0.02948848306703243
+    }
+  ],
+  "supplemental": {
+    "low": {
+      "main": 0.20724221016772326,
+      "disturbance_070": 0.20724221016772326
+    },
+    "common": {
+      "main": 0.0407944942836197,
+      "disturbance_070": 0.0407944942836197
+    },
+    "slow": {
+      "main": 3.1003863223542387,
+      "disturbance_070": 3.1100172990165715
+    }
+  },
+  "new_unit_tests": 29,
+  "frozen_candidate_tests": 27,
+  "total_executed_tests": 56,
+  "reproduction": {
+    "status": "EXACT_PASS",
+    "result_json_equal": true,
+    "npz_files": 10,
+    "arrays": 28,
+    "rows_across_prediction_and_index_arrays": 733236,
+    "max_difference": 0,
+    "independent_test": false
+  },
+  "first_reference": {
+    "frame": "map",
+    "child": "base_link",
+    "xyz": [
+      103634.10014667963,
+      86057.89949207648,
+      165.16277041075705
+    ],
+    "quaternion": [
+      -0.02867369116997637,
+      -0.009647740489088763,
+      0.6425260632081873,
+      0.7656663755424632
+    ]
+  },
+  "main_changed": false,
+  "model_changed": false,
+  "runtime_reference_use": false,
+  "installed_ros_tested": false,
+  "promotion_allowed": false,
+  "reason": "One additional bag does not replace fixed validation; timer-dependent tiny speed difference; default relative position is incompatible with checker map coordinates.",
+  "files_sha256": {
+    "research/v8_checker_20260927/test_runner.py": "4869cb6b3ababaa4ede4146070c785e2d83bde0fe97c3b13d43a2125a9dce381",
+    "research/v8_checker_20260927/runner.py": "76d214b100046f8cdb5600b865cc29138ed97b4db005290bc20da6fafe6f2675"
+  },
+  "logs_sha256": {
+    "tests.log": "b14eb6e740e577b7ceda4f836287b786e3e15bcdc703d859a2c9f7d51cfb3235",
+    "candidate_tests.log": "fab103a7155db6ccceab289d36162dc0f84a7dae6aa43a9913b25b9f7f68db1a",
+    "results_final.log": "c22fd1dc1e2372198542839c916994cad35eb465049c40ad1f1f255d6e6a45c7",
+    "repeat_final.log": "c22fd1dc1e2372198542839c916994cad35eb465049c40ad1f1f255d6e6a45c7"
+  }
+}
