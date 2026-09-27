@@ -1,6 +1,6 @@
 # Веб-интерфейс для демонстрации
 
-В проект подключён **Tram Odometry Lab** из [godknows1337/tram-odometry](https://github.com/godknows1337/tram-odometry), ветка `research/web-v8-sparse-gnss-reviewed-20260926`. Git-подмодуль `web/tram-odometry` закрепляет проверенную ревизию, поэтому обновления внешней ветки не меняют демонстрацию автоматически.
+В проект включена проверенная копия **Tram Odometry Lab** из [godknows1337/tram-odometry](https://github.com/godknows1337/tram-odometry), ревизия `e4be65ae8fc5a51c8a43f656dfe804877d985e55`. Исходники находятся в `web/tram-odometry`; для сборки достаточно этого публичного репозитория. Сведения об исходной версии сохранены в [UPSTREAM.json](../web/tram-odometry/UPSTREAM.json).
 
 ## Что показывает интерфейс
 
@@ -68,8 +68,8 @@ npm --prefix web/tram-odometry/odometry_lab/frontend run build
 
 Подробная документация исходного UI: [WEB.md](../web/tram-odometry/odometry_lab/WEB.md). Пакет дополнений `tram_web_integration_20260926`, лежащий рядом с локальным проектом, повторно применять не требуется: выбранная ветка уже содержит эти дополнения и исправления после проверки.
 
-## ??????????? ????????????
+## Проверенная демонстрация
 
-[???????? ? ?????????? ?????????? ???????](../reports/submission_20260927/README.md): development-??????, ??? ??????, ??????????? ???????.
+[Протокол и результаты локальной проверки](../reports/submission_20260927/README.md): development-запись, три модели, успешная сборка.
 
-![???-????????????](../reports/submission_20260927/web-demo.png)
+![Веб-интерфейс](../reports/submission_20260927/web-demo.png)

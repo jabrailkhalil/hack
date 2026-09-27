@@ -10,7 +10,7 @@
   "frontend_tests": 3,
   "frontend_build": "passed",
   "browser_page_errors": [],
-  "ros_build_and_latency": "not run: ROS/WSL unavailable",
+  "ros_build_and_latency": "not available locally; remote ROS checks and short v8 runtime pilot passed",
   "docker_build": "not run: Docker unavailable",
   "web_upstream_commit": "e4be65ae8fc5a51c8a43f656dfe804877d985e55",
   "kernel_and_profile_match": true,
@@ -39,5 +39,14 @@
     "url": "https://github.com/jabrailkhalil/hack/actions/runs/36335131814",
     "commit": "f8d099f",
     "conclusion": "success"
+  },
+  "runtime_pilot": {
+    "url": "https://github.com/jabrailkhalil/hack/actions/runs/36335201222",
+    "commit": "3e05adfe8b5749fe978360e08e3991d3a25928ee",
+    "artifact_sha256": "c9b13ad6401958ac1cbad59ef41b67caae4e2e1f9e345d4c7925f01b7d64feb2",
+    "report": "reports/runtime_v8",
+    "duration_seconds_per_clock": 60,
+    "conclusion": "success",
+    "scope": "development bag, input_stamp and ros_clock, not a long-duration validation"
   }
 }
