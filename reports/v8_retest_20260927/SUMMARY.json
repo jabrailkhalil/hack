@@ -1,0 +1,152 @@
+{
+  "status": "LOCAL_TESTS_PASS_RELEASE_STILL_BLOCKED",
+  "tested_commit": "f1b83058127bab1b57108a6d8f5daa1d93d4f7e3",
+  "candidate": "v8_residual070",
+  "algorithm_changed": false,
+  "main_changed": false,
+  "unit_tests": {
+    "runtime_including_packaging": 161,
+    "research_integrity": 43,
+    "selected": 27,
+    "release": 24,
+    "total": 255
+  },
+  "reproduction": {
+    "status": "EXACT_PASS",
+    "per_bag_json": 17,
+    "npz_files": 73,
+    "arrays": 146,
+    "rows": 3169674,
+    "max_difference": 0,
+    "primary_metrics": true,
+    "supplemental_metrics": true,
+    "role": "reused_development",
+    "new_validation": false
+  },
+  "validation": {
+    "status": "NOT_RUN_NO_PAYLOAD",
+    "missing_databases": 19,
+    "local_preflight_exit": 1,
+    "final_test_opened": false
+  },
+  "actions": {
+    "run_id": 36274037856,
+    "attempt": 2,
+    "action_requested": "rerun validation-inputs job 108493218234",
+    "jobs_returned": [
+      {
+        "id": 108498220366,
+        "name": "validation-inputs",
+        "conclusion": "failure",
+        "steps": null
+      },
+      {
+        "id": 108498221499,
+        "name": "selected-installed-ros",
+        "conclusion": "failure",
+        "steps": null
+      }
+    ],
+    "cause": "NOT_ESTABLISHED",
+    "new_validation_results": false
+  },
+  "installed_ros": "NOT_RUN",
+  "limitations": [
+    "Native source-clock reused development, not independent validation or official XYZ",
+    "Synthetic six-hour tests use accelerated source time; address-space limit applies to one process, not a ROS container",
+    "Fault-soak invariants passed but reacquisition is NOT certified: both profiles spent 430790/432001 ticks MODEL_ONLY",
+    "Latest packaging files and every test blob verified against GitHub; not a full fresh Git checkout"
+  ],
+  "soaks": {
+    "healthy": {
+      "status": "INVARIANTS_PASS",
+      "pattern": "healthy",
+      "hours": 6,
+      "ticks_per_profile": 432001,
+      "actual_observer_calls": 1296003,
+      "wall_seconds": 22.420900932999984,
+      "max_rss_bytes": 96497664,
+      "max_integral_error_m": {
+        "main": 2.1498025581934144e-11,
+        "candidate": 2.1498025581934144e-11
+      },
+      "healthy_speed_max_error_mps": {
+        "main": 0.036849057683596254,
+        "candidate": 0.036849057683596254
+      },
+      "recovery_certified": false,
+      "modes": {
+        "main": {
+          "INITIALIZED": 1,
+          "MODEL_ONLY": 216000,
+          "FUSED": 216000
+        },
+        "candidate": {
+          "INITIALIZED": 1,
+          "MODEL_ONLY": 216000,
+          "FUSED": 216000
+        }
+      },
+      "step_microseconds": {
+        "main": {
+          "p50": 13.691,
+          "p95": 22.764,
+          "p99": 34.932,
+          "max": 244.032
+        },
+        "candidate": {
+          "p50": 13.51,
+          "p95": 22.723,
+          "p99": 32.809,
+          "max": 4118.078
+        }
+      }
+    },
+    "faults": {
+      "status": "INVARIANTS_PASS",
+      "pattern": "faults",
+      "hours": 6,
+      "ticks_per_profile": 432001,
+      "actual_observer_calls": 1296003,
+      "wall_seconds": 19.53246741600003,
+      "max_rss_bytes": 96489472,
+      "max_integral_error_m": {
+        "main": 1.0186340659856796e-10,
+        "candidate": 1.0186340659856796e-10
+      },
+      "healthy_speed_max_error_mps": null,
+      "recovery_certified": false,
+      "modes": {
+        "main": {
+          "INITIALIZED": 1,
+          "MODEL_ONLY": 430790,
+          "FUSED": 896,
+          "SINGLE_WHEEL": 300,
+          "REACQUIRING": 14
+        },
+        "candidate": {
+          "INITIALIZED": 1,
+          "MODEL_ONLY": 430790,
+          "FUSED": 896,
+          "SINGLE_WHEEL": 300,
+          "REACQUIRING": 14
+        }
+      },
+      "step_microseconds": {
+        "main": {
+          "p50": 12.108,
+          "p95": 17.406,
+          "p99": 29.573,
+          "max": 225.034
+        },
+        "candidate": {
+          "p50": 11.857,
+          "p95": 16.855,
+          "p99": 26.91,
+          "max": 760.397
+        }
+      }
+    }
+  },
+  "kernel_soak_sha256": "7ea9bae87ceaeb18c6d38da296cf5fe1fe6a9aa5e98e5444eea43f4d46b838c8"
+}

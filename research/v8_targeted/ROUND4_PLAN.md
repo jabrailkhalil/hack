@@ -1,0 +1,9 @@
+# Separate follow-up round 4: one conservative cap, 0.7 m/s^2
+
+Round 3 is closed with all three registered caps failing the unchanged .5% slow-common-mode regression guard. Its three-candidate budget was not expanded in place. cap .8 gave target original fault -46.5761% / combined -21.3636%, but slow event +.5846% target / +.6433% combined. Caps 1.0/1.2 regress slow drift further. These outcomes remain rejected; no threshold change.
+
+One NEW exploratory candidate is now preregistered: complete original v8 with ONLY disturbance_limit_mps2=.7 (original .6). No extra brake/torque/power/readout changes, no signal-dependent switching, no extra learned states. This is an explicitly adaptive follow-up after viewing round3, NOT a previously unmeasured holdout or a continuation concealed in its initial three-cap budget. Total attempts across the task: fourteen fixed candidates (7+3+3+1). Stop the search after this variant in this task; all earlier variants remain in evidence.
+
+Run clean/original cropped/full-faulted on all 17 development bags and all unchanged low-speed/H11/slow suites. Apply exactly the round3 admission criteria including .5% target+combined supplemental guards. Mechanism audit must verify saturation, full prefix/state consistency, integral identity, individual coverage/stops/nonrecovery, per-group/worst-case and distinct-DB sensitivities. No fitting, validation or final-test IO during this selection stage. Any passing result permits only a separately frozen research candidate, never automatic main promotion.
+
+This cap is an engineering constraint on effective model mismatch, not an identified physical grade or hardware specification. It can still amplify undetected common-wheel drift; the residual risk and failed larger caps must accompany the report. Compare 30639 explicitly, never omit its results. Validation data are not locally available; do not claim validation completion from old published metrics.
