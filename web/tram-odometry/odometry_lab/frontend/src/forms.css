@@ -1,0 +1,229 @@
+.form-tabs {
+  display: flex;
+  gap: 7px;
+  background: var(--bg-subtle);
+  padding: 5px;
+  border-radius: 7px;
+  margin-bottom: 24px;
+  border: 1px solid var(--border);
+}
+.form-tabs button {
+  flex: 1;
+  font-size: 12px;
+  padding: 10px;
+  border-radius: 4px;
+  color: var(--text-muted);
+}
+.form-tabs button.active {
+  background: var(--bg-subtle);
+  color: var(--text-muted);
+}
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  font-size: 10px;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+.form-field input,
+.form-field select,
+.form-field textarea {
+  width: 100%;
+  color: var(--text-muted);
+}
+.form-field input:disabled {
+  color: var(--text-muted);
+  background: var(--bg-subtle);
+}
+.section-title {
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 23px 0 14px;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+.section-title > span {
+  color: var(--text-muted);
+}
+.section-title .quiet {
+  margin-left: auto;
+  font-size: 10px;
+}
+.model-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+.model-option {
+  text-align: left;
+  justify-content: flex-start;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 11px 12px;
+  gap: 10px;
+  font-size: 11px;
+}
+.model-option.active {
+  border-color: var(--border);
+  background: var(--bg-subtle);
+}
+.model-option small {
+  display: block;
+  margin-top: 5px;
+  font-size: 8px;
+  color: var(--text-muted);
+}
+.model-check {
+  height: 15px;
+  width: 15px;
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  display: grid;
+  place-items: center;
+}
+.model-option.active .model-check {
+  background: var(--bg-subtle);
+  border-color: var(--border);
+  color: var(--text-muted);
+}
+.model-settings {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0 13px;
+  margin-bottom: 10px;
+  background: var(--bg-subtle);
+}
+.model-settings > summary {
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  cursor: pointer;
+  padding: 13px 0;
+  font-size: 11px;
+}
+.model-settings > summary > span {
+  margin-left: auto;
+  color: var(--text-muted);
+  font-size: 9px;
+}
+.code-input {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  line-height: 1.6;
+  resize: vertical;
+  width: 100%;
+  margin-bottom: 12px;
+}
+.defaults {
+  font-size: 10px;
+  color: var(--text-muted);
+  margin: 0 0 15px;
+  cursor: pointer;
+}
+.defaults pre {
+  font-size: 10px;
+  color: var(--text-muted);
+  max-height: 250px;
+  overflow: auto;
+  background: var(--bg-subtle);
+  padding: 12px;
+}
+.parameter-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+.parameter-list span {
+  font-size: 9px;
+  color: var(--text-muted);
+  background: var(--bg-subtle);
+  padding: 4px 6px;
+  border-radius: 3px;
+}
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 14px;
+}
+.segmented {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 15px;
+}
+.segmented button {
+  font-size: 10px;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  padding: 7px 14px;
+  border-radius: 4px;
+}
+.segmented button.active {
+  color: var(--text-muted);
+  background: var(--bg-subtle);
+  border-color: var(--border);
+}
+.bag-multiselect {
+  height: 175px;
+  line-height: 1.6;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+}
+.bag-multiselect option {
+  padding: 6px;
+  border-radius: 3px;
+}
+.info-box {
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  border-radius: 6px;
+  font-size: 11px;
+  line-height: 1.8;
+  padding: 13px;
+  margin-bottom: 15px;
+}
+.help {
+  font-size: 10px;
+  color: var(--text-muted);
+  line-height: 1.8;
+  margin: 8px 0 15px;
+}
+.empty-fault {
+  padding: 16px;
+  border: 1px dashed var(--border);
+  border-radius: 6px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 10px;
+  margin-bottom: 18px;
+}
+.fault-card {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 12px 15px;
+  margin-bottom: 15px;
+  background: var(--bg-subtle);
+}
+.fault-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  font-size: 10px;
+  color: var(--text-muted);
+}
+.button-row {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 13px;
+}
+.rotated {
+  transform: rotate(90deg);
+}

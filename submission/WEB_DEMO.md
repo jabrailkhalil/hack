@@ -26,7 +26,6 @@
 Из корня `hack`:
 
 ```bash
-git submodule update --init --recursive
 python tools/check_web_integration.py
 python tools/get_dataset.py
 ```

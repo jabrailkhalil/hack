@@ -1,0 +1,173 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ── Caffeine theme (tweakcn.com/editor/theme?theme=caffeine) ───────────── */
+:root {
+  --bg: oklch(0.9821 0 0);
+  --bg-subtle: oklch(0.9521 0 0);
+  --bg-hover: oklch(0.931 0 0);
+  --surface: oklch(0.9911 0 0);
+  --border: oklch(0.8822 0 0);
+  --text: oklch(0.2435 0 0);
+  --text-muted: oklch(0.5032 0 0);
+  --text-faint: oklch(0.64 0 0);
+  --accent: oklch(0.4341 0.0392 41.9938);
+  --accent-h: oklch(0.3499 0.0685 40.8288);
+  --accent-fg: oklch(1 0 0);
+  --sidebar-bg: oklch(0.9881 0 0);
+  --input-bg: oklch(0.9911 0 0);
+}
+
+.dark {
+  --bg: oklch(0.1776 0 0);
+  --bg-subtle: oklch(0.2134 0 0);
+  --bg-hover: oklch(0.252 0 0);
+  --surface: oklch(0.2134 0 0);
+  --border: oklch(0.2351 0.0115 91.7467);
+  --text: oklch(0.9491 0 0);
+  --text-muted: oklch(0.7699 0 0);
+  --text-faint: oklch(0.52 0 0);
+  --accent: oklch(0.9247 0.0524 66.1732);
+  --accent-h: oklch(0.85 0.05 66);
+  --accent-fg: oklch(0.2029 0.024 200.1962);
+  --sidebar-bg: oklch(0.2103 0.0059 285.8852);
+  --input-bg: oklch(0.252 0 0);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Inter", system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  transition:
+    background 150ms ease,
+    color 150ms ease;
+}
+
+.font-mono {
+  font-family: "JetBrains Mono", "Courier New", monospace;
+}
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-faint);
+}
+
+/* Range input */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--border);
+  outline: none;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+  border: 2px solid var(--bg);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+
+/* Table row hover */
+.row-hover:hover {
+  background: var(--bg-hover);
+}
+
+/* Checkbox */
+input[type="checkbox"] {
+  accent-color: var(--accent);
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+}
+
+/* Status badges — light */
+.status-queued {
+  background: oklch(0.931 0 0);
+  color: oklch(0.5032 0 0);
+}
+.status-running {
+  background: oklch(0.92 0.0651 74.3695);
+  color: oklch(0.3499 0.0685 40.8288);
+}
+.status-done {
+  background: #dcfce7;
+  color: #15803d;
+}
+.status-error {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+.status-cancelled {
+  background: oklch(0.931 0 0);
+  color: oklch(0.64 0 0);
+}
+.status-interrupted {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+/* Status badges — dark */
+.dark .status-queued {
+  background: oklch(0.252 0 0);
+  color: oklch(0.7699 0 0);
+}
+.dark .status-running {
+  background: oklch(0.3163 0.019 63.6992);
+  color: oklch(0.9247 0.0524 66.1732);
+}
+.dark .status-done {
+  background: #14532d;
+  color: #4ade80;
+}
+.dark .status-error {
+  background: #450a0a;
+  color: #f87171;
+}
+.dark .status-cancelled {
+  background: oklch(0.252 0 0);
+  color: oklch(0.52 0 0);
+}
+.dark .status-interrupted {
+  background: #2a1d08;
+  color: #fbbf24;
+}
+
+/* Select / input base */
+select,
+input[type="text"] {
+  color: var(--text);
+  background: var(--input-bg);
+  border-color: var(--border);
+}
+select option {
+  background: var(--input-bg);
+  color: var(--text);
+}

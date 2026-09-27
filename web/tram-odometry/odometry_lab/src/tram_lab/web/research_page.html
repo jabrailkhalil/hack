@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Маршрут и GNSS · Tram Lab</title>
+<style>
+:root{color-scheme:light;--bg:#f5f7fa;--panel:#fff;--fg:#162535;--muted:#536575;--line:#dce3eb;--accent:#2563eb;--warn:#815914;--tint:#eef4ff}
+:root[data-theme=dark]{color-scheme:dark;--bg:#111923;--panel:#1a2532;--fg:#e5edf6;--muted:#a4b5c6;--line:#334459;--accent:#7ea9ff;--warn:#e6bd72;--tint:#202f46}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:14px/1.55 system-ui,sans-serif}main{max-width:1380px;margin:auto;padding:24px}h1{font-size:25px;margin:0 0 6px}h2{font-size:18px;margin:0 0 14px}h3{font-size:14px;margin:12px 0 6px}p{margin:8px 0}label{display:flex;flex-direction:column;gap:5px;font-size:13px;color:var(--muted)}select,input,button{font:inherit;border:1px solid var(--line);border-radius:7px;padding:9px 11px;background:var(--panel);color:var(--fg)}input[type=checkbox]{width:16px;height:16px}button{cursor:pointer;font-weight:600}button.primary{background:var(--accent);color:var(--bg);border-color:var(--accent)}button:disabled{opacity:.45;cursor:default}button:hover:not(:disabled){filter:brightness(.94)}a{color:var(--accent)}.lead,.muted{color:var(--muted)}.row{display:flex;gap:14px;align-items:end;flex-wrap:wrap}.row>label{flex:1;min-width:130px}.card{padding:20px;background:var(--panel);border:1px solid var(--line);border-radius:12px;margin:16px 0}.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0}.chip{background:var(--tint);border:1px solid var(--line);border-radius:8px;padding:12px}.chip strong{display:block;font-size:15px}.tag{font-size:11px;letter-spacing:.08em;font-weight:650;text-transform:uppercase;color:var(--muted)}.notice{border-left:3px solid var(--warn);padding:10px 14px;background:var(--tint);color:var(--fg);margin:12px 0}.error{border-color:#e26a6a;color:#dd6868}.bags{display:grid;grid-template-columns:repeat(auto-fill,minmax(195px,1fr));gap:8px;margin:12px 0}.bags label{flex-direction:row;align-items:center;padding:6px;border:1px solid var(--line);border-radius:6px}.scroll{overflow:auto}table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}th,td{text-align:left;border-bottom:1px solid var(--line);padding:9px 10px;white-space:nowrap}th{font-size:12px;color:var(--muted)}td:first-child{font-family:ui-monospace,monospace;font-size:12px}.metrics{display:flex;gap:14px;flex-wrap:wrap;margin:12px 0}.metric{min-width:160px;background:var(--tint);padding:12px;border-radius:8px}.metric b{display:block;font-size:21px;font-variant-numeric:tabular-nums}.visuals{display:grid;grid-template-columns:1fr 1fr;gap:15px}.visuals svg{width:100%;height:310px;border:1px solid var(--line);border-radius:8px;background:var(--bg)}.legend{font-size:12px;color:var(--muted)}.blue{color:#508dec}.amber{color:#d99a28}.grey{color:#7b8794}.small{font-size:12px}details{margin-top:14px}summary{cursor:pointer;color:var(--muted)}code{font-size:12px}#status{min-height:24px}#queue-result:empty,#compare-result:empty,#localize-result:empty{display:none}.inline{display:flex;flex-direction:row;align-items:center;gap:8px}fieldset{border:0;padding:0;margin:0}select[multiple]{min-height:150px}footer{color:var(--muted);font-size:12px;margin:18px 0}@media(max-width:850px){main{padding:12px}.cards,.visuals{grid-template-columns:1fr}.card{padding:15px}}
+</style><script defer src="/api/v1/research/page.js"></script></head>
+<body><main>
+<header><span class="tag">Исследовательский стенд · не официальный score</span><h1>Маршрут и редкие GNSS</h1>
+<p class="lead">Сначала сравнение скорости, затем отдельная проверка привязки к внешнему маршруту. Основной v8 не меняется.</p></header>
+<div class="cards"><div class="chip"><span class="tag">Основная модель</span><strong>v8</strong><span>Текущий baseline</span></div>
+<div class="chip"><span class="tag">Кандидат</span><strong>Traction-only</strong><span>Новые тяга и мощность, прежнее торможение</span></div>
+<div class="chip"><span class="tag">Геометрия</span><strong id="route-badge">Pathgraph не загружен</strong><span>Внешний файл, не GNSS этой поездки</span></div></div>
+<div class="notice"><strong>Результат проверки 26.09.2026: traction-only не принят.</strong> На 30618 ошибка скорости внутри отказов выросла на 9,94%. Это отдельный native source-clock прогон, не метрики этого веб-стенда. Основным остаётся v8; кандидат сохранён для воспроизводимости.</div>
+<div id="status" role="status" aria-live="polite">Загрузка данных…</div>
+<section class="card"><h2>1. Парный эксперимент</h2><div class="row">
+<label>Отчётная область<select id="vehicle"><option value="30618">30618 · целевой трамвай</option><option value="30639">30639 · переносимость</option><option value="all">Оба трамвая · отдельно от целевого отчёта</option></select></label>
+<button id="refresh">Обновить запуски</button><button id="all-bags">Выбрать доступные</button></div>
+<p class="small muted">Только закреплённые development-поездки. Никакого автоматического train/validation/test, подбора параметров или продвижения в main.</p>
+<div class="bags" id="bags"></div><div class="row"><label>Сценарий<select id="fault-kind"><option value="clean">Без добавленного отказа</option><option value="dropout">Выпадение обеих колёсных скоростей</option></select></label>
+<label>Начало отказа, с<input id="fault-start" type="number" min="0" value="30" step="1"></label><label>Конец отказа, с<input id="fault-end" type="number" min="1" value="40" step="1"></label>
+<button class="primary" id="enqueue">Запустить v8 и traction-only</button></div><p class="small muted">При отказе колёс контроллер остаётся доступен. Метрики всего replay не выдаются за RMSE только внутри отказа.</p><div id="queue-result" class="notice"></div>
+</section>
+<section class="card"><h2>2. Сравнить сохранённые результаты</h2><div class="row">
+<label>Baseline<select id="baseline-run" aria-label="Baseline run"></select></label><label>Кандидат<select id="candidate-run" aria-label="Candidate run"></select></label><button id="compare">Сравнить полную выбранную область</button></div>
+<p class="small muted">Проверяются одинаковые часы, маски reference, доступность прогнозов, настройки отказов и хеши записей. Недостающие поездки не скрываются пересечением списков. 30639 не скрывается: он доступен отдельной областью.</p><div id="compare-result"></div></section>
+<section class="card"><h2>3. Внешний маршрут и GNSS-коррекция</h2>
+<div class="notice">Текущая карта во вкладке «Анализ» использует GNSS всей поездки. Здесь этот маршрут не используется: необходим внешний Pathgraph в явно заданном ENU-контракте.</div>
+<div class="row"><label>Маршрут (JSON tram-route-enu-v1)<input type="file" id="route-file" accept=".json,application/json"></label>
+<label>Направленный путь<select id="path"><option value="">Автовыбор с отказом при неоднозначности</option></select></label></div>
+<p id="route-info" class="small muted">Проверяются frame, origin_wgs84, reference_point=base_link, высоты и направление. Неизвестные MGRS/CRS не угадываются.</p>
+<div class="row"><label>Сохранённый запуск<select id="localize-run"></select></label><label>Поездка<select id="localize-bag"></select></label>
+<label>Фиксированный приёмник<select id="receiver"><option value="master">master · x = −9.873 м</option><option value="rover">rover · x = +2.563 м</option></select></label></div>
+<div class="row"><label>Интервал GNSS, с<input id="period" type="number" min="1" max="600" step="1" value="30"></label>
+<label>Стартовое окно, с<input id="initial-window" type="number" min="0.05" max="60" step="0.05" value="3"></label>
+<label>Доля коррекции<input id="gain" type="number" min="0.01" max="1" step="0.05" value="0.35"></label>
+<label>Максимум поправки, м<input id="correction" type="number" min="0.1" max="5" step="0.5" value="5"></label>
+<button class="primary" id="localize" disabled>Сравнить initial-only и sparse GNSS</button></div>
+<p class="small muted">30 с и gain 0.35 — параметры этого эксперимента, не обещанная частота GNSS. В первые 3 с (настраивается) ищется одна допустимая стартовая привязка. После окна отбор фиксируется по времени прихода до проверок ошибки; отказ не заменяется удобным fix. Сброс/потеря одометрии требуют явного нового запуска. Исправные ли GNSS, неизвестно заранее.</p>
+<div id="localize-result"></div></section>
+<details class="card"><summary>Уточнения, ограничения и формат маршрута</summary><div id="contract"></div>
+<pre class="scroll small">{
+  "schema": "tram-route-enu-v1", "frame": "ENU",
+  "source": "Происхождение и версия внешнего Pathgraph",
+  "origin_wgs84": [latitude_deg, longitude_deg, ellipsoidal_height_m],
+  "reference_point": "base_link", "height_reference": "unknown",
+  "paths": [{"id": "route-1", "direction": "forward",
+             "points": [[east_m, north_m, up_m], ...]}]
+}</pre><p class="small">Это контракт импорта, не исходный формат организаторов. Нормализация официального файла ещё требует его байтов и CRS. Пути не соединяются по близости; конец маршрута не зажимает прогноз на последней точке.</p></details>
+<footer>v8/traction-only работает на планировщике этой лаборатории. Исторические native RMSE сюда не переносятся. Коррекция меняет только map-offset, а не физический интеграл s. Согласие с GNSS не является независимым XYZ-тестом.</footer>
+</main></body></html>

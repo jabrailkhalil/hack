@@ -1,0 +1,66 @@
+{
+  "status": "REVIEWED_RESEARCH_UI_NOT_PRODUCTION_PROMOTION",
+  "base_web_commit": "b134a8898f255b72af9dc085a97de8c6eb010823",
+  "compared_integration_commit": "ce7e635417439aff06cf1ab2f1f817980afa7c5b",
+  "environment": {
+    "python": "3.13.5",
+    "numpy": "2.3.5",
+    "fastapi": "0.128.2",
+    "pytest": "9.0.2",
+    "pyproj": "3.7.2"
+  },
+  "checks": {
+    "original_zip_tests": 61,
+    "reviewed_tests": 81,
+    "chromium_checks": 11,
+    "browser_page_errors": 0,
+    "python_compileall": "PASS",
+    "javascript_syntax": "PASS",
+    "tsx": "SYNTAX_ONLY_NOT_FULL_BUILD",
+    "real_native_development": "COMPLETED_BASELINE_EXACT_CANDIDATE_DO_NOT_PROMOTE"
+  },
+  "not_executed": [
+    "full_native_web_test_suite",
+    "React_Vite_build",
+    "full_web_worker_real_data",
+    "Docker_ROS",
+    "official_pathgraph_GNSS_accuracy",
+    "low_speed_common_supplemental",
+    "train_check",
+    "validation",
+    "final_test"
+  ],
+  "source_note": "Web tests used a partial bootstrap of original modules; untouched repository files are inherited remotely, never replaced by the bootstrap. Native run used frozen full source snapshot and verified pins.",
+  "logs_sha256": {
+    "original_tests.log": "6e55b890a91be2ceb3fd973056365ad03dc6e375b3d30967be19aef5fe98023a",
+    "review_before_fixes.log": "12efdafc8b58bab9b8cba4c84d924551b95a0e86d70756d66d3e5f054fba141c",
+    "final_python.log": "39aff99c09d62b1928a231f43e73d2701251025d46df840f050977367eda80d8",
+    "browser-final/browser_check.json": "b3c90815642f77fc9d3b139a28f0844ab90890ae5f6817c4e84ae0fd6edff607",
+    "native_run.log": "0e50d944a38c2b78a288cdae0d9ef0aa1b632af8529a19f6351b55e37150c8c4",
+    "native_results/started.json": "045ed61780fc016eda4ab4aa56297e5bf8f4c9a0c7d3f67ba1c7d4c25c575723",
+    "native_results/summary.json": "0dea448bb389b9d8b2b2ae65cf23ab8e88fd8fd86b67ec8283da652140fb4eb9"
+  },
+  "file_sha256": {
+    "RESEARCH_WEB.md": "489e029b5b659bc2803a4066c5d04ce242b7543f62d02d1d04c5292369fcd969",
+    "RESEARCH_REVIEW.md": "a8d18a339a52cdb6ca58afde1374baf477c95bd1952812dad1edcc346d304a85",
+    "frontend/src/ResearchPage.tsx": "446d458e16e78779ff9cca0c6b8b2fb9f8dea8a5efd9fbfa8fd632bcb061fe4e",
+    "frontend/src/ResearchWorkspace.tsx": "518b708736817fc5711e2f7435cd7d27ca8513a85ce482b47863b8689aeaf974",
+    "frontend/src/research-workspace.css": "f5da803a9fc1875517637f41e4b97af4e89be84d4669a8abd0e6320ccb06c4f4",
+    "frontend/src/main.tsx": "6abe8ecd412cfbee02337bad8473e022bc7478ae047a18602e6fee91028fd514",
+    "src/tram_lab/catalog.py": "025567fa837ce1a881e4ed0026f68adcd07dd1e29d0004786b6c50cff91a69e5",
+    "src/tram_lab/web/app.py": "8e98f8a4a3726a6e550e6d29fa598cf7beff51164c2550874220d04b317834aa",
+    "pyproject.toml": "b6a32a6c2516348126b702966cebb7c1bf30a10c567d5853fc89fdb212c2f928",
+    "scripts/validate_research_ui.py": "02c7fc1f60498ba7b39bdd61d2f16d3112a0948a41614c4592a1a5e013ae752b",
+    "src/tram_lab/research/__init__.py": "738ec298a37d0ba5567c889b3181ab63381e6e14d09cce4a863cbdece6d80bf0",
+    "src/tram_lab/research/contract.json": "d6afb993b66fd9407cb0074c285e02c171782cb15f4ecee1e789c5dbb0a060a2",
+    "src/tram_lab/research/localization.py": "953d033f03d082195b9f546a747ca34e6318fb0fa702ea40453a09858e4e9c2e",
+    "src/tram_lab/research/models.py": "62e18086e91a5286da1350437bd6eea381b1472d94b3e762623152f5b12b88fa",
+    "src/tram_lab/research/route.py": "1262026c59ff050d31b8140a7de8fdb571afa9afec213b786c9190d7e29f3aa6",
+    "src/tram_lab/web/research_api.py": "313a8b5fd271da7aae80282d1ddecb8f98470a89628763fe5e634d54b7a30e07",
+    "src/tram_lab/web/research_page.html": "7161f3a821a6cbe2dd1d58f13397bb443f987583002acf4b333d1ff77db608ff",
+    "src/tram_lab/web/research_page.js": "e61450524a2d1fe9fc07832a77ce3ea5a9fa91528b6c6ca5666fc6799409d31f",
+    "tests/test_research_integration.py": "6d460ab897d720efa50e6dd98694c7dc28d0e6d67dcd609fab5b901451502fd7",
+    "tests/test_research_review.py": "6b3a5eb70f5b1a329c31addaa5fc031f1743ae4ad5f86011f5ed731592e739f1",
+    "reports/research_review_20260926/NATIVE_RESULT.json": "3fe9f46754031215262df8452ba619d3d978d6d670159c2d9798e24a89183182"
+  }
+}

@@ -1,0 +1,122 @@
+{
+  "status": "DO_NOT_PROMOTE_TRACTION_ONLY",
+  "clock": "native_source_time_not_web_receipt_clock",
+  "role": "reused_development",
+  "baseline_commit": "b2783206000091ab11a1c11ac3ff79082188a4fb",
+  "candidate_commit": "da3467c3b40900b2e08e933722ef84a09fe44837",
+  "baseline_fingerprint": "EXACT_PASS",
+  "bags": 17,
+  "unique_db_hashes": 15,
+  "original_fault_scenarios": 56,
+  "full_faulted_replays": 56,
+  "samples": 394221,
+  "scopes": {
+    "all": {
+      "bags": 17,
+      "v8": {
+        "clean_rmse": 0.09266814298282507,
+        "fault_rmse": 0.2375486120563008,
+        "distance_rmse": 5.310295004801444,
+        "samples": 394221,
+        "pooled_rmse": 0.1293056944774334,
+        "false_stops_clean": 0,
+        "false_stops_fault": 0,
+        "unrecovered": 4,
+        "full_faulted_distance_rmse": 6.269376947281123
+      },
+      "traction_only": {
+        "clean_rmse": 0.09262892013985712,
+        "fault_rmse": 0.2347826987464492,
+        "distance_rmse": 5.331529411969128,
+        "samples": 394221,
+        "pooled_rmse": 0.12923612088633013,
+        "false_stops_clean": 0,
+        "false_stops_fault": 0,
+        "unrecovered": 4,
+        "full_faulted_distance_rmse": 6.3358334716681295
+      },
+      "error_change_percent": {
+        "clean_rmse": -0.04232613464070223,
+        "fault_rmse": -1.1643567545644329,
+        "distance_rmse": 0.39987245809289806,
+        "pooled_rmse": -0.05380551211177087,
+        "full_faulted_distance_rmse": 1.06001800411486
+      }
+    },
+    "30618": {
+      "bags": 12,
+      "v8": {
+        "clean_rmse": 0.0653297451621433,
+        "fault_rmse": 0.27239832988807927,
+        "distance_rmse": 1.080428810575924,
+        "samples": 229446,
+        "pooled_rmse": 0.09776499273302508,
+        "false_stops_clean": 0,
+        "false_stops_fault": 0,
+        "unrecovered": 0,
+        "full_faulted_distance_rmse": 1.227531488049144
+      },
+      "traction_only": {
+        "clean_rmse": 0.06539508286463366,
+        "fault_rmse": 0.29946183917890706,
+        "distance_rmse": 1.0744436809597027,
+        "samples": 229446,
+        "pooled_rmse": 0.09780562602814677,
+        "false_stops_clean": 0,
+        "false_stops_fault": 0,
+        "unrecovered": 0,
+        "full_faulted_distance_rmse": 1.2288485414766133
+      },
+      "error_change_percent": {
+        "clean_rmse": 0.10001218025297298,
+        "fault_rmse": 9.935269904902654,
+        "distance_rmse": -0.5539587206149221,
+        "pooled_rmse": 0.04156221361633072,
+        "full_faulted_distance_rmse": 0.1072928426107067
+      }
+    },
+    "30639": {
+      "bags": 5,
+      "v8": {
+        "clean_rmse": 0.10633734189316595,
+        "fault_rmse": 0.21431546683511515,
+        "distance_rmse": 7.425228101914204,
+        "samples": 164775,
+        "pooled_rmse": 0.16337951420322822,
+        "false_stops_clean": 0,
+        "false_stops_fault": 0,
+        "unrecovered": 4,
+        "full_faulted_distance_rmse": 9.630607253435777
+      },
+      "traction_only": {
+        "clean_rmse": 0.10624583877746882,
+        "fault_rmse": 0.19166327179147732,
+        "distance_rmse": 7.4600722774738415,
+        "samples": 164775,
+        "pooled_rmse": 0.1632138624089122,
+        "false_stops_clean": 0,
+        "false_stops_fault": 0,
+        "unrecovered": 4,
+        "full_faulted_distance_rmse": 9.740490091795808
+      },
+      "error_change_percent": {
+        "clean_rmse": -0.0860498429507972,
+        "fault_rmse": -10.569556821144143,
+        "distance_rmse": 0.46926740945041345,
+        "pooled_rmse": -0.10139079867134138,
+        "full_faulted_distance_rmse": 1.140975179117909
+      }
+    }
+  },
+  "missingness_note": "Four unrecovered original comparisons remain four in both; GNSS missing values are not zero error. Controller remains available in wheel outages.",
+  "not_run": [
+    "low_speed_common_mode_supplemental",
+    "train_check",
+    "validation",
+    "final_test",
+    "web_receipt_clock_real_data",
+    "official_XYZ",
+    "ROS"
+  ],
+  "fitting_calls": 0
+}

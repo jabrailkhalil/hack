@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tram-odometry-lab"
+version = "0.1.0"
+description = "Causal tram odometry experiments and ROS 2 adapter"
+requires-python = ">=3.10"
+dependencies = ["numpy==1.26.4", "rosbags==0.10.11", "PyYAML==6.0.2", "matplotlib==3.9.4", "psutil==6.1.1", "filelock==3.18.0"]
+
+[project.optional-dependencies]
+test = ["pytest==8.3.5"]
+web = ["fastapi==0.115.12", "uvicorn==0.34.3", "httpx==0.28.1"]
+
+[project.scripts]
+tram-lab = "tram_lab.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+tram_lab = ["**/*.json", "web/research_page.html", "web/research_page.js"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["dataset: requires the supplied dataset"]

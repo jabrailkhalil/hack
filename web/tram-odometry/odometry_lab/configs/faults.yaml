@@ -1,0 +1,28 @@
+dataset: ../../dataset
+cache: ../.cache
+estimator:
+  name: mean
+period_ms: 50
+seed: 42
+faults:
+  - kind: drop
+    topics: [/vehicle/front_bogie_velocity]
+    start_s: 20
+    end_s: 25
+  - kind: delay
+    topics: [/vehicle/rear_bogie_velocity]
+    start_s: 30
+    end_s: 35
+    delay_s: 0.25
+  - kind: freeze
+    start_s: 50
+    end_s: 55
+  - kind: scale
+    start_s: 70
+    end_s: 75
+    factor: 1.2
+  - kind: spike
+    start_s: 90
+    end_s: 95
+    probability: 0.1
+    amplitude: 18.0  # input units, before conversion to m/s

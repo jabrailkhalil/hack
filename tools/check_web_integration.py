@@ -8,7 +8,7 @@ LAB = ROOT / 'web/tram-odometry/odometry_lab'
 
 def verify():
     if not (LAB / 'pyproject.toml').is_file():
-        raise ValueError('Run git submodule update --init --recursive first')
+        raise ValueError('Web sources are missing; restore web/tram-odometry from the repository')
     vendor = LAB / 'src/tram_lab/vendor/hack'
     for name in ('core.py', 'timeline.py', 'guarded_readout.py'):
         local = (ROOT / 'src/reserve_odometry/reserve_odometry' / name).read_text(encoding='utf-8')

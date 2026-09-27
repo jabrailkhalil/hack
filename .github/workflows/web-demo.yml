@@ -1,9 +1,9 @@
 name: Web demo
 on:
   push:
-    paths: ['web/**', '.gitmodules', 'tools/*web*.py', '.github/workflows/web-demo.yml']
+    paths: ['web/**', 'tools/*web*.py', '.github/workflows/web-demo.yml']
   pull_request:
-    paths: ['web/**', '.gitmodules', 'tools/*web*.py', '.github/workflows/web-demo.yml']
+    paths: ['web/**', 'tools/*web*.py', '.github/workflows/web-demo.yml']
   workflow_dispatch:
 permissions:
   contents: read
@@ -13,8 +13,6 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-        with:
-          submodules: recursive
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
