@@ -6,6 +6,8 @@
 
 ![Интерфейс анализа: карта, графики и сравнение моделей](../reports/submission_20260927/web-demo.png)
 
+На скриншоте v8 выбран первым: верхние показатели относятся к нему. Это одна development-запись `30618_0652866c`; общие результаты validation приведены в отдельном отчёте.
+
 **[Запуск UI и короткий сценарий демонстрации](WEB_DEMO.md)** · **[Точность и задержка v8](VALIDATION_V8.md)**
 
 Для быстрого знакомства: открыть development-запись `30618_0652866c`, сравнить `hack_v8`, `front` и `mean`, затем создать отдельный эксперимент с пропуском колёсных измерений. Интерфейс работает с записями офлайн; ниже приведена проверка выходов ROS-ноды.
@@ -13,6 +15,16 @@
 ## 1. Среда и сборка
 
 Ubuntu 22.04, ROS 2 Humble, Python 3, `colcon`, пакеты `nav_msgs`, `diagnostic_msgs`, `std_srvs`, `launch_ros` и `ament_index_python`. Зависимости устанавливаются заранее; сборка проекта не скачивает данные или модели. Рецепт подготовки контейнера: [Dockerfile.environment](../Dockerfile.environment).
+
+Получить исходники и официальные записи (нужен интернет; загрузка данных выполняется один раз):
+
+```bash
+git clone https://github.com/jabrailkhalil/hack.git
+cd hack
+python3 tools/get_dataset.py
+```
+
+Если репозиторий уже скачан, выполнить только последнюю команду из его корня. Скрипт проверяет SHA256 архива и распаковывает rosbag в `dataset/data`. Для короткой демонстрации ниже используется development-запись `30618_0652866c`.
 
 Из корня репозитория:
 
@@ -43,11 +55,11 @@ bash submission/run.sh --clock 2>&1 | tee /tmp/reserve-odometry.log
 ```bash
 source /opt/ros/humble/setup.bash
 source install_main/setup.bash
-ros2 bag info /absolute/path/to/bag
-ros2 bag play /absolute/path/to/bag --clock 100 --topics   /vehicle/driver_position_cmd   /vehicle/front_bogie_velocity   /vehicle/rear_bogie_velocity
+ros2 bag info dataset/data/30618_0652866c
+ros2 bag play dataset/data/30618_0652866c --clock 100 --topics   /vehicle/driver_position_cmd   /vehicle/front_bogie_velocity   /vehicle/rear_bogie_velocity
 ```
 
-Указать каталог rosbag с `metadata.yaml` и файлом `.db3`. Режим `ros_clock` позволяет продолжать прогноз при исчезновении всех трёх входов, пока поступает `/clock`. Пауза воспроизведения останавливает модельное время; перемотка назад начинает новый относительный сегмент. Перед каждой независимой записью перезапустить ноду.
+Для другой поездки заменить путь на её каталог rosbag с `metadata.yaml` и файлом `.db3`. Режим `ros_clock` позволяет продолжать прогноз при исчезновении всех трёх входов, пока поступает `/clock`. Пауза воспроизведения останавливает модельное время; перемотка назад начинает новый относительный сегмент. Перед каждой независимой записью перезапустить ноду.
 
 Для обычного потока без `/clock` используется `bash submission/run.sh`: время продвигается по меткам входных сообщений (`input_stamp`). При полном исчезновении входов этот режим не продвигает расчёт.
 
