@@ -1,0 +1,49 @@
+name: Selected v8 runtime pilot
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/runtime-v8.yml', 'tools/benchmark_selected.py']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  runtime:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Prepare dependencies and verified development data
+        run: |
+          python3 tools/get_dataset.py
+          docker build -t odometry-v8-env -f Dockerfile.environment .
+      - name: Build offline and measure both clock modes
+        run: |
+          mkdir -p reports/runtime_v8
+          docker run --rm --network none --cpus 2 --memory 500000000 \
+            -e CMAKE_BUILD_PARALLEL_LEVEL=2 -e MAKEFLAGS=-j2 -e ROS_DOMAIN_ID=87 \
+            -v "$PWD:/work" -w /work odometry-v8-env bash -lc '
+              set -e
+              source /opt/ros/humble/setup.bash
+              colcon --log-base log_main build --base-paths src --build-base build_main --install-base install_main --executor sequential
+              source install_main/setup.bash
+              python3 tools/benchmark_selected.py --seconds 60 --clock-mode input_stamp --output reports/runtime_v8/input_stamp.json
+              python3 tools/benchmark_selected.py --seconds 60 --clock-mode ros_clock --output reports/runtime_v8/ros_clock.json
+            '
+      - name: Record source and limits
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import json, os, pathlib
+          p = pathlib.Path('reports/runtime_v8')
+          p.mkdir(parents=True, exist_ok=True)
+          (p/'execution.json').write_text(json.dumps(dict(
+              source_commit=os.environ['GITHUB_SHA'], run_id=os.environ['GITHUB_RUN_ID'],
+              cpu_limit=2, memory_limit_bytes=500000000, network='none',
+              bag='30618_0652866c', role='development', seconds_per_mode=60), indent=2)+'\n')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: selected-v8-runtime
+          path: reports/runtime_v8/
+          retention-days: 90
