@@ -1,0 +1,60 @@
+{
+  "status": "EXPERIMENTAL_PARTIAL_COVERAGE_NOT_FOR_MAIN",
+  "baseline_commit": "b2783206000091ab11a1c11ac3ff79082188a4fb",
+  "parent_commit": "c8858384fb80d6ac3574a5751a94ae7ef35e04f2",
+  "bag": "30618_88aea4d9",
+  "source_frame_hypothesis": {
+    "zone": 37,
+    "easting_origin_m": 300000.0,
+    "northing_origin_m": 6100000.0,
+    "frame": "map",
+    "provenance": "EXPERIMENTAL HYPOTHESIS: GNSS/projected map scale; absent from uploaded map metadata; not reference-fitted",
+    "confirmed": false,
+    "allow_hypothesis": true
+  },
+  "common_samples": 18333,
+  "total_model_outputs": 26187,
+  "common_coverage": 0.7000801924619086,
+  "scores_common_xyz_rmse_m": {
+    "main/first_on_map": 2.0246683378745254,
+    "main/sparse": 1.458759573626548,
+    "disturbance_070/first_on_map": 1.7984045186837272,
+    "disturbance_070/sparse": 1.343459575303349
+  },
+  "initial_window_available_positions": 0,
+  "full_bag_xyz_rmse": null,
+  "first_localized_source_s": 315.0,
+  "accepted_later_GNSS_corrections": 6,
+  "map_lengths_m": [
+    4708.92730984671,
+    4708.561649850461
+  ],
+  "map_point_counts": [
+    4710,
+    4709
+  ],
+  "main_changed": false,
+  "core_v_s_changed": false,
+  "ROS_executed": false,
+  "unit_tests": {
+    "pathgraph": 34,
+    "candidate": 27,
+    "checker": 29,
+    "historical_runtime": 156,
+    "total": 246
+  },
+  "reproduction": {
+    "result_exact": true,
+    "npz_files": 7,
+    "arrays": 39,
+    "all_arrays_exact": true
+  },
+  "full_result_sha256": "4e97787298fe693a83a0778847e88c10590115f5bfaecaa16af6c19fd15df7ea",
+  "full_result_location": "Conversation evidence archive, evidence/final/RESULT.json",
+  "limitations": [
+    "CRS not supplied in map files; explicit unconfirmed hypothesis",
+    "Only 70% position coverage; missing is not zero error",
+    "One previously inspected additional bag, not independent 19-bag validation",
+    "No installed ROS/DDS or end-to-end resource check"
+  ]
+}
