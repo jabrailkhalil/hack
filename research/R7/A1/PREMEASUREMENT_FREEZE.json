@@ -1,0 +1,43 @@
+{
+  "task": "R7-A1",
+  "created_utc": "2026-09-27T12:10:11.454228+00:00",
+  "claim_ref": "claims/R7-A1",
+  "claim_receipt_drive_id": "1sKwsTtiI_0td41yQkW9zf7_RIJyhIISu",
+  "baseline": "b2783206000091ab11a1c11ac3ff79082188a4fb",
+  "baseline_tree": "973d50d288e050325ee1c71a90fa8d81f2a099af",
+  "infrastructure_head": "4979cff1aaaffd316d931504e818851d5e6b36b1",
+  "a0_numerical_results_read": false,
+  "real_replay_started": false,
+  "new_target_errors_read": false,
+  "runtime_modified": false,
+  "immutable_full_protocol_archive": {
+    "drive_file_id": "1lm9AlhZT-zbOUv9IB6_OW5_Zeki1_tft",
+    "bytes": 30998,
+    "sha256": "1190549b06c9147fce847963c7d663020077459494c6f2a7954e98581cd95c90"
+  },
+  "files": {
+    "PLAN.md": "221fefe04bf48746ba5b9a3b5608b66aed6a684255d1ab342ad68a84e0b525f2",
+    "ARCHITECTURE_SPEC.json": "95ea790f1b77c72dc24ded208ee81793795c3f260c270d760d738027b9779189",
+    "DEPENDENCIES.lock": "f06471ba1362c3ca00483f87ee139a7ca39ba796847e56944771aba635789366",
+    "ENVIRONMENT.lock": "e371f2f74322e084d211bf00704f9b641bb8029a339b74902388d8acbe420c90",
+    "SOURCE_RECEIPT.json": "93fc5eab1a4aa55a5ec5d2aa5540dbe7c513c0c3881abc5ef799cb9a91d7d143"
+  },
+  "variants": {"V1": [3.0,0.01], "V2": [3.0,0.03], "V3": [3.0,0.10], "V4": [1.5,0.03]},
+  "state": ["v", "a_drive", "d"],
+  "physics": "exact full champion_v8 coefficients; no parameter fitting",
+  "process_sigmas": ["sqrt(process_noise_v*0.1)", 0.05, "variant sigma_d"],
+  "arrival_sigmas": [0.5,0.5,0.3],
+  "bounds": [[-40,-3,-0.6],[40,3,0.6]],
+  "pseudo_huber_delta": 3,
+  "wheel_sigma_pair": 0.1,
+  "wheel_sigma_single": 0.2,
+  "solver": {"method":"trf","jac":"2-point","loss":"linear","max_nfev":20,"ftol":1e-6,"xtol":1e-6,"gtol":1e-6,"x_scale":1},
+  "numerical_implementation": "Dense exact TRF; identical vectorized numerical-difference map permitted after parity tests; no analytical Jacobian, sparsity or solver sweep.",
+  "selection": "one frozen train-check pass, equal group/bag/event weights; J=0.5*(Ev/Sv)^2+0.5*(Es/Ss)^2; Ev unsigned speed RMSE and Es complete cumulative magnitude-path error over outage plus10s recovery",
+  "admission": {"J_gain_min":0.03,"improving_groups_min":3,"group_regression_max":0.10,"clean_proxy_regression_max":0.01,"extra_continuous_invalid_output_max_s":1},
+  "missing_reference": "Mark chosen anchor uncovered, never replace it or bridge missing H42. Exact H44 teacher interpolation only adjacent accepted rows, gap<=0.2s.",
+  "packaging_fix": "Original preflight failed DB count0/122: nested data.zip and .db3 were not inspected;85/216 are manifest payload counts not86/217 including manifests. Only structural counting/integrity amended; exact transport hashes and expected counts unchanged. Original failure retained.",
+  "source_implementation_freeze_required_before_scoring": true,
+  "validation_final_test": "FORBIDDEN",
+  "development": "CLOSED until one admitted variant is committed in PREDEVELOPMENT_FREEZE"
+}
