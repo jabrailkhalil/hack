@@ -1,7 +1,5 @@
 from setuptools import setup
 
-# The installed surface has exactly one supported pipeline, launcher and profile.
-# Legacy source fixtures remain in Git for historical reproduction, NOT installed.
 setup(
     name='reserve_odometry', version='0.8.1', packages=['reserve_odometry'],
     data_files=[('share/ament_index/resource_index/packages', ['resource/reserve_odometry']),

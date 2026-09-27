@@ -1,0 +1,39 @@
+name: Web demo
+on:
+  push:
+    paths: ['web/**', '.gitmodules', 'tools/*web*.py', '.github/workflows/web-demo.yml']
+  pull_request:
+    paths: ['web/**', '.gitmodules', 'tools/*web*.py', '.github/workflows/web-demo.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  web:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify selected model
+        run: python tools/check_web_integration.py
+      - name: Install web dependencies
+        working-directory: web/tram-odometry/odometry_lab
+        run: |
+          pip install -r requirements.txt -r requirements-web.txt
+          pip install --no-build-isolation --no-deps -e .
+      - name: Test web backend
+        working-directory: web/tram-odometry/odometry_lab
+        run: python -m pytest -q -m 'not dataset'
+      - name: Test and build frontend
+        working-directory: web/tram-odometry/odometry_lab/frontend
+        run: |
+          npm ci
+          npm test
+          npm run build

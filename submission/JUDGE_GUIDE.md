@@ -1,47 +1,101 @@
-# Единственное основное решение: v8
+# Инструкция по проверке
 
-## Сборка и запуск
+## 1. Среда и сборка
 
-Среда: Ubuntu 22.04, ROS 2 Humble, colcon. Зависимости подготовить до offline-проверки; рецепт — Dockerfile.environment. Из текущего checkout:
+Ubuntu 22.04, ROS 2 Humble, Python 3, `colcon`, пакеты `nav_msgs`, `diagnostic_msgs`, `std_srvs`, `launch_ros` и `ament_index_python`. Зависимости устанавливаются заранее; сборка проекта не скачивает данные или модели. Рецепт подготовки контейнера: [Dockerfile.environment](../Dockerfile.environment).
+
+Из корня репозитория:
 
 ```bash
 bash submission/build.sh
-bash submission/run.sh
 ```
 
-Скрипт сборки использует `build_main`, `install_main`, `log_main`, чтобы не запускать устаревшие executables из предыдущего install/. В свежем терминале для штатного запуска:
+Скрипт собирает `tram_vehicle_msgs` и `reserve_odometry`, затем запускает тесты. Эквивалент самой сборки:
+
+```bash
+source /opt/ros/humble/setup.bash
+colcon --log-base log_main build --base-paths src   --build-base build_main --install-base install_main --executor sequential
+source install_main/setup.bash
+```
+
+Устанавливаются `guarded_odometry_node`, `odometry.launch.py` и `champion_v8.yaml`.
+
+## 2. Воспроизведение rosbag
+
+В первом терминале:
+
+```bash
+bash submission/run.sh --clock 2>&1 | tee /tmp/reserve-odometry.log
+```
+
+Во втором терминале, из корня репозитория:
 
 ```bash
 source /opt/ros/humble/setup.bash
 source install_main/setup.bash
-ros2 launch reserve_odometry odometry.launch.py
+ros2 bag info /absolute/path/to/bag
+ros2 bag play /absolute/path/to/bag --clock 100 --topics   /vehicle/driver_position_cmd   /vehicle/front_bogie_velocity   /vehicle/rear_bogie_velocity
 ```
 
-Устанавливаются один executable `guarded_odometry_node`, один launch и один YAML `champion_v8.yaml`. Старый unguarded `odometry_node` больше не устанавливается. Внутренний executable отдельно без параметров не является штатной командой. Исторические варианты воспроизводить из соответствующего commit/архива, не передачей старого YAML в новый launch.
+Указать каталог rosbag с `metadata.yaml` и файлом `.db3`. Режим `ros_clock` позволяет продолжать прогноз при исчезновении всех трёх входов, пока поступает `/clock`. Пауза воспроизведения останавливает модельное время; перемотка назад начинает новый относительный сегмент. Перед каждой независимой записью перезапустить ноду.
 
-## Входы и результаты
+Для обычного потока без `/clock` используется `bash submission/run.sh`: время продвигается по меткам входных сообщений (`input_stamp`). При полном исчезновении входов этот режим не продвигает расчёт.
 
-Три входных vehicle-топика: controller position (notch -15..15), front/rear VelocitySensor. GNSS/IMU в runtime не используется. Выход скорости: `/result/velocity`, VelocitySensor, м/с, frame base_link. Положение: `/result/position`, Odometry, метры, `odom_path_1d`, child base_link. Диагностика: `/result/diagnostics`. Частота 20 Гц, timestamps относятся ко времени данных; deliberate alignment wait 0.
+## 3. Топики
 
-Для проверки полного исчезновения всех входов должен продолжаться `/clock`:
+| Направление | Топик | Тип | Поле и единицы |
+|---|---|---|---|
+| Вход | `/vehicle/driver_position_cmd` | `tram_vehicle_msgs/msg/DriverControllerCommand` | `position`, −15…15: торможение / нейтраль / тяга |
+| Вход | `/vehicle/front_bogie_velocity` | `tram_vehicle_msgs/msg/VelocitySensor` | `velocity`, масштаб `front_scale` |
+| Вход | `/vehicle/rear_bogie_velocity` | `tram_vehicle_msgs/msg/VelocitySensor` | `velocity`, масштаб `rear_scale` |
+| Выход | `/result/velocity` | `tram_vehicle_msgs/msg/VelocitySensor` | `velocity`, м/с; `frame_id=base_link` |
+| Выход | `/result/position` | `nav_msgs/msg/Odometry` | `pose.pose.position`, м; скорость в `twist.twist.linear.x` |
+| Выход | `/result/diagnostics` | `diagnostic_msgs/msg/DiagnosticArray` | состояние фильтра, причины отклонения данных, счётчики |
+
+У входов QoS best-effort, глубина 64. Оба основных выхода имеют метку времени данных и частоту расчёта 20 Гц. В режиме без карты `frame_id=odom_path_1d`, `child_frame_id=base_link`, позиция `(s,0,0)`. Публикация начинается после получения пригодной пары колёсных показаний.
+
+В профиле масштабы колёс равны `1/3.6`. Это эмпирическая настройка предоставленного набора: если проверочные входы уже в м/с, оба масштаба требуется явно заменить на `1.0` в копии YAML.
+
+## 4. Результаты и диагностика
+
+В дополнительном терминале подключить `/opt/ros/humble/setup.bash` и `install_main/setup.bash`, затем выполнять команды по отдельности:
 
 ```bash
-bash submission/run.sh --clock
-# В другом подготовленном терминале:
-ros2 bag play /absolute/path/to/bag --clock 100 --topics \
-  /vehicle/driver_position_cmd \
-  /vehicle/front_bogie_velocity \
-  /vehicle/rear_bogie_velocity
+ros2 topic echo /result/velocity --once
+ros2 topic echo /result/position --once
+ros2 topic hz /result/velocity
+ros2 topic hz /result/position
+ros2 topic echo /result/diagnostics
 ```
 
-В input_stamp полное отсутствие всех входов останавливает модельные часы. В ros_clock пауза часов не интегрирует путь, backward seek начинает новый относительный сегмент. Для каждой независимой записи ноду перезапускать.
+Основные поля диагностики: `front_status`, `rear_status`, `command_stale`, `invalid_messages`, `buffer_dropped`, `backward_clock_resets`, `callback_compute_ms`, `position_mode`. `MISSING_OR_STALE`, `RATE_ANOMALY` и другие статусы объясняют исключение колёсных показаний. `callback_compute_ms` измеряет вычисление callback и не заменяет задержку от входа до результата. Предупреждение о `relative_1d` ожидаемо при работе без карты.
 
-## Проверки
+Для записи результатов (каталог назначения должен быть новым):
 
-`build.sh` запускает unit tests, проверку установленной поверхности, правильных параметров v8, clock/dropout/pause/seek, low-speed lock и CDR. На дату выбора выполнены 161 локальный test invocation, 43 research tests, два полных paired replay и проверка собранного wheel. Новые GitHub ROS jobs завершаются до запуска шагов; **их PASS не заявляется**. Runtime/config/launch совпадают побайтово с прежним v8; новая упаковка не меняет формулы.
+```bash
+ros2 bag record -o /tmp/odometry_results   /result/velocity /result/position /result/diagnostics
+```
 
-[Полный отчёт](../reports/adjudication/REPORT.md) фиксирует точный объём доказательств. Архив v4/final-test/старый 24-минутный benchmark остаются историческими и не заменяют свежую проверку упаковки.
+## 5. Задержка, частота и ресурсы
 
-## Ограничения сдачи
+После размещения официальной development-записи `30618_0652866c` в `dataset/data/30618_0652866c/` остановить отдельно запущенные ноду и bag player. Затем:
 
-`(s,0,0)` — along-track relative odometry, не xyz/ENU. Карта, origin, допустимая начальная привязка и геометрический контракт судьи должны быть подтверждены отдельно. Масштаб raw wheel `1/3.6` эмпирический. Общий плавный дрейф обоих датчиков не устранён. Нода не сертифицирована для безопасности движения. Репозиторий приватный; доступ жюри и отправка формы автоматически не менялись.
+```bash
+source /opt/ros/humble/setup.bash
+source install_main/setup.bash
+python3 tools/benchmark_selected.py --seconds 60 --clock-mode ros_clock   --output /tmp/v8-runtime.json
+```
+
+Скрипт сам запускает установленный `guarded_odometry_node` с установленным профилем v8, проверяет контрольную сумму записи и воспроизводит три входных канала с реальной скоростью 1×. Для полного прогона указать `--seconds 0`. Это Linux/ROS-инструмент; запуск на обычном Windows без ROS не поддерживается.
+
+Результаты: JSON с частотой, квантилями задержки, пиковым RSS, CPU и диагностикой; рядом — `.trace.csv`, `.resources.csv`, `.node.log`. Измеряются callback→publish и publisher→получение обоих выходов. Несопоставленные входы учитываются отдельно. Пороги задания: частота ≥10 Гц, задержка ≤100 мс с пиками ≤250 мс, ≤2 ядер и ≤0.5 ГБ ОЗУ. Сам скрипт не устанавливает ограничения CPU/памяти; их задаёт тестовое окружение.
+
+Проверки качества и результаты v8: [VALIDATION_V8.md](VALIDATION_V8.md). Исторический benchmark v4 хранится отдельно и не является замером текущей версии.
+
+## 6. Параметры и ограничения
+
+[Параметры](PARAMETERS.md), [математическая модель](MODEL.md), [ограничения](LIMITATIONS.md). Путь без карты является относительным; координаты XYZ относительно GNSS требуют известного маршрута и начальной привязки.
+
+## 7. ???-????????????
+
+[?????? ? ???????? ?????? UI](WEB_DEMO.md): ????? development-??????, v8 ? ??????? ???????, ??????? ???????? ? ????, ?????? ? ??????? ???????????. ????? ???????????? rosbag ??????. ???????????? ROS-?????? ??????????? ????????? ????.

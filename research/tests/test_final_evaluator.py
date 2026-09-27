@@ -45,7 +45,8 @@ class FinalEvaluatorTests(unittest.TestCase):
                 ev.freeze(path,'unit-test-source')
                 data=ev.verify_freeze(path)
                 self.assertEqual(len(data['test_bags']),22)
-                self.assertIn('src/reserve_odometry/reserve_odometry/node.py',data['source_sha256'])
+                paths = {Path(name).as_posix() for name in data['source_sha256']}
+                self.assertIn('src/reserve_odometry/reserve_odometry/node.py', paths)
                 connect.assert_not_called()
                 with self.assertRaises(FileExistsError):ev.freeze(path,'other-source')
 

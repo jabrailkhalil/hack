@@ -1,0 +1,33 @@
+name: hack-odometry-demo
+x-lab: &lab
+  image: hack-odometry-web:local
+  build:
+    context: ./tram-odometry/odometry_lab
+    dockerfile: docker/Dockerfile.web
+  init: true
+  volumes:
+    - ../dataset/organizer:/dataset:ro
+    - ./runs:/runs
+    - ./models:/models
+    - lab-cache:/cache
+    - lab-state:/state
+services:
+  web:
+    <<: *lab
+    ports:
+      - "127.0.0.1:8080:8080"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8080/api/v1/health')"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+  worker:
+    <<: *lab
+    command: ["python", "-m", "tram_lab.web.worker"]
+    stop_grace_period: 15s
+    depends_on:
+      web:
+        condition: service_healthy
+volumes:
+  lab-cache:
+  lab-state:

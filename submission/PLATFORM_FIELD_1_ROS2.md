@@ -1,27 +1,5 @@
-# Пакеты ROS 2 Humble
+# 1. Пакеты ROS 2 Humble
 
 https://github.com/jabrailkhalil/hack/tree/main/src
 
-В составе два ROS 2 Humble пакета: `reserve_odometry` и `tram_vehicle_msgs`.
-
-Основной executable: `guarded_odometry_node`.  
-Основная конфигурация: `champion_v8.yaml`.  
-Штатный запуск:
-
-```bash
-ros2 launch reserve_odometry odometry.launch.py
-```
-
-Нода подписывается на входные топики:
-
-- `/vehicle/driver_position_cmd` — положение контроллера;
-- `/vehicle/front_bogie_velocity` — скорость передней тележки;
-- `/vehicle/rear_bogie_velocity` — скорость задней тележки.
-
-Публикуемые выходы:
-
-- `/result/velocity` — оценка продольной скорости, м/с;
-- `/result/position` — относительная одометрия;
-- `/result/diagnostics` — диагностическая информация.
-
-Сборка выполняется через `colcon`; штатные скрипты сборки и запуска находятся в каталоге `submission/`.
+Два пакета ROS 2 Humble: reserve_odometry и tram_vehicle_msgs, собираются colcon build. Нода guarded_odometry_node с профилем champion_v8.yaml получает /vehicle/driver_position_cmd, /vehicle/front_bogie_velocity и /vehicle/rear_bogie_velocity. Публикует /result/velocity (tram_vehicle_msgs/msg/VelocitySensor, м/с), /result/position (nav_msgs/msg/Odometry, м) и диагностику. Расчётная частота — 20 Гц. Сборка: bash submission/build.sh. Воспроизведение rosbag: bash submission/run.sh --clock.
