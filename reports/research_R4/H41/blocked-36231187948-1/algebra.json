@@ -1,0 +1,52 @@
+{
+  "scope": "OFFLINE_ALGEBRA_NOT_RUNTIME_OR_ACCURACY",
+  "seed": 41,
+  "python": "3.13.5",
+  "numpy": "2.3.5",
+  "sympy": "1.14.0",
+  "jacobian": "Matrix([[h*((1 - rho)*Derivative(T(v), v) - Derivative(R(v), v)) + 1, h*rho], [(1 - rho)*Derivative(T(v), v), rho]])",
+  "frozen_observability_determinant": "h*rho",
+  "symbolic_joseph_difference_zero": true,
+  "process_Q_determinant": "qa*qv",
+  "jacobian_fd_cases": 808,
+  "jacobian_max_abs_delta": 9.07199870781028e-10,
+  "joseph_psd_cases": 5000,
+  "joseph_max_abs_delta": 1.7763568394002505e-15,
+  "joseph_min_eigenvalue": 1.7749393284097192e-06,
+  "unit_dimensions": {
+    "v": [
+      1,
+      -1
+    ],
+    "A": [
+      1,
+      -2
+    ],
+    "h": [
+      0,
+      1
+    ],
+    "Pvv": [
+      2,
+      -2
+    ],
+    "PvA": [
+      2,
+      -3
+    ],
+    "PAA": [
+      2,
+      -4
+    ]
+  },
+  "units_passed": true,
+  "actual_gain_example": 0.9523809523809523,
+  "wrong_legacy_gain_example": 0.909297052154195,
+  "warnings": [
+    "Local derivatives do not prove nonlinear switched/clipped stability",
+    "Ka-constrained Joseph preserves PSD conditional on a PSD prior; not calibrated covariance",
+    "Fixed engineering Q_A/P_A is not identified from train",
+    "Persistent d variance grows quadratically with outage time, unlike independent per-step noise",
+    "No runtime observer, actual-gain hook, or data accuracy has been implemented or tested here"
+  ]
+}
