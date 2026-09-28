@@ -1,0 +1,26 @@
+name: R3 H30 baseline source only
+on:
+  push:
+    branches: [research/R3-H30]
+    paths: [.github/workflows/research-r3-h30-source.yml]
+permissions:
+  contents: read
+jobs:
+  source:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: e3b0c9c039d2953fbfcda51231263d38ef9f1024
+      - name: Archive fixed source without measurements
+        run: |
+          mkdir -p /tmp/h30-source
+          git archive --format=zip HEAD -o /tmp/h30-source/baseline.zip
+          git rev-parse HEAD > /tmp/h30-source/baseline-sha.txt
+          sha256sum /tmp/h30-source/baseline.zip > /tmp/h30-source/SHA256SUMS
+      - uses: actions/upload-artifact@v4
+        with:
+          name: R3-H30-source-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/h30-source/
+          retention-days: 7
