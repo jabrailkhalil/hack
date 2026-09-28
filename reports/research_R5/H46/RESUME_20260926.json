@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "hypothesis_id": "R5-H46",
+  "resumed_at": "2026-09-26",
+  "baseline_sha": "b2783206000091ab11a1c11ac3ff79082188a4fb",
+  "branch": "research/R5-H46",
+  "pr": 61,
+  "previous_stage": "DEPENDENCY_PENDING",
+  "current_stage": "BLOCKED_PRECHECK",
+  "scientific_verdict": "NOT_EVALUATED",
+  "transport": {
+    "h42_teacher": {
+      "status": "AVAILABLE_EXACT",
+      "drive_file_id": "1IMOfUjzBYtkhxSflKd39jhjMH5KPYOt1",
+      "sha256": "2ee08edb32343350bf6ae6202836644de4fb309640f2d140a1eb9d5791af28b8"
+    },
+    "h43_atlas": {
+      "status": "AVAILABLE_EXACT",
+      "drive_file_id": "1MyidYX4Dqyueznm8ik81hQJ8MTMas2IF",
+      "sha256": "6a759f4bafe4ece014e9dd4f25b201549e317f2ca9db7b47b6c15d4443d9b011"
+    },
+    "dataset": {
+      "status": "AVAILABLE_EXACT",
+      "sha256": "d0b2483e13990edb8219b0d7bbcafc7ed001cce549a4d3af467069b2472e7d52"
+    },
+    "source": {
+      "status": "AVAILABLE_EXACT",
+      "sha256": "4823fbdbbb979d7b561841e2831e68f2f7d9d8ec0d14e970f09a38cd51dff4c4"
+    }
+  },
+  "producer_contracts": {
+    "h42": "verify_handoff.py . --expected-handoff-sha <published SHA> --lock <new path>; fit only fold=fit; teacher is magnitude/offline-only",
+    "h43": "scripts/verify_handoff.py R5_HANDOFF.json --kind atlas --folds TRAIN_FOLDS.json --output-lock <new path>; development-only diagnostic"
+  },
+  "execution": {
+    "native_h42_verifier": "NOT_RUN_EXECUTION_BACKEND_UNAVAILABLE",
+    "native_h43_verifier": "NOT_RUN_EXECUTION_BACKEND_UNAVAILABLE",
+    "fold_bridge": "NOT_RUN_EXECUTION_BACKEND_UNAVAILABLE",
+    "dependency_lock_authorizing_fit": false,
+    "real_fitting_calls": 0,
+    "candidate_sha": null,
+    "validation_opened": false,
+    "final_test_opened": false
+  },
+  "math_check": {
+    "wolfram": "PASS_WITH_FIRST_ATTEMPT_WARNING_DISCARDED",
+    "shared_center": "(theta1+theta2)/2",
+    "reduced_penalty": "lambda*(theta1-theta2)^2/(2*s^2)",
+    "hessian_eigenvalues": [
+      "2*lambda/s^2",
+      0
+    ],
+    "common_shift_penalty_delta": 0,
+    "qualification": "Shrinkage constrains contrast only and cannot establish data identifiability."
+  },
+  "literature_tools": {
+    "consensus": "MONTHLY_LIMIT_30_SEARCHES",
+    "scite": "MONTHLY_LIMIT_25_CALLS",
+    "effect_on_plan": "none"
+  },
+  "next_permitted_steps": [
+    "run H42 native verifier on exact component",
+    "run H43 native verifier on exact component",
+    "run producer-fold bridge and create a new experimental DEPENDENCIES.lock.json",
+    "measure teacher coverage and label-wise F/P/B Jacobian rank",
+    "only if foundation thresholds pass: execute one joint fit and one global-only control within preregistered budget"
+  ],
+  "ready_to_merge": false
+}
