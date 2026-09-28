@@ -1,0 +1,58 @@
+name: R3 H24 steady cost only
+on:
+  push:
+    branches: ['research/R3-H24']
+    paths: ['research/R3_H24/RUN_COST']
+permissions:
+  contents: write
+  actions: read
+jobs:
+  cost:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - uses: actions/download-artifact@v4
+        with:
+          name: R3-H24-mapping-36220877255-1
+          run-id: 36220877255
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: ${{ runner.temp }}/H24-original
+      - name: Dependencies and exact dataset
+        run: |
+          python -m pip install -r requirements-research.txt
+          python tools/get_dataset.py
+      - name: Steady CPU only; never fit or validate
+        run: |
+          set -euo pipefail
+          python tools/research_R3_H24/cost_after_warmup.py --fit "$RUNNER_TEMP/H24-original/fit" --output "$RUNNER_TEMP/H24-cost" 2>&1 | tee "$RUNNER_TEMP/H24-cost.log"
+          cp "$RUNNER_TEMP/H24-cost.log" "$RUNNER_TEMP/H24-cost/"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: R3-H24-cost-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/H24-cost/
+          retention-days: 30
+      - name: Compact own cost checkpoint
+        if: always()
+        run: |
+          set -eu
+          test -f "$RUNNER_TEMP/H24-cost/cost.json" || exit 0
+          branch="checkpoint/R3-H24-cost-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          git switch -c "$branch"
+          dest="reports/research_R3/H24/cost-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          mkdir -p "$dest"
+          cp "$RUNNER_TEMP/H24-cost/cost.json" "$RUNNER_TEMP/H24-cost/started.json" "$dest/"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add "$dest"
+          git commit -m "research(R3-H24): preserve steady cost of unchanged rejected fits $GITHUB_RUN_ID"
+          git push origin "HEAD:refs/heads/$branch"

@@ -1,0 +1,25 @@
+Actual WolframLanguageEvaluator output, R3-H24, before fitting:
+During evaluation of In[1]:= [INFO] Interpreted "1 meter per second" as: Quantity[1, "Meters"/"Seconds"]
+During evaluation of In[1]:= [INFO] Interpreted "1 meter per second" as: Quantity[1, "Meters"/"Seconds"]
+Out[1] was a JSON string with the following contents:
+{
+ "slopes":"{4*q1, 4*(-q1 + q2), 4*(-q2 + q3), 4*(1 - q3)}",
+ "monotone":true,
+ "segmentBounds":[true,true,true,true],
+ "continuityErrors":[0,0,0],
+ "endpoints":[0,1],
+ "slopeUpperBound":true,
+ "fullKnotBasisRank":3,
+ "sameNotch1000TimesRank":1,
+ "onlyEndpointsRank":0,
+ "priorNodes":[0.0,0.4858266445315383,0.6970126573682419,0.8608728225208085,1.0],
+ "disjointMonotoneBounds":[[0.24291332226576914,0.5914196509498901],[0.5914196509498901,0.7789427399445252],[0.7789427399445252,0.9304364112604042]],
+ "torquePowerCrossover":0,
+ "unitsVelocityLoss":1,
+ "qualification":"Algebraic shape and structural excitation identities only; no statistical identification, switched-observer stability, or accuracy claim."
+}
+The optional midpoint bounds were inspected algebraically but NOT used in fitting.
+The published PLAN instead uses the full ordered simplex through three bounded
+stick fractions per side. No nonlinear-observer stability claim is made.
+WolframContext also ran; its semantic queries returned No Results Found and
+unrelated documentation. None of that unrelated material is cited as evidence.
