@@ -1,0 +1,84 @@
+{
+  "round": "R5",
+  "hypothesis_id": "R5-H45",
+  "baseline_sha": "b2783206000091ab11a1c11ac3ff79082188a4fb",
+  "baseline_tree": "973d50d288e050325ee1c71a90fa8d81f2a099af",
+  "zip_sha256": "4823fbdbbb979d7b561841e2831e68f2f7d9d8ec0d14e970f09a38cd51dff4c4",
+  "source_status": "VERIFIED",
+  "data_status": "PARTIAL",
+  "dataset_status": "ARCHIVE_VERIFIED_NO_MEASUREMENT_IO",
+  "dependency_status": "DEPENDENCY_PENDING",
+  "execution_status": "CHECKPOINTED",
+  "publication_status": "DRAFT_PR_CREATED",
+  "mechanism_status": "UNCALIBRATED_RUNTIME_PROTOTYPE_IMPLEMENTED",
+  "coverage_status": "NOT_MEASURED_ON_REAL_DATA",
+  "scientific_verdict": "NOT_EVALUATED",
+  "accuracy_contract_evaluated": false,
+  "accuracy_contract_passed": false,
+  "candidate_implemented": false,
+  "runtime_prototype_implemented": true,
+  "fitted_candidate_available": false,
+  "plan_sha": "1ffef5ff428b2d17578f46589b1f37f3c9eb1ee8",
+  "tested_prototype_source_sha": "d17aeb632a1dc79a3b7369317d5380879d25e97b",
+  "measured_source_sha": null,
+  "measured_candidate_sha": null,
+  "freeze_sha": null,
+  "dependency_lock_sha": null,
+  "report_sha": null,
+  "report_sha_note": "Final containing commit recorded separately in DELIVERY.json, not a self-referential hash",
+  "validation_opened": false,
+  "test_opened": false,
+  "any_measurement_db_opened": false,
+  "enabled_runtime_verified": false,
+  "ready_to_merge": false,
+  "variants_tested": [],
+  "fit_objective_calls": 0,
+  "real_bag_replays": 0,
+  "run_ids": [
+    "local-20260926-H45-preflight"
+  ],
+  "checks": {
+    "canonical_unit": {
+      "passed": 161,
+      "failed": 0
+    },
+    "research_integrity": {
+      "passed": 43,
+      "failed": 0
+    },
+    "prototype_synthetic": {
+      "passed": 32,
+      "failed": 0
+    },
+    "symbolic_identities": 8,
+    "patch_apply_roundtrip": true,
+    "baseline_files_unchanged": 320
+  },
+  "metrics": {
+    "clean_rmse": null,
+    "fault_rmse": null,
+    "pooled_rmse": null,
+    "distance_rmse": null,
+    "per_bag": null,
+    "recovery": null,
+    "real_false_stops": null
+  },
+  "rejection_reasons": [],
+  "blocking_reasons": [
+    "TEACHER_RAW_MATERIALIZATION_UNAVAILABLE",
+    "ATLAS_RAW_MATERIALIZATION_UNAVAILABLE"
+  ],
+  "missing_evidence": [
+    "R5_H42_teacher_component.zip exact bytes/native verification",
+    "R5_H43_atlas_handoff.zip exact bytes/native verification",
+    "actual producer folds bridge and combined dependency lock",
+    "fitted calibration and full paired real-data comparisons"
+  ],
+  "next_resume_step": "Obtain both authorized original producer ZIP bytes; run unchanged wave2 transport verifier, both native verifiers and actual folds bridge. Publish combined dependency lock. Only then implement verified teacher timestamp adapter and fit the TWO preregistered structures; no protocol reset.",
+  "execution_backend": "LOCAL",
+  "actions_dispatched": false,
+  "ci_status": "NOT_USED_AS_EVIDENCE",
+  "runtime_benchmark_status": "NOT_RUN_DEPENDENCY_PENDING",
+  "pr_number": 60,
+  "pr_url": "https://github.com/jabrailkhalil/hack/pull/60"
+}

@@ -1,0 +1,69 @@
+{
+  "execution_backend": "LOCAL",
+  "checks": [
+    {
+      "name": "canonical-unit",
+      "argv": [
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "cwd": "/mnt/data/h45_work/candidate",
+      "exit_code": 0,
+      "elapsed_s": 2.8847662440000477,
+      "log_sha256": "c5cd8d56c24693eb1d6841ad4d15ea249e1b0622194e1fe46b3ebed8f4c6dd1d"
+    },
+    {
+      "name": "research-integrity",
+      "argv": [
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "research/tests",
+        "-v"
+      ],
+      "cwd": "/mnt/data/h45_work/candidate",
+      "exit_code": 0,
+      "elapsed_s": 3.4808137569999644,
+      "log_sha256": "433669cf90a5fb565604b10baed0bbaefc60ca34ab4116772d70a9dd0d378fb3"
+    },
+    {
+      "name": "h45-tests",
+      "argv": [
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "research/R5/H45/tests",
+        "-v"
+      ],
+      "cwd": "/mnt/data/h45_work/candidate",
+      "exit_code": 0,
+      "elapsed_s": 3.1028912929999706,
+      "log_sha256": "c8cca3193cf8c00b74ef7d31a7811ef348b4f3654d4400ce04c98a1b491bb7e9"
+    },
+    {
+      "name": "compile",
+      "argv": [
+        "python",
+        "-m",
+        "compileall",
+        "-q",
+        "src",
+        "research/R5/H45"
+      ],
+      "cwd": "/mnt/data/h45_work/candidate",
+      "exit_code": 0,
+      "elapsed_s": 1.2358589450000181,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "real_measurement_io": false
+}
