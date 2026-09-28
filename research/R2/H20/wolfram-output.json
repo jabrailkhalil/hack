@@ -1,0 +1,47 @@
+{
+  "tool": "Wolfram.WolframLanguageEvaluator",
+  "readout": "transcription of actually returned expressions, not new real-record measurements",
+  "checks": {
+    "weightBounds": true,
+    "alphaZero": 1,
+    "originRight": 1,
+    "originDerivativeRight": 0,
+    "tailPositiveCorrection": "(c*p)/(r+al*r)",
+    "josephIdentity": true,
+    "commonModeMeasurementRank": 2,
+    "commonModeNullSpace": [
+      [
+        -1,
+        1,
+        1
+      ]
+    ]
+  },
+  "first_quadrature": {
+    "warnings": [
+      "NIntegrate::ncvb near x=-0.2995033031385265188842659; 9 recursive bisections",
+      "General::stop and General::messages"
+    ],
+    "values_mps": [
+      "-8.18720551026983521369555e-12",
+      "-0.0002427513483372902575651527",
+      "-0.0004638309979120135488685005"
+    ]
+  },
+  "corrected_paired_quadrature": {
+    "alpha": [
+      0,
+      0.25,
+      0.5
+    ],
+    "bias_mps": [
+      "0",
+      "-0.0002427513401500848206806785112874705240497620809959957948",
+      "-0.0004638309897248080452323630072086742024449362878519051676"
+    ],
+    "warnings": [],
+    "positiveDerivative": true,
+    "weightScalingInvariant": true,
+    "derivative": "(b^4+(2-a)*b^2*x^2+(1+a)*x^4)/(b^2+(1+a)*x^2)^2"
+  }
+}
