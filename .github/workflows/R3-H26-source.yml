@@ -1,0 +1,30 @@
+name: R3-H26 pinned source preparation
+on:
+  push:
+    branches: [research/R3-H26]
+    paths: [.github/workflows/R3-H26-source.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Export only pinned source, never test results or measurements
+        run: |
+          set -euo pipefail
+          base=e3b0c9c039d2953fbfcda51231263d38ef9f1024
+          mkdir -p "$RUNNER_TEMP/R3-H26-source"
+          git archive --format=zip -o "$RUNNER_TEMP/R3-H26-source/baseline-source.zip" "$base" src tools research tests docs .github requirements-research.txt Dockerfile.environment README.md
+          git ls-tree -r "$base" -- src tools research tests docs .github requirements-research.txt Dockerfile.environment README.md > "$RUNNER_TEMP/R3-H26-source/git-blobs.txt"
+          printf '%s\n' "$base" > "$RUNNER_TEMP/R3-H26-source/baseline-sha.txt"
+          sha256sum "$RUNNER_TEMP/R3-H26-source/baseline-source.zip" > "$RUNNER_TEMP/R3-H26-source/SHA256SUMS"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: R3-H26-pinned-source-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/R3-H26-source/
+          retention-days: 30

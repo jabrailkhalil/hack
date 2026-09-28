@@ -1,0 +1,84 @@
+name: R3-H26 train-only foundation reproduction
+on:
+  push:
+    branches: [research/R3-H26]
+    paths: [.github/workflows/R3-H26-foundation.yml]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  foundation:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - name: Pin source and prepare evidence before any measurement access
+        run: |
+          set -euo pipefail
+          out="$RUNNER_TEMP/R3-H26-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          mkdir "$out"
+          echo "H26_OUTPUT=$out" >> "$GITHUB_ENV"
+          python research/R3/H26/support.py manifest | tee "$out/integrity.log"
+          cp research/R3/H26/manifest.json "$out/source_manifest.json"
+          cp research/R3/H26/PRECHECK.md "$out/PRECHECK.md"
+          printf '%s\n' "$GITHUB_SHA" > "$out/measured_source_sha.txt"
+          git archive --format=zip -o "$out/measured_source.zip" "$GITHUB_SHA" research/R3/H26 .github/workflows/R3-H26-foundation.yml
+      - name: Install unchanged pinned offline dependencies
+        run: |
+          set -euo pipefail
+          python -m pip install -r requirements-research.txt 2>&1 | tee "$H26_OUTPUT/dependencies.log"
+      - name: Compile and run diagnostic and historical source tests
+        run: |
+          set -euo pipefail
+          python -m compileall -q src research/R3/H26
+          python -m unittest discover -s research/R3/H26 -p test_foundation.py -v 2>&1 | tee "$H26_OUTPUT/foundation-tests.log"
+          PYTHONPATH=src/reserve_odometry python -m unittest discover -s tests -v 2>&1 | tee "$H26_OUTPUT/historical-tests.log"
+          python -m unittest discover -s research/tests -v 2>&1 | tee "$H26_OUTPUT/research-integrity-tests.log"
+      - name: Extract only original TRAIN members from checksum-pinned archive
+        run: |
+          set -euo pipefail
+          python research/R3/H26/support.py train --path "$RUNNER_TEMP/H26-data/data" 2>&1 | tee "$H26_OUTPUT/data.log"
+          cp "$RUNNER_TEMP/H26-data/train-preparation.json" "$H26_OUTPUT/train-preparation.json"
+      - name: Repeat unchanged diagnostic; no AR1 fit, development or validation
+        run: |
+          set -euo pipefail
+          python research/R3/H26/foundation.py --data-root "$RUNNER_TEMP/H26-data/data" --output "$H26_OUTPUT/foundation" 2>&1 | tee "$H26_OUTPUT/foundation.log"
+      - name: Inventory every evidence file
+        if: always()
+        run: |
+          if test -d "$H26_OUTPUT"; then
+            python research/R3/H26/support.py inventory --path "$H26_OUTPUT"
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: R3-H26-foundation-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.H26_OUTPUT }}/
+          retention-days: 30
+          compression-level: 0
+      - name: Preserve compact evidence in only this research checkpoint
+        if: always()
+        run: |
+          set -euo pipefail
+          if ! test -d "$H26_OUTPUT"; then exit 0; fi
+          dest="reports/research_R3/H26/R3-H26-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          mkdir -p "$dest/foundation"
+          find "$H26_OUTPUT" -maxdepth 1 -type f ! -name '*.zip' -exec cp {} "$dest/" \;
+          if test -d "$H26_OUTPUT/foundation"; then
+            find "$H26_OUTPUT/foundation" -maxdepth 1 -type f -exec cp {} "$dest/foundation/" \;
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          branch="checkpoint/R3-H26-foundation-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          git switch -c "$branch"
+          git add "$dest"
+          git commit -m "research(R3-H26): preserve train-only foundation evidence $GITHUB_RUN_ID/$GITHUB_RUN_ATTEMPT"
+          git push origin "HEAD:refs/heads/$branch"
