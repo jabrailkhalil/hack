@@ -1,0 +1,86 @@
+name: R4-H38 frozen diagnostic reproduction
+on:
+  push:
+    branches: [research/R4-H38]
+    paths: [.github/workflows/r4-h38-reproduce.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  reproduce:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - uses: actions/download-artifact@v4
+        with:
+          name: R4-H38-data-36230600455-1
+          run-id: 36230600455
+          github-token: ${{ github.token }}
+          path: dataset
+      - name: Verify every original source and staged database before decoding
+        run: |
+          python - <<'PY'
+          import hashlib,json,os,subprocess
+          from pathlib import Path
+          base='e3b0c9c039d2953fbfcda51231263d38ef9f1024'
+          assert subprocess.check_output(['git','rev-parse',base+'^{tree}'],text=True).strip()=='eae49a504bc59b5c9b408445150bef32e111956f'
+          files=subprocess.check_output(['git','ls-tree','-r','--name-only',base],text=True).splitlines()
+          assert len(files)==301
+          for path in files:assert Path(path).read_bytes()==subprocess.check_output(['git','show',base+':'+path]),path
+          stage=json.loads(Path('dataset/DATA_STAGE.json').read_text());assert len(stage['extracted'])==81
+          for row in stage['extracted']:
+              assert row['role'] in ('train','development')
+              p=Path('dataset/data')/row['bag']/(row['bag']+'_0.db3')
+              assert hashlib.sha256(p.read_bytes()).hexdigest()==row['sha256']
+          out=Path(os.environ['RUNNER_TEMP'])/'h38-evidence';out.mkdir()
+          receipt=dict(source_sha=os.environ['GITHUB_SHA'],baseline_sha=base,original_files_unchanged=301,plan_sha='0ef87ffc830dab9401128b927c183bda9a53b397',run_id=os.environ['GITHUB_RUN_ID'],run_attempt=os.environ['GITHUB_RUN_ATTEMPT'],candidate_implemented=False,candidate_sha=None,fit_performed=False,validation_opened=False,test_opened=False,scope='exact diagnostic reproduction after local foundation INCONCLUSIVE, not another candidate search')
+          (out/'PROVENANCE.json').write_text(json.dumps(receipt,indent=2)+'\n')
+          PY
+      - name: Prepare exact offline dependencies
+        run: python -m pip install -r requirements-research.txt
+      - name: Original and diagnostic tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="$RUNNER_TEMP/h38-evidence"
+          PYTHONPATH=src/reserve_odometry python -m unittest discover -s tests -v 2>&1 | tee "$out/baseline-tests.log"
+          python -m unittest discover -s research/tests -v 2>&1 | tee "$out/integrity-tests.log"
+          PYTHONPATH=src/reserve_odometry python -m unittest discover -s research/R4/H38 -p test_foundation.py -v 2>&1 | tee "$out/diagnostic-tests.log"
+      - name: Reproduce unchanged train diagnostic and verify saved local count fingerprint
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="$RUNNER_TEMP/h38-evidence"
+          python research/R4/H38/foundation.py --data-root dataset/data --output "$out/foundation" | tee "$out/foundation.log"
+          python research/R4/H38/audit_saved.py --source "$out/foundation" --output "$out/train-audit" | tee "$out/train-audit.log"
+          OUT="$out" python - <<'PY'
+          import json,os
+          from pathlib import Path
+          d=json.loads((Path(os.environ['OUT'])/'foundation/foundation.json').read_text())
+          assert d['accepted_updates']==483819 and d['foundation_subhard_cases']==59
+          assert d['weight_changes_on_foundation']=={'4':54,'8':56}
+          assert len(d['foundation_groups'])==10 and d['sufficient'] is False
+          assert not d['validation_opened'] and not d['test_opened']
+          PY
+      - name: Canonical baseline and passive probe parity on all development bags
+        shell: bash
+        run: |
+          set -euo pipefail
+          python research/R4/H38/audit_baseline.py --data-root dataset/data --output "$RUNNER_TEMP/h38-evidence/baseline-audit" | tee "$RUNNER_TEMP/h38-evidence/baseline-audit.log"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: R4-H38-evidence-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/h38-evidence/
+          compression-level: 6
+          retention-days: 30
