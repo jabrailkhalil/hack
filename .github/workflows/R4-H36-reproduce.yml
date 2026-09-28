@@ -1,0 +1,80 @@
+name: R4-H36 frozen development reproduction
+on:
+  push:
+    branches: [research/R4-H36]
+    paths: ['.github/workflows/R4-H36-reproduce.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  reproduce:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - name: Prepare new evidence directory and pinned environment
+        run: |
+          set -euo pipefail
+          out="reports/research_R4/H36/R4-H36-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          echo "H36_OUTPUT=$out" >> "$GITHUB_ENV"
+          mkdir -p "$out"
+          python -m pip install -r requirements-research.txt 2>&1 | tee "$out/dependencies.log"
+          python research/R4/H36/repeat.py receipt 2>&1 | tee "$out/source-check.log"
+          cp research/R4/H36/SOURCE_RECEIPT.json "$out/CHECKOUT_RECEIPT.json"
+          git archive --format zip --output "$out/measured_source.zip" "$GITHUB_SHA"
+          printf '%s\n' "$GITHUB_SHA" > "$out/measured_source_sha.txt"
+      - name: Historical and actually enabled tests, no dataset needed
+        run: |
+          set -euo pipefail
+          PYTHONPATH=src/reserve_odometry python -m unittest discover -s tests -v 2>&1 | tee "$H36_OUTPUT/historical-tests.log"
+          python -m unittest discover -s research/tests -v 2>&1 | tee "$H36_OUTPUT/research-integrity.log"
+          python -m unittest discover -s research/R4/H36 -p 'test_*.py' -v 2>&1 | tee "$H36_OUTPUT/h36-tests.log"
+          python -m compileall -q research/R4/H36
+      - name: Extract only original development measurements and exact frozen coefficients
+        run: |
+          set -euo pipefail
+          python research/R4/H36/repeat.py prepare --path "$RUNNER_TEMP/H36-data" 2>&1 | tee "$H36_OUTPUT/data-preparation.log"
+          cp "$RUNNER_TEMP/H36-data/prepared.json" "$H36_OUTPUT/data-preparation.json"
+          python research/R4/H36/repeat.py fixture --path "$H36_OUTPUT/frozen"
+      - name: Same fixed candidate and nonselectable control, no training or validation
+        env:
+          H36_SOURCE_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          python research/R4/H36/develop.py --data-root "$RUNNER_TEMP/H36-data/data" --train "$H36_OUTPUT/frozen/models.json" --output "$H36_OUTPUT/development" --workers 2 2>&1 | tee "$H36_OUTPUT/replay.log"
+          python research/R4/H36/repeat.py verify --path "$H36_OUTPUT/development/results.json"
+      - name: Inventory original evidence without claiming unrun stages
+        if: always()
+        run: |
+          python - <<'PY'
+          import hashlib,json,os,pathlib
+          out=pathlib.Path(os.environ['H36_OUTPUT'])
+          files={str(p.relative_to(out)):hashlib.sha256(p.read_bytes()).hexdigest() for p in out.rglob('*') if p.is_file()}
+          out.joinpath('FILES_SHA256.json').write_text(json.dumps(files,indent=2)+'\n')
+          out.joinpath('execution.json').write_text(json.dumps(dict(source_sha=os.environ['GITHUB_SHA'],run_id=os.environ['GITHUB_RUN_ID'],attempt=os.environ['GITHUB_RUN_ATTEMPT'],purpose='fixed development reproduction of local result',fit_calls=0,validation_opened=False,test_opened=False,enabled_ros_verified=False),indent=2)+'\n')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: R4-H36-evidence-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.H36_OUTPUT }}/
+          retention-days: 30
+      - name: Preserve compact checkpoint on a new own branch only
+        if: always()
+        run: |
+          set -eu
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          branch="checkpoint/R4-H36-reproduction-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          git switch -c "$branch"
+          find "$H36_OUTPUT" -type f ! -name '*.npz' ! -name '*.zip' ! -name '*.csv' -print0 | xargs -0 git add
+          git diff --cached --quiet || git commit -m "research(R4-H36): preserve fixed replay evidence $GITHUB_RUN_ID/$GITHUB_RUN_ATTEMPT"
+          git push origin "HEAD:refs/heads/$branch"
