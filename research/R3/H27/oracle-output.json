@@ -1,0 +1,14 @@
+{
+  "assumptions": "Equal initial v/s; constant additive acceleration error; no clipping, resistance difference, feedback, switching or measurements.",
+  "delta_v": "T*delta_d",
+  "delta_s": "T**2*delta_d/2",
+  "discrete_trapezoid": "delta_d*h**2*n**2/2",
+  "limits_zero": true,
+  "acceleration_clip_counterexample": {
+    "native": 2.9,
+    "delta_d": 0.3,
+    "actual_delta_a": 0.10000000000000009
+  },
+  "implications": "Neither physical disturbance identification nor nonlinear observer stability follows.",
+  "warnings": []
+}
