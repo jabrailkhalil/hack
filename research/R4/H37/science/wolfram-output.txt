@@ -1,0 +1,9 @@
+Actual WolframLanguageEvaluator output obtained before train/candidate experiments:
+During evaluation of In[1]:= [INFO] Interpreted "1 newton" as: Quantity[1, "Newtons"]
+During evaluation of In[1]:= [INFO] Interpreted "1 kilogram" as: Quantity[1, AmbiguityList[{"Kilograms", "KilogramsForce"}, "kilogram"]]
+During evaluation of In[1]:= [INFO] Interpreted "1 watt" as: Quantity[1, "Watts"]
+During evaluation of In[1]:= [INFO] Interpreted "1 meter per second" as: Quantity[1, "Meters"/"Seconds"]
+Out[1]= <|"difference_identity" -> 0, "q0" -> 0, "q1" -> 0, "force_limited" -> True, "nonnegative" -> True, "upper_bound" -> True, "saturation_continuity" -> 0, "piecewise_difference" -> Piecewise[{{0, f <= p/w}, {(q*(f - p/w))/m, f > p/w && f*q <= p/w}}, (p*(1 - q))/(m*w)], "branch_slopes" -> {f/m, 0}, "peak_over_q_power_limited" -> (p*(-p + f*w))/(f*m*w^2), "force_div_mass_units" -> Quantity[1, "Newtons"/"Kilograms"], "power_div_speed_units" -> Quantity[1, "Newtons"]|>
+
+The preceding WolframContext semantic queries returned No Results Found for these formulas, plus unrelated documentation snippets. Those snippets were not used as scientific evidence. The actual symbolic checks above, not the context search, support the elementary identities.
+The parser's kilogram ambiguity is retained. N/kg = m/s^2 by SI definitions; the tool printed N/kg, not a separately verified manufacturer unit convention.
