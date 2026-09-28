@@ -1,0 +1,22 @@
+name: H18 pinned source export
+on:
+  push:
+    branches: [research/round2-H18-covariance-20260925]
+    paths: [.github/workflows/h18-source.yml]
+permissions:
+  contents: read
+jobs:
+  export:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Archive pinned source only; no measurements or secrets
+        run: |
+          mkdir -p "$RUNNER_TEMP/h18-source"
+          git archive 65bba39ed05c781f3f69a65c02f69931152cbfd9 src tools tests research requirements-research.txt Dockerfile.environment reports/research_v3 reports/research_v5 reports/research_v6 reports/guarded_time_alignment reports/champion_v7 submission/dist > "$RUNNER_TEMP/h18-source/source.tar"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: H18-pinned-source
+          path: ${{ runner.temp }}/h18-source/source.tar

@@ -1,0 +1,94 @@
+name: R2 H18 covariance train-development gated validation
+on:
+  push:
+    branches: [research/round2-H18-covariance-20260925]
+    paths: [.github/workflows/research-r2-h18-covariance.yml, research/R2/H18/RUN]
+permissions:
+  contents: write
+jobs:
+  experiment:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - name: Create unique evidence directory and preserve exact source
+        run: |
+          set -eu
+          OUT="reports/research_R2/H18/covariance-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          echo "OUT=$OUT" >> "$GITHUB_ENV"
+          echo "CHECKPOINT=checkpoint/R2-H18-covariance-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT" >> "$GITHUB_ENV"
+          mkdir -p "$OUT/checks" "$OUT/source"
+          cp research/R2/H18/{PLAN.md,SOURCES.md,wolfram.wl,wolfram-output.txt} "$OUT/"
+          git rev-parse HEAD > "$OUT/source/candidate.sha"
+          git diff --binary 65bba39ed05c781f3f69a65c02f69931152cbfd9 HEAD > "$OUT/source/candidate.patch"
+          git archive HEAD research/R2/H18 src/reserve_odometry/reserve_odometry/outage_covariance.py .github/workflows/research-r2-h18-covariance.yml > "$OUT/source/source.tar"
+          sha256sum research/R2/H18/* src/reserve_odometry/reserve_odometry/outage_covariance.py .github/workflows/research-r2-h18-covariance.yml > "$OUT/source/files.sha256"
+      - name: Install exact offline research dependencies
+        run: python -m pip install -r requirements-research.txt 2>&1 | tee "$OUT/checks/dependencies.log"
+      - name: Required H18 mechanism and driver checks
+        run: |
+          set -euo pipefail
+          PYTHONPATH=src/reserve_odometry python -m unittest discover -s research/R2/H18 -p 'test_*.py' -v 2>&1 | tee "$OUT/checks/h18-tests.log"
+          python -m compileall -q src tools tests research/R2/H18 2>&1 | tee "$OUT/checks/compile.log"
+      - name: Record unchanged historical suites without weakening guards
+        run: |
+          set +e
+          PYTHONPATH=src/reserve_odometry python -m unittest discover -s tests -v > "$OUT/checks/original-unit.log" 2>&1
+          echo "$?" > "$OUT/checks/original-unit.exit"
+          python -m unittest discover -s research/tests -v > "$OUT/checks/original-research.log" 2>&1
+          echo "$?" > "$OUT/checks/original-research.exit"
+          exit 0
+      - name: Download pinned organizer archive, never decode final test
+        run: python tools/get_dataset.py 2>&1 | tee "$OUT/checks/dataset.log"
+      - name: Train only causal trusted residual variance, no GNSS
+        run: python research/R2/H18/run.py --stage train --output "$OUT/train" 2>&1 | tee "$OUT/checks/train.log"
+      - name: All genuine development bags, original faults, safety diagnostics and AB-BA cost
+        run: python research/R2/H18/run.py --stage development --training "$OUT/train" --output "$OUT/development" 2>&1 | tee "$OUT/checks/development.log"
+      - name: Commit and push freeze before validation or explicitly stop
+        id: admission
+        run: |
+          set -euo pipefail
+          ADMIT=$(python -c 'import json,os; print(str(json.load(open(os.environ["OUT"]+"/development/decision.json"))["admit_validation"]).lower())')
+          echo "admit=$ADMIT" >> "$GITHUB_OUTPUT"
+          if test "$ADMIT" != true; then
+            printf '%s\n' 'Validation NOT OPENED: preregistered development safety/activation stop rule.' > "$OUT/VALIDATION_NOT_RUN.txt"
+            exit 0
+          fi
+          python research/R2/H18/run.py --stage freeze --training "$OUT/train" --development "$OUT/development" --output "$OUT/freeze" 2>&1 | tee "$OUT/checks/freeze.log"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git switch -c "$CHECKPOINT"
+          git add "$OUT"
+          git commit -m "research(H18): freeze selected covariance BEFORE validation $GITHUB_RUN_ID [skip ci]"
+          git push origin "HEAD:refs/heads/$CHECKPOINT"
+          echo "FREEZE_COMMIT=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
+          git rev-parse HEAD > "$OUT/freeze-commit.txt"
+      - name: Single frozen paired validation, only if development safety permits
+        if: steps.admission.outputs.admit == 'true'
+        run: |
+          python research/R2/H18/run.py --stage validation --freeze "$OUT/freeze/FREEZE.json" --freeze-commit "$FREEZE_COMMIT" --output "$OUT/validation" 2>&1 | tee "$OUT/checks/validation.log"
+      - name: Preserve complete or partial evidence in unique checkpoint branch
+        if: always()
+        run: |
+          set -eu
+          if ! test -d "$OUT"; then exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          if test "$(git branch --show-current)" != "$CHECKPOINT"; then git switch -c "$CHECKPOINT"; fi
+          git add "$OUT"
+          git diff --cached --quiet || git commit -m "research(H18): preserve R2 execution $GITHUB_RUN_ID/$GITHUB_RUN_ATTEMPT [skip ci]"
+          git push origin "HEAD:refs/heads/$CHECKPOINT"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: H18-covariance-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.OUT }}/
+          retention-days: 30
