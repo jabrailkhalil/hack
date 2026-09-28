@@ -1,0 +1,58 @@
+--- a/src/reserve_odometry/reserve_odometry/core.py
++++ b/src/reserve_odometry/reserve_odometry/core.py
+@@ -247,6 +247,17 @@
+             return None
+         return z
+ 
++    def _propagate_h34(self, dt, u):
++        """Default retains the exact v8 operation order; research hook only."""
++        c = self.c
++        target = self.drive_target(u, self.v)
++        alpha = 1.0 - math.exp(-dt / c.actuator_tau_s)
++        self.drive_a += alpha * (target - self.drive_a)
++        a_model = clip(self.drive_a - self.resistance(self.v) + self.disturbance,
++                       -c.max_accel_mps2, c.max_accel_mps2)
++        predicted = clip(self.v + dt * a_model, -c.max_speed_mps, c.max_speed_mps)
++        return a_model, predicted
++
+     def step(self, t, command=None, front=None, rear=None):
+         """Estimate at time t. A Sample can be assimilated at most once.
+ 
+@@ -267,12 +278,7 @@
+             command_stale = True
+         u = 0.0 if command_stale else clip(command.value, -1, 1)
+         previous_v = self.v
+-        target = self.drive_target(u, self.v)
+-        alpha = 1.0 - math.exp(-dt / c.actuator_tau_s)
+-        self.drive_a += alpha * (target - self.drive_a)
+-        a_model = clip(self.drive_a - self.resistance(self.v) + self.disturbance,
+-                       -c.max_accel_mps2, c.max_accel_mps2)
+-        predicted = clip(self.v + dt * a_model, -c.max_speed_mps, c.max_speed_mps)
++        a_model, predicted = self._propagate_h34(dt, u)
+         # Braking/coasting must not generate a sign reversal numerically.
+         if u <= c.command_deadband and self.v * predicted < 0:
+             predicted = 0.0
+--- a/src/reserve_odometry/reserve_odometry/guarded_readout.py
++++ b/src/reserve_odometry/reserve_odometry/guarded_readout.py
+@@ -44,6 +44,11 @@
+         self._correction_sigma_s = 0.0
+         self._blocked_until = -math.inf
+ 
++    def _readout_acceleration_h34(self, old_v, old_disturbance):
++        """Original v8 acceleration; overridden only by opt-in H34."""
++        return clip(self.drive_a - self.resistance(old_v) + old_disturbance,
++                    -self.c.max_accel_mps2, self.c.max_accel_mps2)
++
+     def step(self, t: float, command: Optional[Sample] = None,
+              front: Optional[Sample] = None, rear: Optional[Sample] = None) -> Estimate:
+         old_t, old_v = self.t, self.v
+@@ -74,8 +79,7 @@
+             if accepted:
+                 age = sum(max(0.0, t - sample.t) for sample in accepted) / len(accepted)
+                 # These are the SAME pre-correction dynamics used by super().step.
+-                acceleration = clip(self.drive_a - self.resistance(old_v) + old_disturbance,
+-                                    -self.c.max_accel_mps2, self.c.max_accel_mps2)
++                acceleration = self._readout_acceleration_h34(old_v, old_disturbance)
+                 p_prior = old_pv + self.c.process_noise_v * dt
+                 # Scalar Joseph update: P_post=(1-K)*P_prior. The clamp handles
+                 # the baseline variance floor; it never increases trust above 1.

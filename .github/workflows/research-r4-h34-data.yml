@@ -1,0 +1,59 @@
+name: R4 H34 allowed development data
+on:
+  push:
+    branches: ['research/R4-H34']
+    paths: ['.github/workflows/research-r4-h34-data.yml']
+permissions:
+  contents: read
+jobs:
+  data:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download exact archive; extract only permitted development payloads
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir "$RUNNER_TEMP/H34-data"
+          python - <<'PY'
+          import hashlib, importlib.util, json, os, pathlib, shutil, zipfile
+          root=pathlib.Path.cwd(); out=pathlib.Path(os.environ['RUNNER_TEMP'])/'H34-data'
+          plan=json.loads((root/'research/plan_v3.json').read_text())
+          allowed=set(plan['splits']['development']); assert len(allowed)==17
+          spec=importlib.util.spec_from_file_location('gd',root/'tools/get_dataset.py')
+          gd=importlib.util.module_from_spec(spec);spec.loader.exec_module(gd)
+          def restricted(archive,target,maximum):
+              target=target.resolve();target.mkdir(parents=True,exist_ok=True)
+              with zipfile.ZipFile(archive) as z:
+                  assert sum(i.file_size for i in z.infolist())<=maximum
+                  for i in z.infolist():
+                      p=pathlib.PurePosixPath(i.filename)
+                      if p.is_absolute() or '..' in p.parts: raise ValueError('unsafe ZIP')
+                      keep=(i.filename=='data.zip') if target.name=='organizer' else (bool(p.parts) and p.parts[0] in allowed)
+                      if not keep or i.is_dir():continue
+                      q=target.joinpath(*p.parts);q.parent.mkdir(parents=True,exist_ok=True)
+                      with z.open(i) as a,q.open('wb') as b:shutil.copyfileobj(a,b,1024*1024)
+          gd.unpack=restricted;gd.main()
+          manifest=json.loads((root/'research/split_v3.json').read_text());rows=[]
+          for row in manifest['records']:
+              if row['bag'] not in allowed:continue
+              p=root/'dataset/data'/row['bag']/(row['bag']+'_0.db3')
+              digest=hashlib.sha256(p.read_bytes()).hexdigest();assert digest==row['sha256']
+              rows.append(dict(bag=row['bag'],role=row['split'],sha256=digest))
+          assert len(rows)==17
+          with zipfile.ZipFile(out/'development-only.zip','w',zipfile.ZIP_DEFLATED) as z:
+              for p in sorted((root/'dataset/data').rglob('*')):
+                  if p.is_file():z.write(p,p.relative_to(root/'dataset/data'))
+          shutil.copyfile(root/'research/R4_H34/PLAN.md',out/'PLAN.md')
+          (out/'RECEIPT.json').write_text(json.dumps(dict(source_sha=os.environ['GITHUB_SHA'],
+              dataset_sha256=gd.SHA256,bags=rows,sql_measurement_reads=0,test_extracted=False,
+              test_opened=False,validation_extracted=False,
+              zip_sha256=hashlib.sha256((out/'development-only.zip').read_bytes()).hexdigest(),
+              plan_sha256=hashlib.sha256((out/'PLAN.md').read_bytes()).hexdigest()),indent=2)+'\n')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: R4-H34-data-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/H34-data/
+          retention-days: 30
