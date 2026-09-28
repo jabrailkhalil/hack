@@ -1,0 +1,66 @@
+name: R4-H39 quantization prerequisite
+on:
+  push:
+    branches: [research/R4-H39]
+    paths: [research/R4/H39/EXECUTE.json]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  train:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 25
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - name: Tests before data
+        run: |
+          set -euo pipefail
+          sha256sum -c research/R4/H39/MEASURED_CODE.sha256
+          python -m pip install -r requirements-research.txt
+          mkdir -p "$RUNNER_TEMP/h39/logs"
+          PYTHONPATH=src/reserve_odometry python -m unittest discover -s tests -v 2>&1 | tee "$RUNNER_TEMP/h39/logs/baseline.txt"
+          python -m unittest discover -s research/tests -v 2>&1 | tee "$RUNNER_TEMP/h39/logs/integrity.txt"
+          python -m unittest discover -s research/R4/H39 -p 'test_*.py' -v 2>&1 | tee "$RUNNER_TEMP/h39/logs/h39.txt"
+          python -m compileall -q research/R4/H39
+      - name: Exact source identity then train-only extraction
+        run: |
+          set -euo pipefail
+          python -c "import sys;sys.path.insert(0,'research/R4/H39');import foundation as f;f.verify_sources()"
+          cp research/R4/H39/SOURCE_RECEIPT.json "$RUNNER_TEMP/h39/"
+          python research/R4/H39/stage.py --output "$RUNNER_TEMP/h39-input"
+          cp "$RUNNER_TEMP/h39-input/STAGING.json" "$RUNNER_TEMP/h39/"
+      - name: All 64 train bags, fixed lattice prerequisite; no validation
+        run: |
+          set -euo pipefail
+          python research/R4/H39/foundation.py --data-root "$RUNNER_TEMP/h39-input/data" --output "$RUNNER_TEMP/h39/train" 2>&1 | tee "$RUNNER_TEMP/h39/logs/train.txt"
+          git rev-parse HEAD > "$RUNNER_TEMP/h39/DIAGNOSTIC_SOURCE_SHA.txt"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: R4-H39-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/h39/
+          retention-days: 30
+      - name: Save compact evidence only to new checkpoint
+        if: always()
+        run: |
+          set -euo pipefail
+          test -f "$RUNNER_TEMP/h39/train/SUMMARY.json" || exit 0
+          branch="checkpoint/R4-H39-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          git switch -c "$branch"
+          dst="reports/research_R4/H39/$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          mkdir -p "$dst"
+          cp -a "$RUNNER_TEMP/h39/." "$dst/"
+          find "$dst" -name '*.npz' -delete
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add "$dst"
+          git commit -m "research(R4-H39): preserve train prerequisite $GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          git push origin "HEAD:refs/heads/$branch"
