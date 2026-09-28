@@ -1,0 +1,64 @@
+name: R4-H32 baseline-only command-time foundation
+on:
+  push:
+    branches: [research/R4-H32]
+    paths:
+      - research/R4/H32/probe.py
+      - research/R4/H32/FOUNDATION_PLAN.md
+      - .github/workflows/R4-H32-foundation.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  foundation:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - name: Source identity and original tests
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse e3b0c9c039d2953fbfcda51231263d38ef9f1024^{tree})" = eae49a504bc59b5c9b408445150bef32e111956f
+          git diff --exit-code e3b0c9c039d2953fbfcda51231263d38ef9f1024 -- src tools research/plan_v3.json research/split_v3.json
+          mkdir -p "$RUNNER_TEMP/H32/logs"
+          python -m pip install -r requirements-research.txt > "$RUNNER_TEMP/H32/logs/install.txt" 2>&1
+          PYTHONPATH=src/reserve_odometry python -m unittest discover -s tests -v > "$RUNNER_TEMP/H32/logs/unit.txt" 2>&1
+          python -m unittest discover -s research/tests -v > "$RUNNER_TEMP/H32/logs/integrity.txt" 2>&1
+      - name: Train role only, then baseline-only foundation
+        run: |
+          set -euo pipefail
+          python research/R4/H32/stage_data.py --role train | tee "$RUNNER_TEMP/H32/logs/data.txt"
+          python research/R4/H32/probe.py --output "$RUNNER_TEMP/H32/foundation" | tee "$RUNNER_TEMP/H32/logs/foundation.txt"
+      - name: Preserve terminal or partial evidence
+        if: always()
+        run: |
+          set -eu
+          test -d "$RUNNER_TEMP/H32" || exit 0
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          branch="checkpoint/R4-H32-foundation-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          git switch -c "$branch"
+          dst="reports/research_R4/H32/foundation-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          mkdir -p "$dst"
+          for file in SUMMARY.json started.json access.json; do
+            test ! -f "$RUNNER_TEMP/H32/foundation/$file" || cp "$RUNNER_TEMP/H32/foundation/$file" "$dst/"
+          done
+          cp -a "$RUNNER_TEMP/H32/logs" "$dst/"
+          git add -f "$dst"
+          git diff --cached --quiet || git commit -m "research(R4-H32): baseline foundation evidence $GITHUB_RUN_ID"
+          git push origin "HEAD:refs/heads/$branch"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: R4-H32-foundation-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/H32/
+          retention-days: 30
