@@ -1,0 +1,51 @@
+# H16: REJECTED research calibration; post-hoc ROS double serialization only.
+# Active champion: guarded output-only correction over the v5 inner observer.
+# V5 candidate: v3 physics and v4 runtime; adaptation selected on reused validation.
+# Zero deliberate alignment wait: causal buffering + asynchronous pair handling.
+# Units 1/3.6 remain an explicit empirical assumption awaiting organizer confirmation.
+reserve_odometry:
+  ros__parameters:
+    rate_hz: 20.0
+    alignment_delay_s: 0.0
+    clock_mode: input_stamp
+    front_scale: 0.2777777777777778
+    rear_scale: 0.2777777777777778
+    model.mass_kg: 40000.0
+    model.wheel_radius_m: 0.33
+    model.gear_ratio: 6.0
+    model.efficiency: 0.9
+    model.total_motor_torque_nm: 2760.3311538028443
+    model.max_power_w: 318057.7942681064
+    model.max_brake_force_n: 36599.187609442706
+    model.rolling_force_n: 0.008311032781495944
+    model.quadratic_drag_n_s2_m2: 7.860618770288382
+    model.actuator_tau_s: 0.4736044031981908
+    model.command_deadband: 0.04
+    model.command_exponent: 0.4359147447944698
+    model.travel_direction: 1.0
+    model.max_speed_mps: 40.0
+    model.max_accel_mps2: 3.0
+    model.wheel_sigma_mps: 0.1
+    model.process_noise_v: 0.1
+    model.max_age_s: 0.25
+    model.command_timeout_s: 0.5
+    model.pair_skew_s: 0.1
+    model.disagreement_mps: 0.7
+    model.wheel_rate_limit_mps2: 4.0
+    model.rate_noise_margin_mps: 0.25
+    model.innovation_floor_mps: 0.8
+    model.innovation_cap_mps: 3.0
+    model.stop_speed_mps: 0.07
+    model.stop_model_speed_mps: 0.25
+    model.stop_dwell_s: 0.5
+    model.adaptation_tau_s: 0.5
+    model.disturbance_limit_mps2: 0.6
+    model.max_step_s: 0.2
+    model.reacquire_dwell_s: 0.8
+    model.reacquire_max_residual_mps: 8.0
+    model.reacquire_step_mps: 0.15
+    model.reacquire_min_speed_mps: 0.4
+    model.reacquire_accel_margin_mps2: 0.8
+    model.wheel_time_compensation: 0.0
+    readout.gain: 1.0
+    readout.holdoff_s: 0.5

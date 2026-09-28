@@ -1,0 +1,45 @@
+name: H16 prepare pinned research inputs
+on:
+  push:
+    branches: [research/round2-H16]
+    paths: ['.github/workflows/H16-prepare.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  prepare:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Archive the fixed R2 source, without any experiment
+        run: |
+          mkdir -p "$RUNNER_TEMP/H16-inputs"
+          git archive --format=zip 65bba39ed05c781f3f69a65c02f69931152cbfd9 > "$RUNNER_TEMP/H16-inputs/baseline-source.zip"
+          git ls-tree -r 65bba39ed05c781f3f69a65c02f69931152cbfd9 > "$RUNNER_TEMP/H16-inputs/baseline-tree.txt"
+          python3 tools/get_dataset.py
+      - name: Copy only train and development bags, no validation or test
+        env:
+          TARGET: ${{ runner.temp }}/H16-inputs
+        run: |
+          python3 - <<'PY'
+          import hashlib,json,os,pathlib,zipfile
+          root=pathlib.Path('.'); dest=pathlib.Path(os.environ['TARGET'])
+          records=json.loads((root/'research/split_v3.json').read_text())['records']
+          journal=[]
+          with zipfile.ZipFile(dest/'permitted-data.zip','w',zipfile.ZIP_DEFLATED,compresslevel=3) as out:
+              for r in records:
+                  if r['split'] not in ('train','development'): continue
+                  p=root/'dataset/data'/r['bag']/(r['bag']+'_0.db3')
+                  assert hashlib.sha256(p.read_bytes()).hexdigest()==r['sha256'],r['bag']
+                  out.write(p,str(p))
+                  journal.append(dict(bag=r['bag'],role=r['split'],sha256=r['sha256'],action='copy_bytes_only_no_SQL'))
+          (dest/'preparation.json').write_text(json.dumps(dict(baseline='65bba39ed05c781f3f69a65c02f69931152cbfd9',experiment_performed=False,validation_or_test_copied=False,access=journal),indent=2)+'\n')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: H16-pinned-permitted-inputs
+          path: ${{ runner.temp }}/H16-inputs/
+          retention-days: 7

@@ -1,0 +1,2371 @@
+{
+  "clean": {
+    "bag": "30618_74559c73",
+    "group": "664cca45aeb0db23",
+    "role": "development",
+    "outputs": 1907,
+    "expected_ticks": 1985,
+    "output_span_s": 95.3,
+    "first_output_s": 3.9000000000000004,
+    "last_output_s": 99.2,
+    "sensor_duration_s": 99.220146238,
+    "receivers": {
+      "master": {
+        "main": {
+          "n": 0,
+          "coverage": 0.0,
+          "rmse": null,
+          "false_stop_samples": 0,
+          "distance_surrogate": {
+            "definition": "s versus integral matched horizontal GNSS speed; NOT xyz",
+            "full_span_terminal_error_m": null,
+            "full_span_reference_distance_m": null,
+            "full_span_terminal_drift_percent": null,
+            "continuous_spans": 0,
+            "reanchored_span_rmse_m": null,
+            "longest_reference_span": null
+          }
+        },
+        "candidate": {
+          "n": 0,
+          "coverage": 0.0,
+          "rmse": null,
+          "false_stop_samples": 0,
+          "distance_surrogate": {
+            "definition": "s versus integral matched horizontal GNSS speed; NOT xyz",
+            "full_span_terminal_error_m": null,
+            "full_span_reference_distance_m": null,
+            "full_span_terminal_drift_percent": null,
+            "continuous_spans": 0,
+            "reanchored_span_rmse_m": null,
+            "longest_reference_span": null
+          },
+          "common_front_scaled_rmse": null,
+          "common_mean_scaled_rmse": null
+        }
+      },
+      "rover": {
+        "main": {
+          "n": 0,
+          "coverage": 0.0,
+          "rmse": null,
+          "false_stop_samples": 0,
+          "distance_surrogate": {
+            "definition": "s versus integral matched horizontal GNSS speed; NOT xyz",
+            "full_span_terminal_error_m": null,
+            "full_span_reference_distance_m": null,
+            "full_span_terminal_drift_percent": null,
+            "continuous_spans": 0,
+            "reanchored_span_rmse_m": null,
+            "longest_reference_span": null
+          }
+        },
+        "candidate": {
+          "n": 0,
+          "coverage": 0.0,
+          "rmse": null,
+          "false_stop_samples": 0,
+          "distance_surrogate": {
+            "definition": "s versus integral matched horizontal GNSS speed; NOT xyz",
+            "full_span_terminal_error_m": null,
+            "full_span_reference_distance_m": null,
+            "full_span_terminal_drift_percent": null,
+            "continuous_spans": 0,
+            "reanchored_span_rmse_m": null,
+            "longest_reference_span": null
+          },
+          "common_front_scaled_rmse": null,
+          "common_mean_scaled_rmse": null
+        }
+      }
+    },
+    "runtime": {
+      "main": {
+        "resets": 0,
+        "dropped": 0,
+        "catchups": 1,
+        "causal_errors": 0,
+        "mode_counts": {
+          "INITIALIZED": 1,
+          "MODEL_ONLY": 433,
+          "FUSED": 431,
+          "STOPPED": 1042
+        }
+      },
+      "candidate": {
+        "resets": 0,
+        "dropped": 0,
+        "catchups": 1,
+        "causal_errors": 0,
+        "mode_counts": {
+          "INITIALIZED": 1,
+          "MODEL_ONLY": 433,
+          "FUSED": 431,
+          "STOPPED": 1042
+        }
+      }
+    },
+    "diagnostics": {
+      "main": {
+        "ticks": 1985,
+        "timestamp_sha256": "9649ca4bb40038f39896ee2f51d6729da2f18d7e37996e9b9d82e3f48b2992c3",
+        "modes": {
+          "WAITING_FOR_INITIALIZATION": 78,
+          "INITIALIZED": 1,
+          "MODEL_ONLY": 433,
+          "FUSED": 431,
+          "STOPPED": 1042
+        },
+        "phases": {
+          "coast": 1112,
+          "traction": 124,
+          "braking": 749
+        },
+        "changed_velocity_ticks": 0,
+        "disturbance_at_limit_ticks": 542,
+        "fault_trace": []
+      },
+      "candidate": {
+        "ticks": 1985,
+        "timestamp_sha256": "9649ca4bb40038f39896ee2f51d6729da2f18d7e37996e9b9d82e3f48b2992c3",
+        "modes": {
+          "WAITING_FOR_INITIALIZATION": 78,
+          "INITIALIZED": 1,
+          "MODEL_ONLY": 433,
+          "FUSED": 431,
+          "STOPPED": 1042
+        },
+        "phases": {
+          "coast": 1112,
+          "traction": 124,
+          "braking": 749
+        },
+        "changed_velocity_ticks": 848,
+        "disturbance_at_limit_ticks": 484,
+        "fault_trace": []
+      }
+    }
+  },
+  "stress": [
+    {
+      "bag": "30618_74559c73",
+      "group": "664cca45aeb0db23",
+      "role": "development",
+      "fault": {
+        "kind": "bias",
+        "start": 62.800000000000004,
+        "end": 67.80000000000001
+      },
+      "outputs": 700,
+      "expected_ticks": 702,
+      "output_span_s": 34.95,
+      "first_output_s": 42.920133437000004,
+      "last_output_s": 77.870133437,
+      "sensor_duration_s": 35.090226167000004,
+      "receivers": {
+        "master": {
+          "main": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null,
+            "false_stop_samples": 0,
+            "event_rmse": null,
+            "recovery_s": null
+          },
+          "candidate": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null,
+            "false_stop_samples": 0,
+            "event_rmse": null,
+            "recovery_s": null
+          }
+        },
+        "rover": {
+          "main": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null,
+            "false_stop_samples": 0,
+            "event_rmse": null,
+            "recovery_s": null
+          },
+          "candidate": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null,
+            "false_stop_samples": 0,
+            "event_rmse": null,
+            "recovery_s": null
+          }
+        }
+      },
+      "runtime": {
+        "main": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 0,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 170,
+            "FUSED": 120,
+            "STOPPED": 359,
+            "SINGLE_WHEEL": 50
+          }
+        },
+        "candidate": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 0,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 170,
+            "FUSED": 120,
+            "STOPPED": 359,
+            "SINGLE_WHEEL": 50
+          }
+        }
+      },
+      "diagnostics": {
+        "main": {
+          "ticks": 702,
+          "timestamp_sha256": "fa72fc040b521da0b7eb1a7a089729ada8b4070d7d113b6aef9240e576da1dab",
+          "modes": {
+            "WAITING_FOR_INITIALIZATION": 2,
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 170,
+            "FUSED": 120,
+            "STOPPED": 359,
+            "SINGLE_WHEEL": 50
+          },
+          "phases": {
+            "coast": 377,
+            "braking": 325
+          },
+          "changed_velocity_ticks": 0,
+          "disturbance_at_limit_ticks": 316,
+          "fault_trace": [
+            {
+              "t": 60.820133437,
+              "published_v": 0.0,
+              "inner_v": 0.0,
+              "drive_a": 0.0,
+              "disturbance": 0.0,
+              "published_s": 0.0,
+              "mode": "STOPPED",
+              "front": "ACCEPTED",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 61.320133437,
+              "published_v": 0.0,
+              "inner_v": 0.0,
+              "drive_a": 0.0,
+              "disturbance": 0.0,
+              "published_s": 0.0,
+              "mode": "STOPPED",
+              "front": "ACCEPTED",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 61.820133437,
+              "published_v": 0.46025357316441373,
+              "inner_v": 0.46025357316441373,
+              "drive_a": -0.1759944984650448,
+              "disturbance": 0.2733104992808906,
+              "published_s": 0.0816388168129365,
+              "mode": "FUSED",
+              "front": "ACCEPTED",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 62.320133437,
+              "published_v": 1.1381919242550753,
+              "inner_v": 1.1470373098094235,
+              "drive_a": -0.6983807537721721,
+              "disturbance": 0.6,
+              "published_s": 0.4660529442293682,
+              "mode": "FUSED",
+              "front": "ACCEPTED",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 62.820133437,
+              "published_v": 1.7258775306534604,
+              "inner_v": 1.7698433064781642,
+              "drive_a": -0.962251707535896,
+              "disturbance": 0.6,
+              "published_s": 1.1566947072340603,
+              "mode": "FUSED",
+              "front": "ACCEPTED",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 63.320133437,
+              "published_v": 2.158024941547478,
+              "inner_v": 2.158024941547478,
+              "drive_a": -1.0689182680916127,
+              "disturbance": 0.6,
+              "published_s": 2.1229205426473725,
+              "mode": "SINGLE_WHEEL",
+              "front": "MODEL_DISAGREEMENT",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 63.820133437,
+              "published_v": 2.722859928256103,
+              "inner_v": 2.722859928256103,
+              "drive_a": -1.1195370655809964,
+              "disturbance": 0.6,
+              "published_s": 3.3196190964503365,
+              "mode": "SINGLE_WHEEL",
+              "front": "MODEL_DISAGREEMENT",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 64.32013343700001,
+              "published_v": 3.325967848928006,
+              "inner_v": 3.325967848928006,
+              "drive_a": -1.1337093343933247,
+              "disturbance": 0.6,
+              "published_s": 4.8142511724492625,
+              "mode": "SINGLE_WHEEL",
+              "front": "MODEL_DISAGREEMENT",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 64.82013343700001,
+              "published_v": 3.9356134083791052,
+              "inner_v": 3.9356134083791052,
+              "drive_a": -1.1376772911809556,
+              "disturbance": 0.6,
+              "published_s": 6.620727654739644,
+              "mode": "MODEL_ONLY",
+              "front": "DUPLICATE_OR_OLD",
+              "rear": "DUPLICATE_OR_OLD"
+            },
+            {
+              "t": 65.32013343700001,
+              "published_v": 4.540569758445866,
+              "inner_v": 4.540569758445866,
+              "drive_a": -1.1387882411124735,
+              "disturbance": 0.6,
+              "published_s": 8.727947596737048,
+              "mode": "SINGLE_WHEEL",
+              "front": "MODEL_DISAGREEMENT",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 65.82013343700001,
+              "published_v": 4.622348355999487,
+              "inner_v": 4.622348355999487,
+              "drive_a": -1.139099285263505,
+              "disturbance": 0.6,
+              "published_s": 11.023469734062674,
+              "mode": "SINGLE_WHEEL",
+              "front": "MODEL_DISAGREEMENT",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 66.32013343700001,
+              "published_v": 4.6781294814803225,
+              "inner_v": 4.6781294814803225,
+              "drive_a": -1.1391863715138806,
+              "disturbance": 0.6,
+              "published_s": 13.329858664918405,
+              "mode": "SINGLE_WHEEL",
+              "front": "MODEL_DISAGREEMENT",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 66.82013343700001,
+              "published_v": 4.746902251428047,
+              "inner_v": 4.746902251428047,
+              "drive_a": -1.13921075395277,
+              "disturbance": 0.6,
+              "published_s": 15.68938458764982,
+              "mode": "SINGLE_WHEEL",
+              "front": "MODEL_DISAGREEMENT",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 67.32013343700001,
+              "published_v": 4.696170190093929,
+              "inner_v": 4.696170190093929,
+              "drive_a": -1.1392175805565525,
+              "disturbance": 0.6,
+              "published_s": 18.04638597794109,
+              "mode": "SINGLE_WHEEL",
+              "front": "MODEL_DISAGREEMENT",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 67.82013343700001,
+              "published_v": 4.622083856787616,
+              "inner_v": 4.622083856787616,
+              "drive_a": -1.1392194918714709,
+              "disturbance": 0.6,
+              "published_s": 20.371568253833868,
+              "mode": "SINGLE_WHEEL",
+              "front": "MODEL_DISAGREEMENT",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 68.32013343700001,
+              "published_v": 4.589918917042198,
+              "inner_v": 4.589918917042198,
+              "drive_a": -1.1392200270020914,
+              "disturbance": 0.6,
+              "published_s": 22.672859722339368,
+              "mode": "FUSED",
+              "front": "ACCEPTED",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 68.82013343700001,
+              "published_v": 4.486516508140031,
+              "inner_v": 4.5543958589072755,
+              "drive_a": -1.1392201768281502,
+              "disturbance": 0.6,
+              "published_s": 24.922388609476446,
+              "mode": "FUSED",
+              "front": "ACCEPTED",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 69.32013343700001,
+              "published_v": 4.500204295744125,
+              "inner_v": 4.570045665978834,
+              "drive_a": -1.1392202187765026,
+              "disturbance": 0.6,
+              "published_s": 27.169637035216507,
+              "mode": "FUSED",
+              "front": "ACCEPTED",
+              "rear": "ACCEPTED"
+            }
+          ]
+        },
+        "candidate": {
+          "ticks": 702,
+          "timestamp_sha256": "fa72fc040b521da0b7eb1a7a089729ada8b4070d7d113b6aef9240e576da1dab",
+          "modes": {
+            "WAITING_FOR_INITIALIZATION": 2,
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 170,
+            "FUSED": 120,
+            "STOPPED": 359,
+            "SINGLE_WHEEL": 50
+          },
+          "phases": {
+            "coast": 377,
+            "braking": 325
+          },
+          "changed_velocity_ticks": 329,
+          "disturbance_at_limit_ticks": 298,
+          "fault_trace": [
+            {
+              "t": 60.820133437,
+              "published_v": 0.0,
+              "inner_v": 0.0,
+              "drive_a": 0.0,
+              "disturbance": 0.0,
+              "published_s": 0.0,
+              "mode": "STOPPED",
+              "front": "ACCEPTED",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 61.320133437,
+              "published_v": 0.0,
+              "inner_v": 0.0,
+              "drive_a": 0.0,
+              "disturbance": 0.0,
+              "published_s": 0.0,
+              "mode": "STOPPED",
+              "front": "ACCEPTED",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 61.820133437,
+              "published_v": 0.4642165751946884,
+              "inner_v": 0.4642165751946884,
+              "drive_a": -0.13865364088110024,
+              "disturbance": 0.2581477368481707,
+              "published_s": 0.08252476444129252,
+              "mode": "FUSED",
+              "front": "ACCEPTED",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 62.320133437,
+              "published_v": 1.1688532983612505,
+              "inner_v": 1.1591003365491637,
+              "drive_a": -0.5357074996320628,
+              "disturbance": 0.6,
+              "published_s": 0.4786662237676204,
+              "mode": "FUSED",
+              "front": "ACCEPTED",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 62.820133437,
+              "published_v": 1.771265541563695,
+              "inner_v": 1.7857862022795181,
+              "drive_a": -0.7493677228791293,
+              "disturbance": 0.6,
+              "published_s": 1.1922707146892744,
+              "mode": "FUSED",
+              "front": "ACCEPTED",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 63.320133437,
+              "published_v": 2.239367705767887,
+              "inner_v": 2.239367705767887,
+              "drive_a": -0.8443084211173579,
+              "disturbance": 0.6,
+              "published_s": 2.186119386021681,
+              "mode": "SINGLE_WHEEL",
+              "front": "MODEL_DISAGREEMENT",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 63.820133437,
+              "published_v": 2.8371887845361194,
+              "inner_v": 2.8371887845361194,
+              "drive_a": -0.890390530440804,
+              "disturbance": 0.6,
+              "published_s": 3.4362209182733956,
+              "mode": "SINGLE_WHEEL",
+              "front": "MODEL_DISAGREEMENT",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 64.32013343700001,
+              "published_v": 3.4518006733461384,
+              "inner_v": 3.4518006733461384,
+              "drive_a": -0.906424208131292,
+              "disturbance": 0.6,
+              "published_s": 4.993299891930992,
+              "mode": "SINGLE_WHEEL",
+              "front": "MODEL_DISAGREEMENT",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 64.82013343700001,
+              "published_v": 4.062901198652893,
+              "inner_v": 4.062901198652893,
+              "drive_a": -0.91200292020189,
+              "disturbance": 0.6,
+              "published_s": 6.864926166331217,
+              "mode": "MODEL_ONLY",
+              "front": "DUPLICATE_OR_OLD",
+              "rear": "DUPLICATE_OR_OLD"
+            },
+            {
+              "t": 65.32013343700001,
+              "published_v": 4.63582118029679,
+              "inner_v": 4.63582118029679,
+              "drive_a": -0.9139439613632984,
+              "disturbance": 0.6,
+              "published_s": 9.03809555923758,
+              "mode": "SINGLE_WHEEL",
+              "front": "MODEL_DISAGREEMENT",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 65.82013343700001,
+              "published_v": 4.667087016655946,
+              "inner_v": 4.667087016655946,
+              "drive_a": -0.9146193216870796,
+              "disturbance": 0.6,
+              "published_s": 11.36680994258314,
+              "mode": "SINGLE_WHEEL",
+              "front": "MODEL_DISAGREEMENT",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 66.32013343700001,
+              "published_v": 4.720830005119813,
+              "inner_v": 4.720830005119813,
+              "drive_a": -0.9148543046312881,
+              "disturbance": 0.6,
+              "published_s": 13.698326929829527,
+              "mode": "SINGLE_WHEEL",
+              "front": "MODEL_DISAGREEMENT",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 66.82013343700001,
+              "published_v": 4.789401907512722,
+              "inner_v": 4.789401907512722,
+              "drive_a": -0.9149360639264741,
+              "disturbance": 0.6,
+              "published_s": 16.082543078585765,
+              "mode": "SINGLE_WHEEL",
+              "front": "MODEL_DISAGREEMENT",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 67.32013343700001,
+              "published_v": 4.738654246142295,
+              "inner_v": 4.738654246142295,
+              "drive_a": -0.9149645110223764,
+              "disturbance": 0.6,
+              "published_s": 18.464188695606037,
+              "mode": "SINGLE_WHEEL",
+              "front": "MODEL_DISAGREEMENT",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 67.82013343700001,
+              "published_v": 4.664582726882293,
+              "inner_v": 4.664582726882293,
+              "drive_a": -0.9149744088237631,
+              "disturbance": 0.6,
+              "published_s": 20.814017506956688,
+              "mode": "SINGLE_WHEEL",
+              "front": "MODEL_DISAGREEMENT",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 68.32013343700001,
+              "published_v": 4.60661312270371,
+              "inner_v": 4.60661312270371,
+              "drive_a": -0.9149778526365386,
+              "disturbance": 0.6,
+              "published_s": 23.1318724816729,
+              "mode": "FUSED",
+              "front": "ACCEPTED",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 68.82013343700001,
+              "published_v": 4.534611938922267,
+              "inner_v": 4.571229111727256,
+              "drive_a": -0.9149790508669303,
+              "disturbance": 0.6,
+              "published_s": 25.404998663085422,
+              "mode": "FUSED",
+              "front": "ACCEPTED",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 69.32013343700001,
+              "published_v": 4.54344215901556,
+              "inner_v": 4.585026240942154,
+              "drive_a": -0.9149794677757941,
+              "disturbance": 0.6,
+              "published_s": 27.679960117521027,
+              "mode": "FUSED",
+              "front": "ACCEPTED",
+              "rear": "ACCEPTED"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "bag": "30618_74559c73",
+      "group": "664cca45aeb0db23",
+      "role": "development",
+      "fault": {
+        "kind": "dropout",
+        "start": 62.800000000000004,
+        "end": 67.80000000000001
+      },
+      "outputs": 700,
+      "expected_ticks": 702,
+      "output_span_s": 34.95,
+      "first_output_s": 42.920133437000004,
+      "last_output_s": 77.870133437,
+      "sensor_duration_s": 35.090226167000004,
+      "receivers": {
+        "master": {
+          "main": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null,
+            "false_stop_samples": 0,
+            "event_rmse": null,
+            "recovery_s": null
+          },
+          "candidate": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null,
+            "false_stop_samples": 0,
+            "event_rmse": null,
+            "recovery_s": null
+          }
+        },
+        "rover": {
+          "main": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null,
+            "false_stop_samples": 0,
+            "event_rmse": null,
+            "recovery_s": null
+          },
+          "candidate": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null,
+            "false_stop_samples": 0,
+            "event_rmse": null,
+            "recovery_s": null
+          }
+        }
+      },
+      "runtime": {
+        "main": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 0,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 227,
+            "FUSED": 96,
+            "STOPPED": 359,
+            "REACQUIRING": 16,
+            "SINGLE_WHEEL": 1
+          }
+        },
+        "candidate": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 0,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 227,
+            "FUSED": 100,
+            "STOPPED": 359,
+            "REACQUIRING": 12,
+            "SINGLE_WHEEL": 1
+          }
+        }
+      },
+      "diagnostics": {
+        "main": {
+          "ticks": 702,
+          "timestamp_sha256": "fa72fc040b521da0b7eb1a7a089729ada8b4070d7d113b6aef9240e576da1dab",
+          "modes": {
+            "WAITING_FOR_INITIALIZATION": 2,
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 227,
+            "FUSED": 96,
+            "STOPPED": 359,
+            "REACQUIRING": 16,
+            "SINGLE_WHEEL": 1
+          },
+          "phases": {
+            "coast": 377,
+            "braking": 325
+          },
+          "changed_velocity_ticks": 0,
+          "disturbance_at_limit_ticks": 318,
+          "fault_trace": [
+            {
+              "t": 60.820133437,
+              "published_v": 0.0,
+              "inner_v": 0.0,
+              "drive_a": 0.0,
+              "disturbance": 0.0,
+              "published_s": 0.0,
+              "mode": "STOPPED",
+              "front": "ACCEPTED",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 61.320133437,
+              "published_v": 0.0,
+              "inner_v": 0.0,
+              "drive_a": 0.0,
+              "disturbance": 0.0,
+              "published_s": 0.0,
+              "mode": "STOPPED",
+              "front": "ACCEPTED",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 61.820133437,
+              "published_v": 0.46025357316441373,
+              "inner_v": 0.46025357316441373,
+              "drive_a": -0.1759944984650448,
+              "disturbance": 0.2733104992808906,
+              "published_s": 0.0816388168129365,
+              "mode": "FUSED",
+              "front": "ACCEPTED",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 62.320133437,
+              "published_v": 1.1381919242550753,
+              "inner_v": 1.1470373098094235,
+              "drive_a": -0.6983807537721721,
+              "disturbance": 0.6,
+              "published_s": 0.4660529442293682,
+              "mode": "FUSED",
+              "front": "ACCEPTED",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 62.820133437,
+              "published_v": 1.7258775306534604,
+              "inner_v": 1.7698433064781642,
+              "drive_a": -0.962251707535896,
+              "disturbance": 0.6,
+              "published_s": 1.1566947072340603,
+              "mode": "FUSED",
+              "front": "ACCEPTED",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 63.320133437,
+              "published_v": 1.6999242908846806,
+              "inner_v": 1.6999242908846806,
+              "drive_a": -1.0689182463104747,
+              "disturbance": 0.6,
+              "published_s": 2.044994608022152,
+              "mode": "MODEL_ONLY",
+              "front": "MISSING_OR_STALE",
+              "rear": "MISSING_OR_STALE"
+            },
+            {
+              "t": 63.820133437,
+              "published_v": 1.4228351336213554,
+              "inner_v": 1.4228351336213554,
+              "drive_a": -1.119536663006044,
+              "disturbance": 0.6,
+              "published_s": 2.82663770794452,
+              "mode": "MODEL_ONLY",
+              "front": "MISSING_OR_STALE",
+              "rear": "MISSING_OR_STALE"
+            },
+            {
+              "t": 64.32013343700001,
+              "published_v": 1.13232443959609,
+              "inner_v": 1.13232443959609,
+              "drive_a": -1.133702156249705,
+              "disturbance": 0.6,
+              "published_s": 3.465694332860359,
+              "mode": "MODEL_ONLY",
+              "front": "MISSING_OR_STALE",
+              "rear": "MISSING_OR_STALE"
+            },
+            {
+              "t": 64.82013343700001,
+              "published_v": 0.8380824665995876,
+              "inner_v": 0.8380824665995876,
+              "drive_a": -1.1375422316777315,
+              "disturbance": 0.6,
+              "published_s": 3.9583677551744567,
+              "mode": "MODEL_ONLY",
+              "front": "MISSING_OR_STALE",
+              "rear": "MISSING_OR_STALE"
+            },
+            {
+              "t": 65.32013343700001,
+              "published_v": 0.5433003434286605,
+              "inner_v": 0.5433003434286605,
+              "drive_a": -1.1362174189714478,
+              "disturbance": 0.6,
+              "published_s": 4.303676667514528,
+              "mode": "MODEL_ONLY",
+              "front": "MISSING_OR_STALE",
+              "rear": "MISSING_OR_STALE"
+            },
+            {
+              "t": 65.82013343700001,
+              "published_v": 0.2575020791643135,
+              "inner_v": 0.2575020791643135,
+              "drive_a": -1.0937834979580248,
+              "disturbance": 0.6,
+              "published_s": 4.5028644574065115,
+              "mode": "MODEL_ONLY",
+              "front": "MISSING_OR_STALE",
+              "rear": "MISSING_OR_STALE"
+            },
+            {
+              "t": 66.32013343700001,
+              "published_v": 0.06703788711017183,
+              "inner_v": 0.06703788711017183,
+              "drive_a": -0.7684874108863644,
+              "disturbance": 0.6,
+              "published_s": 4.576169386124203,
+              "mode": "MODEL_ONLY",
+              "front": "MISSING_OR_STALE",
+              "rear": "MISSING_OR_STALE"
+            },
+            {
+              "t": 66.82013343700001,
+              "published_v": 0.07893543155789945,
+              "inner_v": 0.07893543155789945,
+              "drive_a": -0.4600003609984761,
+              "disturbance": 0.6,
+              "published_s": 4.606670521289808,
+              "mode": "MODEL_ONLY",
+              "front": "MISSING_OR_STALE",
+              "rear": "MISSING_OR_STALE"
+            },
+            {
+              "t": 67.32013343700001,
+              "published_v": 0.12378789577874019,
+              "inner_v": 0.12378789577874019,
+              "drive_a": -0.5320757192770789,
+              "disturbance": 0.6,
+              "published_s": 4.659395701290826,
+              "mode": "MODEL_ONLY",
+              "front": "MISSING_OR_STALE",
+              "rear": "MISSING_OR_STALE"
+            },
+            {
+              "t": 67.82013343700001,
+              "published_v": 0.11978409513376724,
+              "inner_v": 0.11978409513376724,
+              "drive_a": -0.6016630055334986,
+              "disturbance": 0.6,
+              "published_s": 4.721615005122362,
+              "mode": "MODEL_ONLY",
+              "front": "MISSING_OR_STALE",
+              "rear": "MISSING_OR_STALE"
+            },
+            {
+              "t": 68.32013343700001,
+              "published_v": 0.1079999650696732,
+              "inner_v": 0.1079999650696732,
+              "drive_a": -0.5859432504697913,
+              "disturbance": 0.6,
+              "published_s": 4.7781043894368604,
+              "mode": "MODEL_ONLY",
+              "front": "MODEL_DISAGREEMENT",
+              "rear": "MODEL_DISAGREEMENT"
+            },
+            {
+              "t": 68.82013343700001,
+              "published_v": 0.38739245704933123,
+              "inner_v": 0.38739245704933123,
+              "drive_a": -0.6601235595237842,
+              "disturbance": 0.6,
+              "published_s": 4.853657911444486,
+              "mode": "REACQUIRING",
+              "front": "REACQUIRE_ACCEPTED",
+              "rear": "REACQUIRE_ACCEPTED"
+            },
+            {
+              "t": 69.32013343700001,
+              "published_v": 0.9613726206650414,
+              "inner_v": 0.9613726206650414,
+              "drive_a": -0.9987745254541216,
+              "disturbance": 0.6,
+              "published_s": 5.17839741291329,
+              "mode": "REACQUIRING",
+              "front": "REACQUIRE_ACCEPTED",
+              "rear": "REACQUIRE_ACCEPTED"
+            }
+          ]
+        },
+        "candidate": {
+          "ticks": 702,
+          "timestamp_sha256": "fa72fc040b521da0b7eb1a7a089729ada8b4070d7d113b6aef9240e576da1dab",
+          "modes": {
+            "WAITING_FOR_INITIALIZATION": 2,
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 227,
+            "FUSED": 100,
+            "STOPPED": 359,
+            "REACQUIRING": 12,
+            "SINGLE_WHEEL": 1
+          },
+          "phases": {
+            "coast": 377,
+            "braking": 325
+          },
+          "changed_velocity_ticks": 329,
+          "disturbance_at_limit_ticks": 304,
+          "fault_trace": [
+            {
+              "t": 60.820133437,
+              "published_v": 0.0,
+              "inner_v": 0.0,
+              "drive_a": 0.0,
+              "disturbance": 0.0,
+              "published_s": 0.0,
+              "mode": "STOPPED",
+              "front": "ACCEPTED",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 61.320133437,
+              "published_v": 0.0,
+              "inner_v": 0.0,
+              "drive_a": 0.0,
+              "disturbance": 0.0,
+              "published_s": 0.0,
+              "mode": "STOPPED",
+              "front": "ACCEPTED",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 61.820133437,
+              "published_v": 0.4642165751946884,
+              "inner_v": 0.4642165751946884,
+              "drive_a": -0.13865364088110024,
+              "disturbance": 0.2581477368481707,
+              "published_s": 0.08252476444129252,
+              "mode": "FUSED",
+              "front": "ACCEPTED",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 62.320133437,
+              "published_v": 1.1688532983612505,
+              "inner_v": 1.1591003365491637,
+              "drive_a": -0.5357074996320628,
+              "disturbance": 0.6,
+              "published_s": 0.4786662237676204,
+              "mode": "FUSED",
+              "front": "ACCEPTED",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 62.820133437,
+              "published_v": 1.771265541563695,
+              "inner_v": 1.7857862022795181,
+              "drive_a": -0.7493677228791293,
+              "disturbance": 0.6,
+              "published_s": 1.1922707146892744,
+              "mode": "FUSED",
+              "front": "ACCEPTED",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 63.320133437,
+              "published_v": 1.825255129656456,
+              "inner_v": 1.825255129656456,
+              "drive_a": -0.8443084152464486,
+              "disturbance": 0.6,
+              "published_s": 2.118017567648502,
+              "mode": "MODEL_ONLY",
+              "front": "MISSING_OR_STALE",
+              "rear": "MISSING_OR_STALE"
+            },
+            {
+              "t": 63.820133437,
+              "published_v": 1.6881517359158162,
+              "inner_v": 1.6881517359158162,
+              "drive_a": -0.8903904974678882,
+              "disturbance": 0.6,
+              "published_s": 2.9972520169313057,
+              "mode": "MODEL_ONLY",
+              "front": "MISSING_OR_STALE",
+              "rear": "MISSING_OR_STALE"
+            },
+            {
+              "t": 64.32013343700001,
+              "published_v": 1.537603283304477,
+              "inner_v": 1.537603283304477,
+              "drive_a": -0.9064240621849788,
+              "disturbance": 0.6,
+              "published_s": 3.8039966091809267,
+              "mode": "MODEL_ONLY",
+              "front": "MISSING_OR_STALE",
+              "rear": "MISSING_OR_STALE"
+            },
+            {
+              "t": 64.82013343700001,
+              "published_v": 1.3824066732144127,
+              "inner_v": 1.3824066732144127,
+              "drive_a": -0.9120022425968707,
+              "disturbance": 0.6,
+              "published_s": 4.534104341361499,
+              "mode": "MODEL_ONLY",
+              "front": "MISSING_OR_STALE",
+              "rear": "MISSING_OR_STALE"
+            },
+            {
+              "t": 65.32013343700001,
+              "published_v": 1.22561990421614,
+              "inner_v": 1.22561990421614,
+              "drive_a": -0.9139407319543333,
+              "disturbance": 0.6,
+              "published_s": 5.186146528134286,
+              "mode": "MODEL_ONLY",
+              "front": "MISSING_OR_STALE",
+              "rear": "MISSING_OR_STALE"
+            },
+            {
+              "t": 65.82013343700001,
+              "published_v": 1.0683062084553312,
+              "inner_v": 1.0683062084553312,
+              "drive_a": -0.9146037836992967,
+              "disturbance": 0.6,
+              "published_s": 5.759639285708078,
+              "mode": "MODEL_ONLY",
+              "front": "MISSING_OR_STALE",
+              "rear": "MISSING_OR_STALE"
+            },
+            {
+              "t": 66.32013343700001,
+              "published_v": 0.9108442256417862,
+              "inner_v": 0.9108442256417862,
+              "drive_a": -0.914779320375072,
+              "disturbance": 0.6,
+              "published_s": 6.254428859346959,
+              "mode": "MODEL_ONLY",
+              "front": "MISSING_OR_STALE",
+              "rear": "MISSING_OR_STALE"
+            },
+            {
+              "t": 66.82013343700001,
+              "published_v": 0.7534199755561072,
+              "inner_v": 0.7534199755561072,
+              "drive_a": -0.9145741036052768,
+              "disturbance": 0.6,
+              "published_s": 6.670489262070778,
+              "mode": "MODEL_ONLY",
+              "front": "MISSING_OR_STALE",
+              "rear": "MISSING_OR_STALE"
+            },
+            {
+              "t": 67.32013343700001,
+              "published_v": 0.5963715984556436,
+              "inner_v": 0.5963715984556436,
+              "drive_a": -0.9132223859960591,
+              "disturbance": 0.6,
+              "published_s": 7.0079072739678905,
+              "mode": "MODEL_ONLY",
+              "front": "MISSING_OR_STALE",
+              "rear": "MISSING_OR_STALE"
+            },
+            {
+              "t": 67.82013343700001,
+              "published_v": 0.4411250315861317,
+              "inner_v": 0.4411250315861317,
+              "drive_a": -0.9067124080217271,
+              "disturbance": 0.6,
+              "published_s": 7.26714123828406,
+              "mode": "MODEL_ONLY",
+              "front": "MISSING_OR_STALE",
+              "rear": "MISSING_OR_STALE"
+            },
+            {
+              "t": 68.32013343700001,
+              "published_v": 0.29397872412099574,
+              "inner_v": 0.29397872412099574,
+              "drive_a": -0.878290871261952,
+              "disturbance": 0.6,
+              "published_s": 7.450306254717694,
+              "mode": "MODEL_ONLY",
+              "front": "MODEL_DISAGREEMENT",
+              "rear": "MODEL_DISAGREEMENT"
+            },
+            {
+              "t": 68.82013343700001,
+              "published_v": 0.46206642684602894,
+              "inner_v": 0.46206642684602894,
+              "drive_a": -0.8199157369017653,
+              "disturbance": 0.6,
+              "published_s": 7.588073209951886,
+              "mode": "REACQUIRING",
+              "front": "REACQUIRE_ACCEPTED",
+              "rear": "REACQUIRE_ACCEPTED"
+            },
+            {
+              "t": 69.32013343700001,
+              "published_v": 1.0718052830072995,
+              "inner_v": 1.0718052830072995,
+              "drive_a": -0.8794920531327273,
+              "disturbance": 0.6,
+              "published_s": 7.953692223998816,
+              "mode": "REACQUIRING",
+              "front": "REACQUIRE_ACCEPTED",
+              "rear": "REACQUIRE_ACCEPTED"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "bag": "30618_74559c73",
+      "group": "664cca45aeb0db23",
+      "role": "development",
+      "fault": {
+        "kind": "dropout",
+        "start": 62.800000000000004,
+        "end": 72.80000000000001
+      },
+      "outputs": 800,
+      "expected_ticks": 802,
+      "output_span_s": 39.95,
+      "first_output_s": 42.920133437000004,
+      "last_output_s": 82.870133437,
+      "sensor_duration_s": 40.062071315000004,
+      "receivers": {
+        "master": {
+          "main": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null,
+            "false_stop_samples": 0,
+            "event_rmse": null,
+            "recovery_s": null
+          },
+          "candidate": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null,
+            "false_stop_samples": 0,
+            "event_rmse": null,
+            "recovery_s": null
+          }
+        },
+        "rover": {
+          "main": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null,
+            "false_stop_samples": 0,
+            "event_rmse": null,
+            "recovery_s": null
+          },
+          "candidate": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null,
+            "false_stop_samples": 0,
+            "event_rmse": null,
+            "recovery_s": null
+          }
+        }
+      },
+      "runtime": {
+        "main": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 0,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 329,
+            "FUSED": 99,
+            "STOPPED": 359,
+            "REACQUIRING": 11,
+            "SINGLE_WHEEL": 1
+          }
+        },
+        "candidate": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 0,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 329,
+            "FUSED": 101,
+            "STOPPED": 359,
+            "REACQUIRING": 9,
+            "SINGLE_WHEEL": 1
+          }
+        }
+      },
+      "diagnostics": {
+        "main": {
+          "ticks": 802,
+          "timestamp_sha256": "e151eba066afedbe0e8e6d43801ac3a862e9276facda3137e6b9479b64501611",
+          "modes": {
+            "WAITING_FOR_INITIALIZATION": 2,
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 329,
+            "FUSED": 99,
+            "STOPPED": 359,
+            "REACQUIRING": 11,
+            "SINGLE_WHEEL": 1
+          },
+          "phases": {
+            "coast": 377,
+            "braking": 425
+          },
+          "changed_velocity_ticks": 0,
+          "disturbance_at_limit_ticks": 416,
+          "fault_trace": [
+            {
+              "t": 60.820133437,
+              "published_v": 0.0,
+              "inner_v": 0.0,
+              "drive_a": 0.0,
+              "disturbance": 0.0,
+              "published_s": 0.0,
+              "mode": "STOPPED",
+              "front": "ACCEPTED",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 61.320133437,
+              "published_v": 0.0,
+              "inner_v": 0.0,
+              "drive_a": 0.0,
+              "disturbance": 0.0,
+              "published_s": 0.0,
+              "mode": "STOPPED",
+              "front": "ACCEPTED",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 61.820133437,
+              "published_v": 0.46025357316441373,
+              "inner_v": 0.46025357316441373,
+              "drive_a": -0.1759944984650448,
+              "disturbance": 0.2733104992808906,
+              "published_s": 0.0816388168129365,
+              "mode": "FUSED",
+              "front": "ACCEPTED",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 62.320133437,
+              "published_v": 1.1381919242550753,
+              "inner_v": 1.1470373098094235,
+              "drive_a": -0.6983807537721721,
+              "disturbance": 0.6,
+              "published_s": 0.4660529442293682,
+              "mode": "FUSED",
+              "front": "ACCEPTED",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 62.820133437,
+              "published_v": 1.7258775306534604,
+              "inner_v": 1.7698433064781642,
+              "drive_a": -0.962251707535896,
+              "disturbance": 0.6,
+              "published_s": 1.1566947072340603,
+              "mode": "FUSED",
+              "front": "ACCEPTED",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 63.320133437,
+              "published_v": 1.6999242908846806,
+              "inner_v": 1.6999242908846806,
+              "drive_a": -1.0689182463104747,
+              "disturbance": 0.6,
+              "published_s": 2.044994608022152,
+              "mode": "MODEL_ONLY",
+              "front": "MISSING_OR_STALE",
+              "rear": "MISSING_OR_STALE"
+            },
+            {
+              "t": 63.820133437,
+              "published_v": 1.4228351336213554,
+              "inner_v": 1.4228351336213554,
+              "drive_a": -1.119536663006044,
+              "disturbance": 0.6,
+              "published_s": 2.82663770794452,
+              "mode": "MODEL_ONLY",
+              "front": "MISSING_OR_STALE",
+              "rear": "MISSING_OR_STALE"
+            },
+            {
+              "t": 64.32013343700001,
+              "published_v": 1.13232443959609,
+              "inner_v": 1.13232443959609,
+              "drive_a": -1.133702156249705,
+              "disturbance": 0.6,
+              "published_s": 3.465694332860359,
+              "mode": "MODEL_ONLY",
+              "front": "MISSING_OR_STALE",
+              "rear": "MISSING_OR_STALE"
+            },
+            {
+              "t": 64.82013343700001,
+              "published_v": 0.8380824665995876,
+              "inner_v": 0.8380824665995876,
+              "drive_a": -1.1375422316777315,
+              "disturbance": 0.6,
+              "published_s": 3.9583677551744567,
+              "mode": "MODEL_ONLY",
+              "front": "MISSING_OR_STALE",
+              "rear": "MISSING_OR_STALE"
+            },
+            {
+              "t": 65.32013343700001,
+              "published_v": 0.5433003434286605,
+              "inner_v": 0.5433003434286605,
+              "drive_a": -1.1362174189714478,
+              "disturbance": 0.6,
+              "published_s": 4.303676667514528,
+              "mode": "MODEL_ONLY",
+              "front": "MISSING_OR_STALE",
+              "rear": "MISSING_OR_STALE"
+            },
+            {
+              "t": 65.82013343700001,
+              "published_v": 0.2575020791643135,
+              "inner_v": 0.2575020791643135,
+              "drive_a": -1.0937834979580248,
+              "disturbance": 0.6,
+              "published_s": 4.5028644574065115,
+              "mode": "MODEL_ONLY",
+              "front": "MISSING_OR_STALE",
+              "rear": "MISSING_OR_STALE"
+            },
+            {
+              "t": 66.32013343700001,
+              "published_v": 0.06703788711017183,
+              "inner_v": 0.06703788711017183,
+              "drive_a": -0.7684874108863644,
+              "disturbance": 0.6,
+              "published_s": 4.576169386124203,
+              "mode": "MODEL_ONLY",
+              "front": "MISSING_OR_STALE",
+              "rear": "MISSING_OR_STALE"
+            },
+            {
+              "t": 66.82013343700001,
+              "published_v": 0.07893543155789945,
+              "inner_v": 0.07893543155789945,
+              "drive_a": -0.4600003609984761,
+              "disturbance": 0.6,
+              "published_s": 4.606670521289808,
+              "mode": "MODEL_ONLY",
+              "front": "MISSING_OR_STALE",
+              "rear": "MISSING_OR_STALE"
+            },
+            {
+              "t": 67.32013343700001,
+              "published_v": 0.12378789577874019,
+              "inner_v": 0.12378789577874019,
+              "drive_a": -0.5320757192770789,
+              "disturbance": 0.6,
+              "published_s": 4.659395701290826,
+              "mode": "MODEL_ONLY",
+              "front": "MISSING_OR_STALE",
+              "rear": "MISSING_OR_STALE"
+            },
+            {
+              "t": 67.82013343700001,
+              "published_v": 0.11978409513376724,
+              "inner_v": 0.11978409513376724,
+              "drive_a": -0.6016630055334986,
+              "disturbance": 0.6,
+              "published_s": 4.721615005122362,
+              "mode": "MODEL_ONLY",
+              "front": "MISSING_OR_STALE",
+              "rear": "MISSING_OR_STALE"
+            },
+            {
+              "t": 68.32013343700001,
+              "published_v": 0.1079999650696732,
+              "inner_v": 0.1079999650696732,
+              "drive_a": -0.5859432504697913,
+              "disturbance": 0.6,
+              "published_s": 4.7781043894368604,
+              "mode": "MODEL_ONLY",
+              "front": "MISSING_OR_STALE",
+              "rear": "MISSING_OR_STALE"
+            },
+            {
+              "t": 68.82013343700001,
+              "published_v": 0.10849356458327306,
+              "inner_v": 0.10849356458327306,
+              "drive_a": -0.5669742579820586,
+              "disturbance": 0.6,
+              "published_s": 4.831858142513194,
+              "mode": "MODEL_ONLY",
+              "front": "MISSING_OR_STALE",
+              "rear": "MISSING_OR_STALE"
+            },
+            {
+              "t": 69.32013343700001,
+              "published_v": 0.11148319045361013,
+              "inner_v": 0.11148319045361013,
+              "drive_a": -0.5704450138519376,
+              "disturbance": 0.6,
+              "published_s": 4.886959228965579,
+              "mode": "MODEL_ONLY",
+              "front": "MISSING_OR_STALE",
+              "rear": "MISSING_OR_STALE"
+            },
+            {
+              "t": 69.82013343700001,
+              "published_v": 0.11142957517048968,
+              "inner_v": 0.11142957517048968,
+              "drive_a": -0.5753082522331842,
+              "disturbance": 0.6,
+              "published_s": 4.942783040148538,
+              "mode": "MODEL_ONLY",
+              "front": "MISSING_OR_STALE",
+              "rear": "MISSING_OR_STALE"
+            },
+            {
+              "t": 70.32013343700001,
+              "published_v": 0.1106682158678851,
+              "inner_v": 0.1106682158678851,
+              "drive_a": -0.5745638722076419,
+              "disturbance": 0.6,
+              "published_s": 4.9982831150322,
+              "mode": "MODEL_ONLY",
+              "front": "MISSING_OR_STALE",
+              "rear": "MISSING_OR_STALE"
+            },
+            {
+              "t": 70.82013343700001,
+              "published_v": 0.11065966960119342,
+              "inner_v": 0.11065966960119342,
+              "drive_a": -0.5733054187974111,
+              "disturbance": 0.6,
+              "published_s": 5.053590053096783,
+              "mode": "MODEL_ONLY",
+              "front": "MISSING_OR_STALE",
+              "rear": "MISSING_OR_STALE"
+            },
+            {
+              "t": 71.32013343700001,
+              "published_v": 0.11085264817002709,
+              "inner_v": 0.11085264817002709,
+              "drive_a": -0.5734590671596559,
+              "disturbance": 0.6,
+              "published_s": 5.108973622519604,
+              "mode": "MODEL_ONLY",
+              "front": "MISSING_OR_STALE",
+              "rear": "MISSING_OR_STALE"
+            },
+            {
+              "t": 71.82013343700001,
+              "published_v": 0.11086017418198786,
+              "inner_v": 0.11086017418198786,
+              "drive_a": -0.5737826553478103,
+              "disturbance": 0.6,
+              "published_s": 5.1644083320407175,
+              "mode": "MODEL_ONLY",
+              "front": "MISSING_OR_STALE",
+              "rear": "MISSING_OR_STALE"
+            },
+            {
+              "t": 72.32013343700001,
+              "published_v": 0.1108113937168528,
+              "inner_v": 0.1108113937168528,
+              "drive_a": -0.5737527166730001,
+              "disturbance": 0.6,
+              "published_s": 5.2198250129447965,
+              "mode": "MODEL_ONLY",
+              "front": "MISSING_OR_STALE",
+              "rear": "MISSING_OR_STALE"
+            },
+            {
+              "t": 72.82013343700001,
+              "published_v": 0.1108081122382419,
+              "inner_v": 0.1108081122382419,
+              "drive_a": -0.5736697229097886,
+              "disturbance": 0.6,
+              "published_s": 5.275228204149568,
+              "mode": "MODEL_ONLY",
+              "front": "MISSING_OR_STALE",
+              "rear": "MISSING_OR_STALE"
+            },
+            {
+              "t": 73.32013343700001,
+              "published_v": 0.11082040310437426,
+              "inner_v": 0.11082040310437426,
+              "drive_a": -0.5736749956924055,
+              "disturbance": 0.6,
+              "published_s": 5.330635593186752,
+              "mode": "MODEL_ONLY",
+              "front": "MODEL_DISAGREEMENT",
+              "rear": "MODEL_DISAGREEMENT"
+            },
+            {
+              "t": 73.82013343700001,
+              "published_v": 0.11082158044427738,
+              "inner_v": 0.11082158044427738,
+              "drive_a": -0.5736962110810988,
+              "disturbance": 0.6,
+              "published_s": 5.386046524164549,
+              "mode": "MODEL_ONLY",
+              "front": "MODEL_DISAGREEMENT",
+              "rear": "MODEL_DISAGREEMENT"
+            },
+            {
+              "t": 74.32013343700001,
+              "published_v": 0.7705237700930173,
+              "inner_v": 0.7705237700930173,
+              "drive_a": -0.9097925814544635,
+              "disturbance": 0.6,
+              "published_s": 5.596648028044938,
+              "mode": "REACQUIRING",
+              "front": "REACQUIRE_ACCEPTED",
+              "rear": "REACQUIRE_ACCEPTED"
+            }
+          ]
+        },
+        "candidate": {
+          "ticks": 802,
+          "timestamp_sha256": "e151eba066afedbe0e8e6d43801ac3a862e9276facda3137e6b9479b64501611",
+          "modes": {
+            "WAITING_FOR_INITIALIZATION": 2,
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 329,
+            "FUSED": 101,
+            "STOPPED": 359,
+            "REACQUIRING": 9,
+            "SINGLE_WHEEL": 1
+          },
+          "phases": {
+            "coast": 377,
+            "braking": 425
+          },
+          "changed_velocity_ticks": 429,
+          "disturbance_at_limit_ticks": 391,
+          "fault_trace": [
+            {
+              "t": 60.820133437,
+              "published_v": 0.0,
+              "inner_v": 0.0,
+              "drive_a": 0.0,
+              "disturbance": 0.0,
+              "published_s": 0.0,
+              "mode": "STOPPED",
+              "front": "ACCEPTED",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 61.320133437,
+              "published_v": 0.0,
+              "inner_v": 0.0,
+              "drive_a": 0.0,
+              "disturbance": 0.0,
+              "published_s": 0.0,
+              "mode": "STOPPED",
+              "front": "ACCEPTED",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 61.820133437,
+              "published_v": 0.4642165751946884,
+              "inner_v": 0.4642165751946884,
+              "drive_a": -0.13865364088110024,
+              "disturbance": 0.2581477368481707,
+              "published_s": 0.08252476444129252,
+              "mode": "FUSED",
+              "front": "ACCEPTED",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 62.320133437,
+              "published_v": 1.1688532983612505,
+              "inner_v": 1.1591003365491637,
+              "drive_a": -0.5357074996320628,
+              "disturbance": 0.6,
+              "published_s": 0.4786662237676204,
+              "mode": "FUSED",
+              "front": "ACCEPTED",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 62.820133437,
+              "published_v": 1.771265541563695,
+              "inner_v": 1.7857862022795181,
+              "drive_a": -0.7493677228791293,
+              "disturbance": 0.6,
+              "published_s": 1.1922707146892744,
+              "mode": "FUSED",
+              "front": "ACCEPTED",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 63.320133437,
+              "published_v": 1.825255129656456,
+              "inner_v": 1.825255129656456,
+              "drive_a": -0.8443084152464486,
+              "disturbance": 0.6,
+              "published_s": 2.118017567648502,
+              "mode": "MODEL_ONLY",
+              "front": "MISSING_OR_STALE",
+              "rear": "MISSING_OR_STALE"
+            },
+            {
+              "t": 63.820133437,
+              "published_v": 1.6881517359158162,
+              "inner_v": 1.6881517359158162,
+              "drive_a": -0.8903904974678882,
+              "disturbance": 0.6,
+              "published_s": 2.9972520169313057,
+              "mode": "MODEL_ONLY",
+              "front": "MISSING_OR_STALE",
+              "rear": "MISSING_OR_STALE"
+            },
+            {
+              "t": 64.32013343700001,
+              "published_v": 1.537603283304477,
+              "inner_v": 1.537603283304477,
+              "drive_a": -0.9064240621849788,
+              "disturbance": 0.6,
+              "published_s": 3.8039966091809267,
+              "mode": "MODEL_ONLY",
+              "front": "MISSING_OR_STALE",
+              "rear": "MISSING_OR_STALE"
+            },
+            {
+              "t": 64.82013343700001,
+              "published_v": 1.3824066732144127,
+              "inner_v": 1.3824066732144127,
+              "drive_a": -0.9120022425968707,
+              "disturbance": 0.6,
+              "published_s": 4.534104341361499,
+              "mode": "MODEL_ONLY",
+              "front": "MISSING_OR_STALE",
+              "rear": "MISSING_OR_STALE"
+            },
+            {
+              "t": 65.32013343700001,
+              "published_v": 1.22561990421614,
+              "inner_v": 1.22561990421614,
+              "drive_a": -0.9139407319543333,
+              "disturbance": 0.6,
+              "published_s": 5.186146528134286,
+              "mode": "MODEL_ONLY",
+              "front": "MISSING_OR_STALE",
+              "rear": "MISSING_OR_STALE"
+            },
+            {
+              "t": 65.82013343700001,
+              "published_v": 1.0683062084553312,
+              "inner_v": 1.0683062084553312,
+              "drive_a": -0.9146037836992967,
+              "disturbance": 0.6,
+              "published_s": 5.759639285708078,
+              "mode": "MODEL_ONLY",
+              "front": "MISSING_OR_STALE",
+              "rear": "MISSING_OR_STALE"
+            },
+            {
+              "t": 66.32013343700001,
+              "published_v": 0.9108442256417862,
+              "inner_v": 0.9108442256417862,
+              "drive_a": -0.914779320375072,
+              "disturbance": 0.6,
+              "published_s": 6.254428859346959,
+              "mode": "MODEL_ONLY",
+              "front": "MISSING_OR_STALE",
+              "rear": "MISSING_OR_STALE"
+            },
+            {
+              "t": 66.82013343700001,
+              "published_v": 0.7534199755561072,
+              "inner_v": 0.7534199755561072,
+              "drive_a": -0.9145741036052768,
+              "disturbance": 0.6,
+              "published_s": 6.670489262070778,
+              "mode": "MODEL_ONLY",
+              "front": "MISSING_OR_STALE",
+              "rear": "MISSING_OR_STALE"
+            },
+            {
+              "t": 67.32013343700001,
+              "published_v": 0.5963715984556436,
+              "inner_v": 0.5963715984556436,
+              "drive_a": -0.9132223859960591,
+              "disturbance": 0.6,
+              "published_s": 7.0079072739678905,
+              "mode": "MODEL_ONLY",
+              "front": "MISSING_OR_STALE",
+              "rear": "MISSING_OR_STALE"
+            },
+            {
+              "t": 67.82013343700001,
+              "published_v": 0.4411250315861317,
+              "inner_v": 0.4411250315861317,
+              "drive_a": -0.9067124080217271,
+              "disturbance": 0.6,
+              "published_s": 7.26714123828406,
+              "mode": "MODEL_ONLY",
+              "front": "MISSING_OR_STALE",
+              "rear": "MISSING_OR_STALE"
+            },
+            {
+              "t": 68.32013343700001,
+              "published_v": 0.29397872412099574,
+              "inner_v": 0.29397872412099574,
+              "drive_a": -0.878290871261952,
+              "disturbance": 0.6,
+              "published_s": 7.450306254717694,
+              "mode": "MODEL_ONLY",
+              "front": "MISSING_OR_STALE",
+              "rear": "MISSING_OR_STALE"
+            },
+            {
+              "t": 68.82013343700001,
+              "published_v": 0.17665952590425782,
+              "inner_v": 0.17665952590425782,
+              "drive_a": -0.7860664097338542,
+              "disturbance": 0.6,
+              "published_s": 7.56598073135256,
+              "mode": "MODEL_ONLY",
+              "front": "MISSING_OR_STALE",
+              "rear": "MISSING_OR_STALE"
+            },
+            {
+              "t": 69.32013343700001,
+              "published_v": 0.12453517327942067,
+              "inner_v": 0.12453517327942067,
+              "drive_a": -0.6370643837578801,
+              "disturbance": 0.6,
+              "published_s": 7.638148736545311,
+              "mode": "MODEL_ONLY",
+              "front": "MISSING_OR_STALE",
+              "rear": "MISSING_OR_STALE"
+            },
+            {
+              "t": 69.82013343700001,
+              "published_v": 0.13333028823661627,
+              "inner_v": 0.13333028823661627,
+              "drive_a": -0.5546394912270032,
+              "disturbance": 0.6,
+              "published_s": 7.7010263434977375,
+              "mode": "MODEL_ONLY",
+              "front": "MISSING_OR_STALE",
+              "rear": "MISSING_OR_STALE"
+            },
+            {
+              "t": 70.32013343700001,
+              "published_v": 0.1557013205959967,
+              "inner_v": 0.1557013205959967,
+              "drive_a": -0.5643835811352027,
+              "disturbance": 0.6,
+              "published_s": 7.7735736190249645,
+              "mode": "MODEL_ONLY",
+              "front": "MISSING_OR_STALE",
+              "rear": "MISSING_OR_STALE"
+            },
+            {
+              "t": 70.82013343700001,
+              "published_v": 0.16463301500690664,
+              "inner_v": 0.16463301500690664,
+              "drive_a": -0.5955210464238674,
+              "disturbance": 0.6,
+              "published_s": 7.854303629557932,
+              "mode": "MODEL_ONLY",
+              "front": "MISSING_OR_STALE",
+              "rear": "MISSING_OR_STALE"
+            },
+            {
+              "t": 71.32013343700001,
+              "published_v": 0.1621076302016643,
+              "inner_v": 0.1621076302016643,
+              "drive_a": -0.6096744705069534,
+              "disturbance": 0.6,
+              "published_s": 7.936257683174501,
+              "mode": "MODEL_ONLY",
+              "front": "MISSING_OR_STALE",
+              "rear": "MISSING_OR_STALE"
+            },
+            {
+              "t": 71.82013343700001,
+              "published_v": 0.15745619499385818,
+              "inner_v": 0.15745619499385818,
+              "drive_a": -0.6074347602707916,
+              "disturbance": 0.6,
+              "published_s": 8.016087123880496,
+              "mode": "MODEL_ONLY",
+              "front": "MISSING_OR_STALE",
+              "rear": "MISSING_OR_STALE"
+            },
+            {
+              "t": 72.32013343700001,
+              "published_v": 0.15554433159340067,
+              "inner_v": 0.15554433159340067,
+              "drive_a": -0.6010382703934636,
+              "disturbance": 0.6,
+              "published_s": 8.09420400504001,
+              "mode": "MODEL_ONLY",
+              "front": "MISSING_OR_STALE",
+              "rear": "MISSING_OR_STALE"
+            },
+            {
+              "t": 72.82013343700001,
+              "published_v": 0.15603721615636273,
+              "inner_v": 0.15603721615636273,
+              "drive_a": -0.5980168837724531,
+              "disturbance": 0.6,
+              "published_s": 8.172041852026613,
+              "mode": "MODEL_ONLY",
+              "front": "MISSING_OR_STALE",
+              "rear": "MISSING_OR_STALE"
+            },
+            {
+              "t": 73.32013343700001,
+              "published_v": 0.15699016555764594,
+              "inner_v": 0.15699016555764594,
+              "drive_a": -0.5984757117650087,
+              "disturbance": 0.6,
+              "published_s": 8.250311421908085,
+              "mode": "MODEL_ONLY",
+              "front": "MODEL_DISAGREEMENT",
+              "rear": "MODEL_DISAGREEMENT"
+            },
+            {
+              "t": 73.82013343700001,
+              "published_v": 0.15737725019578142,
+              "inner_v": 0.15737725019578142,
+              "drive_a": -0.5997905395655199,
+              "disturbance": 0.6,
+              "published_s": 8.328930637658159,
+              "mode": "MODEL_ONLY",
+              "front": "MODEL_DISAGREEMENT",
+              "rear": "MODEL_DISAGREEMENT"
+            },
+            {
+              "t": 74.32013343700001,
+              "published_v": 0.8674149350749851,
+              "inner_v": 0.8674149350749851,
+              "drive_a": -0.7679540928387585,
+              "disturbance": 0.6,
+              "published_s": 8.570586315304844,
+              "mode": "REACQUIRING",
+              "front": "REACQUIRE_ACCEPTED",
+              "rear": "REACQUIRE_ACCEPTED"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "bag": "30618_74559c73",
+      "group": "664cca45aeb0db23",
+      "role": "development",
+      "fault": {
+        "kind": "lock",
+        "start": 62.800000000000004,
+        "end": 65.80000000000001
+      },
+      "outputs": 660,
+      "expected_ticks": 662,
+      "output_span_s": 32.95,
+      "first_output_s": 42.920133437000004,
+      "last_output_s": 75.870133437,
+      "sensor_duration_s": 33.062101703,
+      "receivers": {
+        "master": {
+          "main": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null,
+            "false_stop_samples": 0,
+            "event_rmse": null,
+            "recovery_s": null
+          },
+          "candidate": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null,
+            "false_stop_samples": 0,
+            "event_rmse": null,
+            "recovery_s": null
+          }
+        },
+        "rover": {
+          "main": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null,
+            "false_stop_samples": 0,
+            "event_rmse": null,
+            "recovery_s": null
+          },
+          "candidate": {
+            "n": 0,
+            "coverage": 0.0,
+            "rmse": null,
+            "false_stop_samples": 0,
+            "event_rmse": null,
+            "recovery_s": null
+          }
+        }
+      },
+      "runtime": {
+        "main": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 0,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 188,
+            "FUSED": 97,
+            "STOPPED": 359,
+            "REACQUIRING": 15
+          }
+        },
+        "candidate": {
+          "resets": 0,
+          "dropped": 0,
+          "catchups": 0,
+          "causal_errors": 0,
+          "mode_counts": {
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 188,
+            "FUSED": 102,
+            "STOPPED": 359,
+            "REACQUIRING": 10
+          }
+        }
+      },
+      "diagnostics": {
+        "main": {
+          "ticks": 662,
+          "timestamp_sha256": "d402a3efb64c64c2e27249e2726b65b7431e785ed30376480523aca71089e128",
+          "modes": {
+            "WAITING_FOR_INITIALIZATION": 2,
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 188,
+            "FUSED": 97,
+            "STOPPED": 359,
+            "REACQUIRING": 15
+          },
+          "phases": {
+            "coast": 377,
+            "braking": 285
+          },
+          "changed_velocity_ticks": 0,
+          "disturbance_at_limit_ticks": 276,
+          "fault_trace": [
+            {
+              "t": 60.820133437,
+              "published_v": 0.0,
+              "inner_v": 0.0,
+              "drive_a": 0.0,
+              "disturbance": 0.0,
+              "published_s": 0.0,
+              "mode": "STOPPED",
+              "front": "ACCEPTED",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 61.320133437,
+              "published_v": 0.0,
+              "inner_v": 0.0,
+              "drive_a": 0.0,
+              "disturbance": 0.0,
+              "published_s": 0.0,
+              "mode": "STOPPED",
+              "front": "ACCEPTED",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 61.820133437,
+              "published_v": 0.46025357316441373,
+              "inner_v": 0.46025357316441373,
+              "drive_a": -0.1759944984650448,
+              "disturbance": 0.2733104992808906,
+              "published_s": 0.0816388168129365,
+              "mode": "FUSED",
+              "front": "ACCEPTED",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 62.320133437,
+              "published_v": 1.1381919242550753,
+              "inner_v": 1.1470373098094235,
+              "drive_a": -0.6983807537721721,
+              "disturbance": 0.6,
+              "published_s": 0.4660529442293682,
+              "mode": "FUSED",
+              "front": "ACCEPTED",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 62.820133437,
+              "published_v": 1.7258775306534604,
+              "inner_v": 1.7698433064781642,
+              "drive_a": -0.962251707535896,
+              "disturbance": 0.6,
+              "published_s": 1.1566947072340603,
+              "mode": "FUSED",
+              "front": "ACCEPTED",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 63.320133437,
+              "published_v": 1.6999242908846806,
+              "inner_v": 1.6999242908846806,
+              "drive_a": -1.0689182463104747,
+              "disturbance": 0.6,
+              "published_s": 2.047506156916941,
+              "mode": "MODEL_ONLY",
+              "front": "ZERO_LOCK_SUSPECT",
+              "rear": "ZERO_LOCK_SUSPECT"
+            },
+            {
+              "t": 63.820133437,
+              "published_v": 1.4228351336213554,
+              "inner_v": 1.4228351336213554,
+              "drive_a": -1.119536663006044,
+              "disturbance": 0.6,
+              "published_s": 2.829149256839309,
+              "mode": "MODEL_ONLY",
+              "front": "ZERO_LOCK_SUSPECT",
+              "rear": "ZERO_LOCK_SUSPECT"
+            },
+            {
+              "t": 64.32013343700001,
+              "published_v": 1.13232443959609,
+              "inner_v": 1.13232443959609,
+              "drive_a": -1.133702156249705,
+              "disturbance": 0.6,
+              "published_s": 3.4682058817551478,
+              "mode": "MODEL_ONLY",
+              "front": "ZERO_LOCK_SUSPECT",
+              "rear": "ZERO_LOCK_SUSPECT"
+            },
+            {
+              "t": 64.82013343700001,
+              "published_v": 0.8380824665995876,
+              "inner_v": 0.8380824665995876,
+              "drive_a": -1.1375422316777315,
+              "disturbance": 0.6,
+              "published_s": 3.9608793040692456,
+              "mode": "MODEL_ONLY",
+              "front": "DUPLICATE_OR_OLD",
+              "rear": "DUPLICATE_OR_OLD"
+            },
+            {
+              "t": 65.32013343700001,
+              "published_v": 0.5433003434286605,
+              "inner_v": 0.5433003434286605,
+              "drive_a": -1.1362174189714478,
+              "disturbance": 0.6,
+              "published_s": 4.306188216409318,
+              "mode": "MODEL_ONLY",
+              "front": "ZERO_LOCK_SUSPECT",
+              "rear": "ZERO_LOCK_SUSPECT"
+            },
+            {
+              "t": 65.82013343700001,
+              "published_v": 0.2575020791643135,
+              "inner_v": 0.2575020791643135,
+              "drive_a": -1.0937834979580248,
+              "disturbance": 0.6,
+              "published_s": 4.505376006301301,
+              "mode": "MODEL_ONLY",
+              "front": "ZERO_LOCK_SUSPECT",
+              "rear": "ZERO_LOCK_SUSPECT"
+            },
+            {
+              "t": 66.32013343700001,
+              "published_v": 0.06703788711017183,
+              "inner_v": 0.06703788711017183,
+              "drive_a": -0.7684874108863644,
+              "disturbance": 0.6,
+              "published_s": 4.578680935018992,
+              "mode": "MODEL_ONLY",
+              "front": "MODEL_DISAGREEMENT",
+              "rear": "MODEL_DISAGREEMENT"
+            },
+            {
+              "t": 66.82013343700001,
+              "published_v": 0.2228937885578806,
+              "inner_v": 0.2228937885578806,
+              "drive_a": -0.4600003609984761,
+              "disturbance": 0.6,
+              "published_s": 4.612781029109598,
+              "mode": "REACQUIRING",
+              "front": "REACQUIRE_ACCEPTED",
+              "rear": "REACQUIRE_ACCEPTED"
+            },
+            {
+              "t": 67.32013343700001,
+              "published_v": 0.8512818800262895,
+              "inner_v": 0.8512818800262895,
+              "drive_a": -0.9220503102887465,
+              "disturbance": 0.6,
+              "published_s": 4.8708875323378695,
+              "mode": "REACQUIRING",
+              "front": "REACQUIRE_ACCEPTED",
+              "rear": "REACQUIRE_ACCEPTED"
+            }
+          ]
+        },
+        "candidate": {
+          "ticks": 662,
+          "timestamp_sha256": "d402a3efb64c64c2e27249e2726b65b7431e785ed30376480523aca71089e128",
+          "modes": {
+            "WAITING_FOR_INITIALIZATION": 2,
+            "INITIALIZED": 1,
+            "MODEL_ONLY": 188,
+            "FUSED": 102,
+            "STOPPED": 359,
+            "REACQUIRING": 10
+          },
+          "phases": {
+            "coast": 377,
+            "braking": 285
+          },
+          "changed_velocity_ticks": 289,
+          "disturbance_at_limit_ticks": 262,
+          "fault_trace": [
+            {
+              "t": 60.820133437,
+              "published_v": 0.0,
+              "inner_v": 0.0,
+              "drive_a": 0.0,
+              "disturbance": 0.0,
+              "published_s": 0.0,
+              "mode": "STOPPED",
+              "front": "ACCEPTED",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 61.320133437,
+              "published_v": 0.0,
+              "inner_v": 0.0,
+              "drive_a": 0.0,
+              "disturbance": 0.0,
+              "published_s": 0.0,
+              "mode": "STOPPED",
+              "front": "ACCEPTED",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 61.820133437,
+              "published_v": 0.4642165751946884,
+              "inner_v": 0.4642165751946884,
+              "drive_a": -0.13865364088110024,
+              "disturbance": 0.2581477368481707,
+              "published_s": 0.08252476444129252,
+              "mode": "FUSED",
+              "front": "ACCEPTED",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 62.320133437,
+              "published_v": 1.1688532983612505,
+              "inner_v": 1.1591003365491637,
+              "drive_a": -0.5357074996320628,
+              "disturbance": 0.6,
+              "published_s": 0.4786662237676204,
+              "mode": "FUSED",
+              "front": "ACCEPTED",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 62.820133437,
+              "published_v": 1.771265541563695,
+              "inner_v": 1.7857862022795181,
+              "drive_a": -0.7493677228791293,
+              "disturbance": 0.6,
+              "published_s": 1.1922707146892744,
+              "mode": "FUSED",
+              "front": "ACCEPTED",
+              "rear": "ACCEPTED"
+            },
+            {
+              "t": 63.320133437,
+              "published_v": 1.825255129656456,
+              "inner_v": 1.825255129656456,
+              "drive_a": -0.8443084152464486,
+              "disturbance": 0.6,
+              "published_s": 2.1189568410440236,
+              "mode": "MODEL_ONLY",
+              "front": "ZERO_LOCK_SUSPECT",
+              "rear": "ZERO_LOCK_SUSPECT"
+            },
+            {
+              "t": 63.820133437,
+              "published_v": 1.6881517359158162,
+              "inner_v": 1.6881517359158162,
+              "drive_a": -0.8903904974678882,
+              "disturbance": 0.6,
+              "published_s": 2.9981912903268273,
+              "mode": "MODEL_ONLY",
+              "front": "ZERO_LOCK_SUSPECT",
+              "rear": "ZERO_LOCK_SUSPECT"
+            },
+            {
+              "t": 64.32013343700001,
+              "published_v": 1.537603283304477,
+              "inner_v": 1.537603283304477,
+              "drive_a": -0.9064240621849788,
+              "disturbance": 0.6,
+              "published_s": 3.8049358825764483,
+              "mode": "MODEL_ONLY",
+              "front": "ZERO_LOCK_SUSPECT",
+              "rear": "ZERO_LOCK_SUSPECT"
+            },
+            {
+              "t": 64.82013343700001,
+              "published_v": 1.3824066732144127,
+              "inner_v": 1.3824066732144127,
+              "drive_a": -0.9120022425968707,
+              "disturbance": 0.6,
+              "published_s": 4.53504361475702,
+              "mode": "MODEL_ONLY",
+              "front": "DUPLICATE_OR_OLD",
+              "rear": "DUPLICATE_OR_OLD"
+            },
+            {
+              "t": 65.32013343700001,
+              "published_v": 1.22561990421614,
+              "inner_v": 1.22561990421614,
+              "drive_a": -0.9139407319543333,
+              "disturbance": 0.6,
+              "published_s": 5.187085801529807,
+              "mode": "MODEL_ONLY",
+              "front": "ZERO_LOCK_SUSPECT",
+              "rear": "ZERO_LOCK_SUSPECT"
+            },
+            {
+              "t": 65.82013343700001,
+              "published_v": 1.0683062084553312,
+              "inner_v": 1.0683062084553312,
+              "drive_a": -0.9146037836992967,
+              "disturbance": 0.6,
+              "published_s": 5.760578559103599,
+              "mode": "MODEL_ONLY",
+              "front": "ZERO_LOCK_SUSPECT",
+              "rear": "ZERO_LOCK_SUSPECT"
+            },
+            {
+              "t": 66.32013343700001,
+              "published_v": 0.9108442256417862,
+              "inner_v": 0.9108442256417862,
+              "drive_a": -0.914779320375072,
+              "disturbance": 0.6,
+              "published_s": 6.25536813274248,
+              "mode": "MODEL_ONLY",
+              "front": "MODEL_DISAGREEMENT",
+              "rear": "MODEL_DISAGREEMENT"
+            },
+            {
+              "t": 66.82013343700001,
+              "published_v": 0.8973783325560883,
+              "inner_v": 0.8973783325560883,
+              "drive_a": -0.9145741036052768,
+              "disturbance": 0.6,
+              "published_s": 6.6750274943912995,
+              "mode": "REACQUIRING",
+              "front": "REACQUIRE_ACCEPTED",
+              "rear": "REACQUIRE_ACCEPTED"
+            },
+            {
+              "t": 67.32013343700001,
+              "published_v": 1.4628077951764,
+              "inner_v": 1.4628077951764,
+              "drive_a": -0.9148043962064225,
+              "disturbance": 0.6,
+              "published_s": 7.244911925816623,
+              "mode": "REACQUIRING",
+              "front": "REACQUIRE_ACCEPTED",
+              "rear": "REACQUIRE_ACCEPTED"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

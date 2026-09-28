@@ -1,0 +1,184 @@
+{
+  "clean": {
+    "bag": "30639_0ab96c59",
+    "group": "2cd82bc27dbad052",
+    "role": "development",
+    "outputs": 1593,
+    "expected_ticks": 1641,
+    "output_span_s": 79.6,
+    "first_output_s": 2.4000000000000004,
+    "last_output_s": 82.0,
+    "sensor_duration_s": 82.049913021,
+    "receivers": {
+      "master": {
+        "main": {
+          "n": 1592,
+          "coverage": 0.9993722536095417,
+          "rmse": 0.018981005982407435,
+          "mae": 0.006284063129902641,
+          "bias": -0.002179024853688053,
+          "p95": 0.013528623835174438,
+          "integrated_error_m_not_xyz": -0.1732503783535689,
+          "false_stop_samples": 0,
+          "distance_surrogate": {
+            "definition": "s versus integral matched horizontal GNSS speed; NOT xyz",
+            "full_span_terminal_error_m": null,
+            "full_span_reference_distance_m": null,
+            "full_span_terminal_drift_percent": null,
+            "continuous_spans": 1,
+            "reanchored_span_rmse_m": 0.11011468379779153,
+            "longest_reference_span": {
+              "start_s": 2.4000000000000004,
+              "duration_s": 79.55,
+              "reference_distance_m": 1.983900000000013,
+              "terminal_error_m": -0.1732503783535817
+            }
+          }
+        },
+        "candidate": {
+          "n": 1592,
+          "coverage": 0.9993722536095417,
+          "rmse": 0.019903484523766876,
+          "mae": 0.0063751323828084745,
+          "bias": -0.0017913809357124044,
+          "p95": 0.014407702494043812,
+          "integrated_error_m_not_xyz": -0.14239392248270727,
+          "false_stop_samples": 0,
+          "distance_surrogate": {
+            "definition": "s versus integral matched horizontal GNSS speed; NOT xyz",
+            "full_span_terminal_error_m": null,
+            "full_span_reference_distance_m": null,
+            "full_span_terminal_drift_percent": null,
+            "continuous_spans": 1,
+            "reanchored_span_rmse_m": 0.09852532510351177,
+            "longest_reference_span": {
+              "start_s": 2.4000000000000004,
+              "duration_s": 79.55,
+              "reference_distance_m": 1.983900000000013,
+              "terminal_error_m": -0.1423939224827202
+            }
+          },
+          "common_front_scaled_rmse": 0.01996540504070305,
+          "common_mean_scaled_rmse": 0.01996540504070305
+        }
+      },
+      "rover": {
+        "main": {
+          "n": 1592,
+          "coverage": 0.9993722536095417,
+          "rmse": 0.019389049497011826,
+          "mae": 0.006765810322137451,
+          "bias": -0.0025772660597182034,
+          "p95": 0.015999999999999997,
+          "integrated_error_m_not_xyz": -0.20507537835356915,
+          "false_stop_samples": 0,
+          "distance_surrogate": {
+            "definition": "s versus integral matched horizontal GNSS speed; NOT xyz",
+            "full_span_terminal_error_m": null,
+            "full_span_reference_distance_m": null,
+            "full_span_terminal_drift_percent": null,
+            "continuous_spans": 1,
+            "reanchored_span_rmse_m": 0.13322449416239673,
+            "longest_reference_span": {
+              "start_s": 2.4000000000000004,
+              "duration_s": 79.55,
+              "reference_distance_m": 2.0157250000000118,
+              "terminal_error_m": -0.20507537835358036
+            }
+          }
+        },
+        "candidate": {
+          "n": 1592,
+          "coverage": 0.9993722536095417,
+          "rmse": 0.020403325798580865,
+          "mae": 0.006947174447646602,
+          "bias": -0.0021896221417425548,
+          "p95": 0.017,
+          "integrated_error_m_not_xyz": -0.17421892248270746,
+          "false_stop_samples": 0,
+          "distance_surrogate": {
+            "definition": "s versus integral matched horizontal GNSS speed; NOT xyz",
+            "full_span_terminal_error_m": null,
+            "full_span_reference_distance_m": null,
+            "full_span_terminal_drift_percent": null,
+            "continuous_spans": 1,
+            "reanchored_span_rmse_m": 0.1209513664897995,
+            "longest_reference_span": {
+              "start_s": 2.4000000000000004,
+              "duration_s": 79.55,
+              "reference_distance_m": 2.0157250000000118,
+              "terminal_error_m": -0.17421892248271886
+            }
+          },
+          "common_front_scaled_rmse": 0.020465517238220102,
+          "common_mean_scaled_rmse": 0.020465517238220102
+        }
+      }
+    },
+    "runtime": {
+      "main": {
+        "resets": 0,
+        "dropped": 0,
+        "catchups": 1,
+        "causal_errors": 0,
+        "mode_counts": {
+          "INITIALIZED": 1,
+          "FUSED": 57,
+          "MODEL_ONLY": 68,
+          "STOPPED": 1467
+        }
+      },
+      "candidate": {
+        "resets": 0,
+        "dropped": 0,
+        "catchups": 1,
+        "causal_errors": 0,
+        "mode_counts": {
+          "INITIALIZED": 1,
+          "FUSED": 57,
+          "MODEL_ONLY": 68,
+          "STOPPED": 1467
+        }
+      }
+    },
+    "diagnostics": {
+      "main": {
+        "ticks": 1641,
+        "timestamp_sha256": "889c6ec5d2a4aa37037074fda8b485efcd3a47c93bab8c1e49abce317ba26cde",
+        "modes": {
+          "WAITING_FOR_INITIALIZATION": 48,
+          "INITIALIZED": 1,
+          "FUSED": 57,
+          "MODEL_ONLY": 68,
+          "STOPPED": 1467
+        },
+        "phases": {
+          "coast": 1557,
+          "traction": 84
+        },
+        "changed_velocity_ticks": 0,
+        "disturbance_at_limit_ticks": 20,
+        "fault_trace": []
+      },
+      "candidate": {
+        "ticks": 1641,
+        "timestamp_sha256": "889c6ec5d2a4aa37037074fda8b485efcd3a47c93bab8c1e49abce317ba26cde",
+        "modes": {
+          "WAITING_FOR_INITIALIZATION": 48,
+          "INITIALIZED": 1,
+          "FUSED": 57,
+          "MODEL_ONLY": 68,
+          "STOPPED": 1467
+        },
+        "phases": {
+          "coast": 1557,
+          "traction": 84
+        },
+        "changed_velocity_ticks": 94,
+        "disturbance_at_limit_ticks": 20,
+        "fault_trace": []
+      }
+    }
+  },
+  "stress": []
+}
