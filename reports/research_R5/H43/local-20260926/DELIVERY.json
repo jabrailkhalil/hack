@@ -1,0 +1,69 @@
+{
+  "hypothesis_id": "R5-H43",
+  "kind": "atlas",
+  "scientific_verdict": "AUDIT_COMPLETE",
+  "source_status": "VERIFIED",
+  "data_status": "AVAILABLE_DEVELOPMENT",
+  "execution_status": "COMPLETED",
+  "publication_status": "DRAFT_PR_CREATED",
+  "pr_number": 55,
+  "pr_url": "https://github.com/jabrailkhalil/hack/pull/55",
+  "baseline_sha": "b2783206000091ab11a1c11ac3ff79082188a4fb",
+  "baseline_tree": "973d50d288e050325ee1c71a90fa8d81f2a099af",
+  "measured_audit_source_sha": "2e3268714bf229e3a0292ca69b8102f7bddde832",
+  "plan_sha": "84d37559f91ed69a3d3a02de608ac411e2bdc143",
+  "report_sha": "5a53d27716300934ed7c5377cb9bd6623cbdc094",
+  "h36_source_sha": "4bd4908821e55e08195f08bd88eb7cfab17dc3c7",
+  "h36_profile_blob": "daf4877655dbf0716c0fb1e4f17d331c84becf64",
+  "dataset_sha256": "d0b2483e13990edb8219b0d7bbcafc7ed001cce549a4d3af467069b2472e7d52",
+  "fold_sha256": "7efb88def952af5089e89c0415256b529bf6e944cda8596387569cc055192356",
+  "producer_source_hash": "945a8dd3807445e74bddea6765e6b7f7c7a14e3d420ff9a8c29a14156de3db91",
+  "component_ready": true,
+  "component_scope": "Development-only atlas, not teacher, route map, runtime candidate or official XYZ score",
+  "runtime_candidate_implemented": false,
+  "candidate_sha": null,
+  "freeze_sha": null,
+  "new_optimizer_calls": 0,
+  "validation_opened": false,
+  "test_opened": false,
+  "enabled_runtime_verified": false,
+  "ready_to_merge": false,
+  "execution_backend": "LOCAL",
+  "actions_started": false,
+  "counts": {"clean": 17, "original_crops": 56, "full_faulted_bags": 56, "source_groups": 7, "matched_clean_receiver_time_comparisons": 394221},
+  "primary": {
+    "v8": {"clean_rmse": 0.09266814298282507, "fault_rmse": 0.2375486120563008, "pooled_rmse": 0.1293056944774334, "distance_rmse": 5.310295004801444},
+    "h36": {"clean_rmse": 0.09248988094018253, "fault_rmse": 0.19330671305745648, "pooled_rmse": 0.12887189815219607, "distance_rmse": 5.409728932108304}
+  },
+  "full_faulted_bag_distance": {"v8": 6.269376947281123, "h36": 6.614371763068372},
+  "ablation_fault_rmse": {"coherent_v8_state": 0.3297924079564553, "coherent_v8_state_hold_d": 0.3624417326481639},
+  "ablation_qualifier": "Two preregistered non-selectable offline oracle interventions; not deployable runtime algorithms",
+  "artifacts": {
+    "compact_handoff": {
+      "filename": "R5_H43_atlas_handoff.zip",
+      "bytes": 1076521,
+      "sha256": "6a759f4bafe4ece014e9dd4f25b201549e317f2ca9db7b47b6c15d4443d9b011",
+      "manifest": "R5_HANDOFF.json",
+      "manifest_sha256": "73d3269f012f25f4c46787369bdb85fc218fbf149d29cd60c63eb8f20687bd5c",
+      "verified_artifacts": 53,
+      "shared_r5_verifier_passed": true,
+      "zip_crc_passed": true,
+      "contents": "Reports, error atlas, counterexamples, H36 version bindings, per-case/group/time/phase/reference tables, integrals, trace excerpts, source/patch, receipts, tests and reproduction scripts"
+    },
+    "raw_evidence": {
+      "filename": "R5_H43_raw_evidence.zip",
+      "bytes": 451139115,
+      "sha256": "339841acf3144c7dc253d037c118b311f90d258e873655f1dbad8fe556a2c7bc",
+      "npz_traces": 129,
+      "raw_measurement_databases_included": false
+    },
+    "storage": "Generated conversation attachments, not Actions artifacts. Sandbox retention not guaranteed. Compact report and source remain in GitHub."
+  },
+  "handoff_verification": {
+    "command": "python scripts/verify_handoff.py R5_HANDOFF.json --kind atlas --folds TRAIN_FOLDS.json --output-lock /tmp/H43-new-component.lock.json",
+    "executed_locally": true,
+    "verified": true,
+    "files": 53
+  },
+  "preservation": {"main_changed": false, "other_research_branches_changed": false, "old_reports_changed": false, "merge_performed": false, "auto_merge_enabled": false}
+}
