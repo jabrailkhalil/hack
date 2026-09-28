@@ -1,0 +1,105 @@
+{
+  "round": "R4-v8-fixed",
+  "hypothesis_id": "R4-H33",
+  "baseline_sha": "e3b0c9c039d2953fbfcda51231263d38ef9f1024",
+  "baseline_tree": "eae49a504bc59b5c9b408445150bef32e111956f",
+  "zip_sha256": "a8e0bfa033e0a02c460c30b02f34a5c64ece85b05003512941387d3cf1f319a2",
+  "source_status": "VERIFIED",
+  "data_status": "AVAILABLE",
+  "execution_status": "COMPLETED",
+  "mechanism_status": "FOUNDATION_ONLY",
+  "coverage_status": "SUFFICIENT_FOR_FOUNDATION",
+  "scientific_verdict": "INCONCLUSIVE",
+  "accuracy_contract_evaluated": false,
+  "accuracy_contract_passed": false,
+  "candidate_implemented": false,
+  "measured_source_sha": null,
+  "diagnostic_source_sha": "5c6571789b1c6ca45f9efc74861dc34920e6e308",
+  "freeze_sha": null,
+  "validation_opened": false,
+  "test_opened": false,
+  "enabled_runtime_verified": false,
+  "ready_to_merge": false,
+  "variants_tested": [],
+  "foundation_failure_reasons": [
+    "negative_adjacent_covariance_not_supported_in_two_thirds_groups",
+    "median_lag1_outside_preregistered_range",
+    "nonlocal_serial_structure_lag2"
+  ],
+  "foundation": {
+    "foundation_passed": false,
+    "reasons": [
+      "negative_adjacent_covariance_not_supported_in_two_thirds_groups",
+      "median_lag1_outside_preregistered_range",
+      "nonlocal_serial_structure_lag2"
+    ],
+    "qualifying_groups": [
+      "0d4506540f0e7621",
+      "bc1e4cbe924a90ce",
+      "bf69dbfe85be52b0",
+      "eeabf7d118bbcdac"
+    ],
+    "lag1_pairs": 1393,
+    "supporting_groups": 0,
+    "median_lag1": 0.42423882187303874,
+    "median_absolute_lag2": 0.5936428113078687,
+    "gls40_changed_vs_unweighted": 437491,
+    "gls40_changed_groups": 25
+  },
+  "counts": {
+    "outputs": 1370779,
+    "published_outputs": 1366299,
+    "ineligible_pairs": 34296,
+    "eligible_pairs": 441264,
+    "history_fallbacks": 2
+  },
+  "train_bags": 64,
+  "train_groups": 27,
+  "checks": {
+    "full_state_comparisons": 1370779,
+    "resets": 0
+  },
+  "publication_status": "DRAFT_PR_CREATED",
+  "publication_action": "Existing draft PR #47 continued; no second PR",
+  "pr_number": 47,
+  "branch": "research/R4-H33",
+  "execution_id": "local-H33-dataset-20260926",
+  "execution_backend": "local container; not GitHub Actions",
+  "measured_diagnostic_source_sha": "5c6571789b1c6ca45f9efc74861dc34920e6e308",
+  "report_sha": "b593f847755ea50966a9145a5beac342e11d33e7",
+  "checkpoint_sha": "b593f847755ea50966a9145a5beac342e11d33e7",
+  "checkpoint_branch": "checkpoint/R4-H33-local-20260926-train",
+  "plan_sha": "2d27233cf3bea27c8343cc42ed3c6ece4c4477a6",
+  "dataset_sha256": "d0b2483e13990edb8219b0d7bbcafc7ed001cce549a4d3af467069b2472e7d52",
+  "dataset_bytes": 256294592,
+  "train_measurements_opened": true,
+  "development_opened": false,
+  "run_ids": [],
+  "local_execution_ids": [
+    "local-H33-dataset-20260926"
+  ],
+  "previous_failed_actions_run": 36231152403,
+  "rejection_reasons": [],
+  "missing_evidence": [
+    "Registered real-data covariance prerequisite failed; runtime accuracy was not evaluated"
+  ],
+  "next_resume_step": "Stop this preregistered experiment at foundation; no runtime/development/validation under failed prerequisite",
+  "diagnostic_windows_s": [
+    0.2,
+    0.4
+  ],
+  "reference_accuracy": null,
+  "raw_evidence": {
+    "name": "R4_H33_train_evidence.zip",
+    "bytes": 56903724,
+    "sha256": "fe5b8adc3b7569f993137f451c240c35c2fd5d5b4635e60af3cbafbed5d47fe2",
+    "backend": "local sandbox, not Actions",
+    "retention": "No guaranteed sandbox retention period claimed"
+  },
+  "audit": {
+    "passed": true,
+    "numeric_fields": 3395,
+    "max_absolute_delta": 7.771561172376096e-16
+  },
+  "raw_foundation_summary_sha256": "a77e73fb6c704e1712aba384cf7c5f2974f112ac41559da3506fed77d66eda01"
+}

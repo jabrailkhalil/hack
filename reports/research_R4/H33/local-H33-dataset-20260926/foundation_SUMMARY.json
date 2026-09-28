@@ -1,0 +1,73 @@
+{
+  "round": "R4-v8-fixed",
+  "hypothesis_id": "R4-H33",
+  "baseline_sha": "e3b0c9c039d2953fbfcda51231263d38ef9f1024",
+  "baseline_tree": "eae49a504bc59b5c9b408445150bef32e111956f",
+  "zip_sha256": "a8e0bfa033e0a02c460c30b02f34a5c64ece85b05003512941387d3cf1f319a2",
+  "source_status": "VERIFIED",
+  "data_status": "AVAILABLE",
+  "execution_status": "COMPLETED",
+  "publication_status": "NOT_ATTEMPTED",
+  "mechanism_status": "FOUNDATION_ONLY",
+  "coverage_status": "SUFFICIENT_FOR_FOUNDATION",
+  "scientific_verdict": "INCONCLUSIVE",
+  "accuracy_contract_evaluated": false,
+  "accuracy_contract_passed": false,
+  "candidate_implemented": false,
+  "measured_source_sha": null,
+  "diagnostic_source_sha": "5c6571789b1c6ca45f9efc74861dc34920e6e308",
+  "report_sha": null,
+  "freeze_sha": null,
+  "validation_opened": false,
+  "test_opened": false,
+  "enabled_runtime_verified": false,
+  "ready_to_merge": false,
+  "variants_tested": [],
+  "run_ids": [
+    "local-H33-dataset-20260926"
+  ],
+  "rejection_reasons": [],
+  "foundation_failure_reasons": [
+    "negative_adjacent_covariance_not_supported_in_two_thirds_groups",
+    "median_lag1_outside_preregistered_range",
+    "nonlocal_serial_structure_lag2"
+  ],
+  "missing_evidence": [
+    "white-endpoint residual covariance prerequisite"
+  ],
+  "next_resume_step": "No runtime/accuracy after failed prerequisite; new protocol required",
+  "foundation": {
+    "foundation_passed": false,
+    "reasons": [
+      "negative_adjacent_covariance_not_supported_in_two_thirds_groups",
+      "median_lag1_outside_preregistered_range",
+      "nonlocal_serial_structure_lag2"
+    ],
+    "qualifying_groups": [
+      "0d4506540f0e7621",
+      "bc1e4cbe924a90ce",
+      "bf69dbfe85be52b0",
+      "eeabf7d118bbcdac"
+    ],
+    "lag1_pairs": 1393,
+    "supporting_groups": 0,
+    "median_lag1": 0.42423882187303874,
+    "median_absolute_lag2": 0.5936428113078687,
+    "gls40_changed_vs_unweighted": 437491,
+    "gls40_changed_groups": 25
+  },
+  "counts": {
+    "outputs": 1370779,
+    "published_outputs": 1366299,
+    "ineligible_pairs": 34296,
+    "eligible_pairs": 441264,
+    "history_fallbacks": 2
+  },
+  "train_bags": 64,
+  "train_groups": 27,
+  "checks": {
+    "full_state_comparisons": 1370779,
+    "resets": 0
+  },
+  "elapsed_s": 89.88373108700003
+}

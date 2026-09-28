@@ -1,0 +1,79 @@
+name: R4-H33 train increment covariance foundation
+on:
+  push:
+    branches: [research/R4-H33]
+    paths: [research/R4/H33/FOUNDATION_READY.json]
+permissions:
+  contents: write
+jobs:
+  foundation:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - name: Initialize new evidence and verify diagnostic source
+        run: |
+          set -euo pipefail
+          OUT="$RUNNER_TEMP/H33-foundation"
+          mkdir -p "$OUT/source"
+          echo "OUT=$OUT" >> "$GITHUB_ENV"
+          cp research/R4/H33/*.* "$OUT/source/"
+          python - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          p=Path('research/R4/H33')
+          for f,h in json.loads((p/'FOUNDATION_READY.json').read_text())['source_sha256'].items():
+              assert hashlib.sha256((p/f).read_bytes()).hexdigest()==h,f
+          print('Published diagnostic bytes equal locally tested files')
+          PY
+          python -m pip install -r requirements-research.txt > "$OUT/dependencies.log" 2>&1
+      - name: All source tests before measurement access
+        run: |
+          set -euo pipefail
+          PYTHONPATH=src/reserve_odometry python -m unittest discover -s tests -v > "$OUT/legacy-tests.log" 2>&1
+          python -m unittest discover -s research/tests -v > "$OUT/research-tests.log" 2>&1
+          python research/R4/H33/test_foundation.py > "$OUT/H33-tests.log" 2>&1
+          python -m compileall -q src research/R4/H33
+      - name: Selectively extract original train only
+        run: python research/R4/H33/prepare_data.py --roles train --journal "$OUT/extraction-train.json"
+      - name: One passive train foundation pass without runtime candidate
+        run: |
+          set -euo pipefail
+          python research/R4/H33/foundation.py --output "$OUT/foundation" 2>&1 | tee "$OUT/foundation.log"
+      - name: Preserve compact immutable checkpoint on its own branch
+        if: always()
+        run: |
+          set -eu
+          if ! test -d "$OUT"; then exit 0; fi
+          export DEST="reports/research_R4/H33/$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git switch -c "checkpoint/R4-H33-foundation-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT" "$GITHUB_SHA"
+          python - <<'PY'
+          import hashlib,json,os,shutil
+          from pathlib import Path
+          src=Path(os.environ['OUT']);dest=Path(os.environ['DEST']);dest.mkdir(parents=True,exist_ok=False)
+          manifest={str(p.relative_to(src)):{'sha256':hashlib.sha256(p.read_bytes()).hexdigest(),'bytes':p.stat().st_size} for p in sorted(src.rglob('*')) if p.is_file()}
+          (dest/'EVIDENCE_MANIFEST.json').write_text(json.dumps(dict(diagnostic_sha=os.environ['GITHUB_SHA'],run_id=os.environ['GITHUB_RUN_ID'],attempt=os.environ['GITHUB_RUN_ATTEMPT'],retention_days=30,files=manifest),indent=2)+'\n')
+          for p in src.rglob('*'):
+              if p.is_file() and p.suffix in ('.json','.csv','.log') and 'source' not in p.relative_to(src).parts:
+                  q=dest/p.relative_to(src);q.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(p,q)
+          PY
+          git add "$DEST"
+          git commit -m "research(R4-H33): retain train foundation $GITHUB_RUN_ID/$GITHUB_RUN_ATTEMPT"
+          git push origin "HEAD:refs/heads/checkpoint/R4-H33-foundation-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          git rev-parse HEAD > "$OUT/checkpoint-commit.txt"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: R4-H33-foundation-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/H33-foundation/
+          retention-days: 30
