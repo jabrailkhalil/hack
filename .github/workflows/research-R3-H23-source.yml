@@ -1,0 +1,30 @@
+name: R3-H23 source only
+on:
+  push:
+    branches: [research/R3-H23]
+    paths: [.github/workflows/research-R3-H23-source.yml]
+permissions:
+  contents: read
+jobs:
+  source:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Export pinned source and specified prior evidence, no dataset
+        run: |
+          set -eu
+          mkdir -p "$RUNNER_TEMP/H23-source/prior"
+          git fetch --no-tags origin e3b0c9c039d2953fbfcda51231263d38ef9f1024 af5ee198617e5ecb262e78c529cea3581927557b 476ffef5d4135377dc0215572cdabed520b6acfa eaba504f35b546bc5149b476b84fb0c0d749e897 abfec83ef52cf0c7c0b210a273c369613a7e091c
+          git archive --format=zip --output="$RUNNER_TEMP/H23-source/baseline.zip" e3b0c9c039d2953fbfcda51231263d38ef9f1024
+          git archive af5ee198617e5ecb262e78c529cea3581927557b reports/research_R2/H16/H16-36184448864-1/train research/R2/H16 | tar -x -C "$RUNNER_TEMP/H23-source/prior"
+          git show 476ffef5d4135377dc0215572cdabed520b6acfa:reports/research_R2/H16/H16-36184448864-1/REPORT.md > "$RUNNER_TEMP/H23-source/prior/H16_REPORT.md"
+          git show eaba504f35b546bc5149b476b84fb0c0d749e897:reports/research_R2/H18/36185008785-1/REPORT.md > "$RUNNER_TEMP/H23-source/prior/H18_PR37_REPORT.md"
+          git show abfec83ef52cf0c7c0b210a273c369613a7e091c:reports/research_R2/H18/covariance-36186808559-1/REPORT.md > "$RUNNER_TEMP/H23-source/prior/H18_PR38_REPORT.md"
+          cd "$RUNNER_TEMP/H23-source"
+          find . -type f ! -name SHA256SUMS -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS
+      - uses: actions/upload-artifact@v4
+        with:
+          name: R3-H23-source-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/H23-source/
+          retention-days: 7

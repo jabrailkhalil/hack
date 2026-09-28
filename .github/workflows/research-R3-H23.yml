@@ -1,0 +1,126 @@
+name: R3-H23 single outage physics experiment
+on:
+  push:
+    branches: [research/R3-H23]
+    paths: [research/R3/H23/READY.json]
+permissions:
+  contents: write
+jobs:
+  measure:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - name: Prepare evidence and pinned source identities
+        run: |
+          set -euo pipefail
+          OUT="$RUNNER_TEMP/H23-run"
+          mkdir -p "$OUT/source"
+          echo "OUT=$OUT" >> "$GITHUB_ENV"
+          cp research/R3/H23/*.* "$OUT/source/"
+          python -m pip install -r requirements-research.txt > "$OUT/dependencies.log" 2>&1
+          git fetch --no-tags origin af5ee198617e5ecb262e78c529cea3581927557b
+          python - <<'PY' | tee "$OUT/identity.log"
+          import hashlib,json,subprocess
+          from pathlib import Path
+          root=Path('research/R3/H23');ready=json.loads((root/'READY.json').read_text())
+          for f,h in ready['source_sha256'].items():
+              assert hashlib.sha256((root/f).read_bytes()).hexdigest()==h, f
+          b=json.loads((root/'H16_B.json').read_text())
+          raw=subprocess.check_output(['git','show',b['origin_commit']+':'+b['origin_path']])
+          results=subprocess.check_output(['git','show',b['origin_commit']+':reports/research_R2/H16/H16-36184448864-1/train/results.json'])
+          assert hashlib.sha256(raw).hexdigest()==b['origin_sha256']
+          assert hashlib.sha256(results).hexdigest()==b['results_sha256']
+          assert json.loads(results)['models']['B']==json.loads(raw)
+          assert json.loads(raw)['config']==b['config']
+          print('Candidate hashes and exact H16-B identity PASS')
+          PY
+      - name: Build and implementation integrity before data
+        run: |
+          set -euo pipefail
+          python -m compileall -q src research/R3/H23
+          PYTHONPATH=src/reserve_odometry python -m unittest discover -s tests -v > "$OUT/legacy-tests.log" 2>&1
+          python -m unittest discover -s research/tests -v > "$OUT/research-tests.log" 2>&1
+          python research/R3/H23/test_h23.py > "$OUT/H23-tests.log" 2>&1
+      - name: Extract only all development groups
+        run: python research/R3/H23/prepare_data.py --roles development --journal "$OUT/extraction-development.json"
+      - name: Single paired development including full-distance and v8 safety suites
+        run: |
+          set -euo pipefail
+          python research/R3/H23/run.py --stage development --output "$OUT/development" 2>&1 | tee "$OUT/development.log"
+      - name: Step CPU and replay CPU wall after warmup in AB BA pairs
+        run: |
+          set -euo pipefail
+          python research/R3/H23/cost.py --output "$OUT/cost" 2>&1 | tee "$OUT/cost.log"
+      - name: Read prospective development admission
+        id: gate
+        run: |
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json,os
+          from pathlib import Path
+          s=json.loads((Path(os.environ['OUT'])/'development/SUMMARY.json').read_text())
+          print('admitted='+str(s['accuracy_contract_passed']).lower())
+          PY
+      - name: Publish separate freeze only after all development gates pass
+        if: steps.gate.outputs.admitted == 'true'
+        run: |
+          set -euo pipefail
+          python research/R3/H23/run.py --stage freeze --development "$OUT/development" --output "$OUT/FREEZE.json"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          branch="checkpoint/R3-H23-freeze-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          path="reports/research_R3/H23/$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT/FREEZE.json"
+          git switch -c "$branch"
+          mkdir -p "$(dirname "$path")"
+          cp "$OUT/FREEZE.json" "$path"
+          git add "$path"
+          git commit -m "research(R3-H23): publish admitted freeze before validation IO"
+          git push origin "HEAD:refs/heads/$branch"
+          echo "H23_FREEZE_COMMIT=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
+          echo "H23_FREEZE_PATH=$path" >> "$GITHUB_ENV"
+          git rev-parse HEAD > "$OUT/freeze-commit.txt"
+      - name: Exactly one admitted validation pass
+        if: steps.gate.outputs.admitted == 'true'
+        run: |
+          set -euo pipefail
+          python research/R3/H23/prepare_data.py --roles validation --journal "$OUT/extraction-validation.json"
+          python research/R3/H23/run.py --stage validation --freeze "$OUT/FREEZE.json" --output "$OUT/validation" 2>&1 | tee "$OUT/validation.log"
+      - name: Preserve compact checkpoint without changing research branch
+        if: always()
+        run: |
+          set -eu
+          if ! test -d "$OUT"; then exit 0; fi
+          export DEST="reports/research_R3/H23/$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git switch -c "checkpoint/R3-H23-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT" "$GITHUB_SHA"
+          mkdir -p "$DEST"
+          python - <<'PY'
+          import hashlib,json,os,shutil
+          from pathlib import Path
+          out=Path(os.environ['OUT']);dest=Path(os.environ['DEST'])
+          manifest={str(p.relative_to(out)):{'sha256':hashlib.sha256(p.read_bytes()).hexdigest(),'bytes':p.stat().st_size} for p in sorted(out.rglob('*')) if p.is_file()}
+          (dest/'evidence_manifest.json').write_text(json.dumps(dict(source_commit=os.environ['GITHUB_SHA'],run_id=os.environ['GITHUB_RUN_ID'],attempt=os.environ['GITHUB_RUN_ATTEMPT'],artifact_retention_days=30,files=manifest),indent=2)+'\n')
+          for rel in ('development/SUMMARY.json','validation/SUMMARY.json','cost/cost.json','freeze-commit.txt'):
+              p=out/rel
+              if p.exists():
+                  d=dest/rel;d.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(p,d)
+          PY
+          git add "$DEST"
+          git commit -m "research(R3-H23): preserve compact evidence $GITHUB_RUN_ID/$GITHUB_RUN_ATTEMPT"
+          git push origin "HEAD:refs/heads/checkpoint/R3-H23-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          git rev-parse HEAD > "$OUT/checkpoint-commit.txt"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: R3-H23-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/H23-run/
+          retention-days: 30
