@@ -1,0 +1,7 @@
+Actual WolframLanguageEvaluator result, 2026-09-26:
+Out[1]= <|"sigmoid_derivative_identity" -> 0, "binary_loss_gradient_identity" -> 0, "loss_curvature" -> E^z/(1 + E^z)^2, "curvature_nonnegative" -> True, "gain_derivative" -> -(pp/(pp + rr)^2), "inflated_gain_no_larger" -> True, "Joseph_identity" -> 0, "weighted_noise_floor" -> True|>
+No warning in this explicit symbolic evaluation.
+
+Scope: positive scalar prior/variance, nonnegative sample weights and L2 penalty. These identities do not prove calibrated fault probabilities, correct teacher labels, nonlinear/switched observer stability, unchanged gate trajectories after intervention, or real-data accuracy.
+
+Prior automatic WolframContext natural-language retrieval was NOT USED AS AN ORACLE: it misinterpreted the requested sigmoid derivative and treated Kalman symbols as entities. Only the explicit code in check.wl and the result above are formula evidence. No model fitting or simulation was performed by Wolfram.
