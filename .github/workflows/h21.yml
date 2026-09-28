@@ -1,0 +1,100 @@
+name: R2 H21 reachable interval
+on:
+  push:
+    branches: [research/round2-H21]
+    paths: ['research/R2/H21/**', 'src/reserve_odometry/reserve_odometry/reachable_interval.py', '.github/workflows/h21.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  experiment:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+      OUT: reports/research_R2/H21/${{ github.run_id }}-${{ github.run_attempt }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - name: Pin source and dependencies; retain source patch
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF_NAME" = research/round2-H21
+          mkdir -p "$OUT" "$RUNNER_TEMP/h21-source"
+          git rev-parse HEAD > "$OUT/MEASURED_COMMIT.txt"
+          python -m pip install -r requirements-research.txt 2>&1 | tee "$OUT/dependencies.log"
+          git diff 65bba39ed05c781f3f69a65c02f69931152cbfd9 HEAD > "$RUNNER_TEMP/h21-source/H21.patch"
+          git archive --format=zip HEAD -o "$RUNNER_TEMP/h21-source/source.zip"
+          git bundle create "$RUNNER_TEMP/h21-source/source.bundle" HEAD
+          cp research/R2/H21/PLAN.md research/R2/H21/SOURCES.md research/R2/H21/wolfram* "$OUT/"
+          cp research/R2/H21/core-hooks.patch "$OUT/"
+      - name: Unchanged baseline tests and candidate checks before any data
+        run: |
+          set -euo pipefail
+          PYTHONPATH=src/reserve_odometry python -m unittest discover -s tests -v 2>&1 | tee "$OUT/baseline-unit.log"
+          python -m unittest discover -s research/tests -v 2>&1 | tee "$OUT/research-integrity.log"
+          python research/R2/H21/tests.py -v 2>&1 | tee "$OUT/h21-tests.log"
+          python -m compileall -q src research/R2/H21
+          python research/R2/H21/tests.py --diagnostics "$OUT/synthetic" 2>&1 | tee "$OUT/synthetic.log"
+          git apply --check research/R2/H21/core-hooks.patch
+      - name: Obtain audited dataset; train vehicle-only replay
+        run: |
+          set -euo pipefail
+          python tools/get_dataset.py 2>&1 | tee "$OUT/dataset.log"
+          python research/R2/H21/run.py --stage train --output "$OUT/train" 2>&1 | tee "$OUT/train.log"
+      - name: All true development groups; prevalidation mechanism and safety gate
+        id: development
+        run: |
+          set -euo pipefail
+          python research/R2/H21/run.py --stage development --output "$OUT/development" 2>&1 | tee "$OUT/development.log"
+          python - <<'PY'
+          import json,os,pathlib
+          d=json.loads((pathlib.Path(os.environ['OUT'])/'development/decision.json').read_text())
+          with open(os.environ['GITHUB_OUTPUT'],'a') as f:f.write('authorize='+str(d['validation_authorized']).lower()+'\n')
+          PY
+      - name: Publish separate freeze BEFORE conditional validation
+        if: steps.development.outputs.authorize == 'true'
+        run: |
+          set -euo pipefail
+          python research/R2/H21/run.py --stage freeze --development "$OUT/development" --output "$OUT/freeze" 2>&1 | tee "$OUT/freeze.log"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git switch -c "checkpoint/R2-H21-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          git add -f "$OUT"
+          git commit -m 'research(H21): freeze candidate before validation'
+          git push origin "HEAD:refs/heads/checkpoint/R2-H21-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          git rev-parse HEAD > "$OUT/FREEZE_COMMIT.txt"
+      - name: One unchanged paired validation if predeclared gate passed
+        if: steps.development.outputs.authorize == 'true'
+        run: |
+          set -euo pipefail
+          python research/R2/H21/run.py --stage validation --freeze "$OUT/freeze" --output "$OUT/validation" 2>&1 | tee "$OUT/validation.log"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: R2-H21-evidence-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.OUT }}/
+          retention-days: 90
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: R2-H21-source-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/h21-source/
+          retention-days: 90
+      - name: Preserve completed evidence without touching main or research HEAD
+        if: always()
+        run: |
+          set -euo pipefail
+          test -d "$OUT" || exit 0
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          branch="checkpoint/R2-H21-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          if [ "$(git branch --show-current)" != "$branch" ]; then git switch -c "$branch"; fi
+          git add -f "$OUT"
+          git diff --cached --quiet || git commit -m "research(H21): preserve evidence $GITHUB_RUN_ID/$GITHUB_RUN_ATTEMPT"
+          git push origin "HEAD:refs/heads/$branch"

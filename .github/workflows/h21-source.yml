@@ -1,0 +1,26 @@
+name: H21 fixed source export
+on:
+  push:
+    branches: [research/round2-H21]
+    paths: ['.github/workflows/h21-source.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Export only fixed sources, not measurement payloads
+        run: |
+          mkdir -p "$RUNNER_TEMP/h21-source"
+          git archive --format=zip 65bba39ed05c781f3f69a65c02f69931152cbfd9 -o "$RUNNER_TEMP/h21-source/baseline.zip"
+          git bundle create "$RUNNER_TEMP/h21-source/source.bundle" HEAD
+          git rev-parse HEAD > "$RUNNER_TEMP/h21-source/export_commit.txt"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: H21-fixed-source-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/h21-source/

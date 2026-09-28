@@ -1,0 +1,20 @@
+--- a/src/reserve_odometry/reserve_odometry/core.py
++++ b/src/reserve_odometry/reserve_odometry/core.py
+@@ -313,6 +313,7 @@
+             for i in range(2):
+                 if i not in accepted:
+                     statuses[i] = 'AMBIGUOUS_PAIR'
++        accepted = self._supervise_updates(t, predicted, samples, statuses, accepted)
+         self.v = predicted
+         self.pv = p_prior
+         mode = 'MODEL_ONLY'
+@@ -405,6 +406,9 @@
+         a_output = (self.v - previous_v) / dt if dt > 0 else 0.0
+         return self._output(t, a_output, mode, statuses, command_stale)
+ 
++    def _supervise_updates(self, t, predicted, samples, statuses, accepted):
++        return accepted
++
+     def _output(self, t, a, mode, statuses, command_stale):
+         estimate = Estimate(t, self.s, self.v, a, self.pv, self.sigma_s ** 2,
+                             self.disturbance, mode, statuses[0], statuses[1], command_stale)

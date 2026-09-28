@@ -1,0 +1,57 @@
+{
+  "stage": "development",
+  "verdict": "INCONCLUSIVE",
+  "validation_authorized": false,
+  "mechanism_covered": false,
+  "active_ticks": 158403,
+  "veto_ticks": 9,
+  "veto_groups": [
+    "664cca45aeb0db23",
+    "70bb14d1c90f301f",
+    "8269991eafa82c45"
+  ],
+  "reference_classification": {
+    "unlabelled": 8,
+    "accepted_far_from_reference": 1940,
+    "active_missed_rejection_proxy": 1110,
+    "fault_consistent_rejection": 9
+  },
+  "admission": {
+    "summary": {
+      "r2_baseline": {
+        "clean_rmse": 0.09266814298282507,
+        "fault_rmse": 0.2375486120563008,
+        "distance_rmse": 5.310295004801444,
+        "samples": 394221,
+        "pooled_rmse": 0.1293056944774334,
+        "false_stops_clean": 0,
+        "false_stops_fault": 0,
+        "unrecovered": 4
+      },
+      "h21_envelope": {
+        "clean_rmse": 0.09266814298282507,
+        "fault_rmse": 0.2375486120563008,
+        "distance_rmse": 5.310295004801444,
+        "samples": 394221,
+        "pooled_rmse": 0.1293056944774334,
+        "false_stops_clean": 0,
+        "false_stops_fault": 0,
+        "unrecovered": 4
+      }
+    },
+    "gains": {
+      "clean_rmse": 0.0,
+      "fault_rmse": 0.0
+    },
+    "reasons": [
+      "insufficient_gain"
+    ],
+    "passed": false,
+    "missing": false
+  },
+  "unsafe_reasons": [],
+  "diagnostic_suite_separate": true,
+  "test_evaluated": false,
+  "ready_to_merge": false,
+  "ros_benchmark": "not run; required only if accuracy passes"
+}

@@ -1,0 +1,12 @@
+Actual WolframLanguageEvaluator output, two calls on 2026-09-25. Formatting outer JSON quoting removed; mathematical output preserved.
+
+<|"observability_matrix" -> {{1, 0, 1}, {0, 1, 0}, {0, 0, 0}}, "rank" -> 2, "nullspace" -> {{-1, 0, 1}}, "offset_invariance" -> {0}, "resistance_positive_derivative" -> 2*qq*v + (rr*Sech[v/b]^2)/b, "resistance_negative_derivative" -> -2*qq*v + (rr*Sech[v/b]^2)/b, "brake_derivative" -> -((bb*q*Sech[v/b]^2)/b), "rho_between_zero_one" -> True, "drive_width" -> ahi*rho - alo*rho + thi - rho*thi - tlo + rho*tlo, "velocity_width_increment" -> ghi*h - glo*h, "clip_preserves_order" -> True, "dt_zero_drive" -> aa, "drive_integral" -> aa*(tau - tau/E^(h/tau)) + (h + (-1 + E^(-(h/tau)))*tau)*tt, "interval_sum_example" -> Interval[{-1.6000000000000003, 2.6000000000000005}]|>
+
+[INFO] Interpreted "1 meter per second" as: Quantity[1, "Meters"/"Seconds"]
+[INFO] Interpreted "1 meter per second squared" as: Quantity[1, "Meters"/"Seconds"^2]
+[INFO] Interpreted "1 second" as: Quantity[1, AmbiguityList[{"Seconds", "Arcseconds", "SiderealSeconds", "SecondsOfRightAscension"}, "second"]]
+[INFO] Interpreted "1 newton" as: Quantity[1, "Newtons"]
+[INFO] Interpreted "1 kilogram" as: Quantity[1, AmbiguityList[{"Kilograms", "KilogramsForce"}, "kilogram"]]
+<|"acceleration_times_time" -> Quantity[1, "Meters"/"Seconds"], "force_over_mass" -> Quantity[1, "Newtons"/"Kilograms"], "velocity_plus_increment" -> Quantity[2, "Meters"/"Seconds"], "velocity_integral" -> Quantity[1, "Meters"], "decay_argument" -> 1|>
+
+Scope: algebra/units/ideal-model observability only, not identified bounds, not empirical proof of coverage or improvement. The force/mass output retains N/kg rather than rewriting it; no invented conversion output.
