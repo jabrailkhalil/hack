@@ -1,0 +1,250 @@
+{
+  "round": "R2-v7-fixed",
+  "hypothesis": "H18",
+  "verdict": "REJECTED",
+  "mechanism": "ACTIVE",
+  "ready_to_merge": false,
+  "baseline_commit": "65bba39ed05c781f3f69a65c02f69931152cbfd9",
+  "measured_source_commit": "2ddf918ec990085f070caed003e24b616ce27fe8",
+  "plan_commit": "560222f56800d74b459604228a89ace2260335c3",
+  "prevalidation_freeze_commit": "4791b9fa5d75f88c61d3cda39aa120fd32c5fba9",
+  "raw_evidence_commit": "3d95d5ef4258ed6d5bfa439d5a916dddcb5c4d0f",
+  "research_run": 36185008785,
+  "ordinary_ci_run": 36185008551,
+  "candidate": {
+    "name": "fixed_consider",
+    "pdd": 0.026281054723820793,
+    "enabled": true,
+    "config": {
+      "mass_kg": 40000,
+      "wheel_radius_m": 0.33,
+      "gear_ratio": 6,
+      "efficiency": 0.9,
+      "total_motor_torque_nm": 2905.0616664738573,
+      "max_power_w": 280873.5334860941,
+      "max_brake_force_n": 45568.80940352644,
+      "rolling_force_n": 2089.7308146696687,
+      "quadratic_drag_n_s2_m2": 5.021948020794408e-17,
+      "actuator_tau_s": 0.3927619145850434,
+      "command_deadband": 0.04,
+      "command_exponent": 0.5207432400037213,
+      "travel_direction": 1,
+      "max_speed_mps": 40,
+      "max_accel_mps2": 3,
+      "wheel_sigma_mps": 0.1,
+      "process_noise_v": 0.1,
+      "max_age_s": 0.25,
+      "command_timeout_s": 0.5,
+      "pair_skew_s": 0.1,
+      "disagreement_mps": 0.7,
+      "wheel_rate_limit_mps2": 4,
+      "rate_noise_margin_mps": 0.25,
+      "innovation_floor_mps": 0.8,
+      "innovation_cap_mps": 3,
+      "stop_speed_mps": 0.07,
+      "stop_model_speed_mps": 0.25,
+      "stop_dwell_s": 0.5,
+      "adaptation_tau_s": 0.5,
+      "disturbance_limit_mps2": 0.6,
+      "max_step_s": 0.2,
+      "reacquire_dwell_s": 0.8,
+      "reacquire_max_residual_mps": 8,
+      "reacquire_step_mps": 0.15,
+      "reacquire_min_speed_mps": 0.4,
+      "reacquire_accel_margin_mps2": 0.8,
+      "wheel_time_compensation": 0
+    },
+    "readout": {
+      "gain": 1,
+      "holdoff_s": 0.5
+    }
+  },
+  "train": {
+    "bags": 64,
+    "bags_with_blocks": 60,
+    "trusted_residuals": 441264,
+    "blocks": 70426,
+    "groups": 25,
+    "clipped_blocks": 209
+  },
+  "development": {
+    "bags": 17,
+    "groups": 7,
+    "reference_groups": 6,
+    "original_faults": 56,
+    "diagnostics": 42,
+    "decision": {
+      "summary": {
+        "baseline": {
+          "clean_rmse": 0.09266814298282507,
+          "fault_rmse": 0.2375486120563008,
+          "distance_rmse": 5.310295004801444,
+          "samples": 394221,
+          "pooled_rmse": 0.1293056944774334,
+          "false_stops_clean": 0,
+          "false_stops_fault": 0,
+          "unrecovered": 4,
+          "clean_mae": 0.03493335290464455,
+          "clean_signed_bias": 0.0063906774202189785,
+          "fault_mae": 0.15379652933081722,
+          "fault_signed_bias": 0.01117030785164182,
+          "mean_confirmed_recovery_s": 0.7243582848749885
+        },
+        "candidate": {
+          "clean_rmse": 0.092667414565663,
+          "fault_rmse": 0.23754634481201758,
+          "distance_rmse": 5.310253207281774,
+          "samples": 394221,
+          "pooled_rmse": 0.12930487914682123,
+          "false_stops_clean": 0,
+          "false_stops_fault": 0,
+          "unrecovered": 4,
+          "clean_mae": 0.03493293815917758,
+          "clean_signed_bias": 0.0063906118644063105,
+          "fault_mae": 0.1537624691672131,
+          "fault_signed_bias": 0.01121014151416248,
+          "mean_confirmed_recovery_s": 0.7243582848749885
+        }
+      },
+      "rejections": [],
+      "passed": true,
+      "changes_percent": {
+        "clean_rmse": -0.0007860491627598165,
+        "fault_rmse": -0.0009544338161249222,
+        "pooled_rmse": -0.0006305450161780968,
+        "distance_rmse": -0.0007871035343942623
+      },
+      "stage": "development",
+      "safety_rejections": [],
+      "coverage": {
+        "outages": 548,
+        "groups": 6,
+        "active_ticks": 8070,
+        "changed_accepted_updates": 7674
+      },
+      "coverage_sufficient": true,
+      "candidate": "fixed_consider",
+      "pdd": 0.026281054723820793,
+      "test_evaluated": false,
+      "ready_to_merge": false,
+      "verdict": "READY_FOR_FROZEN_VALIDATION",
+      "mechanism": "ACTIVE"
+    },
+    "baseline_reproduction": {
+      "bags": 17,
+      "all_direct_canonical_exact": true,
+      "all_feature_off_exact": true
+    }
+  },
+  "validation": {
+    "bags": 19,
+    "groups": 10,
+    "reference_groups": 9,
+    "clean_receiver_pairs": 30,
+    "original_faults": 76,
+    "original_receiver_comparisons": 120,
+    "diagnostic_scenarios": 57,
+    "decision": {
+      "summary": {
+        "baseline": {
+          "clean_rmse": 0.1145498613174081,
+          "fault_rmse": 0.5382867826008657,
+          "distance_rmse": 4.595480653017927,
+          "samples": 698891,
+          "pooled_rmse": 0.21640679415488998,
+          "false_stops_clean": 18,
+          "false_stops_fault": 0,
+          "unrecovered": 0,
+          "clean_mae": 0.04754965140353143,
+          "clean_signed_bias": -0.01597515595189168,
+          "fault_mae": 0.2253169737615307,
+          "fault_signed_bias": -0.06592457342298272,
+          "mean_confirmed_recovery_s": 0.22625520338887986
+        },
+        "candidate": {
+          "clean_rmse": 0.114549323955024,
+          "fault_rmse": 0.5382812844574874,
+          "distance_rmse": 4.595558379664259,
+          "samples": 698891,
+          "pooled_rmse": 0.21640628814354634,
+          "false_stops_clean": 18,
+          "false_stops_fault": 0,
+          "unrecovered": 0,
+          "clean_mae": 0.04754924487792306,
+          "clean_signed_bias": -0.015975617707808736,
+          "fault_mae": 0.22530149014077472,
+          "fault_signed_bias": -0.06596333824871209,
+          "mean_confirmed_recovery_s": 0.22625520338887986
+        }
+      },
+      "rejections": [
+        "insufficient_gain"
+      ],
+      "passed": false,
+      "changes_percent": {
+        "clean_rmse": -0.0004691078434482243,
+        "fault_rmse": -0.0010214152671217391,
+        "pooled_rmse": -0.00023382414845452004,
+        "distance_rmse": 0.0016913714190103235
+      },
+      "stage": "validation",
+      "safety_rejections": [],
+      "coverage": {
+        "outages": 679,
+        "groups": 10,
+        "active_ticks": 11107,
+        "changed_accepted_updates": 9543
+      },
+      "coverage_sufficient": true,
+      "candidate": "fixed_consider",
+      "pdd": 0.026281054723820793,
+      "test_evaluated": false,
+      "ready_to_merge": false,
+      "verdict": "REJECTED",
+      "mechanism": "ACTIVE"
+    },
+    "baseline_reproduction": {
+      "bags": 19,
+      "all_direct_canonical_exact": true,
+      "all_feature_off_exact": true
+    }
+  },
+  "original_recovery_all_120_identical": true,
+  "original_recovery_pooled_mean_s": 0.25484017346665894,
+  "checks": {
+    "unit": 144,
+    "research_integrity": 43,
+    "h18": 16,
+    "compile": true,
+    "ordinary_ci_all_four_jobs_passed": true,
+    "enabled_h18_installed_ros_benchmark": false,
+    "extra_local_canonical_disabled_ticks": 12000,
+    "patch_source_hashes_verified": 29
+  },
+  "cost": {
+    "replay_cpu_median_baseline_s": 1.4716773044999982,
+    "replay_cpu_median_candidate_s": 1.6417485159999927,
+    "replay_cpu_change_percent": 11.556284178600972,
+    "step_cpu_median_baseline_s": 0.9890516929999933,
+    "step_cpu_median_candidate_s": 1.145907357999988,
+    "step_cpu_change_percent": 15.859197867021479,
+    "process_cumulative_rss_bytes": 218091520,
+    "rss_scope": "whole offline process, NOT isolated runtime RSS"
+  },
+  "data_access": {
+    "train_unique": 64,
+    "development_unique": 17,
+    "validation_unique": 19,
+    "train_gnss": false,
+    "test_payloads": false
+  },
+  "limitations": [
+    "Reused validation is not independent final test",
+    "Fixed Pdd is a wheel-derived proxy second moment, not calibrated variance",
+    "Positive-correlation reanchoring bounds local forward scalar variance only for fixed marginals",
+    "No new installed enabled H18 ROS timing/RSS benchmark",
+    "Scite monthly limit: no citation contexts/full text inspected",
+    "Separate diagnostic post-dropout common error is worse despite identical false-acceptance counts"
+  ],
+  "artifact_sha256": "4bd04a048909741d1f7d1e864c5d917f03467945780049119cbab6cfa9347864"
+}

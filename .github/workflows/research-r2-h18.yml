@@ -1,0 +1,110 @@
+name: R2 H18 covariance-only train and development gate
+on:
+  push:
+    branches: [research/round2-H18]
+    paths: [research/R2/H18/RUN, .github/workflows/research-r2-h18.yml]
+permissions:
+  contents: write
+jobs:
+  research:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 25
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - name: Configure unique output and pinned dependencies
+        run: |
+          set -euo pipefail
+          OUT="reports/research_R2/H18/$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          echo "OUT=$OUT" >> "$GITHUB_ENV"
+          mkdir -p "$OUT/checks"
+          cp research/R2/H18/PLAN.md "$OUT/PLAN.md"
+          python -m pip install -r requirements-research.txt 2>&1 | tee "$OUT/checks/dependencies.log"
+          git diff 65bba39ed05c781f3f69a65c02f69931152cbfd9 "$GITHUB_SHA" -- src/reserve_odometry/reserve_odometry/outage_uncertainty.py research/R2/H18 > "$OUT/algorithm-and-runner.patch"
+          git rev-parse HEAD > "$OUT/MEASURED_SOURCE_COMMIT"
+      - name: Compile and unchanged suites plus H18 safety and factory checks
+        run: |
+          set -euo pipefail
+          PYTHONPATH=src/reserve_odometry python -m unittest discover -s tests -v 2>&1 | tee "$OUT/checks/unit.log"
+          python -m unittest discover -s research/tests -v 2>&1 | tee "$OUT/checks/integrity.log"
+          PYTHONPATH=src/reserve_odometry python -m unittest discover -s research/R2/H18 -p 'test_*.py' -v 2>&1 | tee "$OUT/checks/h18.log"
+          python -m compileall -q src tools research/R2/H18
+          echo PASS > "$OUT/checks/compile.txt"
+      - name: Download exact pinned organizer archive
+        run: |
+          set -euo pipefail
+          python tools/get_dataset.py 2>&1 | tee "$OUT/checks/dataset.log"
+      - name: Train only on wheel-derived residuals
+        run: |
+          set -euo pipefail
+          python research/R2/H18/run.py train --output "$OUT/train" 2>&1 | tee "$OUT/checks/train.log"
+          python - <<'PY'
+          import json,os
+          from pathlib import Path
+          p=Path(os.environ['OUT'])/'train/calibration.json'
+          d=json.loads(p.read_text())
+          with open(os.environ['GITHUB_ENV'],'a') as f:f.write('TRAIN_OK='+str(d['sufficient']).lower()+'\n')
+          PY
+      - name: All development groups, baseline reproduction, original and diagnostic faults, AB BA costs
+        if: env.TRAIN_OK == 'true'
+        run: |
+          set -euo pipefail
+          python research/R2/H18/run.py development --training "$OUT/train/calibration.json" --output "$OUT/development" 2>&1 | tee "$OUT/checks/development.log"
+          python - <<'PY'
+          import json,os
+          from pathlib import Path
+          d=json.loads((Path(os.environ['OUT'])/'development/decision.json').read_text())
+          with open(os.environ['GITHUB_ENV'],'a') as f:f.write('DEVELOPMENT_OK='+str(d['verdict']=='READY_FOR_FROZEN_VALIDATION').lower()+'\n')
+          PY
+      - name: Freeze and push BEFORE validation, only after development admission
+        if: env.DEVELOPMENT_OK == 'true'
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import importlib.util,json,os
+          from pathlib import Path
+          spec=importlib.util.spec_from_file_location('h18','research/R2/H18/run.py');r=importlib.util.module_from_spec(spec);spec.loader.exec_module(r)
+          out=Path(os.environ['OUT']);train=out/'train/calibration.json'
+          data=json.loads(train.read_text())
+          r.save(out/'FREEZE.json',dict(**r.metadata(),pdd=data['pdd'],training_path=str(train),training_sha256=r.sha(train),development_passed=True,development_decision_sha256=r.sha(out/'development/decision.json')))
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git switch -c "checkpoint/R2-H18-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          git add "$OUT"
+          git commit -m "research(H18): freeze candidate before validation [skip ci]"
+          git push origin "HEAD:refs/heads/checkpoint/R2-H18-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          git rev-parse HEAD > "$OUT/PREVALIDATION_FREEZE_COMMIT"
+      - name: One frozen paired validation or explicit non-admission
+        run: |
+          set -euo pipefail
+          if test "${DEVELOPMENT_OK:-false}" = true; then
+            python research/R2/H18/run.py validation --freeze "$OUT/FREEZE.json" --output "$OUT/validation" 2>&1 | tee "$OUT/checks/validation.log"
+          else
+            echo 'Validation NOT opened: see train sufficiency and development safety/regression decision.' | tee "$OUT/VALIDATION_NOT_OPENED.txt"
+          fi
+      - name: Preserve H18 evidence without modifying main or published reports
+        if: always()
+        run: |
+          set -euo pipefail
+          test -d "$OUT" || exit 0
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          branch="checkpoint/R2-H18-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          if test "$(git branch --show-current)" != "$branch"; then git switch -c "$branch"; fi
+          git add "$OUT"
+          git diff --cached --quiet || git commit -m "research(H18): preserve measured train/development evidence $GITHUB_RUN_ID [skip ci]"
+          git push origin "HEAD:refs/heads/$branch"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: R2-H18-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.OUT }}/
+          retention-days: 30

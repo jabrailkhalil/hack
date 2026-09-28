@@ -1,0 +1,25 @@
+name: H18 pinned source snapshot (no measurements)
+on:
+  push:
+    branches: [research/round2-H18]
+    paths: [.github/workflows/research-r2-h18-source.yml]
+permissions:
+  contents: read
+jobs:
+  sources:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Archive only tracked baseline sources and historical evidence, no dataset
+        run: |
+          mkdir -p "$RUNNER_TEMP/h18-sources"
+          git archive 65bba39ed05c781f3f69a65c02f69931152cbfd9 | gzip > "$RUNNER_TEMP/h18-sources/baseline.tar.gz"
+          git rev-parse 65bba39ed05c781f3f69a65c02f69931152cbfd9 > "$RUNNER_TEMP/h18-sources/BASELINE"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: H18-pinned-sources
+          path: ${{ runner.temp }}/h18-sources
+          retention-days: 7
