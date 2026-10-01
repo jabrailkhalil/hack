@@ -1,0 +1,74 @@
+name: H13 fixed neutral acceleration experiment
+on:
+  push:
+    branches: [research/neutral-common-accel-v10]
+    paths:
+      - 'research/H13/**'
+      - '.github/workflows/research-h13.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  experiment:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+      OUT: reports/research_H13/runs/${{ github.run_id }}-${{ github.run_attempt }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.5'
+      - name: Record exact checkout and verify unchanged deployed source
+        run: |
+          mkdir -p "$OUT"
+          git rev-parse HEAD > "$OUT/commit.txt"
+          git diff --exit-code e3b0c9c039d2953fbfcda51231263d38ef9f1024 HEAD -- src tools tests submission research/plan_v3.json research/split_v3.json
+          git diff --stat e3b0c9c039d2953fbfcda51231263d38ef9f1024 HEAD > "$OUT/change-stat.txt"
+      - run: python -m pip install -r requirements-research.txt
+      - name: Baseline tests and isolated H13 mechanism checks
+        run: |
+          set -o pipefail
+          PYTHONPATH=src/reserve_odometry python -m unittest discover -s tests -v 2>&1 | tee "$OUT/baseline-tests.log"
+          python -m unittest discover -s research/tests -v 2>&1 | tee "$OUT/research-tests.log"
+          python -m unittest discover -s research/H13/tests -v 2>&1 | tee "$OUT/h13-tests.log"
+      - name: Prepare only validation databases
+        run: python research/H13/prepare_validation.py
+      - name: Reproduce frozen candidate without tuning
+        run: |
+          set -o pipefail
+          python research/H13/run.py --output "$OUT/validation" --workers 2 2>&1 | tee "$OUT/replay.log"
+      - name: Record numerical verdict (never auto-promote)
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          out=Path(os.environ['OUT'])
+          data=json.loads((out/'validation/summary.json').read_text())
+          print(json.dumps(data['decision'],indent=2))
+          assert data['decision']['promotion_allowed'] is False
+          print('Workflow success means a completed experiment, not candidate acceptance.')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: H13-evidence
+          path: ${{ env.OUT }}/
+          retention-days: 30
+      - name: Save intermediate evidence without touching main
+        if: always()
+        run: |
+          test -d "$OUT" || exit 0
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          CHECKPOINT="checkpoint/H13-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          git switch -c "$CHECKPOINT"
+          git add -f "$OUT"
+          git diff --cached --quiet || git commit -m "research(H13): preserve complete experiment $GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          git push origin "HEAD:refs/heads/$CHECKPOINT"
